@@ -1,0 +1,876 @@
+{
+  "base": "https://forgotten-mistory.web.app",
+  "runId": "20260929T0545Z",
+  "label": "production_qa_pr39",
+  "at": "2026-09-29T05:47:55.894Z",
+  "results": [
+    {
+      "id": "J1",
+      "persona": "P1",
+      "viewport": "390x844",
+      "steps": [
+        {
+          "name": "cold load",
+          "ms": 563,
+          "result": {
+            "_type": "Response",
+            "_guid": "response@41eec6f004c54453690958e3945c7e52"
+          }
+        },
+        {
+          "name": "read hero",
+          "ms": 22,
+          "result": {
+            "h1": "Vikram\nDeshpande",
+            "hasRole": true,
+            "hasSeniority": true,
+            "figures": [
+              "≈92%\n(Self-reported figure.)\nevidence effort removedATO Payday Super · 200+ SIT scenarios",
+              "$5M+\n(Self-reported figure.)\nprogram portfolio ledANZ · 5+ squads, up to 40 practitioners",
+              "10k+\n(Self-reported figure.)\ndevices at P95 < 200 msANZ · real-time telemetry platform"
+            ],
+            "ctas": [
+              {
+                "text": "See the evidence",
+                "href": "#experience",
+                "top": 481,
+                "inFold": true
+              },
+              {
+                "text": "Download CV",
+                "href": "/docs/Vik_Resume_Final.pdf",
+                "top": 481,
+                "inFold": true
+              },
+              {
+                "text": "LinkedIn",
+                "href": "https://www.linkedin.com/in/vikramd-profile",
+                "top": 1320,
+                "inFold": false
+              },
+              {
+                "text": "GitHub",
+                "href": "https://github.com/Victordtesla24",
+                "top": 1320,
+                "inFold": false
+              },
+              {
+                "text": "Email",
+                "href": "mailto:sarkar.vikram@gmail.com",
+                "top": 1320,
+                "inFold": false
+              },
+              {
+                "text": "Play the portrait",
+                "href": null,
+                "top": 1355,
+                "inFold": false
+              }
+            ],
+            "textLen": 789
+          }
+        },
+        {
+          "name": "scrolls to visible contact/CTA",
+          "scrolls": 1,
+          "contact": {
+            "text": "LinkedIn",
+            "href": "https://www.linkedin.com/in/vikramd-profile",
+            "top": 606
+          }
+        },
+        {
+          "name": "hero CTA hit-test at midpoint (after scroll back)",
+          "overlay": [
+            {
+              "cta": "See the evidence",
+              "covered": false,
+              "by": null
+            },
+            {
+              "cta": "Download CV",
+              "covered": false,
+              "by": null
+            },
+            {
+              "cta": "LinkedIn",
+              "covered": false,
+              "by": "A.Hero_link__l2JHr"
+            },
+            {
+              "cta": "GitHub",
+              "covered": false,
+              "by": "A.Hero_link__l2JHr"
+            },
+            {
+              "cta": "Email",
+              "covered": false,
+              "by": "A.Hero_link__l2JHr"
+            },
+            {
+              "cta": "Play the portrait",
+              "covered": false,
+              "by": "SPAN."
+            }
+          ]
+        },
+        {
+          "name": "hero figures carry printed source",
+          "sources": [
+            {
+              "text": "≈92%\n(Self-reported figure.)\nevidence effort removedATO Payday Super · 200+ SIT scenarios",
+              "hasSource": true
+            },
+            {
+              "text": "$5M+\n(Self-reported figure.)\nprogram portfolio ledANZ · 5+ squads, up to 40 practitioners",
+              "hasSource": true
+            },
+            {
+              "text": "10k+\n(Self-reported figure.)\ndevices at P95 < 200 msANZ · real-time telemetry platform",
+              "hasSource": true
+            }
+          ]
+        }
+      ],
+      "pass": true,
+      "notes": "elapsed=2207ms scrolls=1 contact=LinkedIn figuresWithSource=3/3 consoleErrors=0",
+      "consoleErrors": []
+    },
+    {
+      "id": "J2",
+      "persona": "P2",
+      "viewport": "1440x900",
+      "steps": [
+        {
+          "name": "load",
+          "ms": 607,
+          "result": {
+            "_type": "Response",
+            "_guid": "response@8872674d1739a5f043217d609d7c8bb7"
+          }
+        },
+        {
+          "name": "CV links discoverable on first fold",
+          "cvLinks": [
+            {
+              "href": "/docs/Vik_Resume_Final.pdf",
+              "text": "",
+              "visible": true
+            },
+            {
+              "href": "/docs/Vik_Resume_Final.pdf",
+              "text": "",
+              "visible": true
+            },
+            {
+              "href": "/docs/Vik_Resume_Final.pdf",
+              "text": "Download CV",
+              "visible": true
+            },
+            {
+              "href": "/docs/Vik_Resume_Final.pdf",
+              "text": "Download CV\nPDF",
+              "visible": false
+            }
+          ]
+        },
+        {
+          "name": "GET CV",
+          "ms": 157,
+          "result": {
+            "status": 200,
+            "contentType": "application/pdf",
+            "bytes": 157615,
+            "md5": "16b856c0f3f4ec0d801fdde6d084452c",
+            "url": "https://forgotten-mistory.web.app/docs/Vik_Resume_Final.pdf"
+          }
+        },
+        {
+          "name": "footer fingerprint (Skills)",
+          "fingerprint": {
+            "short": "16b856c0",
+            "full": null,
+            "bytes": "157,615"
+          }
+        }
+      ],
+      "pass": true,
+      "notes": "cv=/docs/Vik_Resume_Final.pdf status=200 ct=application/pdf md5=16b856c0 footer=16b856c0 match=true interactions=1",
+      "consoleErrors": []
+    },
+    {
+      "id": "J3",
+      "persona": "P3",
+      "viewport": "1280x800",
+      "steps": [
+        {
+          "name": "load",
+          "ms": 375,
+          "result": {
+            "_type": "Response",
+            "_guid": "response@fa40fc72a85c638048d3a4debbbfde28"
+          }
+        },
+        {
+          "name": "vitrine external links",
+          "repoLinks": [
+            {
+              "href": "https://github.com/Victordtesla24/aether-job-career-agent",
+              "text": "Source",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://aether.srv1356245.hstgr.cloud/",
+              "text": "aether.srv1356245.hstgr.cloud",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://github.com/Victordtesla24/abentertainment",
+              "text": "Source",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://abentertainment.com.au/",
+              "text": "abentertainment.com.au",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://github.com/Victordtesla24/ralph-loop-infinite",
+              "text": "Source",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://github.com/Victordtesla24/prompt-reconstruction-engine",
+              "text": "Source",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://github.com/Victordtesla24/jyotish-shastra",
+              "text": "Source",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://github.com/Victordtesla24/forgotten-mistory",
+              "text": "Source",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            },
+            {
+              "href": "https://forgotten-mistory.web.app/",
+              "text": "forgotten-mistory.web.app",
+              "target": "_blank",
+              "rel": "noreferrer noopener"
+            }
+          ]
+        },
+        {
+          "name": "repo links resolve (HTTP)",
+          "statuses": [
+            {
+              "href": "https://github.com/Victordtesla24/aether-job-career-agent",
+              "status": 200
+            },
+            {
+              "href": "https://aether.srv1356245.hstgr.cloud/",
+              "status": 200
+            },
+            {
+              "href": "https://github.com/Victordtesla24/abentertainment",
+              "status": 200
+            },
+            {
+              "href": "https://abentertainment.com.au/",
+              "status": 200
+            },
+            {
+              "href": "https://github.com/Victordtesla24/ralph-loop-infinite",
+              "status": 200
+            },
+            {
+              "href": "https://github.com/Victordtesla24/prompt-reconstruction-engine",
+              "status": 200
+            },
+            {
+              "href": "https://github.com/Victordtesla24/jyotish-shastra",
+              "status": 200
+            },
+            {
+              "href": "https://github.com/Victordtesla24/forgotten-mistory",
+              "status": 200
+            },
+            {
+              "href": "https://forgotten-mistory.web.app/",
+              "status": 200
+            }
+          ]
+        },
+        {
+          "name": "open repo and return",
+          "returned": {
+            "via": "popup",
+            "scrollPreserved": false
+          }
+        },
+        {
+          "name": "listen CTAs",
+          "listen": {
+            "ctas": [
+              {
+                "text": "Email a 20-minute-call agenda",
+                "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A"
+              },
+              {
+                "text": "sarkar.vikram@gmail.com",
+                "href": "mailto:sarkar.vikram@gmail.com"
+              },
+              {
+                "text": "+61 433 224 556",
+                "href": "tel:+61433224556"
+              },
+              {
+                "text": "linkedin.com/in/vikramd-profile",
+                "href": "https://www.linkedin.com/in/vikramd-profile"
+              },
+              {
+                "text": "github.com/Victordtesla24",
+                "href": "https://github.com/Victordtesla24"
+              }
+            ],
+            "italic": [
+              "I have been wrong often enough to want to hear it early. Tell me what you think "
+            ]
+          }
+        }
+      ],
+      "pass": false,
+      "notes": "repoLinks=9 non200=0 return={\"via\":\"popup\",\"scrollPreserved\":false} listenCTAs=5",
+      "consoleErrors": []
+    },
+    {
+      "id": "J4",
+      "persona": "P4",
+      "viewport": "1280x800",
+      "steps": [
+        {
+          "name": "load",
+          "ms": 134,
+          "result": {
+            "_type": "Response",
+            "_guid": "response@3bca331cac3df43959fc859a4a8b3933"
+          }
+        },
+        {
+          "name": "first Tab = skip link?",
+          "first": {
+            "tag": "A",
+            "text": "Skip to the evidence",
+            "href": "#main",
+            "outline": "solid 2px rgb(235, 235, 235)",
+            "boxShadow": "rgba(0, 0, 0, 0.5) 0px 14px 44px -10px",
+            "visible": true
+          }
+        },
+        {
+          "name": "after skip",
+          "afterSkip": {
+            "active": "BODY#",
+            "hash": "#main",
+            "scrollY": 0
+          }
+        },
+        {
+          "name": "tab traversal",
+          "count": 83,
+          "trapped": false,
+          "unnamed": [],
+          "noFocusIndicator": [],
+          "sectionsReached": [
+            "hero",
+            "HEADER",
+            "experience",
+            "role-ato",
+            "role-independent",
+            "role-anz",
+            "role-nab",
+            "role-microsoft",
+            "role-telstra",
+            "role-infocentric",
+            "role-myob",
+            "skills",
+            "vitrine",
+            "listen",
+            "FOOTER",
+            null
+          ]
+        },
+        {
+          "name": "launcher located",
+          "launcher": {
+            "name": "Ask Mini Vic",
+            "cls": "skip-link minivic-skip"
+          }
+        },
+        {
+          "name": "dialog opened (focus moved inside?)",
+          "dialog": {
+            "dialogPresent": true,
+            "dialogLabel": "MiniVic assistant panel",
+            "focusInside": false,
+            "active": "BUTTON.minivic-launcher group",
+            "liveRegion": true
+          }
+        },
+        {
+          "name": "typed into input",
+          "typed": true
+        },
+        {
+          "name": "after Escape (focus restored to launcher?)",
+          "afterEsc": {
+            "dialogStillOpen": false,
+            "active": "BUTTON Ask Mini Vic — a synthetic stand-in for Vikram"
+          }
+        }
+      ],
+      "pass": false,
+      "notes": "trapped=false unnamed=0 noIndicator=0 dialog=true focusInside=false escClosed=true focusBack=BUTTON Ask Mini Vic — a synthetic stand-in for Vikram",
+      "consoleErrors": []
+    },
+    {
+      "id": "J5",
+      "persona": "P4",
+      "viewport": "1280x800/640/320",
+      "steps": [
+        {
+          "name": "rotor outline + landmarks (reduced motion)",
+          "outline": {
+            "h1": 1,
+            "headings": [
+              "H1 Vikram Deshpande",
+              "H2 Ten dimensions, answered",
+              "H3 Technical Skills",
+              "H3 Experience Level",
+              "H3 Industry Match",
+              "H3 Role Alignment",
+              "H3 Culture Fit",
+              "H3 Salary Fit\nMEASURED FROM THE ROLE\n(COMPUTED FROM THE ROLE, N",
+              "H3 Location Match\nMEASURED FROM THE ROLE\n(COMPUTED FROM THE ROL",
+              "H3 Career Growth",
+              "H3 Company Stability\nMEASURED FROM THE ROLE\n(COMPUTED FROM THE ",
+              "H3 North Star Align",
+              "H2 Sixteen years, to scale\nMAY 2010 → SEPTEMBER 2026",
+              "H3 Scrum Master / Project Manager — Payday Super Program (NTP &",
+              "H3 AI Solutions Consultant — Applied LLM Engineering & Delivery",
+              "H3 Senior Delivery Lead / AI-ML Solutions Architect\nANZ Banking",
+              "H3 Senior Project Manager & Business Analyst\nNational Australia",
+              "H3 Lead Business Analyst\nMicrosoft\nOct 2015 - Oct 2016",
+              "H3 Business Analyst / Project Coordinator\nTelstra\nNov 2014 - Oc",
+              "H3 Senior Business Analyst\nInfoCentric\nAug 2011 - Nov 2014",
+              "H3 Developer Support / Software Testing / Analyst\nMYOB\nMay 2010",
+              "H2 Calibration card",
+              "H2 Six of thirty-eight",
+              "H3 Aether",
+              "H3 AB Entertainment",
+              "H3 Ralph Loop",
+              "H3 Prompt Reconstruction",
+              "H3 Jyotish Shastra",
+              "H3 This site",
+              "H3 EXCLUDED, AND WHY",
+              "H2 Feedback & coffee?"
+            ],
+            "landmarks": [
+              "NAV",
+              "MAIN",
+              "HEADER",
+              "HEADER",
+              "HEADER",
+              "DIV[group](Filter capabilities by status)",
+              "P[status]",
+              "OL[list](Six repositories, scrollable horizontally)",
+              "FOOTER",
+              "DIV[status]"
+            ],
+            "canvasesUnderReducedMotion": 0,
+            "imgsNoAlt": 0,
+            "lang": "en"
+          }
+        },
+        {
+          "name": "reflow at 200% (viewport 640px)",
+          "overflowX": false,
+          "scrollWidth": 640,
+          "clientWidth": 640,
+          "clippedHero": false
+        },
+        {
+          "name": "reflow at 400% (viewport 320px)",
+          "overflowX": false,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "clippedHero": false
+        }
+      ],
+      "pass": true,
+      "notes": "h1=1 canvasesReducedMotion=0 overflow200=false overflow400=false landmarks=10",
+      "consoleErrors": []
+    },
+    {
+      "id": "J6",
+      "persona": "all",
+      "viewport": "1280x800 (JS off)",
+      "steps": [
+        {
+          "name": "no-JS hero",
+          "hero": {
+            "present": true,
+            "h1": "Vikram Deshpande",
+            "textLen": 792,
+            "figures": 3,
+            "ctas": [
+              "#experience",
+              "/docs/Vik_Resume_Final.pdf",
+              "https://www.linkedin.com/in/vikramd-profile",
+              "https://github.com/Victordtesla24",
+              "mailto:sarkar.vikram@gmail.com"
+            ],
+            "anchorsResolve": [
+              {
+                "href": "#main",
+                "ok": true
+              },
+              {
+                "href": "#hero",
+                "ok": true
+              },
+              {
+                "href": "#hero",
+                "ok": true
+              },
+              {
+                "href": "#about",
+                "ok": true
+              },
+              {
+                "href": "#experience",
+                "ok": true
+              },
+              {
+                "href": "#skills",
+                "ok": true
+              },
+              {
+                "href": "#vitrine",
+                "ok": true
+              },
+              {
+                "href": "#listen",
+                "ok": true
+              },
+              {
+                "href": "#experience",
+                "ok": true
+              }
+            ],
+            "sectionsPresent": [
+              {
+                "id": "about",
+                "present": true,
+                "textLen": 3174
+              },
+              {
+                "id": "experience",
+                "present": true,
+                "textLen": 3329
+              },
+              {
+                "id": "skills",
+                "present": true,
+                "textLen": 4358
+              },
+              {
+                "id": "vitrine",
+                "present": true,
+                "textLen": 2547
+              },
+              {
+                "id": "listen",
+                "present": true,
+                "textLen": 329
+              }
+            ],
+            "noscript": 0
+          }
+        }
+      ],
+      "pass": true,
+      "notes": "hero=true h1=true textLen=792 figures=3 anchorsBroken=0 sectionsPresent=5/5"
+    },
+    {
+      "id": "J7",
+      "persona": "all",
+      "viewport": "1280x800",
+      "steps": [
+        {
+          "name": "POST /api/chat",
+          "status": 200,
+          "contentType": "application/json; charset=utf-8",
+          "body": "{\"text\":\"I am a Scrum Master, Project Manager, and AI solutions architect with 15+ years in technology, currently leading Agile delivery on the Australian Taxation Office Payday Super reform program in Melbourne.\",\"provider\":\"openai\",\"model\":\"gpt-4.1-mini\",\"route\":\"hosting\",\"max_tokens\":48,\"attempts"
+        },
+        {
+          "name": "POST /api/tts",
+          "status": 200,
+          "contentType": "audio/mpeg",
+          "body": "ID3\u0004\u0000\u0000\u0000\u0000\u0000#TSSE\u0000\u0000\u0000\u000f\u0000\u0000\u0003Lavf60.16.101\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000����\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000Info\u0000\u0000\u0000\u000f\u0000\u0000\u0000 \u0000\u00005�\u0000\u000f\u000f\u000f\u0017\u0017\u0017\u001e\u001e\u001e&&&...666>>>EEEMMMMUUU]]]dddlllttt|||�����������������������������������������������������\u0000\u0000\u0000\u0000Lavf\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000$\u0005�\u0000\u0000\u0000\u0000\u0000\u00005�l�E\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+        },
+        {
+          "name": "UI after sending a message (9 s wait)",
+          "opened": true,
+          "typed": true,
+          "apiCalls": [
+            {
+              "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+              "status": 204
+            },
+            {
+              "url": "https://forgotten-mistory.web.app/api/tts",
+              "status": 200
+            }
+          ],
+          "uiState": {
+            "text": " velocity\n\nVic\n05:47 AM\nI'm Vikram — a synthetic stand-in for him, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across up to 40 practitioners. Ask about availability, the ATO work, or how I lead.\nCopy\nYou\nHIRING FIT\n05:47 AM\nWhat do you do?\nVic\nHIRING FIT\n05:47 AM\nI lead Agile delivery as a Scrum Master and Project Manager, currently on the ATO Payday Super reform program, managing sprint cadence, PI planning, capacity, and executive reporting, with 15+ years in technology across government, financial services, and telecommunications.\nCopy\nAvailable when, and where?\nBiggest measured result\nDay to day at the ATO\nHow you run a squad\nFirst two weeks in the role\nEngagements you take on",
+            "mentionsError": false,
+            "voiceState": true,
+            "disabledControls": [
+              "Send message"
+            ],
+            "liveRegion": true
+          }
+        }
+      ],
+      "pass": true,
+      "notes": "chat=200 tts=200 apiCallsFromUI=[{\"url\":\"https://forgotten-mistory.web.app/api/chat?warm=1\",\"status\":204},{\"url\":\"https://forgotten-mistory.web.app/api/tts\",\"status\":200}] honestError=false consoleErrors=0",
+      "consoleErrors": []
+    },
+    {
+      "id": "J8",
+      "persona": "all",
+      "viewport": "1280x800",
+      "steps": [
+        {
+          "name": "menu button",
+          "menuBtn": {
+            "name": "MENU",
+            "expanded": "false",
+            "controls": "site-nav-overlay"
+          }
+        },
+        {
+          "name": "nav links",
+          "nav": [
+            {
+              "href": "#hero",
+              "present": true,
+              "visible": true,
+              "hash": "#hero",
+              "targetTop": 0,
+              "targetPresent": true,
+              "activeLinks": [
+                "#hero"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#about",
+              "present": true,
+              "visible": true,
+              "hash": "#about",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#about"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#experience",
+              "present": true,
+              "visible": true,
+              "hash": "#experience",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#experience"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#skills",
+              "present": true,
+              "visible": true,
+              "hash": "#skills",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#skills"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#vitrine",
+              "present": true,
+              "visible": true,
+              "hash": "#vitrine",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#vitrine"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#listen",
+              "present": true,
+              "visible": true,
+              "hash": "#listen",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#listen"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            }
+          ]
+        }
+      ],
+      "pass": true,
+      "notes": "present=6/6 scrolled=6/6 hash=6/6 activeState=6/6 menuBtn=true",
+      "consoleErrors": []
+    },
+    {
+      "id": "J8",
+      "persona": "all",
+      "viewport": "390x844",
+      "steps": [
+        {
+          "name": "menu button",
+          "menuBtn": {
+            "name": "MENU",
+            "expanded": "false",
+            "controls": "site-nav-overlay"
+          }
+        },
+        {
+          "name": "nav links",
+          "nav": [
+            {
+              "href": "#hero",
+              "present": true,
+              "visible": true,
+              "hash": "#hero",
+              "targetTop": 0,
+              "targetPresent": true,
+              "activeLinks": [
+                "#hero"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#about",
+              "present": true,
+              "visible": true,
+              "hash": "#about",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#about"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#experience",
+              "present": true,
+              "visible": true,
+              "hash": "#experience",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#experience"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#skills",
+              "present": true,
+              "visible": true,
+              "hash": "#skills",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#skills"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#vitrine",
+              "present": true,
+              "visible": true,
+              "hash": "#vitrine",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#vitrine"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            },
+            {
+              "href": "#listen",
+              "present": true,
+              "visible": true,
+              "hash": "#listen",
+              "targetTop": 96,
+              "targetPresent": true,
+              "activeLinks": [
+                "#listen"
+              ],
+              "menuStillOpen": true,
+              "scrolledToTarget": true,
+              "hashUpdated": true
+            }
+          ]
+        }
+      ],
+      "pass": true,
+      "notes": "present=6/6 scrolled=6/6 hash=6/6 activeState=6/6 menuBtn=true",
+      "consoleErrors": []
+    }
+  ]
+}
