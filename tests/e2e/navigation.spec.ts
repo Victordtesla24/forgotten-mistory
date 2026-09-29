@@ -65,7 +65,7 @@ test.describe('E2E: Navigation', () => {
     await expect(overlay.locator('.nav-link').first()).toBeVisible();
   });
 
-  test('TC-NAV-04: Every in-page nav anchor resolves to a section that exists', async ({ page }) => {
+  test('TC-NAV-04: Every in-page nav anchor resolves to a section that exists @smoke', async ({ page }) => {
     await gotoHome(page);
     await page.locator('.menu-toggle').click();
     const links = page.locator('#site-nav-overlay .nav-link');
