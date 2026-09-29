@@ -22,7 +22,7 @@ const yaml = require('js-yaml');
 
 const ROOT = process.cwd();
 const WORKFLOWS = join(ROOT, '.github', 'workflows');
-const shipText = readFileSync(join(WORKFLOWS, 'deploy.yml'), 'utf8');
+const shipText = readFileSync(join(WORKFLOWS, 'ship.yml'), 'utf8');
 const nightlyText = readFileSync(join(WORKFLOWS, 'nightly.yml'), 'utf8');
 const ship = yaml.load(shipText);
 const nightly = yaml.load(nightlyText);
@@ -36,9 +36,10 @@ const usesStep = (job, prefix) => (job.steps ?? []).find((s) => (s.uses || '').s
 const firesMoreThanHourly = (cron) => !/^\d{1,2}\s/.test(String(cron).trim());
 
 describe('there is exactly one path to production', () => {
-  it('has exactly two workflows: ship (deploy.yml) and nightly', () => {
+  it('has exactly two workflows: ship.yml and nightly', () => {
     const files = readdirSync(WORKFLOWS).filter((f) => f.endsWith('.yml')).sort();
-    assert.deepEqual(files, ['deploy.yml', 'nightly.yml']);
+    assert.deepEqual(files, ['nightly.yml', 'ship.yml']);
+    assert.ok(!files.includes('deploy.yml'), 'legacy deploy.yml must remain absent/disabled; PRs use ship.yml');
     assert.equal(ship.name, 'ship');
     assert.ok(!/action-hosting-deploy|firebase deploy|firebase-tools/.test(nightlyText), 'nightly.yml must not deploy');
   });
@@ -52,7 +53,7 @@ describe('there is exactly one path to production', () => {
   });
 
   it('never schedules anything more often than hourly, in any workflow', () => {
-    for (const [file, doc] of [['deploy.yml', ship], ['nightly.yml', nightly]]) {
+    for (const [file, doc] of [['ship.yml', ship], ['nightly.yml', nightly]]) {
       for (const entry of triggersOf(doc).schedule ?? []) {
         assert.ok(!firesMoreThanHourly(entry.cron), `${file} cron "${entry.cron}" fires more than once an hour`);
       }
@@ -60,7 +61,7 @@ describe('there is exactly one path to production', () => {
   });
 
   it('never merges other branches into main on its own', () => {
-    for (const [file, text] of [['deploy.yml', shipText], ['nightly.yml', nightlyText]]) {
+    for (const [file, text] of [['ship.yml', shipText], ['nightly.yml', nightlyText]]) {
       assert.ok(!/-X theirs/.test(text), `${file} must not force-resolve merges (-X theirs)`);
       assert.ok(!/checkout --theirs/.test(text), `${file} must not take conflicting hunks from a branch`);
       assert.ok(!/for-each-ref[^\n]*refs\/remotes/.test(text), `${file} must not enumerate and merge remote branches`);
@@ -81,15 +82,15 @@ describe('the gates job is the single quality gate', () => {
   const gates = ship.jobs.gates;
 
   it('exists and every deploying job needs it', () => {
-    assert.ok(gates, 'deploy.yml must carry a "gates" job');
+    assert.ok(gates, 'ship.yml must carry a "gates" job');
     for (const name of ['preview', 'deploy', 'functions']) {
       const job = ship.jobs[name];
-      assert.ok(job, `deploy.yml must carry a "${name}" job`);
+      assert.ok(job, `ship.yml must carry a "${name}" job`);
       assert.ok([].concat(job.needs ?? []).includes('gates'), `"${name}" must need "gates"`);
     }
   });
 
-  it('checks types, lint, the static audit, the node contract tests, builds, runs @smoke + axe e2e and the Lighthouse budget', () => {
+  it('checks types, lint, the static audit, the node contract tests, builds, runs the full Playwright suite and the Lighthouse budget', () => {
     const runs = gates.steps.map((s) => (s.run || '').trim());
     const joined = runs.join('\n');
     assert.ok(runs.includes('npm ci'), 'gates must run "npm ci"');
@@ -102,7 +103,8 @@ describe('the gates job is the single quality gate', () => {
     assert.ok(/ci_pipeline\.test\.mjs/.test(joined));
     assert.ok(/npm run build:static/.test(joined));
     assert.ok(/playwright install --with-deps chromium/.test(joined));
-    assert.ok(/PLAYWRIGHT_BASE_URL=[^\n]*npx playwright test --grep "@smoke\|A11Y-"/.test(joined), 'e2e on out/ runs the @smoke and axe (A11Y-) specs');
+    assert.ok(/PLAYWRIGHT_BASE_URL=[^\n]*npx playwright test(\s|$)/.test(joined), 'gates must run the whole functional Playwright suite against out/');
+    assert.ok(!/PLAYWRIGHT_BASE_URL=[^\n]*npx playwright test[^\n]*(--grep|--grep-invert|--project|tests\/perf\/scene-framerate)/.test(joined), 'the gate must not filter or narrow the functional Playwright suite');
     assert.ok(/@lhci\/cli[^\n]* autorun --config=lighthouserc\.json/.test(joined), 'Lighthouse budget missing');
     // The build precedes the e2e, and the e2e precedes the Lighthouse run.
     assert.ok(joined.indexOf('npm run build:static') < joined.indexOf('npx playwright test'));
@@ -122,6 +124,20 @@ describe('the gates job is the single quality gate', () => {
     assert.ok(!/wait-on/.test(shipText), 'wait-on is not a dependency of this project');
   });
 
+  it('uses the required mobile Lighthouse thresholds over three runs', () => {
+    const lhrc = JSON.parse(readFileSync(join(ROOT, 'lighthouserc.json'), 'utf8'));
+    assert.equal(lhrc.ci.collect.numberOfRuns, 3);
+    assert.notEqual(lhrc.ci.collect.settings?.preset, 'desktop', 'Lighthouse must use the mobile/default profile, not desktop');
+    const a = lhrc.ci.assert.assertions;
+    assert.deepEqual(a['categories:performance'], ['error', { minScore: 0.9 }]);
+    assert.deepEqual(a['categories:accessibility'], ['error', { minScore: 0.95 }]);
+    assert.deepEqual(a['categories:best-practices'], ['error', { minScore: 0.95 }]);
+    assert.deepEqual(a['categories:seo'], ['error', { minScore: 0.95 }]);
+    assert.deepEqual(a['largest-contentful-paint'], ['error', { maxNumericValue: 2500 }]);
+    assert.deepEqual(a['total-blocking-time'], ['error', { maxNumericValue: 200 }]);
+    assert.deepEqual(a['cumulative-layout-shift'], ['error', { maxNumericValue: 0.05 }]);
+  });
+
   it('uploads the export it tested for the deploying jobs, with hidden files, short-lived', () => {
     const upload = gates.steps.find((s) => (s.uses || '').startsWith('actions/upload-artifact') && s.with?.name === 'out');
     assert.ok(upload, 'gates must upload the "out" artifact');
@@ -131,6 +147,17 @@ describe('the gates job is the single quality gate', () => {
     for (const name of ['preview', 'deploy']) {
       const dl = usesStep(ship.jobs[name], 'actions/download-artifact');
       assert.ok(dl && dl.with.name === 'out' && dl.with.path === 'out', `"${name}" must download the gated "out" artifact`);
+    }
+  });
+
+  it('writes and verifies an artifact identity manifest before any preview or live deploy', () => {
+    const gateRuns = runsOf(gates);
+    assert.ok(/out\/\.artifact-identity\.json/.test(gateRuns), 'gates must write an artifact identity manifest inside out/');
+    assert.ok(/GITHUB_SHA/.test(gateRuns), 'artifact identity must include the workflow commit');
+    for (const name of ['preview', 'deploy']) {
+      const runs = runsOf(ship.jobs[name]);
+      assert.ok(/out\/\.artifact-identity\.json/.test(runs), `${name} must inspect the downloaded artifact identity`);
+      assert.ok(/GITHUB_SHA/.test(runs), `${name} must compare artifact identity to this run's commit`);
     }
   });
 
@@ -144,25 +171,57 @@ describe('the gates job is the single quality gate', () => {
   });
 });
 
+
+
+describe('every run: block is shell-safe', () => {
+  it('bash -n parses every extracted step after replacing GitHub expressions', () => {
+    for (const [file, doc] of [['ship.yml', ship], ['nightly.yml', nightly]]) {
+      for (const [jobName, job] of Object.entries(doc.jobs)) {
+        for (const step of job.steps ?? []) {
+          if (!step.run) continue;
+          const shell = step.run.replace(/\$\{\{[^}]+\}\}/g, 'GITHUB_EXPR');
+          const r = spawnSync('bash', ['-n'], { input: shell, encoding: 'utf8' });
+          assert.equal(r.status, 0, `${file}/${jobName}: ${step.name || step.id || 'run'}: ${r.stderr}`);
+        }
+      }
+    }
+  });
+
+  it('never wraps node template-literal identity checks in double quotes', () => {
+    const forbidden = /node\s+-e\s+"[^"]*`[^`]*\$\{[^}]+\}[^`]*`/s;
+    assert.ok(!forbidden.test(shipText), "use a single-quoted heredoc (`node - <<'NODE'`) for template literals");
+    assert.ok(!forbidden.test(nightlyText));
+    for (const name of ['preview', 'deploy']) {
+      const runs = runsOf(ship.jobs[name]);
+      assert.ok(/node - <<'NODE'\n\s*const id = require\('\.\/out\/\.artifact-identity\.json'\);/.test(runs), `${name} must use a quoted heredoc identity check`);
+    }
+  });
+});
+
 describe('preview and deploy ship the gated export', () => {
   const preview = ship.jobs.preview;
   const deploy = ship.jobs.deploy;
 
-  it('preview runs only for pull requests and deploys a short-lived channel', () => {
+  it('preview runs only for pull requests, deploys a short-lived channel, then smokes that preview URL', () => {
     assert.match(String(preview.if), /pull_request/);
     const fb = usesStep(preview, 'FirebaseExtended/action-hosting-deploy');
     assert.ok(fb, 'preview must deploy a Firebase preview channel');
+    assert.ok(fb.id, 'preview deploy step needs an id so its URL output can be smoked');
     assert.equal(fb.with.projectId, 'forgotten-mistory');
     assert.equal(fb.with.firebaseServiceAccount, '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}');
     assert.equal(fb.with.repoToken, '${{ secrets.GITHUB_TOKEN }}');
     assert.equal(fb.with.channelId, undefined, 'preview must never target the live channel');
     assert.match(String(fb.with.expires), /^\d+d$/);
+    const runs = runsOf(preview);
+    assert.ok(new RegExp(`steps\.${fb.id}\.outputs\.urls`).test(runs), 'preview smoke must use the deployed preview URL output');
+    assert.ok(/PLAYWRIGHT_BASE_URL="\$preview_url" npx playwright test --grep @smoke/.test(runs), 'preview URL @smoke run missing');
   });
 
   it('deploy runs only on main and never for a pull request', () => {
     assert.match(String(deploy.if), /refs\/heads\/main/);
     assert.match(String(deploy.if), /!= 'pull_request'/);
     assert.equal(deploy.environment, 'production');
+    assert.ok(Number(deploy['timeout-minutes']) >= 60, 'deploy timeout must cover bounded rollback gates');
   });
 
   it('both drop the predeploy rebuild so what was gated is what ships (D-002)', () => {
@@ -222,8 +281,29 @@ describe('preview and deploy ship the gated export', () => {
     assert.equal(rollback.name, 'Auto-rollback on failure');
     assert.match(String(rollback.if), /^failure\(\)/);
     assert.match(String(rollback.if), /steps\.skip\.outputs\.skip != 'true'/, 'a heartbeat that deployed nothing has nothing to revert');
+    assert.ok(/git checkout -- firebase\.json/.test(rollback.run), 'rollback must restore only firebase.json before git revert');
+    assert.ok(rollback.run.indexOf('git checkout -- firebase.json') < rollback.run.indexOf('git revert --no-edit HEAD'));
+    assert.ok(/git fetch origin main/.test(rollback.run), 'rollback must fetch origin/main before reverting');
+    assert.ok(/remote_head="\$\(git rev-parse origin\/main\)"/.test(rollback.run));
+    assert.ok(/\[ "\$remote_head" != "\$GITHUB_SHA" \]/.test(rollback.run), 'rollback must refuse to revert a stale commit');
     assert.ok(/git revert --no-edit HEAD/.test(rollback.run));
     assert.ok(/git push origin HEAD:main/.test(rollback.run));
+    assert.ok(/npm ci\n/.test(rollback.run), 'rollback must install app dependencies before validating the reverted source');
+    assert.ok(/npm ci --prefix functions/.test(rollback.run), 'rollback must install functions dependencies before node contracts');
+    assert.ok(/npx tsc --noEmit/.test(rollback.run));
+    assert.ok(/npm run lint/.test(rollback.run));
+    assert.ok(/overhaul_static_audit\.mjs/.test(rollback.run));
+    assert.ok(/node --test tests\/ci_pipeline\.test\.mjs/.test(rollback.run), 'rollback must run the reverted source contract tests');
+    assert.ok(/npm run build:static/.test(rollback.run), 'rollback must rebuild the reverted commit in this same run');
+    assert.ok(/PLAYWRIGHT_BASE_URL="http:\/\/127\.0\.0\.1:\$STATIC_PORT" npx playwright test\n/.test(rollback.run), 'rollback must run the full Playwright suite on the rebuilt artifact');
+    assert.ok(/@lhci\/cli@0\.14\.x autorun --config=lighthouserc\.json/.test(rollback.run), 'rollback must run LHCI before publishing');
+    assert.ok(/firebase-tools@13 deploy --only hosting/.test(rollback.run), 'rollback must redeploy in this same run, not rely on a GITHUB_TOKEN push event');
+    assert.ok(rollback.run.indexOf('@lhci/cli@0.14.x autorun') < rollback.run.indexOf('firebase-tools@13 deploy --only hosting'), 'rollback must fail safe before deploy when gates fail');
+    assert.ok(/parity_ok=false/.test(rollback.run) && /parity_ok=true/.test(rollback.run) && /\[ "\$parity_ok" = true \]/.test(rollback.run), 'rollback parity must be an explicit hard assertion after bounded polling');
+    assert.ok(/PLAYWRIGHT_BASE_URL="\$PROD_URL" npx playwright test --grep @smoke/.test(rollback.run), 'rollback must smoke production after parity');
+    assert.ok(rollback.run.indexOf('[ "$parity_ok" = true ]') < rollback.run.indexOf('PLAYWRIGHT_BASE_URL="$PROD_URL" npx playwright test --grep @smoke'));
+    assert.ok(/trap 'rm -f "\$cred_file" "\$tmp"' EXIT/.test(rollback.run), 'rollback credential cleanup must be trapped on every outcome');
+    assert.ok(/FIREBASE_SERVICE_ACCOUNT/.test(JSON.stringify(rollback)), 'rollback deploy must use the existing Firebase secret only');
     assert.ok(!/--force/.test(rollback.run) && !/push -f/.test(rollback.run), 'never force-push');
     assert.ok(/\^Revert /.test(rollback.run), 'a failing revert must not revert the revert (no rollback chain)');
   });
@@ -299,7 +379,7 @@ describe('the generated static-audit report is a build artifact, not a tracked f
   });
 
   it('is uploaded tolerantly if CI uploads it at all', () => {
-    for (const [file, doc] of [['deploy.yml', ship], ['nightly.yml', nightly]]) {
+    for (const [file, doc] of [['ship.yml', ship], ['nightly.yml', nightly]]) {
       for (const [name, job] of Object.entries(doc.jobs)) {
         for (const step of job.steps ?? []) {
           if (!(step.uses || '').startsWith('actions/upload-artifact')) continue;
@@ -320,9 +400,9 @@ describe('the GPU-class scene frame-rate job is optional signal and can never ga
   const JOB = 'scene-fps-gpu';
   const job = nightly.jobs?.[JOB];
 
-  it('exists in nightly.yml and is unknown to deploy.yml', () => {
+  it('exists in nightly.yml and is unknown to ship.yml', () => {
     assert.ok(job, `nightly.yml must carry a "${JOB}" job`);
-    assert.ok(!shipText.includes(JOB), `deploy.yml must never mention "${JOB}"`);
+    assert.ok(!shipText.includes(JOB), `ship.yml must never mention "${JOB}"`);
   });
 
   it('is skipped entirely unless the self-hosted runner labels are configured', () => {
@@ -339,7 +419,7 @@ describe('the GPU-class scene frame-rate job is optional signal and can never ga
   });
 
   it('is in no needs: chain in either workflow', () => {
-    for (const [file, doc] of [['nightly.yml', nightly], ['deploy.yml', ship]]) {
+    for (const [file, doc] of [['nightly.yml', nightly], ['ship.yml', ship]]) {
       for (const [name, other] of Object.entries(doc.jobs)) {
         const needs = other.needs === undefined ? [] : [].concat(other.needs);
         assert.ok(!needs.includes(JOB), `${file} job "${name}" waits on "${JOB}"`);

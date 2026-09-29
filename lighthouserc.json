@@ -6,7 +6,6 @@
       ],
       "numberOfRuns": 3,
       "settings": {
-        "preset": "desktop",
         "onlyCategories": [
           "performance",
           "accessibility",
@@ -19,57 +18,45 @@
     "assert": {
       "assertions": {
         "categories:performance": [
-          "warn",
+          "error",
           {
-            "minScore": 0.8
+            "minScore": 0.9
           }
         ],
         "categories:accessibility": [
           "error",
           {
-            "minScore": 0.8
+            "minScore": 0.95
           }
         ],
         "categories:best-practices": [
           "error",
           {
-            "minScore": 0.8
+            "minScore": 0.95
           }
         ],
-        "first-contentful-paint": [
+        "categories:seo": [
           "error",
           {
-            "maxNumericValue": 2000
+            "minScore": 0.95
           }
         ],
         "largest-contentful-paint": [
           "error",
           {
-            "maxNumericValue": 3500
+            "maxNumericValue": 2500
           }
         ],
         "total-blocking-time": [
           "error",
           {
-            "maxNumericValue": 400
+            "maxNumericValue": 200
           }
         ],
         "cumulative-layout-shift": [
           "error",
           {
             "maxNumericValue": 0.05
-          }
-        ],
-        "speed-index": [
-          "error",
-          {
-            "maxNumericValue": 4000
-          }
-        ],
-        "interactive": [
-          "warn",
-          {
-            "maxNumericValue": 6000
           }
         ]
       }

@@ -3,15 +3,16 @@ name: ship
 # One workflow, one path to production (UX-C0-001, docs/uiux/DECISIONS.md D-002..D-007).
 #
 #   branch ─► PR ─► gates (types · lint · static audit · node contract tests · build
-#                         · @smoke + axe e2e on out/ · Lighthouse budget)
+#                         · full Playwright suite on out/ · Lighthouse budget)
 #          ─► Firebase preview channel (PR only)
 #          ─► squash-merge to main ─► deploy the gated out/ live ─► build-hash parity
 #          ─► @smoke on production ─► on failure: revert HEAD and push (redeploys)
 #
 # What was here before — merge every remote branch into main with the branch
 # winning each conflicting hunk, then deploy every ten minutes without a single
-# gate — is gone. The full Playwright suite, npm audit and the GPU frame-rate
-# harness live in nightly.yml and report without blocking the line.
+# gate — is gone. npm audit and the GPU frame-rate
+# harness live in nightly.yml and report without blocking the line; the full
+# functional Playwright suite remains in this gate.
 
 on:
   pull_request:
@@ -41,7 +42,7 @@ env:
 
 jobs:
   gates:
-    name: gates · types · lint · build · smoke+axe e2e · Lighthouse
+    name: gates · types · lint · build · full e2e · Lighthouse
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -69,7 +70,17 @@ jobs:
           python3 -m http.server "$STATIC_PORT" --directory out --bind 127.0.0.1 >/dev/null 2>&1 &
           for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null 2>&1 && break; sleep 1; done
           curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null
-          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$STATIC_PORT" npx playwright test --grep "@smoke|A11Y-"
+          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$STATIC_PORT" npx playwright test
+          node - <<'NODE'
+          const { writeFileSync } = require('node:fs');
+          const identity = {
+            commit: process.env.GITHUB_SHA,
+            run_id: process.env.GITHUB_RUN_ID,
+            run_attempt: process.env.GITHUB_RUN_ATTEMPT,
+            built_at: new Date().toISOString(),
+          };
+          writeFileSync('out/.artifact-identity.json', JSON.stringify(identity, null, 2) + '\n');
+          NODE
           npx @lhci/cli@0.14.x autorun --config=lighthouserc.json
       - uses: actions/upload-artifact@v4
         if: always()
@@ -114,19 +125,51 @@ jobs:
           jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
           mv firebase.ship.json firebase.json
           test -f out/index.html
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+          node - <<'NODE'
+          const id = require('./out/.artifact-identity.json');
+          if (id.commit !== process.env.GITHUB_SHA) {
+            throw new Error(`artifact ${id.commit} does not match ${process.env.GITHUB_SHA}`);
+          }
+          NODE
+      - id: preview_deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: forgotten-mistory
           expires: 2d
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Preview smoke
+        run: |
+          set -euo pipefail
+          npm ci
+          npx playwright install --with-deps chromium
+          preview_urls='${{ steps.preview_deploy.outputs.urls }}'
+          preview_url="$(node - <<'NODE' "$preview_urls"
+          const raw = process.argv[2] || '';
+          let urls = [];
+          try {
+            const parsed = JSON.parse(raw);
+            urls = Array.isArray(parsed) ? parsed : Object.values(parsed);
+          } catch {
+            urls = raw.split(/\s+/);
+          }
+          const url = urls.find((value) => /^https:\/\//.test(String(value)));
+          if (!url) process.exit(1);
+          console.log(url);
+          NODE
+          )"
+          PLAYWRIGHT_BASE_URL="$preview_url" npx playwright test --grep @smoke
 
   deploy:
     name: deploy live · parity · smoke · rollback
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: gates
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 60
     environment: production
     steps:
       - uses: actions/checkout@v4
@@ -168,6 +211,12 @@ jobs:
           jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
           mv firebase.ship.json firebase.json
           test -f out/index.html
+          node - <<'NODE'
+          const id = require('./out/.artifact-identity.json');
+          if (id.commit !== process.env.GITHUB_SHA) {
+            throw new Error(`artifact ${id.commit} does not match ${process.env.GITHUB_SHA}`);
+          }
+          NODE
           grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' out/index.html
 
       - name: Deploy to Firebase Hosting (live)
@@ -221,17 +270,72 @@ jobs:
       # revert, and a revert that itself fails must not revert the revert (D-007).
       - name: Auto-rollback on failure
         if: failure() && steps.skip.outputs.skip != 'true' && github.event_name == 'push'
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           set -euo pipefail
+          cred_file="$RUNNER_TEMP/rollback-sa.json"
+          tmp="$(mktemp)"
+          trap 'rm -f "$cred_file" "$tmp"' EXIT
           if git log -1 --format=%s | grep -q '^Revert '; then
             echo "::error::HEAD is already a revert and still fails — stopping the rollback chain; fix forward"
             exit 1
           fi
           git config user.name  "ship-bot"
           git config user.email "ship-bot@users.noreply.github.com"
+          # Restore only the generated workspace edit from the deploy step; do not discard user changes broadly.
+          git checkout -- firebase.json
+          git fetch origin main
+          remote_head="$(git rev-parse origin/main)"
+          if [ "$remote_head" != "$GITHUB_SHA" ]; then
+            echo "::error::origin/main is $remote_head, not failing commit $GITHUB_SHA; refusing stale rollback"
+            exit 1
+          fi
           git revert --no-edit HEAD
           git push origin HEAD:main
-          echo "- rolled back: reverted ${GITHUB_SHA:0:8} on main" >> "$GITHUB_STEP_SUMMARY"
+
+          # GITHUB_TOKEN pushes do not retrigger this workflow, so rebuild and gate the reverted source here.
+          npm ci
+          npm ci --prefix functions
+          npx tsc --noEmit
+          npm run lint
+          node scripts/validate/overhaul_static_audit.mjs
+          node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs
+          npm run build:static
+          python3 -m http.server "$STATIC_PORT" --directory out --bind 127.0.0.1 >/dev/null 2>&1 &
+          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null
+          npx playwright install --with-deps chromium
+          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$STATIC_PORT" npx playwright test
+          npx @lhci/cli@0.14.x autorun --config=lighthouserc.json
+
+          jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
+          mv firebase.ship.json firebase.json
+          umask 077
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$cred_file"
+          export GOOGLE_APPLICATION_CREDENTIALS="$cred_file"
+          npx firebase-tools@13 deploy --only hosting --project "$FIREBASE_PROJECT_ID" --non-interactive
+
+          expected="$(git rev-parse HEAD)"
+          live=""
+          parity_ok=false
+          for _ in $(seq 1 12); do
+            if curl -fsS --max-time 20 -H 'Cache-Control: no-cache' -o "$tmp" "$PROD_URL/?rollback=$expected"; then
+              live=""
+              if raw="$(grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' "$tmp")"; then
+                live="${raw##*content=\"}"
+                live="${live%\"}"
+              fi
+              if [ -n "$live" ] && [[ "$expected" == "$live"* ]]; then
+                parity_ok=true
+                break
+              fi
+            fi
+            sleep 10
+          done
+          [ "$parity_ok" = true ] || { echo "::error::rollback parity FAILED (live='${live:-nothing}', head=${expected:0:8})"; exit 1; }
+          PLAYWRIGHT_BASE_URL="$PROD_URL" npx playwright test --grep @smoke
+          echo "- rolled back, gated, redeployed, parity-checked, and smoked reverted ${GITHUB_SHA:0:8} in this run" >> "$GITHUB_STEP_SUMMARY"
 
   # Cloud Functions ship only when their source (or the firebase.json that wires
   # them) changed; UI/UX cycles are hosting-only deploys.

@@ -1,7 +1,7 @@
 name: nightly
 
 # Evidence, not a gate (UX-C0-001, D-005). Everything here is too long, too
-# flaky or too hardware-bound for the critical path in deploy.yml (`ship`):
+# flaky or too hardware-bound for the critical path in ship.yml:
 # the full Playwright suite, npm audit, and the GPU frame-rate harness.
 # Nothing in `ship` waits on any of these jobs and none of them deploys.
 
