@@ -529,3 +529,91 @@
         transition: none;
     }
 }
+
+/* ── Contact resonance ───────────────────────────────────────────────── */
+.resonance {
+    position: relative;
+    isolation: isolate;
+    padding: clamp(var(--space-3), 4vw, var(--space-5)) 0 0;
+}
+
+.echo {
+    position: absolute;
+    z-index: -1;
+    inset: clamp(-2rem, -4vw, -1rem) 0 auto;
+    height: clamp(9rem, 18vw, 15rem);
+    border: 1px solid color-mix(in srgb, var(--white) 12%, transparent);
+    border-bottom: 0;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    opacity: 0.28;
+    pointer-events: none;
+    transform: scaleX(0.7) translateY(0.5rem);
+    transform-origin: center bottom;
+    transition:
+        opacity var(--motion-base) var(--motion-ease-standard),
+        transform var(--motion-base) var(--motion-ease-standard),
+        border-color var(--motion-base) var(--motion-ease-standard);
+}
+
+.resonance[data-active-channel='engage'] .echo,
+.resonance[data-active-channel='email'] .echo,
+.resonance[data-active-channel='phone'] .echo,
+.resonance[data-active-channel='linkedin'] .echo,
+.resonance[data-active-channel='github'] .echo {
+    opacity: 0.62;
+    transform: scaleX(1) translateY(0);
+    border-color: color-mix(in srgb, var(--white) 24%, transparent);
+}
+
+.currentRoute {
+    margin: var(--space-2) 0 0;
+    min-height: 1.4em;
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    color: var(--mist-200);
+    transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.resonance:not([data-active-channel='neutral']) .currentRoute {
+    color: var(--white);
+}
+
+.resonance[data-active-channel='engage'] .engage,
+.resonance[data-active-channel='email'] .channel[href^='mailto:'],
+.resonance[data-active-channel='phone'] .channel[href^='tel:'],
+.resonance[data-active-channel='linkedin'] .channel[href*='linkedin'],
+.resonance[data-active-channel='github'] .channel[href*='github'] {
+    opacity: 1;
+}
+
+@media (max-width: 520px) {
+    .resonance {
+        padding-top: var(--space-3);
+    }
+
+    .echo {
+        inset-inline: 0;
+        height: 7rem;
+        transform: scaleX(0.9) translateY(0.25rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .echo,
+    .currentRoute {
+        transition: none;
+    }
+
+    .echo {
+        transform: none;
+    }
+
+    .resonance[data-active-channel='engage'] .echo,
+    .resonance[data-active-channel='email'] .echo,
+    .resonance[data-active-channel='phone'] .echo,
+    .resonance[data-active-channel='linkedin'] .echo,
+    .resonance[data-active-channel='github'] .echo {
+        transform: none;
+    }
+}

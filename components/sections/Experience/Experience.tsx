@@ -9,6 +9,7 @@ import {
   experienceContent,
   roles,
 } from '@/app/data/portfolio/experience';
+import { experienceVisual } from '@/app/data/portfolio/experienceVisual';
 
 import styles from './Experience.module.css';
 
@@ -33,6 +34,14 @@ const DECADES = [2010, 2015, 2020, 2025];
  */
 const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + var(--space-2)';
 
+function midpoint(start: number, end: number | null) {
+  const resolvedEnd = end ?? NOW;
+  return ((start + (resolvedEnd - start) / 2 - TIMELINE_START) / (NOW - TIMELINE_START)) * 100;
+}
+
+function durationLabel(years: number) {
+  return years < 1 ? `${Math.round(years * 12)} mo` : `${years.toFixed(1)} yr`;
+}
 
 /**
  * Experience — sixteen years on one axis, then the detail.
@@ -49,9 +58,19 @@ const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + var(--space-2)';
  */
 export default function Experience() {
   const [active, setActive] = useState(-1);
+  const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState<string | null>(roles[0]?.id ?? null);
   const [entered, setEntered] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
+
+  const selectedRole = roles[selected] ?? roles[0];
+  const selectedMidpoint = selectedRole ? midpoint(selectedRole.span.start, selectedRole.span.end) : 0;
+
+  const inspectRole = useCallback((index: number) => {
+    const bounded = Math.min(Math.max(index, 0), roles.length - 1);
+    setSelected(bounded);
+    setOpen(roles[bounded]?.id ?? null);
+  }, []);
 
   const toggle = useCallback(
     (id: string) => setOpen((current) => (current === id ? null : id)),
@@ -89,7 +108,7 @@ export default function Experience() {
   }, []);
 
   return (
-    <section id="experience" className={styles.experience} aria-labelledby="experience-title">
+    <section id="experience" className={styles.experience} aria-labelledby="experience-title" data-testid="experience-explorer">
       <div className={styles.inner}>
         <header className={styles.header}>
           <p className={styles.kicker}>{experienceContent.kicker}</p>
@@ -111,6 +130,7 @@ export default function Experience() {
             className={styles.trackField}
             data-track-field
             data-entered={entered || undefined}
+            style={{ '--inspection': `${selectedMidpoint}%` } as CSSProperties}
           >
           {/* Today. A 1 px rule and a 4 px tick at the axis's right edge, so
               the eye can see what every bar is measured up to without reading
@@ -118,6 +138,7 @@ export default function Experience() {
               marks are graded self-reported (see the caliper on each role),
               and gold on this site means the figure has a source. */}
           <span className={styles.playhead} data-playhead aria-hidden="true" />
+          <span className={styles.inspectionHairline} aria-hidden="true" />
 
           <div className={styles.grid} aria-hidden="true">
             {DECADES.map((year) => (
@@ -142,17 +163,17 @@ export default function Experience() {
                 <button
                   type="button"
                   className={styles.trackButton}
-                  data-active={active === index || undefined}
+                  data-active={active === index || selected === index || undefined}
+                  data-selected={selected === index || undefined}
                   aria-label={`${role.role}, ${role.company}, ${role.dates}`}
                   onMouseEnter={() => setActive(index)}
-                  onFocus={() => setActive(index)}
+                  onFocus={() => {
+                    setActive(index);
+                    inspectRole(index);
+                  }}
                   onBlur={() => setActive(-1)}
                   onClick={() => {
-                    setOpen(role.id);
-                    document.getElementById(`role-${role.id}`)?.scrollIntoView({
-                      block: 'center',
-                      behavior: 'smooth',
-                    });
+                    inspectRole(index);
                   }}
                 >
                   {/* Gold is the site's one claim mark: an employer a reader
@@ -181,9 +202,7 @@ export default function Experience() {
                       }
                     />
                     <span className={styles.trackYears} style={{ left: geometry.end }}>
-                      {role.years < 1
-                        ? `${Math.round(role.years * 12)} mo`
-                        : `${role.years.toFixed(1)} yr`}
+                      {durationLabel(role.years)}
                     </span>
                   </span>
                 </button>
@@ -193,12 +212,38 @@ export default function Experience() {
           </ol>
           </div>
 
+          <div className={styles.inspectorPanel}>
+            <label className={styles.scrubberLabel} htmlFor="career-scrubber">
+              {experienceVisual.scrubberLabel}
+            </label>
+            <input
+              id="career-scrubber"
+              data-testid="career-scrubber"
+              className={styles.scrubber}
+              type="range"
+              min="0"
+              max={String(roles.length - 1)}
+              step="1"
+              value={selected}
+              aria-label={experienceVisual.scrubberLabel}
+              onInput={(event) => inspectRole(Number(event.currentTarget.value))}
+              onChange={(event) => inspectRole(Number(event.currentTarget.value))}
+            />
+            {selectedRole ? (
+              <output className={styles.inspection} data-testid="career-inspection" htmlFor="career-scrubber">
+                <span className={styles.inspectionEyebrow}>{experienceVisual.selectionEyebrow}</span>
+                <strong>{selectedRole.company}</strong>
+                <span>{selectedRole.role}</span>
+                <span>
+                  {selectedRole.dates} · {selectedRole.years.toFixed(1)} yr
+                </span>
+              </output>
+            ) : null}
+          </div>
+
           {/* Printed once. Five roles carry an open bracket below, and this is
               what all five of them mean. */}
-          <p className={styles.openNote}>
-            Three roles state a figure in the CV. The other five state none, and none was
-            invented for them — those carry an open bracket instead.
-          </p>
+          <p className={styles.openNote}>{experienceVisual.openFigureNote}</p>
 
           <div className={styles.axis} aria-hidden="true">
             {DECADES.map((year) => (

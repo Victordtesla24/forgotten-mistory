@@ -1,0 +1,27 @@
+{
+  "agent_role": "fixer",
+  "task_id": "FLAGSHIP-B",
+  "status": "done",
+  "findings": [
+    "Implemented Skills selected-evidence dossier as four labelled stages: Capability, Evidence, Where, Status.",
+    "Added SVG connector routes for desktop and a visible vertical SVG connector route for mobile.",
+    "Moved new Skills visual labels into typed app/data/portfolio/skillsVisual.ts and Experience microcopy into typed app/data/portfolio/experienceVisual.ts.",
+    "Ran npx tsc --noEmit --pretty false; exit code 0. No build or browser suite run."
+  ],
+  "patch": {
+    "files": [
+      "components/sections/Skills/Bench.tsx",
+      "components/sections/Skills/Bench.module.css",
+      "components/sections/Experience/Experience.tsx",
+      "app/data/portfolio/skillsVisual.ts",
+      "app/data/portfolio/experienceVisual.ts"
+    ],
+    "summary": "Skills trace now presents the selected capability/source as a rectilinear calibration dossier with connected labelled stages, exact evidence, status, caveat, and CV source path while retaining visible buttons and existing rails/table. Experience scrubber labels/open-note microcopy now come from typed visual content.",
+    "tests_added": []
+  },
+  "verdict": {
+    "result": "pass",
+    "evidence": [],
+    "notes": "implementation only; QA pending"
+  }
+}

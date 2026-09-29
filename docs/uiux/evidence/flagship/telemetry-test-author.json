@@ -1,0 +1,37 @@
+{
+  "role": "independent Test Author",
+  "scope": [
+    "tests/e2e/flagship-six.spec.ts",
+    "docs/uiux/evidence/flagship/telemetry-test-author.json"
+  ],
+  "testsAdded": [
+    {
+      "title": "hero observatory reports resource timing unavailable instead of a fake zero count",
+      "purpose": "After normal hydration, temporarily makes performance.getEntriesByType unavailable, starts a real sample, and requires explicit resource-count-unavailable copy rather than a fabricated numeric zero.",
+      "restoration": "Restores performance.getEntriesByType in a finally block and page lifecycle handlers."
+    },
+    {
+      "title": "hero observatory completes a stalled frame sample without interval availability",
+      "purpose": "After normal hydration, temporarily stubs requestAnimationFrame to return 123 without invoking the callback, starts sampling via DOM button.click from evaluate, and requires completion within 6.5 seconds with no interval value available rather than remaining stuck in sampling.",
+      "restoration": "Restores requestAnimationFrame and cancelAnimationFrame in a finally block and page lifecycle handlers."
+    }
+  ],
+  "targetedRun": {
+    "command": "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/e2e/flagship-six.spec.ts -g 'resource timing|stalled frame' --workers=1 --retries=0 2>&1 | tee docs/uiux/evidence/flagship/telemetry-red.log",
+    "baseUrl": "http://127.0.0.1:5599",
+    "workers": 1,
+    "retries": 0,
+    "evidenceLog": "docs/uiux/evidence/flagship/telemetry-red.log",
+    "observedPlaywrightResult": "2 failed",
+    "observedFailures": [
+      {
+        "test": "hero observatory reports resource timing unavailable instead of a fake zero count",
+        "failure": "Expected /resource count unavailable/i, received status containing 'session resource count 0'."
+      },
+      {
+        "test": "hero observatory completes a stalled frame sample without interval availability",
+        "failure": "Timed out after 6500ms waiting for data-state 'complete'; observed data-state remained 'sampling'."
+      }
+    ]
+  }
+}

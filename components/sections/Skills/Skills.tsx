@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import Caliper from '@/components/marks/Caliper';
 import Bench from './Bench';
@@ -39,43 +39,6 @@ export default function Skills() {
   // marks that row rather than filtering to it: a table that emptied itself as
   // the reader moved across a diagram would be unusable.
   const [traced, setTraced] = useState<number | null>(null);
-  const tableRef = useRef<HTMLTableElement>(null);
-  const [floor, setFloor] = useState<number>();
-
-  // Filtering hides rows, which would shorten the card and pull the rest of the
-  // page up under the reader's cursor. The unfiltered table is by definition the
-  // tallest state, so its height is measured and held as a floor on the WRAPPER,
-  // not on the table itself: a min-height on the measured element inflates the
-  // very number being measured, and the floor then ratchets upward every time
-  // the observer fires. Re-measured on resize, because the row heights depend on
-  // how the evidence text wraps — and on whether the web font has landed yet.
-  useLayoutEffect(() => {
-    const table = tableRef.current;
-    if (!table) return undefined;
-
-    const measure = () => {
-      if (filter !== 'all') return;
-      setFloor(table.getBoundingClientRect().height);
-    };
-    measure();
-
-    // The first measurement happens before the web fonts land, and the fallback
-    // face wraps the evidence column differently — so the floor taken at mount
-    // can be several rows too tall. Re-measure once the real faces are ready.
-    let cancelled = false;
-    if (typeof document !== 'undefined' && document.fonts) {
-      document.fonts.ready.then(() => {
-        if (!cancelled) measure();
-      });
-    }
-
-    const observer = new ResizeObserver(measure);
-    observer.observe(table);
-    return () => {
-      cancelled = true;
-      observer.disconnect();
-    };
-  }, [filter]);
 
   const visible = useMemo(
     () =>
@@ -152,10 +115,7 @@ export default function Skills() {
             {visible.length} of {capabilities.length} capabilities shown
           </p>
 
-          <div
-            className={styles.tableWrap}
-            style={floor ? { minHeight: `${Math.round(floor)}px` } : undefined}
-          >
+          <div className={styles.tableWrap}>
           {/* A filter that matches nothing is still an answer, and a blank box
               is not how to give it (lock §5.3). The line says what is absent
               and why, inside the container that already holds the table's
@@ -166,7 +126,7 @@ export default function Skills() {
               under it to show.
             </p>
           ) : null}
-          <table ref={tableRef} className={styles.table}>
+          <table className={styles.table}>
             <caption className={styles.caption}>
               Capabilities, the evidence for each, and where that evidence was measured.
             </caption>

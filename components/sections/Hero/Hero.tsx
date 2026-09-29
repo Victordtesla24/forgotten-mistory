@@ -1,5 +1,7 @@
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import Caliper from '@/components/marks/Caliper';
 import HeroPortrait, {
   HeroPortraitCaption,
@@ -7,26 +9,244 @@ import HeroPortrait, {
   PortraitIntentProvider,
 } from './HeroPortrait';
 import { heroContent } from '@/app/data/portfolio/hero';
+import { heroVisualContent } from '@/app/data/portfolio/heroVisual';
 
 import styles from './Hero.module.css';
+
+type ObservatoryState = 'idle' | 'sampling' | 'complete' | 'unavailable';
+
+interface TelemetrySnapshot {
+  meanIntervalMs: number;
+  elapsedSeconds: number;
+  viewportWidth: number;
+  viewportHeight: number;
+  resourceCount: number | null;
+  samples: number;
+}
+
+const MAX_FRAME_SAMPLES = 120;
+const MAX_SAMPLE_MS = 5000;
+const UI_UPDATE_MS = 250;
+
+function readSessionSnapshot(meanIntervalMs: number, elapsedMs: number, samples: number): TelemetrySnapshot {
+  const resources =
+    typeof performance.getEntriesByType === 'function'
+      ? performance.getEntriesByType('resource').length
+      : null;
+  return {
+    meanIntervalMs,
+    elapsedSeconds: elapsedMs / 1000,
+    viewportWidth: window.innerWidth,
+    viewportHeight: window.innerHeight,
+    resourceCount: resources,
+    samples,
+  };
+}
+
+function formatTelemetry(snapshot: TelemetrySnapshot): string {
+  return [
+    'browser local sample from performance.now + requestAnimationFrame (rAF)',
+    `mean frame interval ${snapshot.meanIntervalMs.toFixed(1)} ms`,
+    `elapsed ${snapshot.elapsedSeconds.toFixed(2)} s`,
+    `viewport ${snapshot.viewportWidth} × ${snapshot.viewportHeight} px`,
+    snapshot.resourceCount === null
+      ? heroVisualContent.observatory.resourceCountUnavailable
+      : `session resource count ${snapshot.resourceCount}`,
+    `${snapshot.samples} rAF intervals sampled`,
+    heroVisualContent.observatory.sourceLabel,
+  ].join(' · ');
+}
+
+function HeroObservatory() {
+  const [state, setState] = useState<ObservatoryState>('idle');
+  const [status, setStatus] = useState<string>(heroVisualContent.observatory.initialStatus);
+  const stateRef = useRef<ObservatoryState>('idle');
+  const rafRef = useRef<number | null>(null);
+  const watchdogRef = useRef<number | null>(null);
+  const startRef = useRef(0);
+  const lastFrameRef = useRef(0);
+  const intervalSumRef = useRef(0);
+  const intervalCountRef = useRef(0);
+  const lastUiRef = useRef(0);
+  const observatoryRef = useRef<HTMLDivElement | null>(null);
+
+  const cancelSample = useCallback(() => {
+    if (rafRef.current !== null && typeof window.cancelAnimationFrame === 'function') {
+      window.cancelAnimationFrame(rafRef.current);
+    }
+    rafRef.current = null;
+    if (watchdogRef.current !== null) {
+      window.clearTimeout(watchdogRef.current);
+    }
+    watchdogRef.current = null;
+  }, []);
+
+  const setSampleState = useCallback((next: ObservatoryState) => {
+    stateRef.current = next;
+    setState(next);
+  }, []);
+
+  const publish = useCallback((now: number, complete: boolean) => {
+    const elapsed = now - startRef.current;
+    const intervals = intervalCountRef.current;
+    if (intervals <= 0) {
+      setStatus(
+        complete
+          ? 'browser local sample ended before two requestAnimationFrame ticks; no interval value available.'
+          : heroVisualContent.observatory.initialStatus,
+      );
+      return;
+    }
+    const snapshot = readSessionSnapshot(intervalSumRef.current / intervals, elapsed, intervals);
+    setStatus(formatTelemetry(snapshot));
+  }, []);
+
+  const finish = useCallback(
+    (now: number) => {
+      cancelSample();
+      publish(now, true);
+      setSampleState('complete');
+    },
+    [cancelSample, publish, setSampleState],
+  );
+
+  const expireSample = useCallback(() => {
+    if (stateRef.current !== 'sampling') return;
+    cancelSample();
+    const now = performance.now();
+    const intervals = intervalCountRef.current;
+    if (intervals <= 0) {
+      setStatus('browser local sample reached the five-second limit before two requestAnimationFrame ticks; no interval value available.');
+    } else {
+      publish(now, true);
+    }
+    setSampleState('complete');
+  }, [cancelSample, publish, setSampleState]);
+
+  const tick = useCallback(
+    (now: number) => {
+      if (stateRef.current !== 'sampling') return;
+      if (lastFrameRef.current > 0) {
+        intervalSumRef.current += now - lastFrameRef.current;
+        intervalCountRef.current += 1;
+      }
+      lastFrameRef.current = now;
+
+      if (now - lastUiRef.current >= UI_UPDATE_MS) {
+        publish(now, false);
+        lastUiRef.current = now;
+      }
+
+      const elapsed = now - startRef.current;
+      if (intervalCountRef.current >= MAX_FRAME_SAMPLES || elapsed >= MAX_SAMPLE_MS) {
+        finish(now);
+        return;
+      }
+      rafRef.current = window.requestAnimationFrame(tick);
+    },
+    [finish, publish],
+  );
+
+  const stop = useCallback(() => {
+    if (stateRef.current !== 'sampling') return;
+    finish(performance.now());
+  }, [finish]);
+
+  const start = useCallback(() => {
+    if (
+      typeof window.requestAnimationFrame !== 'function' ||
+      typeof window.cancelAnimationFrame !== 'function' ||
+      typeof performance.now !== 'function'
+    ) {
+      cancelSample();
+      setStatus(heroVisualContent.observatory.unavailable);
+      setSampleState('unavailable');
+      return;
+    }
+
+    cancelSample();
+    startRef.current = performance.now();
+    lastFrameRef.current = 0;
+    intervalSumRef.current = 0;
+    intervalCountRef.current = 0;
+    lastUiRef.current = startRef.current;
+    setStatus('Sampling browser local requestAnimationFrame intervals…');
+    setSampleState('sampling');
+    watchdogRef.current = window.setTimeout(expireSample, MAX_SAMPLE_MS);
+    rafRef.current = window.requestAnimationFrame(tick);
+  }, [cancelSample, expireSample, setSampleState, tick]);
+
+  const toggle = useCallback(() => {
+    if (stateRef.current === 'sampling') stop();
+    else start();
+  }, [start, stop]);
+
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden && stateRef.current === 'sampling') stop();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [stop]);
+
+  useEffect(() => {
+    const node = observatoryRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry && !entry.isIntersecting && stateRef.current === 'sampling') stop();
+    });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [stop]);
+
+  useEffect(() => cancelSample, [cancelSample]);
+
+  const label = state === 'sampling' ? heroVisualContent.observatory.stopLabel : heroVisualContent.observatory.startLabel;
+
+  return (
+    <div
+      ref={observatoryRef}
+      className={styles.observatory}
+      data-testid="hero-observatory"
+      data-state={state}
+      role="region"
+      aria-label={heroVisualContent.observatory.title}
+    >
+      <div className={styles.observatoryHeader}>
+        <p className={styles.observatoryKicker}>{heroVisualContent.observatory.title}</p>
+        <button
+          type="button"
+          className={styles.telemetryToggle}
+          data-testid="telemetry-toggle"
+          aria-label={label}
+          onClick={toggle}
+        >
+          {label}
+        </button>
+      </div>
+      <p className={styles.observatoryDescription}>{heroVisualContent.observatory.description}</p>
+      <output className={styles.telemetryStatus} data-testid="telemetry-status">
+        {status}
+      </output>
+    </div>
+  );
+}
 
 /**
  * Hero — the front door.
  *
- * INTERIM FRAME (docs/architecture/INTERIM-FRAME.md, Owner 2026-09-06T05:51Z).
- * The atmosphere scene, its poster still, the declared plane, the bloom under
- * the photograph and every opaque plate behind a run of copy are removed. What
- * is left is the frame the words stand in: near-black ground from the existing
- * ink tokens, white and grey type, and the greyscale photograph as a plain
- * block in normal flow. Not one word of `app/data/portfolio/hero.ts` changed.
+ * The front door keeps the immutable typed copy and adds a CSS/SVG optical
+ * instrument behind it: finite reveal only, no generic particles and no ambient
+ * JavaScript motion. The observatory below the CTA samples only browser-local
+ * APIs after an explicit button press.
  *
  * Two rules still govern this file:
  *
  * 1. **Nothing here waits on JavaScript.** Every word is server-rendered and
  *    visible; the entrance is a pure CSS animation with staggered delays.
- * 2. **The scene is never the content.** There is no scene at all in this
- *    slice, and the fold reads exactly the same with WebGL unavailable, with
- *    reduced motion asked for, and with JavaScript switched off.
+ * 2. **The scene is never the content.** The optical field is decorative CSS/SVG;
+ *    the fold copy and observatory label are visible with JavaScript switched off.
  */
 export default function Hero() {
   // The name sets as one line across the whole measure above the phone
@@ -49,11 +269,23 @@ export default function Hero() {
             competing CTA groups in this screen on live `9b864752`; the second
             was the button stamped on the face, and it is now in the proof band
             below. The evidence is not deleted; it is one scroll away, in
-            `.proof`. The role line came back to the fold with the interim frame
+            `.proof`. A finite optical field now sits behind the editorial copy;
+            the role line came back to the fold with the interim frame
             (TC-IF-02); the city and the photograph's provenance stay in the
             proof band — `hero.ts` is unedited and not one word of it left the
             page. */}
         <div className={styles.inner} data-testid="hero-fold">
+          <div className={styles.opticalField} aria-hidden="true">
+            <svg className={styles.opticalSvg} viewBox="0 0 720 420" focusable="false">
+              <circle className={styles.opticOuter} cx="486" cy="182" r="132" />
+              <circle className={styles.opticInner} cx="486" cy="182" r="68" />
+              <ellipse className={styles.opticOrbit} cx="486" cy="182" rx="198" ry="64" />
+              <ellipse className={styles.opticOrbitFine} cx="486" cy="182" rx="238" ry="92" />
+              <path className={styles.opticRule} d="M54 182H354M618 182H682M486 18V92M486 272V396" />
+              <path className={styles.opticGold} d="M558 76 612 34M594 136 684 118M552 286 628 356" />
+              <path className={styles.opticCalibrations} d="M108 166v32M150 174v16M192 174v16M234 174v16M276 166v32M318 174v16" />
+            </svg>
+          </div>
         {/* The reading column, as one box: the name, the role, the sentence,
             the actions. `display: contents`, so these are the fold's own flex
             children and the photograph below them is the last of them. */}
@@ -94,6 +326,8 @@ export default function Hero() {
               {heroContent.actions.secondary.label}
             </a>
           </div>
+
+          <HeroObservatory />
         </div>
 
         {/* The photograph, in normal flow at the foot of the fold: a still with
