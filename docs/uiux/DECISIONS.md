@@ -49,3 +49,5 @@ D-005 is revoked: pre-existing functional failures MUST gate shipment, not be hi
 Rollback now cleans only the workspace-mutated firebase.json, refuses stale remote-main SHA, reverts without force, gates the reverted source before inline redeployment, verifies parity and smokes live. GITHUB_TOKEN push alone does not retrigger CI. Independent CI source review approves these corrections; actual preview/live/rollback behavior remains unverified. Main was observed unprotected. Never weaken branch protections to make rollback pass.
 
 Final local build608dca0 succeeded; targeted UX suite3pass/1fail. Desktop manual scroll retains #skills after Back instead of #listen. No production closure or complete campaign claim is permitted. Preserve failing test and fix navigation before merge.
+
+<!-- UX-C0-001 preview-only rollback drill: this temporary comment is reverted before release. -->
