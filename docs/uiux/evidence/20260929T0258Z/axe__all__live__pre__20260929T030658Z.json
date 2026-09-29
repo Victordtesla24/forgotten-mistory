@@ -1,0 +1,80 @@
+{
+ "base": "https://forgotten-mistory.web.app",
+ "runId": "20260929T0258Z",
+ "label": "pre",
+ "tags": [
+  "wcag2a",
+  "wcag2aa",
+  "wcag21a",
+  "wcag21aa"
+ ],
+ "startedAt": "2026-09-29T03:05:43.983Z",
+ "results": [
+  {
+   "viewport": "360x740",
+   "route": "/",
+   "url": "https://forgotten-mistory.web.app/",
+   "status": 200,
+   "passes": 30,
+   "incomplete": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "nodes": 321
+    }
+   ],
+   "violations": []
+  },
+  {
+   "viewport": "360x740",
+   "route": "/this-route-does-not-exist-404",
+   "url": "https://forgotten-mistory.web.app/this-route-does-not-exist-404",
+   "status": 404,
+   "passes": 20,
+   "incomplete": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "nodes": 4
+    }
+   ],
+   "violations": []
+  },
+  {
+   "viewport": "1440x900",
+   "route": "/",
+   "url": "https://forgotten-mistory.web.app/",
+   "status": 200,
+   "passes": 31,
+   "incomplete": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "nodes": 364
+    }
+   ],
+   "violations": []
+  },
+  {
+   "viewport": "1440x900",
+   "route": "/this-route-does-not-exist-404",
+   "url": "https://forgotten-mistory.web.app/this-route-does-not-exist-404",
+   "status": 404,
+   "passes": 21,
+   "incomplete": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "nodes": 7
+    }
+   ],
+   "violations": []
+  }
+ ],
+ "finishedAt": "2026-09-29T03:06:58.740Z",
+ "summary": {
+  "critical": 0,
+  "serious": 0,
+  "verdict": "PASS"
+ }
+}
