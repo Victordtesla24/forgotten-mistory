@@ -2,8 +2,7 @@
   "ci": {
     "collect": {
       "url": [
-        "http://127.0.0.1:3000/",
-        "http://127.0.0.1:3000/performance-benchmark"
+        "http://127.0.0.1:5599/"
       ],
       "numberOfRuns": 3,
       "settings": {
@@ -13,7 +12,8 @@
           "accessibility",
           "best-practices",
           "seo"
-        ]
+        ],
+        "chromeFlags": "--no-sandbox --headless=new"
       }
     },
     "assert": {

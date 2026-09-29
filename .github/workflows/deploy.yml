@@ -1,148 +1,279 @@
-name: Deploy
+name: ship
 
-# One pipeline, one job, one responsibility: put the latest of everything on
-# production. It runs on every push to main and every ten minutes, consolidates
-# every other branch into main first (so nothing a parallel agent committed is
-# left behind), builds the static export, deploys it, and reads the deployed
-# commit back from the live page.
+# One workflow, one path to production (UX-C0-001, docs/uiux/DECISIONS.md D-002..D-007).
 #
-# It gates on nothing and it escalates nothing. Tests, lint, audits and
-# Lighthouse live in checks.yml and report; they never sit between a commit and
-# production. A branch that merges cleanly is merged and deleted; a branch that
-# conflicts is merged anyway with the branch's newer change winning each
-# conflicting hunk (-X theirs), so parallel agents working on the same files
-# never stall the line — a wrong resolution is fixed forward in the next
-# ten-minute cycle, not by stopping. A build that cannot compile is the only
-# thing that stops a deploy, because then there is nothing to ship.
+#   branch ─► PR ─► gates (types · lint · static audit · node contract tests · build
+#                         · @smoke + axe e2e on out/ · Lighthouse budget)
+#          ─► Firebase preview channel (PR only)
+#          ─► squash-merge to main ─► deploy the gated out/ live ─► build-hash parity
+#          ─► @smoke on production ─► on failure: revert HEAD and push (redeploys)
+#
+# What was here before — merge every remote branch into main with the branch
+# winning each conflicting hunk, then deploy every ten minutes without a single
+# gate — is gone. The full Playwright suite, npm audit and the GPU frame-rate
+# harness live in nightly.yml and report without blocking the line.
 
 on:
+  pull_request:
+    branches: [main]
   push:
-    branches: ["main"]
+    branches: [main]
   schedule:
-    - cron: "*/10 * * * *"
+    # Hourly release-train heartbeat: redeploy + verify only if live is not
+    # already serving main's HEAD (see the `skip` step).
+    - cron: "5 * * * *"
   workflow_dispatch: {}
 
-# Runs queue behind each other and never cancel a deploy in flight.
+# Runs on one ref queue behind each other; a deploy in flight is never cancelled.
 concurrency:
-  group: deploy-production
+  group: ship-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
   contents: write
+  pull-requests: write
+  checks: write
+
+env:
+  PROD_URL: https://forgotten-mistory.web.app
+  FIREBASE_PROJECT_ID: forgotten-mistory
+  STATIC_PORT: "5599"
 
 jobs:
-  consolidate-and-deploy:
+  gates:
+    name: gates · types · lint · build · smoke+axe e2e · Lighthouse
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
-
-      - name: Consolidate every branch into main
-        id: consolidate
-        run: |
-          set -euo pipefail
-          git config user.name "forgotten-mistory-deploy"
-          git config user.email "deploy@forgotten-mistory.web.app"
-          git fetch --prune origin
-          merged=()
-          forced=()
-          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ | grep -vE '^origin(/(main|HEAD))?$'); do
-            name="${ref#origin/}"
-            if git merge --no-edit "$ref" -m "consolidate: merge $name into main"; then
-              merged+=("$name")
-            else
-              # The branch carries the newer, intentional change: it wins every
-              # conflicting hunk. Anything -X theirs cannot settle (add/add,
-              # binary, delete/modify) is taken from the branch outright.
-              git merge --abort
-              if ! git merge --no-edit -X theirs "$ref" -m "consolidate: merge $name into main (branch wins conflicts)"; then
-                git diff --name-only --diff-filter=U | while read -r f; do
-                  if git cat-file -e "$ref:$f" 2>/dev/null; then git checkout --theirs -- "$f"; else git rm -q -- "$f"; fi
-                done
-                git add -A
-                git -c core.editor=true commit --no-edit -m "consolidate: merge $name into main (branch wins conflicts)"
-              fi
-              forced+=("$name")
-            fi
-          done
-          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
-            git push origin HEAD:main
-          fi
-          for name in "${merged[@]}" "${forced[@]}"; do
-            if ! git push origin --delete "$name"; then
-              echo "::warning::merged $name but could not delete it on the remote"
-            fi
-          done
-          {
-            echo "## Consolidation"
-            echo ""
-            echo "- deploying: \`$(git rev-parse --short=8 HEAD)\`"
-            echo "- merged cleanly and deleted: ${merged[*]:-none}"
-            echo "- merged with the branch winning conflicts, then deleted: ${forced[*]:-none}"
-          } >> "$GITHUB_STEP_SUMMARY"
-          for name in "${forced[@]}"; do
-            echo "::warning::branch $name conflicted with main; its hunks won — review the result in the next cycle"
-          done
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
           cache: npm
-
-      # A branch merged above may have moved package.json ahead of the lockfile.
-      # That must not stop the line: fall back to a plain install and say so.
-      - name: Install dependencies
+      - run: npm ci
+      - run: npm ci --prefix functions
+      - run: npx tsc --noEmit
+      - run: npm run lint
+      - run: node scripts/validate/overhaul_static_audit.mjs
+      - run: node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs
+      # The build stamps <meta name="build-commit"> with HEAD only when the
+      # tracked tree is clean — a CI checkout always is, so the artifact built
+      # here carries this run's commit and is what `deploy` ships (D-002).
+      - run: npm run build:static
+      - run: npx playwright install --with-deps chromium
+      - name: Smoke + axe e2e against the static export, then the Lighthouse budget
         run: |
           set -euo pipefail
-          if ! npm ci; then
-            echo "::warning::npm ci failed (lockfile drift from a merged branch?) — installing from package.json"
-            npm install --no-audit --no-fund
+          python3 -m http.server "$STATIC_PORT" --directory out --bind 127.0.0.1 >/dev/null 2>&1 &
+          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null
+          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$STATIC_PORT" npx playwright test --grep "@smoke|A11Y-"
+          npx @lhci/cli@0.14.x autorun --config=lighthouserc.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: out
+          path: out
+          include-hidden-files: true
+          retention-days: 3
+
+  preview:
+    name: Firebase preview channel (PR)
+    if: github.event_name == 'pull_request'
+    needs: gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: out
+          path: out
+      # Ship the artifact the gates passed, not a second build: firebase.json's
+      # predeploy rebuild is dropped for this workspace only (D-002).
+      - name: Use the gated export as-is
+        run: |
+          set -euo pipefail
+          jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
+          mv firebase.ship.json firebase.json
+          test -f out/index.html
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: forgotten-mistory
+          expires: 2d
+
+  deploy:
+    name: deploy live · parity · smoke · rollback
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/download-artifact@v4
+        with:
+          name: out
+          path: out
+
+      # The page is downloaded to a file and parsed from the file: piping curl
+      # into a parser that exits early gives curl EPIPE (exit 23) and turned a
+      # healthy deploy red once (run 33965475659). Never pipe curl here.
+      - name: Skip if live already serves HEAD (hourly heartbeat idempotency)
+        id: skip
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          live=""
+          if curl -fsS --max-time 20 -o "$tmp" "$PROD_URL/"; then
+            if raw="$(grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' "$tmp")"; then
+              live="${raw##*content=\"}"
+              live="${live%\"}"
+            fi
+          fi
+          if [ -n "$live" ] && [[ "$GITHUB_SHA" == "$live"* ]]; then
+            echo "live already serves $live (HEAD $GITHUB_SHA) — nothing to deploy"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "live serves '${live:-nothing}', HEAD is ${GITHUB_SHA:0:8} — deploying"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # firebase.json declares `predeploy: npm run build:static`, so the deploy
-      # command builds the export from this exact checkout and ships it. The
-      # build stamps the page with the commit it was built from.
+      - name: Use the gated export as-is
+        if: steps.skip.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
+          mv firebase.ship.json firebase.json
+          test -f out/index.html
+          grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' out/index.html
+
       - name: Deploy to Firebase Hosting (live)
+        if: steps.skip.outputs.skip != 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: forgotten-mistory
           channelId: live
 
-      # The page is downloaded to a file and parsed from the file. It used to be
-      # piped straight into awk, which printed the first match and exited — that
-      # closes the pipe under curl, curl dies with 23 ("Failure writing output to
-      # destination"), and pipefail turns a healthy deploy into a red run (run
-      # 33965475659 shipped 9ba97a5c to production and reported failure). The
-      # result must depend on what the live page says, never on pipe timing, so
-      # there is no pipe here at all: curl -o writes the file, grep -m1 reads it.
-      - name: Verify the live page carries the deployed commit
+      - name: Build-hash parity
         run: |
           set -euo pipefail
-          expected="${{ steps.consolidate.outputs.sha }}"
+          expected="$GITHUB_SHA"
           tmp="$(mktemp)"
           trap 'rm -f "$tmp"' EXIT
           live=""
           for _ in $(seq 1 12); do
-            if curl -fsS --max-time 20 -o "$tmp" https://forgotten-mistory.web.app/; then
+            if curl -fsS --max-time 20 -H 'Cache-Control: no-cache' -o "$tmp" "$PROD_URL/?v=$expected"; then
               live=""
-              # A page without the meta is a miss, not an error: grep's exit
-              # status is consumed by the `if`, so it never trips set -e.
               if raw="$(grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' "$tmp")"; then
                 live="${raw##*content=\"}"
                 live="${live%\"}"
               fi
               if [ -n "$live" ] && [[ "$expected" == "$live"* ]]; then
-                echo "live page serves $live (HEAD $expected)"
+                echo "parity OK: live page serves $live (HEAD $expected)"
                 echo "- verified live: \`$live\`" >> "$GITHUB_STEP_SUMMARY"
                 exit 0
               fi
             fi
             sleep 10
           done
-          echo "::error::live page serves '${live:-nothing}', expected ${expected:0:8}"
+          echo "::error::parity FAILED (live='${live:-nothing}', head=${expected:0:8})"
           exit 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Live smoke
+        run: |
+          set -euo pipefail
+          npm ci
+          npx playwright install --with-deps chromium
+          PLAYWRIGHT_BASE_URL="$PROD_URL" npx playwright test --grep @smoke
+
+      # A failed deploy/parity/smoke on a fresh main commit is undone by a revert
+      # commit, whose own push re-enters this workflow and redeploys the previous
+      # state. Two guards: a heartbeat that deployed nothing has nothing to
+      # revert, and a revert that itself fails must not revert the revert (D-007).
+      - name: Auto-rollback on failure
+        if: failure() && steps.skip.outputs.skip != 'true' && github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          if git log -1 --format=%s | grep -q '^Revert '; then
+            echo "::error::HEAD is already a revert and still fails — stopping the rollback chain; fix forward"
+            exit 1
+          fi
+          git config user.name  "ship-bot"
+          git config user.email "ship-bot@users.noreply.github.com"
+          git revert --no-edit HEAD
+          git push origin HEAD:main
+          echo "- rolled back: reverted ${GITHUB_SHA:0:8} on main" >> "$GITHUB_STEP_SUMMARY"
+
+  # Cloud Functions ship only when their source (or the firebase.json that wires
+  # them) changed; UI/UX cycles are hosting-only deploys.
+  functions:
+    name: deploy Cloud Functions (only when functions/** changed)
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Did functions/** change in this push?
+        id: changed
+        run: |
+          set -euo pipefail
+          before="${{ github.event.before }}"
+          if [ -z "$before" ] || [[ "$before" =~ ^0+$ ]] || ! git cat-file -e "$before^{commit}" 2>/dev/null; then
+            before="$(git rev-parse HEAD~1)"
+          fi
+          if git diff --name-only "$before" "$GITHUB_SHA" -- functions firebase.json | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "functions/** unchanged since $before — skipping"
+          fi
+      - if: steps.changed.outputs.changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - if: steps.changed.outputs.changed == 'true'
+        run: npm ci --prefix functions
+      - name: Deploy functions
+        if: steps.changed.outputs.changed == 'true'
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          npx firebase-tools@13 deploy --only functions --project "$FIREBASE_PROJECT_ID" --non-interactive --force
+          rm -f "$RUNNER_TEMP/sa.json"
