@@ -165,7 +165,21 @@ export default function Navigation() {
       setCurrentHash(hash);
     };
 
+    // A scroll that ends inside the anchor lock (scrollbar drag, restored or
+    // programmatic scroll: one `scroll` event, no input) must still resolve, so
+    // the section is re-read once scrolling settles (UX-P2-002).
+    let settleTimer: number | undefined;
+    const onSettle = () => {
+      window.clearTimeout(settleTimer);
+      pendingAnchorRef.current = null;
+      const visibleHash = chooseVisibleHash();
+      setCurrentHash(visibleHash);
+      replaceHash(visibleHash);
+    };
+
     const onScroll = () => {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(onSettle, 180);
       nav.setAttribute('data-scrolled', String(window.scrollY > 24));
 
       const pending = pendingAnchorRef.current;
@@ -185,10 +199,12 @@ export default function Navigation() {
 
     syncToLocationHash();
     onScroll();
+    window.clearTimeout(settleTimer); // mount is not a scroll; keep a deep-link lock
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('hashchange', syncToLocationHash);
     window.addEventListener('popstate', syncToLocationHash);
     return () => {
+      window.clearTimeout(settleTimer);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('hashchange', syncToLocationHash);
       window.removeEventListener('popstate', syncToLocationHash);

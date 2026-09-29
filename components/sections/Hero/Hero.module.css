@@ -153,7 +153,10 @@
    opacity animation does not repaint it later — so a name that fades in emits
    no LCP entry at all (perf PERF-06 / PERF-07). It rises on the same beat as
    its siblings, but it is painted solid from the first frame. */
-.name {
+.name,
+.actions {
+    /* The actions ride the same solid rise: an opacity fade blends the CTA's
+       ink into its plate, and axe sampling mid-entry measured 1.05:1 (UX-P0-001). */
     animation-name: heroRiseSolid;
 }
 
@@ -817,6 +820,11 @@
     .availability {
         animation: heroFade 320ms linear both;
         animation-delay: calc(var(--step, 0) * 40ms);
+    }
+
+    /* The CTA is never faded, even here (UX-P0-001): no inaccessible frame. */
+    .actions {
+        animation: none;
     }
 
     @keyframes heroFade {
