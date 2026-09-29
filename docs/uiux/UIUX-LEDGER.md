@@ -6,6 +6,15 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C5 Publisher — fixes shipped — 2026-09-29
+
+Branch `uiux/fixer-refinement` (fix commit `377fb02`) merged to `main` via `gh pr merge` (squash); deploy via `ship.yml`.
+
+- **Status:** **OPEN** — UX-P1-006 (mobile LCP 2865 ms > 2500 ms budget) still pending; not addressed in this cycle.
+- **Shipped:** UX-P0-001 — Hero CTA group uses translate-only `heroRiseSolid` entry (no opacity fade), so contrast stays 18.32:1 from t=0; reduced-motion disables animation. UX-P2-002 — Navigation 180 ms scroll-settle timer re-resolves the visible section, updating `aria-current`/hash after scrollbar/programmatic scroll.
+- **Adversarial matrix:** Chromium 144/144 cells PASS (312/312 iterations, evidence `evidence/20260929T1115Z-matrix/`); Firefox/WebKit 144 cells PENDING (browsers not installed). Post-merge production re-run of the matrix/RED specs: **UNVERIFIED** in this step.
+- **Main SHA / deploy run:** recorded in §E release log after merge.
+
 ### C5 TestAuthor — finite adversarial matrix + independent RED — 2026-09-29T11:15Z
 
 Branch `uiux/test-author-matrix`; target production `82ffb9ee`. Evidence: `evidence/20260929T1115Z-matrix/` (`test-author.json`, `matrix-summary.md`).
