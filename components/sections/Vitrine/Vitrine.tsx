@@ -119,6 +119,7 @@ function MechanismPanel({ fact, stage, onStage }: { fact: MechanismFact; stage: 
             type="button"
             className={styles.stageButton}
             data-active={item.id === stage ? '' : undefined}
+            aria-pressed={item.id === stage}
             onClick={() => onStage(item.id)}
           >
             {item.label}
@@ -212,6 +213,7 @@ export default function Vitrine() {
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLOListElement>, index: number) => {
+      if (event.target !== event.currentTarget) return;
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
         event.preventDefault();
         const next = event.key === 'ArrowRight'
