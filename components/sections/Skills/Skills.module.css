@@ -422,13 +422,27 @@ tr[data-status="pending"] .statusLabel {
         width: 100%;
     }
 
+    /* Keep the certificate's column key visible on narrow screens. The rows
+       stack below it, but the reader still gets the full Capability / Evidence
+       / Where / Status vocabulary instead of a clipped or screen-reader-only
+       header. */
     .table thead {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
+        display: block;
+        border-bottom: 1px solid var(--token-border-default);
+    }
+
+    .table thead tr {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.2fr) minmax(0, 0.85fr) minmax(0, 0.9fr);
+    }
+
+    .table thead th,
+    .table thead th:first-child {
+        display: block;
+        padding: var(--space-1) var(--space-05);
+        font-size: var(--fs-micro);
+        white-space: normal;
+        overflow-wrap: anywhere;
     }
 
     .table tbody tr {

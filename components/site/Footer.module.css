@@ -17,12 +17,29 @@
 
 .line {
   margin: 0 auto;
-  max-width: 68rem;
+  max-width: var(--measure-read);
   font-family: var(--font-body);
   font-size: var(--fs-small);
   line-height: var(--lh-prose);
   color: var(--mist-400);
   text-wrap: pretty;
+}
+
+.provenance,
+.disclosure {
+  margin: var(--space-2) auto 0;
+  max-width: var(--measure-read);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  line-height: var(--lh-prose);
+  color: var(--mist-400);
+  text-wrap: pretty;
+}
+
+.code {
+  font: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .link {
