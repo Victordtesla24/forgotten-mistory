@@ -6,6 +6,15 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### Current authoritative continuation — clipping campaign, 2026-09-29
+
+Older run claims below are HISTORICAL, not fresh passes. PR40 merged as `67438ffe1a2e477a9df5ed71fb59aad18911b54f`; production Actions36527753653 succeeded; independent QA verified live `67438ffe`. PR40 preview36527454984 and six focused preview tests passed. Source commit09e45e2 preserves production Navigation unchanged. User-requested simplified CI retained; quality checks run outside CI. Independent test author, fixers, reviewer and QA reports live in `evidence/20260929Tclipping/`. Initial permissive green clipping test was rejected and corrected: actual pre-fix production run five failures; after shipment six tests pass. A fixer-authored purported RED proof was rejected and excluded, never accepted as test evidence.
+
+**Campaign remains incomplete.** Fresh mobile Lighthouse medians (3 runs) Performance75/A11y100/BP100/SEO100, LCP3252.5605ms/TBT542.5ms/CLS0; desktop100/100/100/100, LCP670.304ms/TBT23ms/CLS0. Mobile thresholds FAIL; CPU contention during other foreground work prevents attributing the difference from stale86 baseline to this CSS change. Do not claim a performance fix. No-JS320 width494 exceeds320. Full post-release J1-J8, actual assistive-technology pass and full functional suite not completed.
+
+Coordination incident: another writer reset/switched this checkout while foreground flock was held, and modified app/layout.tsx/Nav. Unrelated work was preserved; reviewed clipping commit was transplanted to PR40's real remote ancestry. PR40 contains NO Navigation or layout change. Further writers must honor the shared lock.
+
+
 ### Continuation evidence — 2026-09-29T04:26Z
 
 - **Not shipped. Campaign and Cycle 0 remain incomplete.** Legitimate authorization is now proven: existing gh CLI session has `repo, workflow, read:org, gist` scopes and repository admin/push; this is distinct from the previously denied App credential. No denied credential retry. Default Firebase CLI session/ADC absent; Actions secret name exists but Firebase deploy authority has not yet been exercised.
@@ -32,6 +41,9 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 | Roles (isolation, no model identities — D-010) | Repo Cartographer (repo read), UX Scout (`scripts/uiux/scout_production.mjs`, 7 viewports), Persona Auditor (`scripts/uiux/persona_journeys.mjs`, J1–J8), A11y (`scripts/uiux/axe_production.mjs` + `tests/a11y`), Perf (Lighthouse CLI ×3 mobile + ×3 desktop, medians), Release Engineer (workflow + tests), Reviewer and Production QA run as separate subagents with their own tool context; the author of a change never verifies it |
 
 ## B. Executive critique (PM + designer voice)
+
+Current priority: mobile performance and no-JS narrow reflow remain open. Clipped Skills header and horizontal-only Vitrine cards repaired; footer provenance restored. Previous scorecard is historical and superseded by current A and qa-final.json.
+
 
 **What works and must be protected (measured):** the page is honest and clean at every audited viewport — 0 console errors, 0 horizontal overflow at the seven §3.2 viewports, 0 fixed-element overlaps, 0 axe violations (mobile + desktop, `/` and 404), a single h1, exactly one italic, the three sanctioned typefaces only, every nav anchor resolving to a real section, the CV downloading with an MD5 that matches the fingerprint printed in Skills, `/api/chat` and `/api/tts` answering with honest JSON/audio, and the hero complete with JavaScript disabled. Desktop Lighthouse is 100/100/100/100 with LCP 0.64 s and CLS 0.
 
@@ -64,6 +76,57 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 | Release | main ↔ live parity | unprovable (no meta on live) | 100 % | FAIL (UX-C0-001, D-003) |
 
 ## C. Prioritized findings backlog
+
+#### UX-P1-007 — Skills mobile header clipping
+- Lens / framework: WCAG1.4.10 / Nielsen visibility / trust signals.
+- Persona(s) affected: P1 | P2 | P3 | P4.
+- Section / viewport: Skills/Vitrine/Footer as named;320x740 and390x844.
+- Observed (production): pre-fix assertions fail; `evidence/20260929Tclipping/red-corrected.log`.
+- Expected: Full readable content and factual disclosure per original prompt.
+- Root cause: Mobile thead retained clipped/offscreen layout and desktop cell sizing. Visible grid header now fits; QA Status right247.515625 at320.
+- Recommendation: Reflow content rather than hiding document overflow.
+- Fix specification: Skills.module.css; existing tokens, facts/privacy/italic/caliper preserved.
+- Test added: tests/a11y/content-clipping.spec.ts; tests/a11y/footer-provenance.spec.ts.
+- Verification recipe: Read real header text bounds and overflow ancestors at320/390.
+- RICE: estimate4 x2 x0.9 /1 =7.2.
+- Status: VERIFIED-CLOSED for pinned recipe only, by independent Production QA in qa-final.json.
+- Shipped in: PR40,67438ffe,Actions36527753653; verified2026-09-29T05:49:28Z.
+- Evidence (post-fix): evidence/20260929Tclipping/production-tests.log;qa-final.json;post-320-skills-headers-text.webp;post-320-vitrine-all6-nohorizontal.webp;post-footer-provenance.webp.
+
+#### UX-P1-008 — Vitrine mobile metrics require horizontal scrolling
+- Lens / framework: WCAG1.4.10 / Nielsen visibility / trust signals.
+- Persona(s) affected: P1 | P2 | P3 | P4.
+- Section / viewport: Skills/Vitrine/Footer as named;320x740 and390x844.
+- Observed (production): pre-fix assertions fail; `evidence/20260929Tclipping/red-corrected.log`.
+- Expected: Full readable content and factual disclosure per original prompt.
+- Root cause: Horizontal flex rail retained offscreen cards; mobile vertical grid now contains all six cards and metrics.
+- Recommendation: Reflow content rather than hiding document overflow.
+- Fix specification: Vitrine.module.css; Vitrine.tsx; existing tokens, facts/privacy/italic/caliper preserved.
+- Test added: tests/a11y/content-clipping.spec.ts; tests/a11y/footer-provenance.spec.ts.
+- Verification recipe: All six cards and COMMITS/ACTIVE/STACK text fit320/390 with vertical-only scrolling.
+- RICE: estimate4 x2 x0.9 /1 =7.2.
+- Status: VERIFIED-CLOSED for pinned recipe only, by independent Production QA in qa-final.json.
+- Shipped in: PR40,67438ffe,Actions36527753653; verified2026-09-29T05:49:28Z.
+- Evidence (post-fix): evidence/20260929Tclipping/production-tests.log;qa-final.json;post-320-skills-headers-text.webp;post-320-vitrine-all6-nohorizontal.webp;post-footer-provenance.webp.
+
+#### UX-P2-009 — Footer lacks visible provenance and synthetic disclosure
+- Lens / framework: WCAG1.4.10 / Nielsen visibility / trust signals.
+- Persona(s) affected: P1 | P2 | P3 | P4.
+- Section / viewport: Skills/Vitrine/Footer as named;320x740 and390x844.
+- Observed (production): pre-fix assertions fail; `evidence/20260929Tclipping/red-corrected.log`.
+- Expected: Full readable content and factual disclosure per original prompt.
+- Root cause: Footer rendered legal links only. Typed labels/disclosure and generated MD5/build added.
+- Recommendation: Reflow content rather than hiding document overflow.
+- Fix specification: Footer.tsx; Footer.module.css; app/data/portfolio/footer.ts; existing tokens, facts/privacy/italic/caliper preserved.
+- Test added: tests/a11y/content-clipping.spec.ts; tests/a11y/footer-provenance.spec.ts.
+- Verification recipe: Download PDF; MD5 equals footer full digest; footer build equals meta; synthetic word once.
+- RICE: estimate4 x2 x0.9 /1 =7.2.
+- Status: VERIFIED-CLOSED for pinned recipe only, by independent Production QA in qa-final.json.
+- Shipped in: PR40,67438ffe,Actions36527753653; verified2026-09-29T05:49:28Z.
+- Evidence (post-fix): evidence/20260929Tclipping/production-tests.log;qa-final.json;post-320-skills-headers-text.webp;post-320-vitrine-all6-nohorizontal.webp;post-footer-provenance.webp.
+
+**Residual UX-P2-010 OPEN:** Status mobile header is geometrically contained but its inherited16% width produces a9px-wide cell and vertical word wrapping. Screenshot and qa-final.json establish this; reset mobile header width:auto in a separately tested refinement. Do not interpret pinned clipping closure as ideal readability.
+
 
 #### UX-C0-001 — Production frozen: deploy dies at `npm ci`, pipeline auto-merges branches ungated
 - Lens / framework:      Release engineering · §6.1 · §9 parity
@@ -190,16 +253,24 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 | J7 | MiniVicBot degraded paths | POST `/api/chat` 200 JSON (`text`, `provider`, `attempts`); POST without messages → 400 `{"error":"messages_required"}`; `/api/tts` 200 `audio/mpeg`; UI sends `/api/chat?warm=1` → 204 | PASS (honest states) | `J7__1280x800__after-send__pre__20260929T030729Z.webp` |
 | J8 | Navigation integrity · 1280 / 390 | Menu button named, `aria-controls=site-nav-overlay`; each link scrolls to its section (target top ≈ 96) incl. mobile menu; **no active state on any link; hash not consistently updated** | **FAIL** → UX-P2-002 | `J8__1280x800__after-nav__pre__20260929T030810Z.webp`, `J8__390x844__after-nav__pre__20260929T030837Z.webp` |
 
-Raw data: `journeys__all__J1-J8__pre__20260929T030837Z.json`.
+Current continuation baseline-audit.json reports J3/J4 concerns; classifications need confirmation (nonmodal dialog is not automatically an aria-modal defect). Postrelease QA covers targeted recipes/DOM reduced-motion/noJS, NOT complete J1-J8. No screen-reader pass claimed. Historical raw data: `journeys__all__J1-J8__pre__20260929T030837Z.json`.
 
 ## E. Release log
+
+Current C2: source09e45e2 → PR40 merge67438ffe → preview36527454984 → production36527753653; parity verified. Branch-only rollback drill marker81935e8 reverted by4a25557; unchanged tree built/deployed in preview36526102811; preview CV smoke1pass. Evidence rollback-preview.json. This does not test failure-triggered production rollback.
+
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Deploy ID | Parity | Lighthouse (mobile Perf/LCP/CLS/TBT) | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | C0 | 2026-09-29T02:58Z | not merged | UX-C0-001 (pipeline) — BLOCKED: branch push rejected (token lacks `workflows` scope); no PR/run | none | UNVERIFIED (live HTML has no build-commit meta) | not run | baseline 86 / 3.34 s / 0 / 262 ms | not run (blocked upstream) |
 | C1 | — | not started | UX-P1-001 (320 px reflow) — NOT STARTED: cannot ship before Cycle 0 lands; plan in HOURLY-EXECUTION-PLAN.md | none | — | — | — | — |
 
-## F. Verified no-issue register (production, run 20260929T0258Z)
+## F. Verified no-issue register
+
+Fresh C2: seven specified JS-enabled viewports document overflow0, failed requests0, fixed overlaps0; two desktop preload warnings (not errors). Axe360/1440 homepage+404 serious/critical0; one italic/reducedmotion DOM checks pass. These narrow checks are evidenced in qa-final.json and scout/axe post JSON, not a full manualWCAG pass.
+
+Historical register follows:
+ (production, run 20260929T0258Z)
 
 | Check | Result | Evidence |
 | --- | --- | --- |

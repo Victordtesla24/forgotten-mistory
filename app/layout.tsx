@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
+import dynamic from 'next/dynamic';
 import { buildStamp } from '@/app/data/generated/build-stamp';
 import { MINIVIC_CHAT_ORIGIN } from '@/app/data/generated/minivic-origin';
-import MiniVicBot from '../components/MiniVicBot';
 import Footer from '@/components/site/Footer';
+import MiniVicBotLazy from '../components/site/MiniVicBotLazy';
 import MotionProvider from '../components/MotionProvider';
 import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
 import { AvatarSpeakingProvider } from '@/lib/avatarContext';
@@ -180,7 +181,7 @@ export default function RootLayout({
                 under the nav until the sections stream in. */}
             <div className="page-frame">{children}</div>
             <Footer />
-            <MiniVicBot />
+            <MiniVicBotLazy />
           </MotionProvider>
         </AvatarSpeakingProvider>
         <ServiceWorkerRegister />

@@ -436,13 +436,14 @@ tr[data-status="pending"] .statusLabel {
         grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.2fr) minmax(0, 0.85fr) minmax(0, 0.9fr);
     }
 
-    .table thead th,
+.table thead th,
     .table thead th:first-child {
         display: block;
         padding: var(--space-1) var(--space-05);
         font-size: var(--fs-micro);
         white-space: normal;
         overflow-wrap: anywhere;
+        width: auto !important;
     }
 
     .table tbody tr {

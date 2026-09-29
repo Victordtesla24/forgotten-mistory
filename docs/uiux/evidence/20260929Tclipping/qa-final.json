@@ -1,0 +1,388 @@
+{
+  "agent_role": "qa",
+  "run_id": "20260929Tclipping",
+  "production_origin": "https://forgotten-mistory.web.app",
+  "written_at": "2026-09-29T05:52:13.435Z",
+  "build_commit_check": {
+    "expected": "67438ffe",
+    "actual": "67438ffe",
+    "verified_at": "2026-09-29T05:49:28.006Z",
+    "equals_expected": true
+  },
+  "findings": [
+    {
+      "id": "build-commit-meta",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "expected": "67438ffe",
+        "actual": "67438ffe",
+        "checkedAt": "2026-09-29T05:49:28.006Z"
+      }
+    },
+    {
+      "id": "pinned-production-playwright-recipes",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "log": "production-tests.log",
+        "summary": "6 passed",
+        "workers": 1,
+        "retries": 0,
+        "files": [
+          "tests/a11y/content-clipping.spec.ts",
+          "tests/a11y/footer-provenance.spec.ts",
+          "tests/e2e/smoke-cv.spec.ts"
+        ]
+      }
+    },
+    {
+      "id": "skills-320-header-text-readable",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "headers": [
+          {
+            "text": "Capability",
+            "rect": {
+              "left": 25,
+              "right": 109.765625,
+              "width": 84.765625
+            }
+          },
+          {
+            "text": "Evidence",
+            "rect": {
+              "left": 109.765625,
+              "right": 185.109375,
+              "width": 75.34375
+            }
+          },
+          {
+            "text": "Where",
+            "rect": {
+              "left": 185.109375,
+              "right": 238.484375,
+              "width": 53.375
+            }
+          },
+          {
+            "text": "Status",
+            "rect": {
+              "left": 238.484375,
+              "right": 247.515625,
+              "width": 9.03125
+            }
+          }
+        ],
+        "artifact": "post-320-skills-headers-text.webp"
+      }
+    },
+    {
+      "id": "vitrine-320-six-cards-no-horizontal-js",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "cards": 6,
+        "rail": {
+          "scrollWidth": 273,
+          "clientWidth": 272
+        },
+        "page": {
+          "scrollWidth": 320,
+          "clientWidth": 320
+        },
+        "artifact": "post-320-vitrine-all6-nohorizontal.webp"
+      }
+    },
+    {
+      "id": "footer-provenance-md5-build-synthetic-once",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "pdfStatus": 200,
+        "pdfMd5": "16b856c0f3f4ec0d801fdde6d084452c",
+        "footerContainsMd5": true,
+        "footerContainsBuild": true,
+        "syntheticCount": 1,
+        "artifact": "post-footer-provenance.webp"
+      }
+    },
+    {
+      "id": "axe-production-serious-critical-zero",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "file": "axe__all__live__post__20260929T055140Z.json",
+        "summary": {
+          "critical": 0,
+          "serious": 0,
+          "verdict": "PASS"
+        },
+        "results": [
+          {
+            "viewport": "360x740",
+            "route": "/",
+            "status": 200,
+            "violations": 0,
+            "incomplete": 1,
+            "passes": 30
+          },
+          {
+            "viewport": "360x740",
+            "route": "/this-route-does-not-exist-404",
+            "status": 404,
+            "violations": 0,
+            "incomplete": 1,
+            "passes": 21
+          },
+          {
+            "viewport": "1440x900",
+            "route": "/",
+            "status": 200,
+            "violations": 0,
+            "incomplete": 1,
+            "passes": 31
+          },
+          {
+            "viewport": "1440x900",
+            "route": "/this-route-does-not-exist-404",
+            "status": 404,
+            "violations": 0,
+            "incomplete": 1,
+            "passes": 21
+          }
+        ]
+      }
+    },
+    {
+      "id": "scout-production-js-no-horizontal-overflow",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "file": "scout__all__sweep__post__20260929T055109Z.json",
+        "viewports": [
+          {
+            "viewport": "360x740",
+            "overflowX": false,
+            "scrollWidth": 360,
+            "clientWidth": 360,
+            "failedRequests": 0,
+            "overlaps": 0,
+            "consoleMessages": 0
+          },
+          {
+            "viewport": "390x844",
+            "overflowX": false,
+            "scrollWidth": 390,
+            "clientWidth": 390,
+            "failedRequests": 0,
+            "overlaps": 0,
+            "consoleMessages": 0
+          },
+          {
+            "viewport": "768x1024",
+            "overflowX": false,
+            "scrollWidth": 768,
+            "clientWidth": 768,
+            "failedRequests": 0,
+            "overlaps": 0,
+            "consoleMessages": 0
+          },
+          {
+            "viewport": "1024x768",
+            "overflowX": false,
+            "scrollWidth": 1024,
+            "clientWidth": 1024,
+            "failedRequests": 0,
+            "overlaps": 0,
+            "consoleMessages": 0
+          },
+          {
+            "viewport": "1280x800",
+            "overflowX": false,
+            "scrollWidth": 1280,
+            "clientWidth": 1280,
+            "failedRequests": 0,
+            "overlaps": 0,
+            "consoleMessages": 0
+          },
+          {
+            "viewport": "1440x900",
+            "overflowX": false,
+            "scrollWidth": 1440,
+            "clientWidth": 1440,
+            "failedRequests": 0,
+            "overlaps": 0,
+            "consoleMessages": 1
+          },
+          {
+            "viewport": "1920x1080",
+            "overflowX": false,
+            "scrollWidth": 1920,
+            "clientWidth": 1920,
+            "failedRequests": 0,
+            "overlaps": 0,
+            "consoleMessages": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "reduced-motion-single-italic-nav-invariants",
+      "status": "VERIFIED-CLOSED",
+      "evidence": {
+        "reducedMotion": true,
+        "singleItalicCount": 1,
+        "italic": [
+          "I have been wrong often enough to want to hear it early. Tell me what you think — I’ll listen properly."
+        ],
+        "navLinks": [
+          {
+            "text": "VIKRAM.",
+            "href": "#hero",
+            "resolves": true
+          },
+          {
+            "text": "Home",
+            "href": "#hero",
+            "resolves": true
+          },
+          {
+            "text": "About",
+            "href": "#about",
+            "resolves": true
+          },
+          {
+            "text": "Experience",
+            "href": "#experience",
+            "resolves": true
+          },
+          {
+            "text": "Skills",
+            "href": "#skills",
+            "resolves": true
+          },
+          {
+            "text": "Keeping me busy",
+            "href": "#vitrine",
+            "resolves": true
+          },
+          {
+            "text": "Feedback & coffee",
+            "href": "#listen",
+            "resolves": true
+          }
+        ]
+      }
+    }
+  ],
+  "observations_not_closed": [
+    {
+      "id": "no-js-basic-render-observed",
+      "evidence": {
+        "status": 200,
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "h1": [
+          "Vikram Deshpande"
+        ],
+        "sections": [
+          {
+            "id": "hero",
+            "present": true
+          },
+          {
+            "id": "about",
+            "present": true
+          },
+          {
+            "id": "experience",
+            "present": true
+          },
+          {
+            "id": "skills",
+            "present": true
+          },
+          {
+            "id": "vitrine",
+            "present": true
+          },
+          {
+            "id": "listen",
+            "present": true
+          }
+        ],
+        "nav": [
+          {
+            "text": "VIKRAM.",
+            "href": "#hero",
+            "resolves": true
+          },
+          {
+            "text": "Home",
+            "href": "#hero",
+            "resolves": true
+          },
+          {
+            "text": "About",
+            "href": "#about",
+            "resolves": true
+          },
+          {
+            "text": "Experience",
+            "href": "#experience",
+            "resolves": true
+          },
+          {
+            "text": "Skills",
+            "href": "#skills",
+            "resolves": true
+          },
+          {
+            "text": "Keeping me busy",
+            "href": "#vitrine",
+            "resolves": true
+          },
+          {
+            "text": "Feedback & coffee",
+            "href": "#listen",
+            "resolves": true
+          }
+        ],
+        "scrollWidth": 494,
+        "clientWidth": 320,
+        "artifact": "post-320-nojs.webp"
+      },
+      "note": "No-JS route rendered content and nav targets, but horizontal overflow was measured (scrollWidth 494 > clientWidth 320); not recorded as VERIFIED-CLOSED."
+    },
+    {
+      "id": "scout-console-warnings",
+      "evidence": [
+        {
+          "viewport": "1440x900",
+          "type": "warning",
+          "text": "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+        },
+        {
+          "viewport": "1920x1080",
+          "type": "warning",
+          "text": "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+        }
+      ],
+      "note": "Scout still had console message count 1 at 1440x900 and 1920x1080; not a pinned recipe failure."
+    }
+  ],
+  "unmeasured": [
+    "persona_journeys.mjs full pass not run per instruction/known crash after desktopJ8",
+    "Lighthouse not run by this agent per instruction",
+    "complete browser suite not run",
+    "baseline auditor J4 modal claim not adjudicated beyond current pinned recipes"
+  ],
+  "generated_artifacts": [
+    "production-tests.log",
+    "fresh-invariants-and-captures.json",
+    "post-320-skills-headers-text.webp",
+    "post-320-vitrine-all6-nohorizontal.webp",
+    "post-footer-provenance.webp",
+    "scout-production.log",
+    "scout__all__sweep__post__20260929T055109Z.json",
+    "axe-production.log",
+    "axe__all__live__post__20260929T055140Z.json",
+    "nojs-invariant.json",
+    "post-320-nojs.webp",
+    "qa-final.json"
+  ]
+}
