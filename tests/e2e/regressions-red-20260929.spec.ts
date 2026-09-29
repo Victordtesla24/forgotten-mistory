@@ -36,7 +36,7 @@ async function ctaSample(page: Page) {
   });
 }
 
-async function axeContrast(page: Page) {
+async function axeContrast(page: Page): Promise<{ target: string; message: string }[]> {
   if (!(await page.evaluate(() => 'axe' in window))) await page.addScriptTag({ content: AXE });
   return page.evaluate(async () => {
     // @ts-expect-error injected
