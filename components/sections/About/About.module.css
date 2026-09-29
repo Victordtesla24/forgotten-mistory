@@ -1,9 +1,5 @@
 /**
- * About — the reading column and the ten rows.
- *
- * INTERIM FRAME (docs/architecture/INTERIM-FRAME.md): the compass, its shader
- * field and the key that named its two states are removed. The list is the
- * section — one column of ten rows on the section's own near-black ground.
+ * About — ten source answers with an equal-radius compass and a readable ledger.
  */
 
 .about {
@@ -101,29 +97,223 @@
     color: var(--mist-400);
 }
 
-/* ── Body: the ten ──────────────────────────────────────────────────────── */
+/* ── Body: compass + readable ledger ───────────────────────────────────────── */
 .body {
     position: relative;
-    display: block;
+    display: grid;
+    grid-template-columns: minmax(20rem, 0.92fr) minmax(28rem, 1.08fr);
+    gap: clamp(var(--space-5), 6vw, var(--space-10));
+    align-items: start;
 }
 
-/* INTERIM FRAME (docs/architecture/INTERIM-FRAME.md, Owner 2026-09-06T05:51Z).
-   The compass, the shader field it stood on, the reading caption under its face
-   and the two-line key that named its two states are removed. `#about` is the
-   heading, the two paragraphs of lede, the provenance line and the ten rows,
-   on the section's own near-black ground. Not one word of
-   `app/data/portfolio/about.ts` changed. */
+.compass {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-3));
+    display: grid;
+    grid-template-columns: minmax(16rem, 20rem) minmax(12rem, 1fr);
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-3);
+    border: 1px solid var(--token-border-default);
+    background:
+        radial-gradient(circle at 42% 35%, color-mix(in srgb, var(--gold) 8%, transparent), transparent 38%),
+        linear-gradient(145deg, color-mix(in srgb, var(--ink-900) 94%, transparent), color-mix(in srgb, var(--ink-800) 74%, transparent));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 5%, transparent);
+}
 
-/* ── The ten ─────────────────────────────────────────────────────────────── */
+.compassPlate {
+    position: relative;
+    width: min(100%, 20rem);
+    margin: 0 auto;
+    aspect-ratio: 1;
+}
+
+.compassPlate::before,
+.compassPlate::after {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 84%;
+    height: 1px;
+    background: color-mix(in srgb, var(--white) 8%, transparent);
+    transform: translate(-50%, -50%);
+}
+
+.compassPlate::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.compassSvg {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.compassOuter,
+.compassInner,
+.spoke,
+.spokeTick,
+.indicatorLine,
+.indicatorHub,
+.indicatorPoint {
+    vector-effect: non-scaling-stroke;
+}
+
+.compassOuter,
+.compassInner {
+    fill: none;
+    stroke: color-mix(in srgb, var(--white) 20%, transparent);
+    stroke-width: 1;
+}
+
+.compassInner {
+    stroke: color-mix(in srgb, var(--white) 12%, transparent);
+    stroke-dasharray: 2 6;
+}
+
+.spoke {
+    stroke: color-mix(in srgb, var(--mist-400) 48%, transparent);
+    stroke-width: 1;
+}
+
+.spokeTick {
+    fill: var(--mist-400);
+}
+
+.spokeGroup[data-sourced='true'] .spoke {
+    stroke: color-mix(in srgb, var(--gold) 62%, transparent);
+}
+
+.spokeGroup[data-sourced='true'] .spokeTick {
+    fill: var(--gold);
+}
+
+.indicatorLine {
+    stroke: var(--white);
+    stroke-width: 1.5;
+    transition:
+        x2 320ms var(--motion-ease-standard),
+        y2 320ms var(--motion-ease-standard);
+}
+
+.indicatorHub {
+    fill: var(--ink-900);
+    stroke: var(--white);
+    stroke-width: 1;
+}
+
+.indicatorPoint {
+    fill: var(--white);
+    stroke: var(--gold);
+    stroke-width: 1;
+    transition:
+        cx 320ms var(--motion-ease-standard),
+        cy 320ms var(--motion-ease-standard);
+}
+
+.compassControls {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: var(--space-1);
+}
+
+.compassKicker {
+    flex-basis: 100%;
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-caption);
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.dimensionButton {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: 44px;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--token-border-default);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--mist-200);
+    font: inherit;
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
+    cursor: pointer;
+    transition:
+        border-color 200ms var(--motion-ease-standard),
+        color 200ms var(--motion-ease-standard),
+        background 200ms var(--motion-ease-standard);
+}
+
+.dimensionButton[data-sourced='true'] .dimensionIndex {
+    color: var(--gold);
+}
+
+.dimensionButton[data-active] {
+    color: var(--white);
+    border-color: var(--card-border-hover);
+    background: var(--ink-800);
+}
+
+.dimensionButton:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.dimensionIndex {
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    color: var(--mist-400);
+    font-variant-numeric: tabular-nums;
+}
+
+.inspection {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--token-border-default);
+    padding-top: var(--space-3);
+}
+
+.inspectionMeta,
+.caveat {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    letter-spacing: 0.01em;
+    color: var(--mist-400);
+}
+
+.inspectionMeta[data-sourced='true'] {
+    color: var(--gold);
+}
+
+.inspectionTitle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-heading);
+    font-size: var(--fs-h2);
+    font-weight: 400;
+    line-height: var(--lh-heading);
+    letter-spacing: var(--ls-h2);
+    color: var(--white);
+}
+
 .list {
-    /* The ten stand on the section's own ground: no plane, no backing, no
-       plate (INTERIM FRAME). */
     position: relative;
     z-index: 1;
     margin: 0;
     padding: 0;
     list-style: none;
-    counter-reset: dimension;
 }
 
 .item {
@@ -173,16 +363,13 @@
     color: var(--white);
 }
 
-.item .name .sideTag {
+.item .name .sideTag,
+.inspectionTitle .sideTag {
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     font-weight: 400;
     letter-spacing: var(--ls-caption);
     text-transform: uppercase;
-    /* The open caliper draws its value at 0.85 of the mark's colour. --ink-300
-       through that measured 3.7:1 (composition pass, 390); --mist-200 at 0.85
-       composites to #B0B0B0 on the page ground — 8.0:1, and 6.0:1 on the
-       lightest ground the list is ever drawn over. */
     color: var(--mist-200);
     padding: var(--space-05) var(--space-1);
     border: 1px solid var(--token-border-default);
@@ -206,16 +393,6 @@
     color: var(--mist-400);
 }
 
-/* G-A1. Gold means one thing on this site — this figure has a source a reader
-   can go and check — and the evidence line under an answered dimension IS that
-   source: an employer, a program, a named repository, a figure off the CV.
-   Painted in the caption grey it read as a footnote to the answer rather than
-   as the thing the answer rests on, and #about spent no gold at all. --gold
-   measures 8.4:1 on the section ground (CC-A1 samples the composited pixels at
-   1440 and 390), so the mark is legible as well as meant. The three dimensions
-   the engine computes from the role keep their open caliper; only the line that
-   states an intention rather than a record (`sourced: false` in
-   app/data/portfolio/about.ts) stays grey. */
 .evidence[data-sourced='true'] {
     color: var(--gold);
 }
@@ -274,5 +451,51 @@
         to {
             opacity: 1;
         }
+    }
+}
+
+@media (max-width: 1100px) {
+    .body {
+        grid-template-columns: 1fr;
+    }
+
+    .compass {
+        position: relative;
+        top: auto;
+    }
+}
+
+@media (max-width: 700px) {
+    .compass {
+        grid-template-columns: 1fr;
+        padding: var(--space-2);
+    }
+
+    .compassPlate {
+        width: min(270px, 100%);
+        max-width: 270px;
+    }
+
+    .compassControls {
+        justify-content: flex-start;
+    }
+
+    .dimensionButton {
+        flex: 1 1 min(100%, 14rem);
+        justify-content: flex-start;
+    }
+
+    .inspection,
+    .itemBody,
+    .answer {
+        max-width: 320px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .indicatorLine,
+    .indicatorPoint,
+    .dimensionButton {
+        transition: none;
     }
 }

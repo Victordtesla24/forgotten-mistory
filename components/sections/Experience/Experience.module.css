@@ -134,6 +134,40 @@
     opacity: 0.85;
 }
 
+
+.inspectionHairline {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--space-2) + (100% - var(--readout-column) - var(--space-2)) * var(--inspection, 0) / 100);
+    z-index: 3;
+    width: 1px;
+    background: var(--gold);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 8%, transparent);
+    opacity: 0.9;
+    pointer-events: none;
+    transition: left 260ms var(--motion-ease-standard), opacity 260ms var(--motion-ease-standard);
+}
+
+.inspectionHairline::before,
+.inspectionHairline::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 0.5rem;
+    height: 1px;
+    transform: translateX(-50%);
+    background: var(--gold);
+}
+
+.inspectionHairline::before {
+    top: 0;
+}
+
+.inspectionHairline::after {
+    bottom: 0;
+}
+
 .grid {
     position: absolute;
     inset: 0;
@@ -224,6 +258,11 @@
     color: var(--white);
 }
 
+.trackButton[data-selected] .trackLine {
+    border-bottom-color: color-mix(in srgb, var(--gold) 35%, transparent);
+}
+
+
 /* Gold marks an employer a reader can open and check (CLAUDE.md directive 3;
    the same allow-list as tests/about_sourced_semantics.test.mjs). Eight
    employers share one chart, so the mark cannot be a saturated "look here" on
@@ -308,6 +347,7 @@
 }
 
 .trackButton[data-active] .trackBar::before,
+.trackButton[data-selected] .trackBar::before,
 .trackButton:hover .trackBar::before {
     background: var(--white);
     opacity: 1;
@@ -612,6 +652,10 @@
         margin-right: calc(var(--readout-column) + var(--space-1));
     }
 
+    .inspectorPanel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
     .roleToggle {
         grid-template-columns: minmax(0, 1fr) 1.25rem;
         gap: var(--space-1);
@@ -674,6 +718,10 @@
         transition: background var(--motion-fast) var(--motion-ease-standard);
     }
 
+    .inspectionHairline {
+        transition: none;
+    }
+
     .roleChevron,
     .roleChevron::before,
     .roleChevron::after {
@@ -723,6 +771,66 @@ p.roleHeadline .roleHeadlineOpen {
    strata the one strip they were already 86% scrimmed out of, and it buys a
    number that holds. The negative inline margin keeps the glyphs on the same
    left edge as the chart above them; the plate simply extends past them. */
+
+.inspectorPanel {
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.8fr) minmax(12rem, 1.4fr) minmax(14rem, 1fr);
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding: var(--space-2);
+    border: 1px solid var(--token-border-default);
+    background: color-mix(in srgb, var(--white) 1.8%, transparent);
+}
+
+.scrubberLabel,
+.inspectionEyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    letter-spacing: 0.12em;
+    line-height: var(--lh-caption);
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.scrubber {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    accent-color: var(--gold);
+    cursor: pointer;
+}
+
+.scrubber:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.inspection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-05);
+    min-width: 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
+    color: var(--mist-200);
+}
+
+.inspection strong {
+    font-family: var(--font-heading);
+    font-size: var(--fs-h3);
+    font-weight: 400;
+    line-height: var(--lh-snug);
+    color: var(--white);
+}
+
+.inspection span:last-child {
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    letter-spacing: 0.03em;
+    color: var(--mist-400);
+}
+
 .openNote {
     position: relative;
     z-index: 1;
@@ -734,4 +842,14 @@ p.roleHeadline .roleHeadlineOpen {
     font-size: var(--fs-body);
     line-height: var(--lh-prose);
     color: var(--mist-400);
+}
+
+
+/* Keep the inspection controls inside the section column on phones. This block
+   sits after the inspector's base rule so the one-column template is not
+   overwritten by the desktop minimums above. */
+@media (max-width: 760px) {
+    .inspectorPanel {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }

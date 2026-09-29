@@ -184,7 +184,7 @@
     height: 5px;
     border-radius: 50%;
     background: var(--white);
-    box-shadow: 0 0 0 4px rgb(246 246 246 / 0.08);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--white) 8%, transparent);
 }
 
 .name {
@@ -470,7 +470,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin: clamp(var(--space-5), 5vh, var(--space-7)) 0 0;
+    margin: clamp(var(--space-5), 5vh, var(--space-8)) 0 0;
     font-size: var(--fs-body);
     color: var(--mist-400);
 }
@@ -834,6 +834,218 @@
        goes when they press it again. The button itself stays, because a
        reader's own action is allowed (WCAG 2.2.2). */
     .portraitVideo {
+        transition: none;
+    }
+}
+
+/* Flagship optical instrument: finite CSS reveal, no ambient loop. */
+.opticalField {
+    position: absolute;
+    inset: clamp(var(--space-6), 10vh, var(--space-14)) 0 auto auto;
+    width: min(64vw, 46rem);
+    height: min(54svh, 32rem);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.86;
+    mask-image: radial-gradient(circle at 68% 42%, black 0 48%, transparent 78%);
+}
+
+.opticalField::before {
+    content: '';
+    position: absolute;
+    inset: 14% 6% 16% 22%;
+    background:
+        radial-gradient(circle at 66% 42%, color-mix(in srgb, var(--white) 12%, transparent), transparent 0.5rem),
+        radial-gradient(circle at 66% 42%, color-mix(in srgb, var(--gold) 13%, transparent), transparent 11rem),
+        linear-gradient(104deg, transparent 0 48%, color-mix(in srgb, var(--gold) 10%, transparent) 49%, transparent 58%);
+    filter: blur(0.2px);
+}
+
+.opticalSvg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    overflow: visible;
+    animation: opticReveal 840ms var(--motion-ease-emphasized) both;
+}
+
+.opticOuter,
+.opticInner,
+.opticOrbit,
+.opticOrbitFine,
+.opticRule,
+.opticCalibrations {
+    vector-effect: non-scaling-stroke;
+    stroke: color-mix(in srgb, var(--white) 22%, transparent);
+    stroke-width: 1;
+}
+
+.opticOuter {
+    stroke-width: 1.4;
+    stroke-dasharray: 1 9;
+}
+
+.opticInner {
+    stroke: color-mix(in srgb, var(--white) 36%, transparent);
+}
+
+.opticOrbit {
+    stroke: color-mix(in srgb, var(--white) 18%, transparent);
+    transform: rotate(-17deg);
+    transform-origin: 486px 182px;
+}
+
+.opticOrbitFine {
+    stroke: color-mix(in srgb, var(--white) 10%, transparent);
+    transform: rotate(13deg);
+    transform-origin: 486px 182px;
+}
+
+.opticRule,
+.opticCalibrations {
+    stroke: color-mix(in srgb, var(--mist-200) 24%, transparent);
+}
+
+.opticGold {
+    vector-effect: non-scaling-stroke;
+    stroke: var(--gold);
+    stroke-width: 1;
+    opacity: 0.72;
+}
+
+@keyframes opticReveal {
+    from {
+        opacity: 0;
+        clip-path: inset(0 64% 0 0);
+        transform: translateX(18px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        clip-path: inset(0);
+        transform: none;
+    }
+}
+
+.observatory {
+    width: min(100%, 38rem);
+    margin: var(--space-3) 0 0;
+    padding: var(--space-2);
+    border: 1px solid var(--token-border-default);
+    border-left-color: var(--gold-border);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--ink-900) 86%, transparent), color-mix(in srgb, var(--ink-800) 72%, transparent));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 5%, transparent);
+}
+
+.observatoryHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.observatoryKicker,
+.observatoryDescription,
+.telemetryStatus {
+    margin: 0;
+}
+
+.observatoryKicker {
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-caption);
+    text-transform: uppercase;
+    color: var(--mist-200);
+}
+
+.observatoryDescription {
+    margin-top: var(--space-1);
+    max-width: 52ch;
+    font-size: var(--fs-small);
+    line-height: var(--lh-prose);
+    color: var(--mist-400);
+}
+
+.telemetryToggle {
+    min-height: 44px;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--white);
+    font: inherit;
+    font-size: var(--fs-small);
+    cursor: pointer;
+    transition:
+        border-color 200ms var(--motion-ease-standard),
+        background 200ms var(--motion-ease-standard);
+}
+
+.telemetryToggle:hover {
+    border-color: var(--card-border-hover);
+    background: var(--ink-800);
+}
+
+.telemetryToggle:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.telemetryStatus {
+    display: block;
+    margin-top: var(--space-2);
+    max-width: 68ch;
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    letter-spacing: 0.01em;
+    color: var(--mist-200);
+}
+
+.observatory[data-state='sampling'] {
+    border-left-color: var(--gold);
+}
+
+.observatory[data-state='complete'] .telemetryStatus {
+    color: var(--white);
+}
+
+.observatory[data-state='unavailable'] {
+    border-left-color: var(--mist-400);
+}
+
+@media (max-width: 719px) {
+    .opticalField {
+        inset: clamp(var(--space-8), 13vh, var(--space-10)) -22vw auto auto;
+        width: 118vw;
+        height: 22rem;
+        opacity: 0.46;
+    }
+
+    .observatory {
+        max-width: 320px;
+        padding: var(--space-2) var(--space-1);
+    }
+
+    .observatoryHeader {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .telemetryToggle {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .opticalSvg {
+        animation: none;
+    }
+
+    .telemetryToggle {
         transition: none;
     }
 }

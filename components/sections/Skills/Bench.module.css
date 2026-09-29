@@ -27,7 +27,7 @@
     /* The span in the middle is the drawing. Wide enough that the cabling has
        room to separate, narrow enough that a wire's two ends stay on one
        reader's sweep. */
-    grid-template-columns: minmax(0, 15rem) minmax(4rem, 1fr) minmax(0, 16rem);
+    grid-template-columns: minmax(0, 15rem) minmax(4rem, 1fr) minmax(0, 18rem);
     justify-content: space-between;
     align-items: start;
     gap: 0;
@@ -160,7 +160,7 @@
 
 .band + .band {
     padding-top: var(--space-2);
-    border-top: 1px solid rgb(255 255 255 / 0.06);
+    border-top: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
 }
 
 /* The rail's band headings. `--ink-300` was chosen against flat `--ink-900`,
@@ -191,6 +191,7 @@
     align-items: baseline;
     gap: var(--space-1);
     width: 100%;
+    min-height: 44px;
     padding: var(--space-05) 0;
     background: none;
     border: 0;
@@ -213,7 +214,8 @@
 }
 
 .node:hover,
-.node:focus-visible {
+.node:focus-visible,
+.node[aria-pressed='true'] {
     color: var(--white);
 }
 
@@ -229,6 +231,11 @@
 .bench[data-dimmed] .node[data-lit] {
     opacity: 1;
     color: var(--white);
+}
+
+.rail[data-side='capabilities'] .node[aria-pressed='true'] {
+    box-shadow: inset 2px 0 0 var(--gold);
+    padding-left: var(--space-1);
 }
 
 .nodeLabel {
@@ -306,10 +313,21 @@
     color: var(--white);
 }
 
-.readoutEvidence {
+.readoutEvidence,
+.readoutWhere,
+.readoutStatus {
     font-size: var(--fs-body);
     line-height: var(--lh-prose);
     color: var(--mist-200);
+}
+
+.readoutWhere,
+.readoutStatus {
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    letter-spacing: 0.03em;
+    color: var(--mist-400);
 }
 
 .readoutCaveat {
@@ -394,5 +412,141 @@
     .rail[data-side='capabilities'] .node {
         padding: var(--space-1) 0;
         border-bottom: 1px solid rgb(255 255 255 / 0.05);
+    }
+}
+
+/* The selected-evidence slab: the rails identify the node; this dossier shows
+   the actual certificate as four connected stages rather than as a loose list. */
+.readout {
+    position: relative;
+    display: block;
+    min-height: 0;
+    margin: clamp(var(--space-3), 3.5vh, var(--space-5)) 0 0;
+    padding: clamp(var(--space-3), 3vw, var(--space-4));
+    border: 1px solid color-mix(in srgb, var(--white) 14%, transparent);
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--gold) 8%, transparent), transparent 38%),
+        color-mix(in srgb, var(--ink-900) 62%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 6%, transparent);
+}
+
+.stageGrid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(var(--space-2), 2.4vw, var(--space-4));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.stage {
+    min-height: 8.5rem;
+    padding: var(--space-2);
+    border: 1px solid color-mix(in srgb, var(--white) 12%, transparent);
+    background: color-mix(in srgb, var(--ink-900) 24%, transparent);
+}
+
+.stageLabel {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.stageValue {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 1.15vw, 1.22rem);
+    font-weight: 400;
+    line-height: var(--lh-snug);
+    color: var(--white);
+}
+
+.stage[data-stage='evidence'] .stageValue {
+    color: var(--mist-100);
+}
+
+.stage[data-stage='status'] {
+    box-shadow: inset 3px 0 0 var(--gold-dark);
+}
+
+.stageNote,
+.stageSource {
+    grid-column: 1 / -1;
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
+    color: var(--mist-300);
+}
+
+.stageNote {
+    padding-top: var(--space-1);
+    border-top: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
+}
+
+.stageSource code {
+    font-size: 0.95em;
+    color: var(--mist-100);
+    overflow-wrap: anywhere;
+}
+
+.stageConnectors,
+.stageConnectorsMobile {
+    position: absolute;
+    pointer-events: none;
+}
+
+.stageConnectors {
+    left: clamp(var(--space-3), 3vw, var(--space-4));
+    right: clamp(var(--space-3), 3vw, var(--space-4));
+    top: clamp(4.6rem, 5.5vw, 5.4rem);
+    width: calc(100% - (clamp(var(--space-3), 3vw, var(--space-4)) * 2));
+    height: 1.4rem;
+}
+
+.stageConnectors path,
+.stageConnectorsMobile path {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.4;
+    stroke-linecap: square;
+    stroke-dasharray: 5 4;
+    opacity: 0.62;
+}
+
+.stageConnectorsMobile {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .readout {
+        padding: var(--space-2) var(--space-2) var(--space-2) calc(var(--space-4) + var(--space-2));
+    }
+
+    .stageGrid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-2);
+    }
+
+    .stage {
+        min-height: 0;
+        padding: var(--space-2);
+    }
+
+    .stageConnectors {
+        display: none;
+    }
+
+    .stageConnectorsMobile {
+        display: block;
+        left: var(--space-2);
+        top: var(--space-3);
+        width: 1.4rem;
+        height: min(24rem, calc(100% - var(--space-5)));
     }
 }

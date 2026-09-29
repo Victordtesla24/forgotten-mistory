@@ -1,0 +1,88 @@
+{
+  "verdict": {
+    "result": "pass",
+    "meaning": "corrected flagship-six harness executed against production and captured product failures"
+  },
+  "scope": [
+    "tests/e2e/flagship-six.spec.ts",
+    "red-confirmed.log",
+    "test-author.json"
+  ],
+  "production_target": "https://forgotten-mistory.web.app",
+  "production_build_observed": "67438ffe",
+  "command": "PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/e2e/flagship-six.spec.ts --workers=1 --retries=0",
+  "run_evidence": {
+    "log": "red-confirmed.log",
+    "workers": 1,
+    "retries": 0,
+    "total": 9,
+    "passed": 1,
+    "failed": 8,
+    "duration_seconds": 49.3
+  },
+  "actual_results": [
+    {
+      "test": "hero observatory samples only browser-local telemetry and exposes bounded honest state",
+      "status": "failed",
+      "failure": "getByTestId('hero-observatory') element not found/visible"
+    },
+    {
+      "test": "hero observatory reports unavailable honestly when requestAnimationFrame is absent at sampling time",
+      "status": "failed",
+      "failure": "getByTestId('hero-observatory') element not found/visible after normal hydration"
+    },
+    {
+      "test": "about compass keeps the ten source answers server-rendered and selectable by named buttons",
+      "status": "failed",
+      "failure": "getByTestId('about-compass') element not found/visible"
+    },
+    {
+      "test": "experience explorer exposes a named range scrubber with sourced duration geometry and no score",
+      "status": "failed",
+      "failure": "getByTestId('experience-explorer') element not found/visible"
+    },
+    {
+      "test": "skills trace keeps the certificate table SSR-readable and changes exact capability evidence",
+      "status": "failed",
+      "failure": "getByTestId('skills-trace') element not found/visible"
+    },
+    {
+      "test": "vitrine mechanism diagrams are six unique sourced schematics with inspectable details and existing exclusions",
+      "status": "failed",
+      "failure": "mechanism-diagram count was 0 instead of expected 6"
+    },
+    {
+      "test": "listen resonance tracks focus across existing contact anchors without forms, autoplay audio, or obstruction",
+      "status": "failed",
+      "failure": "getByTestId('listen-resonance') element not found/visible"
+    },
+    {
+      "test": "no-JavaScript SSR preserves the six section facts, first CTA, role bullets, and vitrine schematics",
+      "status": "failed",
+      "failure": "SSR did not contain Vitrine mechanism schematic text from mechanismFacts"
+    },
+    {
+      "test": "reduced motion at 320px preserves meaningful text and horizontal bounds",
+      "status": "passed"
+    }
+  ],
+  "harness_corrections": [
+    "SSR text assertions decode HTML entities before comparing raw strings.",
+    "Range input mutation now uses the native HTMLInputElement value setter before input/change events so React sees the change.",
+    "Listen obstruction checks scroll each anchor into the viewport before elementFromPoint sampling.",
+    "requestAnimationFrame unavailability is isolated after normal hydration and restored in finally/page leave instead of deleting rAF before page load.",
+    "Added no-JavaScript SSR semantic coverage for all six sections, first CTA, all role bullets, and Vitrine schematic facts.",
+    "320px reduced-motion check measures actual visible text rectangles within the viewport rather than document width alone."
+  ],
+  "red_log_preserved": true,
+  "notes": "No product/source fixes were made. red.log was not modified.",
+  "agent_role": "test_author",
+  "task_id": "FLAGSHIP",
+  "status": "done",
+  "findings": [],
+  "patch": {
+    "files": [
+      "tests/e2e/flagship-six.spec.ts"
+    ]
+  }
+}

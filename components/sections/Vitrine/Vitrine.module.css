@@ -609,3 +609,208 @@
     color: var(--mist-200);
     align-self: center;
 }
+
+/* ── Mechanism schematics ─────────────────────────────────────────────── */
+.mechanism {
+    margin: var(--space-2) 0 0;
+    padding: var(--space-2);
+    border: 1px solid var(--card-border);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--white) 3.5%, transparent), transparent 58%);
+}
+
+.mechanismSvg {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 360 / 170;
+    overflow: visible;
+}
+
+.guide,
+.trace,
+.gilt,
+.node {
+    fill: none;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+    transition:
+        stroke-opacity var(--motion-base) var(--motion-ease-standard),
+        opacity var(--motion-base) var(--motion-ease-standard),
+        filter var(--motion-base) var(--motion-ease-standard);
+}
+
+.guide {
+    stroke: var(--mist-400);
+    stroke-width: 1;
+    stroke-opacity: 0.32;
+}
+
+.trace {
+    stroke: var(--white);
+    stroke-width: 1.25;
+    stroke-opacity: 0.72;
+}
+
+.gilt {
+    stroke: var(--gold-pale);
+    stroke-width: 1;
+    stroke-opacity: 0.76;
+}
+
+.node {
+    stroke: var(--white);
+    stroke-width: 1;
+    stroke-opacity: 0.66;
+}
+
+.trace[data-active],
+.gilt[data-active],
+.node[data-active] {
+    stroke-opacity: 1;
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--white) 22%, transparent));
+}
+
+.mechanismCaption {
+    display: grid;
+    gap: var(--space-05);
+    margin-top: var(--space-1);
+    color: var(--mist-200);
+}
+
+.mechanismCaption span:first-child {
+    font-family: var(--font-heading);
+    font-size: var(--fs-body);
+    color: var(--white);
+}
+
+.mechanismCaption span:last-child,
+.currentStage {
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    line-height: var(--lh-label);
+    letter-spacing: 0.06em;
+    color: var(--mist-200);
+}
+
+.stageButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+}
+
+.stageButton,
+.inspect {
+    min-height: 44px;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--mist-200);
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
+    cursor: pointer;
+    transition:
+        color var(--motion-fast) var(--motion-ease-standard),
+        border-color var(--motion-fast) var(--motion-ease-standard),
+        background var(--motion-fast) var(--motion-ease-standard),
+        transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.stageButton {
+    padding: var(--space-1) var(--space-2);
+}
+
+.stageButton[data-active],
+.stageButton:hover,
+.stageButton:focus-visible,
+.inspect:hover,
+.inspect:focus-visible {
+    color: var(--white);
+    border-color: var(--card-border-hover);
+    background: color-mix(in srgb, var(--white) 5.5%, transparent);
+}
+
+.stageButton:active,
+.inspect:active {
+    transform: translateY(1px);
+}
+
+.stageButton:focus-visible,
+.inspect:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.inspect {
+    align-self: flex-start;
+    padding: var(--space-1) var(--space-3);
+    margin-top: var(--space-1);
+}
+
+.mechanismDetail {
+    border-top: 1px solid var(--card-border);
+    padding-top: var(--space-1);
+}
+
+.detailSummary {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--mist-200);
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    cursor: pointer;
+}
+
+.detailSummary:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.detailBody {
+    display: grid;
+    gap: var(--space-1);
+    padding-bottom: var(--space-1);
+    color: var(--mist-200);
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
+}
+
+.detailBody p {
+    margin: 0;
+}
+
+@media (max-width: 700px) {
+    .mechanism {
+        padding: var(--space-1);
+    }
+
+    .stageButtons {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .stageButton,
+    .inspect {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .guide,
+    .trace,
+    .gilt,
+    .node,
+    .stageButton,
+    .inspect {
+        transition: none;
+    }
+
+    .stageButton:active,
+    .inspect:active {
+        transform: none;
+    }
+}

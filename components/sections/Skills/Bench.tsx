@@ -10,6 +10,7 @@ import {
   type Capability,
   type EvidenceStatus,
 } from '@/app/data/portfolio/skills';
+import { skillsVisual, statusTone } from '@/app/data/portfolio/skillsVisual';
 
 
 import styles from './Bench.module.css';
@@ -66,11 +67,7 @@ const LINKS: Array<{ sourceId: string; capabilityIndex: number; status: Evidence
     row.sources.map((sourceId) => ({ sourceId, capabilityIndex: index, status: row.status })),
   );
 
-const KIND_LABEL: Record<string, string> = {
-  programme: 'Programmes',
-  repository: 'Repositories',
-  credential: 'Credentials',
-};
+const KIND_LABEL: Record<string, string> = skillsVisual.sourceKinds;
 
 /** The source rail, split into its three bands in registry order. */
 const BANDS = (['programme', 'repository', 'credential'] as const).map((kind) => ({
@@ -103,7 +100,7 @@ export default function Bench({
 
   const [wires, setWires] = useState<Wire[]>([]);
   const [box, setBox] = useState({ width: 0, height: 0 });
-  const [active, setActive] = useState<NodeRef>(null);
+  const [active, setActive] = useState<NodeRef>({ kind: 'capability', id: '0' });
   const [drawn, setDrawn] = useState(false);
   // The trace runs once. After it, the animation is taken off the wires
   // entirely: a CSS animation whose delay is re-declared on re-render replays
@@ -259,10 +256,9 @@ export default function Bench({
       : 0;
 
   return (
-    <figure className={styles.figure}>
+    <figure className={styles.figure} data-testid="skills-trace" role="region" aria-label={skillsVisual.traceRegionLabel}>
       <figcaption className={styles.caption}>
-        Every capability, wired to the programme, repository or issuing body its evidence
-        came from. Gold where that evidence was taken in production.
+        {skillsVisual.caption}
       </figcaption>
 
       {/* The board, engraved on the flat ground. The lit measuring field that
@@ -273,7 +269,7 @@ export default function Bench({
           ref={benchRef}
           className={styles.bench}
           data-dimmed={active ? '' : undefined}
-          onMouseLeave={() => focus(null)}
+          onMouseLeave={() => undefined}
         >
         <svg
           className={styles.wires}
@@ -370,7 +366,8 @@ export default function Bench({
                     data-lit={lit ? (lit.litSources.has(source.id) ? '' : undefined) : undefined}
                     onMouseEnter={() => focus({ kind: 'source', id: source.id })}
                     onFocus={() => focus({ kind: 'source', id: source.id })}
-                    onBlur={() => focus(null)}
+                    onClick={() => focus({ kind: 'source', id: source.id })}
+                    onBlur={() => undefined}
                     aria-label={`${source.label} — ${count} ${count === 1 ? 'capability' : 'capabilities'}`}
                   >
                     <span className={styles.nodeLabel}>{source.label}</span>
@@ -397,8 +394,11 @@ export default function Bench({
               data-lit={lit ? (lit.litCapabilities.has(index) ? '' : undefined) : undefined}
               onMouseEnter={() => focus({ kind: 'capability', id: String(index) })}
               onFocus={() => focus({ kind: 'capability', id: String(index) })}
-              onBlur={() => focus(null)}
-              aria-label={`${row.capability}. ${row.evidence}. ${statusLegend[row.status].label}.${
+              onClick={() => focus({ kind: 'capability', id: String(index) })}
+              onBlur={() => undefined}
+              data-testid="capability-select"
+              aria-pressed={active?.kind === 'capability' && active.id === String(index)}
+              aria-label={`${row.capability}. ${row.evidence}. ${row.where}. ${statusLegend[row.status].label}.${
                 row.caveat ? ` ${row.caveat}.` : ''
               }`}
             >
@@ -418,30 +418,46 @@ export default function Bench({
           section that announced itself on each one would be unusable with a
           screen reader — the evidence it shows is on each node's own label, so
           it is spoken on focus, once, by the thing being focused. */}
-      <p className={styles.readout}>
+      <div className={styles.readout} data-testid="capability-evidence">
+        <svg className={styles.stageConnectors} viewBox="0 0 100 22" aria-hidden="true" focusable="false">
+          <path d="M 12 11 H 35 M 38 11 H 61 M 64 11 H 88" />
+        </svg>
+        <svg className={styles.stageConnectorsMobile} viewBox="0 0 22 100" aria-hidden="true" focusable="false">
+          <path d="M 11 11 V 35 M 11 38 V 61 M 11 64 V 89" />
+        </svg>
         {readout ? (
-          <>
-            <span className={styles.readoutTitle}>{readout.capability}</span>
-            <span className={styles.readoutEvidence}>{readout.evidence}</span>
-            {readout.caveat ? (
-              <span className={styles.readoutCaveat}>{readout.caveat}</span>
-            ) : null}
-          </>
+          <ol className={styles.stageGrid} aria-label={`Selected trace for ${readout.capability}`}>
+            {skillsVisual.stages.map((stage) => {
+              const value = stage.id === 'capability'
+                ? readout.capability
+                : stage.id === 'evidence'
+                  ? readout.evidence
+                  : stage.id === 'where'
+                    ? readout.where
+                    : `${statusLegend[readout.status].label} · ${statusTone[readout.status]}`;
+              return (
+                <li key={stage.id} className={styles.stage} data-stage={stage.id}>
+                  <span className={styles.stageLabel}>{stage.label}</span>
+                  <strong className={styles.stageValue}>{value}</strong>
+                </li>
+              );
+            })}
+            {readout.caveat ? <li className={styles.stageNote}>{readout.caveat}</li> : null}
+            <li className={styles.stageSource}>{skillsVisual.sourcePathLabel}: <code>{skillsVisual.cvPath}</code></li>
+          </ol>
         ) : readoutSource ? (
-          <>
-            <span className={styles.readoutTitle}>{readoutSource.label}</span>
-            <span className={styles.readoutEvidence}>
-              {readoutSourceCount} {readoutSourceCount === 1 ? 'capability' : 'capabilities'} take
-              their evidence from here.
-            </span>
-          </>
+          <ol className={styles.stageGrid} aria-label={`Selected source ${readoutSource.label}`}>
+            <li className={styles.stage}><span className={styles.stageLabel}>{skillsVisual.sourceStageLabels.capability}</span><strong className={styles.stageValue}>{readoutSource.label}</strong></li>
+            <li className={styles.stage}><span className={styles.stageLabel}>{skillsVisual.sourceStageLabels.evidence}</span><strong className={styles.stageValue}>{readoutSourceCount} {readoutSourceCount === 1 ? 'capability' : 'capabilities'} {skillsVisual.sourceReadoutSuffix}</strong></li>
+            <li className={styles.stage}><span className={styles.stageLabel}>{skillsVisual.sourceStageLabels.where}</span><strong className={styles.stageValue}>{readoutSource.kind}</strong></li>
+            <li className={styles.stage}><span className={styles.stageLabel}>{skillsVisual.sourceStageLabels.status}</span><strong className={styles.stageValue}>{skillsVisual.sourceStatus}</strong></li>
+          </ol>
         ) : (
           <span className={styles.readoutRest}>
-            {LINKS.length} links · {sources.length} sources · {capabilities.length} capabilities.
-            Hover or tab a node to trace it.
+            {LINKS.length} links · {sources.length} sources · {capabilities.length} capabilities. {skillsVisual.restReadout}
           </span>
         )}
-      </p>
+      </div>
     </figure>
   );
 }

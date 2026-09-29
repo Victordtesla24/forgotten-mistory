@@ -1,0 +1,572 @@
+{
+  "timestamp": "2026-09-29T06:44:26.088Z",
+  "url": "http://127.0.0.1:5599",
+  "sourceFileChanged": "components/sections/Experience/Experience.module.css",
+  "rootCause": "Primary body overflow was Experience inspectorPanel: its base grid-template-columns appears after the max-width:760px responsive block in emitted CSS, so at 320/390 the panel kept three minimum columns (176px 192px 224px), placing the range input and output past the viewport and expanding document/body scrollWidth to 665. After that source-equivalent fix at 320, remaining text overflow came from the Skills bench readout CV path code in .stageSource, which was an unbreakable inline code token ending at x=361.",
+  "fix": "Append a later max-width:760px Experience rule restoring inspectorPanel to minmax(0,1fr), add min-width:0 to the scrubber, and allow .stageSource code in the Skills bench to overflow-wrap:anywhere. Decorative hero optical SVG elements still paint beyond the viewport but do not expand document/body scrollWidth after the text/layout fixes.",
+  "note": "Local localhost server is serving the prebuilt out directory, so source CSS edits are not hot-reflected. After measurements use injected CSS overrides matching the source changes for diagnostic verification; no app tests were edited or asserted as passing.",
+  "results": [
+    {
+      "width": 320,
+      "before": {
+        "label": "served-out-before-source-css-applied",
+        "viewportWidth": 320,
+        "documentScrollWidth": 665,
+        "bodyScrollWidth": 665,
+        "panel": {
+          "className": "Experience_inspectorPanel__vCQso",
+          "left": 24,
+          "right": 296,
+          "width": 272,
+          "gridTemplateColumns": "176px 192px 224px",
+          "minWidth": "0px"
+        },
+        "scrubber": {
+          "className": "Experience_scrubber__DWt2L",
+          "left": 233,
+          "right": 425,
+          "width": 192,
+          "gridTemplateColumns": "none",
+          "minWidth": "auto"
+        },
+        "output": {
+          "className": "Experience_inspection__O40aR",
+          "left": 441,
+          "right": 665,
+          "width": 224,
+          "gridTemplateColumns": "none",
+          "minWidth": "0px"
+        },
+        "offenders": [
+          {
+            "tag": "OUTPUT",
+            "className": "Experience_inspection__O40aR",
+            "text": "Role selectionAustralian Taxation Office (ATO)Scrum Master / Project Manager — Payday Supe",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "flex",
+            "position": "static"
+          },
+          {
+            "tag": "SPAN",
+            "className": "Experience_inspectionEyebrow__zsNSA",
+            "text": "Role selection",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "STRONG",
+            "className": "",
+            "text": "Australian Taxation Office (ATO)",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "SPAN",
+            "className": "",
+            "text": "Scrum Master / Project Manager — Payday Super Program (NTP & Distribution UI)",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "SPAN",
+            "className": "",
+            "text": "March 2026 - Present · 0.5 yr",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "INPUT",
+            "className": "Experience_scrubber__DWt2L",
+            "text": "",
+            "left": 233,
+            "right": 425,
+            "width": 192,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 130.2,
+            "right": 391.16,
+            "width": 260.97,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "svg",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 9.63,
+            "right": 381.56,
+            "width": 371.93,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "relative"
+          },
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 153.2,
+            "right": 368.16,
+            "width": 214.95,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "DIV",
+            "className": "Hero_opticalField__nRPlJ",
+            "text": "",
+            "left": -11.2,
+            "right": 366.39,
+            "width": 377.59,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "absolute"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 294.78,
+            "right": 362.96,
+            "width": 68.19,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 37.52,
+            "right": 361.93,
+            "width": 324.41,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          }
+        ]
+      },
+      "after": {
+        "label": "served-out-with-source-equivalent-css-override",
+        "viewportWidth": 320,
+        "documentScrollWidth": 361,
+        "bodyScrollWidth": 361,
+        "panel": {
+          "className": "Experience_inspectorPanel__vCQso",
+          "left": 24,
+          "right": 296,
+          "width": 272,
+          "gridTemplateColumns": "238px",
+          "minWidth": "0px"
+        },
+        "scrubber": {
+          "className": "Experience_scrubber__DWt2L",
+          "left": 41,
+          "right": 279,
+          "width": 238,
+          "gridTemplateColumns": "none",
+          "minWidth": "0px"
+        },
+        "output": {
+          "className": "Experience_inspection__O40aR",
+          "left": 41,
+          "right": 279,
+          "width": 238,
+          "gridTemplateColumns": "none",
+          "minWidth": "0px"
+        },
+        "offenders": [
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 112.76,
+            "right": 377.38,
+            "width": 264.61,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "svg",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": -9.49,
+            "right": 367.64,
+            "width": 377.13,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "relative"
+          },
+          {
+            "tag": "DIV",
+            "className": "Hero_opticalField__nRPlJ",
+            "text": "",
+            "left": -11.2,
+            "right": 366.39,
+            "width": 377.59,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "absolute"
+          },
+          {
+            "tag": "CODE",
+            "className": "",
+            "text": "public/docs/Vik_Resume_Final.pdf",
+            "left": 73,
+            "right": 361,
+            "width": 288,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 136.09,
+            "right": 354.05,
+            "width": 217.96,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 279.64,
+            "right": 348.78,
+            "width": 69.14,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 18.79,
+            "right": 347.73,
+            "width": 328.94,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          }
+        ]
+      }
+    },
+    {
+      "width": 390,
+      "before": {
+        "label": "served-out-before-source-css-applied",
+        "viewportWidth": 390,
+        "documentScrollWidth": 665,
+        "bodyScrollWidth": 665,
+        "panel": {
+          "className": "Experience_inspectorPanel__vCQso",
+          "left": 24,
+          "right": 366,
+          "width": 342,
+          "gridTemplateColumns": "176px 192px 224px",
+          "minWidth": "0px"
+        },
+        "scrubber": {
+          "className": "Experience_scrubber__DWt2L",
+          "left": 233,
+          "right": 425,
+          "width": 192,
+          "gridTemplateColumns": "none",
+          "minWidth": "auto"
+        },
+        "output": {
+          "className": "Experience_inspection__O40aR",
+          "left": 441,
+          "right": 665,
+          "width": 224,
+          "gridTemplateColumns": "none",
+          "minWidth": "0px"
+        },
+        "offenders": [
+          {
+            "tag": "OUTPUT",
+            "className": "Experience_inspection__O40aR",
+            "text": "Role selectionAustralian Taxation Office (ATO)Scrum Master / Project Manager — Payday Supe",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "flex",
+            "position": "static"
+          },
+          {
+            "tag": "SPAN",
+            "className": "Experience_inspectionEyebrow__zsNSA",
+            "text": "Role selection",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "STRONG",
+            "className": "",
+            "text": "Australian Taxation Office (ATO)",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "SPAN",
+            "className": "",
+            "text": "Scrum Master / Project Manager — Payday Super Program (NTP & Distribution UI)",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "SPAN",
+            "className": "",
+            "text": "March 2026 - Present · 0.5 yr",
+            "left": 441,
+            "right": 665,
+            "width": 224,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          },
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 141.08,
+            "right": 463.9,
+            "width": 322.82,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "svg",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": -8.07,
+            "right": 452.02,
+            "width": 460.08,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "relative"
+          },
+          {
+            "tag": "DIV",
+            "className": "Hero_opticalField__nRPlJ",
+            "text": "",
+            "left": -8.39,
+            "right": 451.8,
+            "width": 460.19,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "absolute"
+          },
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 169.54,
+            "right": 435.44,
+            "width": 265.9,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 344.66,
+            "right": 429.01,
+            "width": 84.35,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 26.44,
+            "right": 427.73,
+            "width": 401.3,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "INPUT",
+            "className": "Experience_scrubber__DWt2L",
+            "text": "",
+            "left": 233,
+            "right": 425,
+            "width": 192,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "static"
+          }
+        ]
+      },
+      "after": {
+        "label": "served-out-with-source-equivalent-css-override",
+        "viewportWidth": 390,
+        "documentScrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "panel": {
+          "className": "Experience_inspectorPanel__vCQso",
+          "left": 24,
+          "right": 366,
+          "width": 342,
+          "gridTemplateColumns": "308px",
+          "minWidth": "0px"
+        },
+        "scrubber": {
+          "className": "Experience_scrubber__DWt2L",
+          "left": 41,
+          "right": 349,
+          "width": 308,
+          "gridTemplateColumns": "none",
+          "minWidth": "0px"
+        },
+        "output": {
+          "className": "Experience_inspection__O40aR",
+          "left": 41,
+          "right": 349,
+          "width": 308,
+          "gridTemplateColumns": "none",
+          "minWidth": "0px"
+        },
+        "offenders": [
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 140.96,
+            "right": 463.81,
+            "width": 322.85,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "svg",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": -8.21,
+            "right": 451.92,
+            "width": 460.13,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "relative"
+          },
+          {
+            "tag": "DIV",
+            "className": "Hero_opticalField__nRPlJ",
+            "text": "",
+            "left": -8.39,
+            "right": 451.8,
+            "width": 460.19,
+            "overflowX": "visible",
+            "display": "block",
+            "position": "absolute"
+          },
+          {
+            "tag": "ellipse",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 169.42,
+            "right": 435.35,
+            "width": 265.93,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 344.56,
+            "right": 428.92,
+            "width": 84.36,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          },
+          {
+            "tag": "path",
+            "className": "[object SVGAnimatedString]",
+            "text": "",
+            "left": 26.3,
+            "right": 427.64,
+            "width": 401.33,
+            "overflowX": "visible",
+            "display": "inline",
+            "position": "static"
+          }
+        ]
+      }
+    }
+  ],
+  "sourceFilesChanged": [
+    "components/sections/Experience/Experience.module.css",
+    "components/sections/Skills/Bench.module.css"
+  ],
+  "finalSourceEquivalentVerification": {
+    "method": "Playwright on http://127.0.0.1:5599 with injected CSS equivalent to the source edits because served out is prebuilt",
+    "results": [
+      {
+        "viewportWidth": 320,
+        "documentScrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "remainingOffenders": "decorative Hero optical SVG/field only; no document scroll expansion"
+      },
+      {
+        "viewportWidth": 390,
+        "documentScrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "remainingOffenders": "decorative Hero optical SVG/field only; no document scroll expansion"
+      }
+    ]
+  }
+}

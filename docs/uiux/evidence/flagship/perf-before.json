@@ -1,0 +1,35 @@
+{
+  "phase": "before",
+  "profile": "Lighthouse default mobile simulated throttling and desktop preset; sequential three each",
+  "url": "https://forgotten-mistory.web.app/",
+  "modes": {
+    "mobile": {
+      "categories": {
+        "performance": 83.0,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largest-contentful-paint": 3022.1335,
+        "total-blocking-time": 325.5,
+        "cumulative-layout-shift": 0
+      },
+      "lighthouseVersion": "13.5.0"
+    },
+    "desktop": {
+      "categories": {
+        "performance": 76.0,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largest-contentful-paint": 913.53,
+        "total-blocking-time": 394,
+        "cumulative-layout-shift": 0
+      },
+      "lighthouseVersion": "13.5.0"
+    }
+  }
+}

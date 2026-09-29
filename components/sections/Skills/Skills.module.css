@@ -445,6 +445,10 @@ tr[data-status="pending"] .statusLabel {
         overflow-wrap: anywhere;
     }
 
+    .statusHead {
+        width: auto;
+    }
+
     .table tbody tr {
         padding: var(--space-2) clamp(var(--space-2), 4vw, var(--space-3));
     }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 
 import { listenContent } from '@/app/data/portfolio/listen';
+import { neutralListenRoute, visualForHref, type ListenRouteId } from '@/app/data/portfolio/listenVisual';
 import { greetingEnvelope } from '@/app/data/generated/greeting-envelope';
 
 import styles from './Listen.module.css';
@@ -93,6 +94,8 @@ export default function Listen() {
   const [armed, setArmed] = useState(false);
   const [closed, setClosed] = useState(false);
   const [half, setHalf] = useState<number | null>(null);
+  const [activeRoute, setActiveRoute] = useState<ListenRouteId>('neutral');
+  const [currentRoute, setCurrentRoute] = useState<string>(neutralListenRoute.currentRoute);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -156,6 +159,18 @@ export default function Listen() {
   const caliperStyle = {
     '--caliper-half': `${half ?? FALLBACK_HALF}px`,
   } as CSSProperties;
+
+  const activateRoute = (href: string) => {
+    const visual = visualForHref(href);
+    if (!visual) return;
+    setActiveRoute(visual.id);
+    setCurrentRoute(visual.currentRoute);
+  };
+
+  const resetRoute = () => {
+    setActiveRoute(neutralListenRoute.id);
+    setCurrentRoute(neutralListenRoute.currentRoute);
+  };
 
   return (
     <section
@@ -266,26 +281,47 @@ export default function Listen() {
             email is a channel like the other three: a second filled pill under
             the plate was the same route wearing different type (ADV-1451Z P1).
             The plate is chrome, not a claim, so it is white and never gold. */}
-        <ul className={styles.channels}>
-          <li className={styles.engageRow}>
-            <a className={styles.engage} data-cta="engage" href={listenContent.engage.href}>
-              {listenContent.engage.label}
-            </a>
-          </li>
-          {listenContent.channels.map((channel) => (
-            <li key={channel.href}>
+        <div
+          className={styles.resonance}
+          data-testid="listen-resonance"
+          data-active-channel={activeRoute}
+          role="region"
+          aria-label="Contact route resonance"
+          onPointerLeave={resetRoute}
+        >
+          <span className={styles.echo} aria-hidden="true" />
+          <ul className={styles.channels}>
+            <li className={styles.engageRow}>
               <a
-                className={styles.channel}
-                href={channel.href}
-                {...(channel.kind === 'external'
-                  ? { target: '_blank', rel: 'me noreferrer noopener' }
-                  : {})}
+                className={styles.engage}
+                data-cta="engage"
+                href={listenContent.engage.href}
+                onFocus={() => activateRoute(listenContent.engage.href)}
+                onBlur={resetRoute}
+                onMouseEnter={() => activateRoute(listenContent.engage.href)}
               >
-                {channel.label}
+                {listenContent.engage.label}
               </a>
             </li>
-          ))}
-        </ul>
+            {listenContent.channels.map((channel) => (
+              <li key={channel.href}>
+                <a
+                  className={styles.channel}
+                  href={channel.href}
+                  onFocus={() => activateRoute(channel.href)}
+                  onBlur={resetRoute}
+                  onMouseEnter={() => activateRoute(channel.href)}
+                  {...(channel.kind === 'external'
+                    ? { target: '_blank', rel: 'me noreferrer noopener' }
+                    : {})}
+                >
+                  {channel.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className={styles.currentRoute}>{currentRoute}</p>
+        </div>
 
         <p className={styles.coffee}>{listenContent.coffee}</p>
 
