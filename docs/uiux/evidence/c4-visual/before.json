@@ -4,81 +4,8 @@
   "status": "done",
   "base_url": "https://forgotten-mistory.web.app",
   "build": "buildccf06d10",
-  "startedAt": "2026-09-29T07:28:56.447Z",
-  "findings": [
-    {
-      "id": "C4-TARGET-320",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":232.4,\"y\":33.2,\"w\":71.6,\"h\":19.5,\"left\":232.4,\"right\":304,\"top\":33.2,\"bottom\":52.7},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 320x740 and measure controls",
-      "evidence": []
-    },
-    {
-      "id": "C4-TARGET-360",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":270.4,\"y\":33.2,\"w\":71.6,\"h\":19.5,\"left\":270.4,\"right\":342,\"top\":33.2,\"bottom\":52.7},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 360x740 and measure controls",
-      "evidence": []
-    },
-    {
-      "id": "C4-TARGET-390",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":298.9,\"y\":33.2,\"w\":71.6,\"h\":19.5,\"left\":298.9,\"right\":370.5,\"top\":33.2,\"bottom\":52.7},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 390x844 and measure controls",
-      "evidence": []
-    },
-    {
-      "id": "C4-TARGET-768",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":652,\"y\":37,\"w\":77.6,\"h\":20.9,\"left\":652,\"right\":729.6,\"top\":37,\"bottom\":57.9},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 768x1024 and measure controls",
-      "evidence": []
-    },
-    {
-      "id": "C4-TARGET-1024",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":895.2,\"y\":37,\"w\":77.6,\"h\":21,\"left\":895.2,\"right\":972.8,\"top\":37,\"bottom\":58},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 1024x768 and measure controls",
-      "evidence": []
-    },
-    {
-      "id": "C4-TARGET-1280",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":1138.4,\"y\":37,\"w\":77.6,\"h\":21,\"left\":1138.4,\"right\":1216,\"top\":37,\"bottom\":58},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 1280x800 and measure controls",
-      "evidence": []
-    },
-    {
-      "id": "C4-TARGET-1440",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":1290.4,\"y\":37,\"w\":77.6,\"h\":21,\"left\":1290.4,\"right\":1368,\"top\":37,\"bottom\":58},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 1440x900 and measure controls",
-      "evidence": []
-    },
-    {
-      "id": "C4-TARGET-1920",
-      "section": "global",
-      "observed": "[{\"tag\":\"BUTTON\",\"name\":\"Menu\",\"testid\":null,\"href\":null,\"rect\":{\"x\":1746.4,\"y\":37,\"w\":77.6,\"h\":21,\"left\":1746.4,\"right\":1824,\"top\":37,\"bottom\":58},\"tooSmall\":true}]",
-      "expected": "named controls are at least 24 CSS px in each dimension",
-      "severity": "medium",
-      "recipe": "Open https://forgotten-mistory.web.app at 1920x1080 and measure controls",
-      "evidence": []
-    }
-  ],
+  "startedAt": "2026-09-29T09:52:07.975Z",
+  "findings": [],
   "inventory": {
     "mechanisms": {
       "count": 6,
@@ -100,10 +27,10 @@
             "opacity": "1",
             "outline": "rgb(246, 246, 246) none 0px",
             "background": "rgb(10, 10, 10)",
-            "border": "rgb(144, 144, 144)"
+            "border": "rgba(144, 144, 144, 1)"
           },
           "data": "pipeline-gate",
-          "activeStage": "",
+          "activeStage": "revert",
           "detailPresent": true,
           "svgPresent": true,
           "bbox": {
@@ -125,13 +52,13 @@
           "postStyle": {
             "cls": "Vitrine_plate__p2JME",
             "transform": "none",
-            "opacity": "0.82",
+            "opacity": "0.92279",
             "outline": "rgb(246, 246, 246) none 0px",
             "background": "rgb(10, 10, 10)",
-            "border": "rgba(255, 255, 255, 0.1)"
+            "border": "rgba(152, 152, 152, 0.616)"
           },
           "data": "rebuild-loop",
-          "activeStage": "",
+          "activeStage": "container",
           "detailPresent": true,
           "svgPresent": true,
           "bbox": {
@@ -153,13 +80,13 @@
           "postStyle": {
             "cls": "Vitrine_plate__p2JME",
             "transform": "none",
-            "opacity": "0.986801",
+            "opacity": "0.996246",
             "outline": "rgb(246, 246, 246) none 0px",
             "background": "rgb(10, 10, 10)",
-            "border": "rgba(145, 145, 145, 0.933)"
+            "border": "rgba(144, 144, 144, 0.98)"
           },
           "data": "verifier-loop",
-          "activeStage": "",
+          "activeStage": "verifier",
           "detailPresent": true,
           "svgPresent": true,
           "bbox": {
@@ -181,13 +108,13 @@
           "postStyle": {
             "cls": "Vitrine_plate__p2JME",
             "transform": "none",
-            "opacity": "0.999642",
+            "opacity": "0.999266",
             "outline": "rgb(246, 246, 246) none 0px",
             "background": "rgb(10, 10, 10)",
-            "border": "rgba(152, 152, 152, 0.616)"
+            "border": "rgba(255, 255, 255, 0.1)"
           },
           "data": "reconstruction-bands",
-          "activeStage": "",
+          "activeStage": "specification",
           "detailPresent": true,
           "svgPresent": true,
           "bbox": {
@@ -209,13 +136,13 @@
           "postStyle": {
             "cls": "Vitrine_plate__p2JME",
             "transform": "none",
-            "opacity": "0.998648",
+            "opacity": "0.996242",
             "outline": "rgb(246, 246, 246) none 0px",
             "background": "rgb(10, 10, 10)",
-            "border": "rgba(144, 144, 144, 0.992)"
+            "border": "rgba(144, 144, 144, 0.98)"
           },
           "data": "diamond-chart",
-          "activeStage": "",
+          "activeStage": "accuracy gate",
           "detailPresent": true,
           "svgPresent": true,
           "bbox": {
@@ -237,13 +164,13 @@
           "postStyle": {
             "cls": "Vitrine_plate__p2JME",
             "transform": "none",
-            "opacity": "1",
+            "opacity": "0.999264",
             "outline": "rgb(246, 246, 246) none 0px",
             "background": "rgb(10, 10, 10)",
-            "border": "rgba(144, 144, 144, 1)"
+            "border": "rgba(144, 144, 144, 0.99)"
           },
           "data": "scroll-rail",
-          "activeStage": "",
+          "activeStage": "six sections",
           "detailPresent": true,
           "svgPresent": true,
           "bbox": {
@@ -1282,13 +1209,13 @@
             "href": "#hero",
             "rect": {
               "x": 8.8,
-              "y": 28,
+              "y": 37,
               "w": 103.4,
               "h": 30,
               "left": 8.8,
               "right": 112.2,
-              "top": 28,
-              "bottom": 58
+              "top": 37,
+              "bottom": 67
             },
             "tooSmall": false
           },
@@ -1299,15 +1226,15 @@
             "href": null,
             "rect": {
               "x": 232.4,
-              "y": 33.2,
+              "y": 28,
               "w": 71.6,
-              "h": 19.5,
+              "h": 48,
               "left": 232.4,
               "right": 304,
-              "top": 33.2,
-              "bottom": 52.7
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -1412,25 +1339,7 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 232.4,
-              "y": 33.2,
-              "w": 71.6,
-              "h": 19.5,
-              "left": 232.4,
-              "right": 304,
-              "top": 33.2,
-              "bottom": 52.7
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
@@ -1774,12 +1683,7 @@
         "canvases": 0,
         "webglScripts": 0
       },
-      "consoleErrors": [
-        {
-          "type": "warning",
-          "text": "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
-        }
-      ],
+      "consoleErrors": [],
       "failedRequests": []
     },
     {
@@ -1808,7 +1712,7 @@
               "x": 24,
               "y": 535,
               "w": 312,
-              "h": 327
+              "h": 311
             },
             "opacity": "1",
             "transform": "none",
@@ -1826,7 +1730,7 @@
             "visible": true,
             "bbox": {
               "x": 24,
-              "y": -1163,
+              "y": -1164,
               "w": 312,
               "h": 1173
             },
@@ -1836,7 +1740,7 @@
               {
                 "tag": "circle",
                 "x": 66.2,
-                "y": -1125.3,
+                "y": -1125.8,
                 "w": 227.6,
                 "h": 227.6,
                 "opacity": "1",
@@ -1848,7 +1752,7 @@
               {
                 "tag": "circle",
                 "x": 133.7,
-                "y": -1057.8,
+                "y": -1058.3,
                 "w": 92.6,
                 "h": 92.6,
                 "opacity": "1",
@@ -1860,7 +1764,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": -1119.5,
+                "y": -1120,
                 "w": 0,
                 "h": 108,
                 "opacity": "1",
@@ -1872,7 +1776,7 @@
               {
                 "tag": "circle",
                 "x": 177.1,
-                "y": -1105,
+                "y": -1105.6,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -1884,7 +1788,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": -1098.9,
+                "y": -1099.4,
                 "w": 63.5,
                 "h": 87.4,
                 "opacity": "1",
@@ -1896,7 +1800,7 @@
               {
                 "tag": "circle",
                 "x": 230.4,
-                "y": -1087.7,
+                "y": -1088.3,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -1908,7 +1812,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": -1044.9,
+                "y": -1045.4,
                 "w": 102.7,
                 "h": 33.4,
                 "opacity": "1",
@@ -1920,7 +1824,7 @@
               {
                 "tag": "circle",
                 "x": 263.3,
-                "y": -1042.4,
+                "y": -1042.9,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -1932,7 +1836,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": -1011.5,
+                "y": -1012,
                 "w": 102.7,
                 "h": 33.4,
                 "opacity": "1",
@@ -1944,7 +1848,7 @@
               {
                 "tag": "circle",
                 "x": 263.3,
-                "y": -986.4,
+                "y": -986.9,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -1956,7 +1860,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": -1011.5,
+                "y": -1012,
                 "w": 63.5,
                 "h": 87.4,
                 "opacity": "1",
@@ -1968,7 +1872,7 @@
               {
                 "tag": "circle",
                 "x": 230.4,
-                "y": -941.1,
+                "y": -941.6,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -1986,7 +1890,7 @@
             "visible": true,
             "bbox": {
               "x": 24,
-              "y": -47,
+              "y": -48,
               "w": 312,
               "h": 1198
             },
@@ -1996,7 +1900,7 @@
               {
                 "tag": "circle",
                 "x": 66.2,
-                "y": -9.3,
+                "y": -9.8,
                 "w": 227.6,
                 "h": 227.6,
                 "opacity": "1",
@@ -2008,7 +1912,7 @@
               {
                 "tag": "circle",
                 "x": 133.7,
-                "y": 58.2,
+                "y": 57.7,
                 "w": 92.6,
                 "h": 92.6,
                 "opacity": "1",
@@ -2020,7 +1924,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": -3.5,
+                "y": -4,
                 "w": 0,
                 "h": 108,
                 "opacity": "1",
@@ -2032,7 +1936,7 @@
               {
                 "tag": "circle",
                 "x": 177.1,
-                "y": 11,
+                "y": 10.4,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -2044,7 +1948,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": 17.1,
+                "y": 16.6,
                 "w": 63.5,
                 "h": 87.4,
                 "opacity": "1",
@@ -2056,7 +1960,7 @@
               {
                 "tag": "circle",
                 "x": 230.4,
-                "y": 28.3,
+                "y": 27.7,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -2068,7 +1972,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": 71.1,
+                "y": 70.6,
                 "w": 102.7,
                 "h": 33.4,
                 "opacity": "1",
@@ -2080,7 +1984,7 @@
               {
                 "tag": "circle",
                 "x": 263.3,
-                "y": 73.6,
+                "y": 73.1,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -2092,7 +1996,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": 104.5,
+                "y": 104,
                 "w": 102.7,
                 "h": 33.4,
                 "opacity": "1",
@@ -2104,7 +2008,7 @@
               {
                 "tag": "circle",
                 "x": 263.3,
-                "y": 129.6,
+                "y": 129.1,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -2116,7 +2020,7 @@
               {
                 "tag": "line",
                 "x": 180,
-                "y": 104.5,
+                "y": 104,
                 "w": 63.5,
                 "h": 87.4,
                 "opacity": "1",
@@ -2128,7 +2032,7 @@
               {
                 "tag": "circle",
                 "x": 230.4,
-                "y": 174.9,
+                "y": 174.4,
                 "w": 5.8,
                 "h": 5.8,
                 "opacity": "1",
@@ -2151,7 +2055,7 @@
             "visible": true,
             "bbox": {
               "x": 0,
-              "y": -1885,
+              "y": -1886,
               "w": 360,
               "h": 4607
             },
@@ -2166,7 +2070,7 @@
             "visible": true,
             "bbox": {
               "x": 0,
-              "y": -1859,
+              "y": -1860,
               "w": 360,
               "h": 3519
             },
@@ -2521,7 +2425,7 @@
               {
                 "tag": "path",
                 "x": 74.3,
-                "y": -2788.1,
+                "y": -2788.7,
                 "w": 211.5,
                 "h": 25.8,
                 "opacity": "1",
@@ -2533,7 +2437,7 @@
               {
                 "tag": "path",
                 "x": 74.3,
-                "y": -2762.4,
+                "y": -2762.9,
                 "w": 59.6,
                 "h": 0,
                 "opacity": "1",
@@ -2545,7 +2449,7 @@
               {
                 "tag": "path",
                 "x": 133.9,
-                "y": -2788.1,
+                "y": -2788.7,
                 "w": 108.4,
                 "h": 25.8,
                 "opacity": "1",
@@ -2557,7 +2461,7 @@
               {
                 "tag": "path",
                 "x": 123.1,
-                "y": -2755.6,
+                "y": -2756.2,
                 "w": 96.2,
                 "h": 17.6,
                 "opacity": "1",
@@ -2569,7 +2473,7 @@
               {
                 "tag": "path",
                 "x": 157,
-                "y": -2804.4,
+                "y": -2805,
                 "w": 62.4,
                 "h": 46.1,
                 "opacity": "1",
@@ -2581,7 +2485,7 @@
               {
                 "tag": "path",
                 "x": 242.4,
-                "y": -2762.4,
+                "y": -2762.9,
                 "w": 43.4,
                 "h": 0,
                 "opacity": "1",
@@ -2593,7 +2497,7 @@
               {
                 "tag": "circle",
                 "x": 91.2,
-                "y": -2768.5,
+                "y": -2769,
                 "w": 12.2,
                 "h": 12.2,
                 "opacity": "1",
@@ -2605,7 +2509,7 @@
               {
                 "tag": "circle",
                 "x": 180.7,
-                "y": -2788.8,
+                "y": -2789.4,
                 "w": 14.9,
                 "h": 14.9,
                 "opacity": "1",
@@ -2617,7 +2521,7 @@
               {
                 "tag": "path",
                 "x": 134.6,
-                "y": -2748.8,
+                "y": -2749.4,
                 "w": 20.3,
                 "h": 20.3,
                 "opacity": "1",
@@ -2645,7 +2549,7 @@
               {
                 "tag": "path",
                 "x": 74.3,
-                "y": 3.9,
+                "y": 3.3,
                 "w": 211.5,
                 "h": 25.8,
                 "opacity": "1",
@@ -2657,7 +2561,7 @@
               {
                 "tag": "path",
                 "x": 74.3,
-                "y": 29.6,
+                "y": 29.1,
                 "w": 59.6,
                 "h": 0,
                 "opacity": "1",
@@ -2669,7 +2573,7 @@
               {
                 "tag": "path",
                 "x": 133.9,
-                "y": 3.9,
+                "y": 3.3,
                 "w": 108.4,
                 "h": 25.8,
                 "opacity": "1",
@@ -2681,7 +2585,7 @@
               {
                 "tag": "path",
                 "x": 123.1,
-                "y": 36.4,
+                "y": 35.8,
                 "w": 96.2,
                 "h": 17.6,
                 "opacity": "1",
@@ -2693,7 +2597,7 @@
               {
                 "tag": "path",
                 "x": 157,
-                "y": -12.4,
+                "y": -13,
                 "w": 62.4,
                 "h": 46.1,
                 "opacity": "1",
@@ -2705,7 +2609,7 @@
               {
                 "tag": "path",
                 "x": 242.4,
-                "y": 29.6,
+                "y": 29.1,
                 "w": 43.4,
                 "h": 0,
                 "opacity": "1",
@@ -2717,7 +2621,7 @@
               {
                 "tag": "circle",
                 "x": 91.2,
-                "y": 23.5,
+                "y": 23,
                 "w": 12.2,
                 "h": 12.2,
                 "opacity": "1",
@@ -2729,7 +2633,7 @@
               {
                 "tag": "circle",
                 "x": 180.7,
-                "y": 3.2,
+                "y": 2.6,
                 "w": 14.9,
                 "h": 14.9,
                 "opacity": "1",
@@ -2741,7 +2645,7 @@
               {
                 "tag": "path",
                 "x": 134.6,
-                "y": 43.2,
+                "y": 42.6,
                 "w": 20.3,
                 "h": 20.3,
                 "opacity": "1",
@@ -2809,13 +2713,13 @@
             "href": "#hero",
             "rect": {
               "x": 10.8,
-              "y": 28,
+              "y": 37,
               "w": 103.4,
               "h": 30,
               "left": 10.8,
               "right": 114.2,
-              "top": 28,
-              "bottom": 58
+              "top": 37,
+              "bottom": 67
             },
             "tooSmall": false
           },
@@ -2826,15 +2730,15 @@
             "href": null,
             "rect": {
               "x": 270.4,
-              "y": 33.2,
+              "y": 28,
               "w": 71.6,
-              "h": 19.5,
+              "h": 48,
               "left": 270.4,
               "right": 342,
-              "top": 33.2,
-              "bottom": 52.7
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -2843,13 +2747,13 @@
             "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
             "rect": {
               "x": 24,
-              "y": 341.2,
+              "y": 340.7,
               "w": 312,
               "h": 75.2,
               "left": 24,
               "right": 336,
-              "top": 341.2,
-              "bottom": 416.4
+              "top": 340.7,
+              "bottom": 415.8
             },
             "tooSmall": false
           },
@@ -2860,13 +2764,13 @@
             "href": "mailto:sarkar.vikram@gmail.com",
             "rect": {
               "x": 24,
-              "y": 448.4,
+              "y": 447.8,
               "w": 233.7,
               "h": 44,
               "left": 24,
               "right": 257.7,
-              "top": 448.4,
-              "bottom": 492.4
+              "top": 447.8,
+              "bottom": 491.8
             },
             "tooSmall": false
           },
@@ -2877,13 +2781,13 @@
             "href": "tel:+61433224556",
             "rect": {
               "x": 24,
-              "y": 524.4,
+              "y": 523.8,
               "w": 152.4,
               "h": 44,
               "left": 24,
               "right": 176.4,
-              "top": 524.4,
-              "bottom": 568.4
+              "top": 523.8,
+              "bottom": 567.8
             },
             "tooSmall": false
           },
@@ -2894,13 +2798,13 @@
             "href": "https://www.linkedin.com/in/vikramd-profile",
             "rect": {
               "x": 24,
-              "y": 600.4,
+              "y": 599.8,
               "w": 312,
               "h": 59.2,
               "left": 24,
               "right": 336,
-              "top": 600.4,
-              "bottom": 659.6
+              "top": 599.8,
+              "bottom": 659
             },
             "tooSmall": false
           },
@@ -2911,13 +2815,13 @@
             "href": "https://github.com/Victordtesla24",
             "rect": {
               "x": 24,
-              "y": 691.6,
+              "y": 691,
               "w": 254,
               "h": 44,
               "left": 24,
               "right": 278,
-              "top": 691.6,
-              "bottom": 735.6
+              "top": 691,
+              "bottom": 735
             },
             "tooSmall": false
           },
@@ -2939,38 +2843,20 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 270.4,
-              "y": 33.2,
-              "w": 71.6,
-              "h": 19.5,
-              "left": 270.4,
-              "right": 342,
-              "top": 33.2,
-              "bottom": 52.7
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
             "name": "pipeline-gate",
             "rect": {
               "x": 24,
-              "y": -7528.4,
+              "y": -7528.9,
               "w": 312,
               "h": 1354.2,
               "left": 24,
               "right": 336,
-              "top": -7528.4,
-              "bottom": -6174.2
+              "top": -7528.9,
+              "bottom": -6174.7
             },
             "within": true
           },
@@ -2978,13 +2864,13 @@
             "name": "01aether-job-career-agent",
             "rect": {
               "x": 49,
-              "y": -7503.4,
+              "y": -7503.9,
               "w": 262,
               "h": 16.5,
               "left": 49,
               "right": 311,
-              "top": -7503.4,
-              "bottom": -7486.8
+              "top": -7503.9,
+              "bottom": -7487.4
             },
             "within": true
           },
@@ -2992,13 +2878,13 @@
             "name": "Aether",
             "rect": {
               "x": 49,
-              "y": -7470.8,
+              "y": -7471.4,
               "w": 262,
               "h": 27.6,
               "left": 49,
               "right": 311,
-              "top": -7470.8,
-              "bottom": -7443.2
+              "top": -7471.4,
+              "bottom": -7443.8
             },
             "within": true
           },
@@ -3006,13 +2892,13 @@
             "name": "pipeline-gate",
             "rect": {
               "x": 49,
-              "y": -7319.7,
+              "y": -7320.2,
               "w": 262,
               "h": 361.7,
               "left": 49,
               "right": 311,
-              "top": -7319.7,
-              "bottom": -6958
+              "top": -7320.2,
+              "bottom": -6958.5
             },
             "within": true
           },
@@ -3020,13 +2906,13 @@
             "name": "rebuild-loop",
             "rect": {
               "x": 24,
-              "y": -6158.2,
+              "y": -6158.7,
               "w": 312,
               "h": 1073.2,
               "left": 24,
               "right": 336,
-              "top": -6158.2,
-              "bottom": -5084.9
+              "top": -6158.7,
+              "bottom": -5085.5
             },
             "within": true
           },
@@ -3034,13 +2920,13 @@
             "name": "02abentertainment",
             "rect": {
               "x": 49,
-              "y": -6133.2,
+              "y": -6133.7,
               "w": 262,
               "h": 16.5,
               "left": 49,
               "right": 311,
-              "top": -6133.2,
-              "bottom": -6116.6
+              "top": -6133.7,
+              "bottom": -6117.2
             },
             "within": true
           },
@@ -3048,13 +2934,13 @@
             "name": "AB Entertainment",
             "rect": {
               "x": 49,
-              "y": -6100.6,
+              "y": -6101.2,
               "w": 262,
               "h": 27.6,
               "left": 49,
               "right": 311,
-              "top": -6100.6,
-              "bottom": -6073
+              "top": -6101.2,
+              "bottom": -6073.6
             },
             "within": true
           },
@@ -3062,13 +2948,13 @@
             "name": "rebuild-loop",
             "rect": {
               "x": 49,
-              "y": -5949.5,
+              "y": -5950,
               "w": 262,
               "h": 361.7,
               "left": 49,
               "right": 311,
-              "top": -5949.5,
-              "bottom": -5587.7
+              "top": -5950,
+              "bottom": -5588.3
             },
             "within": true
           },
@@ -3076,13 +2962,13 @@
             "name": "verifier-loop",
             "rect": {
               "x": 24,
-              "y": -5068.9,
+              "y": -5069.5,
               "w": 312,
               "h": 1088.6,
               "left": 24,
               "right": 336,
-              "top": -5068.9,
-              "bottom": -3980.3
+              "top": -5069.5,
+              "bottom": -3980.9
             },
             "within": true
           },
@@ -3090,13 +2976,13 @@
             "name": "03ralph-loop-infinite",
             "rect": {
               "x": 49,
-              "y": -5043.9,
+              "y": -5044.5,
               "w": 262,
               "h": 16.5,
               "left": 49,
               "right": 311,
-              "top": -5043.9,
-              "bottom": -5027.4
+              "top": -5044.5,
+              "bottom": -5027.9
             },
             "within": true
           },
@@ -3104,13 +2990,13 @@
             "name": "Ralph Loop",
             "rect": {
               "x": 49,
-              "y": -5011.4,
+              "y": -5011.9,
               "w": 262,
               "h": 27.6,
               "left": 49,
               "right": 311,
-              "top": -5011.4,
-              "bottom": -4983.8
+              "top": -5011.9,
+              "bottom": -4984.3
             },
             "within": true
           },
@@ -3118,13 +3004,13 @@
             "name": "verifier-loop",
             "rect": {
               "x": 49,
-              "y": -4860.2,
+              "y": -4860.8,
               "w": 262,
               "h": 384.2,
               "left": 49,
               "right": 311,
-              "top": -4860.2,
-              "bottom": -4476
+              "top": -4860.8,
+              "bottom": -4476.6
             },
             "within": true
           },
@@ -3132,13 +3018,13 @@
             "name": "reconstruction-bands",
             "rect": {
               "x": 24,
-              "y": -3964.3,
+              "y": -3964.9,
               "w": 312,
               "h": 1088.2,
               "left": 24,
               "right": 336,
-              "top": -3964.3,
-              "bottom": -2876.1
+              "top": -3964.9,
+              "bottom": -2876.6
             },
             "within": true
           },
@@ -3146,13 +3032,13 @@
             "name": "04prompt-reconstruction-engine",
             "rect": {
               "x": 49,
-              "y": -3939.3,
+              "y": -3939.9,
               "w": 262,
               "h": 16.5,
               "left": 49,
               "right": 311,
-              "top": -3939.3,
-              "bottom": -3922.8
+              "top": -3939.9,
+              "bottom": -3923.3
             },
             "within": true
           },
@@ -3160,13 +3046,13 @@
             "name": "Prompt Reconstruction",
             "rect": {
               "x": 49,
-              "y": -3906.8,
+              "y": -3907.3,
               "w": 262,
               "h": 27.6,
               "left": 49,
               "right": 311,
-              "top": -3906.8,
-              "bottom": -3879.2
+              "top": -3907.3,
+              "bottom": -3879.7
             },
             "within": true
           },
@@ -3174,13 +3060,13 @@
             "name": "reconstruction-bands",
             "rect": {
               "x": 49,
-              "y": -3755.6,
+              "y": -3756.2,
               "w": 262,
               "h": 376.7,
               "left": 49,
               "right": 311,
-              "top": -3755.6,
-              "bottom": -3378.9
+              "top": -3756.2,
+              "bottom": -3379.4
             },
             "within": true
           },
@@ -3188,13 +3074,13 @@
             "name": "diamond-chart",
             "rect": {
               "x": 24,
-              "y": -2860.1,
+              "y": -2860.6,
               "w": 312,
               "h": 1073.2,
               "left": 24,
               "right": 336,
-              "top": -2860.1,
-              "bottom": -1786.9
+              "top": -2860.6,
+              "bottom": -1787.4
             },
             "within": true
           },
@@ -3202,13 +3088,13 @@
             "name": "05jyotish-shastra",
             "rect": {
               "x": 49,
-              "y": -2835.1,
+              "y": -2835.6,
               "w": 262,
               "h": 16.5,
               "left": 49,
               "right": 311,
-              "top": -2835.1,
-              "bottom": -2818.5
+              "top": -2835.6,
+              "bottom": -2819.1
             },
             "within": true
           },
@@ -3216,13 +3102,13 @@
             "name": "Jyotish Shastra",
             "rect": {
               "x": 49,
-              "y": -2802.5,
+              "y": -2803.1,
               "w": 262,
               "h": 27.6,
               "left": 49,
               "right": 311,
-              "top": -2802.5,
-              "bottom": -2775
+              "top": -2803.1,
+              "bottom": -2775.5
             },
             "within": true
           },
@@ -3230,13 +3116,13 @@
             "name": "diamond-chart",
             "rect": {
               "x": 49,
-              "y": -2651.4,
+              "y": -2651.9,
               "w": 262,
               "h": 361.7,
               "left": 49,
               "right": 311,
-              "top": -2651.4,
-              "bottom": -2289.7
+              "top": -2651.9,
+              "bottom": -2290.2
             },
             "within": true
           },
@@ -3244,13 +3130,13 @@
             "name": "scroll-rail",
             "rect": {
               "x": 24,
-              "y": -1770.9,
+              "y": -1771.4,
               "w": 312,
               "h": 1046,
               "left": 24,
               "right": 336,
-              "top": -1770.9,
-              "bottom": -724.9
+              "top": -1771.4,
+              "bottom": -725.4
             },
             "within": true
           },
@@ -3258,13 +3144,13 @@
             "name": "06forgotten-mistory",
             "rect": {
               "x": 49,
-              "y": -1745.9,
+              "y": -1746.4,
               "w": 262,
               "h": 16.5,
               "left": 49,
               "right": 311,
-              "top": -1745.9,
-              "bottom": -1729.3
+              "top": -1746.4,
+              "bottom": -1729.9
             },
             "within": true
           },
@@ -3272,13 +3158,13 @@
             "name": "This site",
             "rect": {
               "x": 49,
-              "y": -1713.3,
+              "y": -1713.9,
               "w": 262,
               "h": 27.6,
               "left": 49,
               "right": 311,
-              "top": -1713.3,
-              "bottom": -1685.7
+              "top": -1713.9,
+              "bottom": -1686.3
             },
             "within": true
           },
@@ -3286,13 +3172,13 @@
             "name": "scroll-rail",
             "rect": {
               "x": 49,
-              "y": -1562.2,
+              "y": -1562.7,
               "w": 262,
               "h": 361.7,
               "left": 49,
               "right": 311,
-              "top": -1562.2,
-              "bottom": -1200.5
+              "top": -1562.7,
+              "bottom": -1201
             },
             "within": true
           }
@@ -4331,13 +4217,13 @@
             "href": "#hero",
             "rect": {
               "x": 12.3,
-              "y": 28,
+              "y": 37,
               "w": 103.4,
               "h": 30,
               "left": 12.3,
               "right": 115.7,
-              "top": 28,
-              "bottom": 58
+              "top": 37,
+              "bottom": 67
             },
             "tooSmall": false
           },
@@ -4348,15 +4234,15 @@
             "href": null,
             "rect": {
               "x": 298.9,
-              "y": 33.2,
+              "y": 28,
               "w": 71.6,
-              "h": 19.5,
+              "h": 48,
               "left": 298.9,
               "right": 370.5,
-              "top": 33.2,
-              "bottom": 52.7
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -4461,25 +4347,7 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 298.9,
-              "y": 33.2,
-              "w": 71.6,
-              "h": 19.5,
-              "left": 298.9,
-              "right": 370.5,
-              "top": 33.2,
-              "bottom": 52.7
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
@@ -4823,12 +4691,7 @@
         "canvases": 0,
         "webglScripts": 0
       },
-      "consoleErrors": [
-        {
-          "type": "warning",
-          "text": "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
-        }
-      ],
+      "consoleErrors": [],
       "failedRequests": []
     },
     {
@@ -5858,13 +5721,13 @@
             "href": "#hero",
             "rect": {
               "x": 31.2,
-              "y": 30.8,
+              "y": 35.3,
               "w": 113.4,
               "h": 33.3,
               "left": 31.2,
               "right": 144.6,
-              "top": 30.8,
-              "bottom": 64.1
+              "top": 35.3,
+              "bottom": 68.6
             },
             "tooSmall": false
           },
@@ -5875,13 +5738,13 @@
             "href": "/docs/Vik_Resume_Final.pdf",
             "rect": {
               "x": 498.2,
-              "y": 28,
+              "y": 32.6,
               "w": 136.3,
               "h": 38.9,
               "left": 498.2,
               "right": 634.4,
-              "top": 28,
-              "bottom": 66.9
+              "top": 32.6,
+              "bottom": 71.4
             },
             "tooSmall": false
           },
@@ -5892,15 +5755,15 @@
             "href": null,
             "rect": {
               "x": 652,
-              "y": 37,
+              "y": 28,
               "w": 77.6,
-              "h": 20.9,
+              "h": 48,
               "left": 652,
               "right": 729.6,
-              "top": 37,
-              "bottom": 57.9
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -6005,25 +5868,7 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 652,
-              "y": 37,
-              "w": 77.6,
-              "h": 20.9,
-              "left": 652,
-              "right": 729.6,
-              "top": 37,
-              "bottom": 57.9
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
@@ -7397,13 +7242,13 @@
             "href": "#hero",
             "rect": {
               "x": 44,
-              "y": 30.8,
+              "y": 35.3,
               "w": 113.4,
               "h": 33.3,
               "left": 44,
               "right": 157.4,
-              "top": 30.8,
-              "bottom": 64.1
+              "top": 35.3,
+              "bottom": 68.6
             },
             "tooSmall": false
           },
@@ -7414,13 +7259,13 @@
             "href": "/docs/Vik_Resume_Final.pdf",
             "rect": {
               "x": 741.3,
-              "y": 28,
+              "y": 32.5,
               "w": 136.3,
               "h": 39,
               "left": 741.3,
               "right": 877.6,
-              "top": 28,
-              "bottom": 67
+              "top": 32.5,
+              "bottom": 71.5
             },
             "tooSmall": false
           },
@@ -7431,15 +7276,15 @@
             "href": null,
             "rect": {
               "x": 895.2,
-              "y": 37,
+              "y": 28,
               "w": 77.6,
-              "h": 21,
+              "h": 48,
               "left": 895.2,
               "right": 972.8,
-              "top": 37,
-              "bottom": 58
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -7544,25 +7389,7 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 895.2,
-              "y": 37,
-              "w": 77.6,
-              "h": 21,
-              "left": 895.2,
-              "right": 972.8,
-              "top": 37,
-              "bottom": 58
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
@@ -8936,13 +8763,13 @@
             "href": "#hero",
             "rect": {
               "x": 56.8,
-              "y": 30.8,
+              "y": 35.3,
               "w": 113.4,
               "h": 33.3,
               "left": 56.8,
               "right": 170.2,
-              "top": 30.8,
-              "bottom": 64.1
+              "top": 35.3,
+              "bottom": 68.6
             },
             "tooSmall": false
           },
@@ -8953,13 +8780,13 @@
             "href": "/docs/Vik_Resume_Final.pdf",
             "rect": {
               "x": 984.5,
-              "y": 28,
+              "y": 32.5,
               "w": 136.3,
               "h": 39,
               "left": 984.5,
               "right": 1120.8,
-              "top": 28,
-              "bottom": 67
+              "top": 32.5,
+              "bottom": 71.5
             },
             "tooSmall": false
           },
@@ -8970,15 +8797,15 @@
             "href": null,
             "rect": {
               "x": 1138.4,
-              "y": 37,
+              "y": 28,
               "w": 77.6,
-              "h": 21,
+              "h": 48,
               "left": 1138.4,
               "right": 1216,
-              "top": 37,
-              "bottom": 58
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -9083,25 +8910,7 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 1138.4,
-              "y": 37,
-              "w": 77.6,
-              "h": 21,
-              "left": 1138.4,
-              "right": 1216,
-              "top": 37,
-              "bottom": 58
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
@@ -9474,7 +9283,7 @@
               "x": 96,
               "y": 530,
               "w": 608,
-              "h": 167
+              "h": 257
             },
             "opacity": "1",
             "transform": "none",
@@ -10025,7 +9834,7 @@
                 "y": -181.9,
                 "w": 720,
                 "h": 28.5,
-                "opacity": "0.999892",
+                "opacity": "0.941393",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1.5px",
@@ -10037,7 +9846,7 @@
                 "y": -153.4,
                 "w": 720,
                 "h": 19.5,
-                "opacity": "0.99966",
+                "opacity": "0.920514",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10049,7 +9858,7 @@
                 "y": -105.4,
                 "w": 720,
                 "h": 19.5,
-                "opacity": "0.999202",
+                "opacity": "0.892785",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10061,7 +9870,7 @@
                 "y": -105.4,
                 "w": 720,
                 "h": 67.5,
-                "opacity": "0.998413",
+                "opacity": "0.855792",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10073,7 +9882,7 @@
                 "y": -105.4,
                 "w": 720,
                 "h": 115.5,
-                "opacity": "0.997164",
+                "opacity": "0.80612",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10085,7 +9894,7 @@
                 "y": 52.1,
                 "w": 720,
                 "h": 6,
-                "opacity": "0.995295",
+                "opacity": "0.738934",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10097,7 +9906,7 @@
                 "y": -57.4,
                 "w": 720,
                 "h": 163.5,
-                "opacity": "0.992604",
+                "opacity": "0.64753",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-grey\")",
                 "strokeWidth": "1px",
@@ -10109,7 +9918,7 @@
                 "y": 52.1,
                 "w": 720,
                 "h": 54,
-                "opacity": "0.988837",
+                "opacity": "0.523238",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-grey\")",
                 "strokeWidth": "1px",
@@ -10121,7 +9930,7 @@
                 "y": 52.1,
                 "w": 720,
                 "h": 102,
-                "opacity": "0.983671",
+                "opacity": "0.3567",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10133,7 +9942,7 @@
                 "y": 196.1,
                 "w": 720,
                 "h": 6,
-                "opacity": "0.976686",
+                "opacity": "0.141806",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10145,7 +9954,7 @@
                 "y": 52.1,
                 "w": 720,
                 "h": 198,
-                "opacity": "0.967339",
+                "opacity": "0",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10157,7 +9966,7 @@
                 "y": 100.1,
                 "w": 720,
                 "h": 150,
-                "opacity": "0.954907",
+                "opacity": "0",
                 "fill": "none",
                 "stroke": "url(\"#bench-wire-gold\")",
                 "strokeWidth": "1px",
@@ -10475,13 +10284,13 @@
             "href": "#hero",
             "rect": {
               "x": 64.8,
-              "y": 30.8,
+              "y": 35.3,
               "w": 113.4,
               "h": 33.3,
               "left": 64.8,
               "right": 178.2,
-              "top": 30.8,
-              "bottom": 64.1
+              "top": 35.3,
+              "bottom": 68.6
             },
             "tooSmall": false
           },
@@ -10492,13 +10301,13 @@
             "href": "/docs/Vik_Resume_Final.pdf",
             "rect": {
               "x": 1136.5,
-              "y": 28,
+              "y": 32.5,
               "w": 136.3,
               "h": 39,
               "left": 1136.5,
               "right": 1272.8,
-              "top": 28,
-              "bottom": 67
+              "top": 32.5,
+              "bottom": 71.5
             },
             "tooSmall": false
           },
@@ -10509,15 +10318,15 @@
             "href": null,
             "rect": {
               "x": 1290.4,
-              "y": 37,
+              "y": 28,
               "w": 77.6,
-              "h": 21,
+              "h": 48,
               "left": 1290.4,
               "right": 1368,
-              "top": 37,
-              "bottom": 58
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -10622,25 +10431,7 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 1290.4,
-              "y": 37,
-              "w": 77.6,
-              "h": 21,
-              "left": 1290.4,
-              "right": 1368,
-              "top": 37,
-              "bottom": 58
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
@@ -11018,7 +10809,7 @@
               "x": 336,
               "y": 570,
               "w": 608,
-              "h": 257
+              "h": 167
             },
             "opacity": "1",
             "transform": "none",
@@ -12019,13 +11810,13 @@
             "href": "#hero",
             "rect": {
               "x": 88.8,
-              "y": 30.8,
+              "y": 35.3,
               "w": 113.4,
               "h": 33.3,
               "left": 88.8,
               "right": 202.2,
-              "top": 30.8,
-              "bottom": 64.1
+              "top": 35.3,
+              "bottom": 68.6
             },
             "tooSmall": false
           },
@@ -12036,13 +11827,13 @@
             "href": "/docs/Vik_Resume_Final.pdf",
             "rect": {
               "x": 1592.5,
-              "y": 28,
+              "y": 32.5,
               "w": 136.3,
               "h": 39,
               "left": 1592.5,
               "right": 1728.8,
-              "top": 28,
-              "bottom": 67
+              "top": 32.5,
+              "bottom": 71.5
             },
             "tooSmall": false
           },
@@ -12053,15 +11844,15 @@
             "href": null,
             "rect": {
               "x": 1746.4,
-              "y": 37,
+              "y": 28,
               "w": 77.6,
-              "h": 21,
+              "h": 48,
               "left": 1746.4,
               "right": 1824,
-              "top": 37,
-              "bottom": 58
+              "top": 28,
+              "bottom": 76
             },
-            "tooSmall": true
+            "tooSmall": false
           },
           {
             "tag": "A",
@@ -12166,25 +11957,7 @@
             "tooSmall": false
           }
         ],
-        "smallControls": [
-          {
-            "tag": "BUTTON",
-            "name": "Menu",
-            "testid": null,
-            "href": null,
-            "rect": {
-              "x": 1746.4,
-              "y": 37,
-              "w": 77.6,
-              "h": 21,
-              "left": 1746.4,
-              "right": 1824,
-              "top": 37,
-              "bottom": 58
-            },
-            "tooSmall": true
-          }
-        ],
+        "smallControls": [],
         "clippedText": [],
         "vitrineCards": [
           {
@@ -12562,11 +12335,6 @@
   },
   "consoleerrors": [
     {
-      "viewport": "390x844",
-      "type": "warning",
-      "text": "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
-    },
-    {
       "viewport": "1440x900",
       "type": "warning",
       "text": "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
@@ -12574,24 +12342,24 @@
   ],
   "criticalrequests": [],
   "screenshots": [
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_320x740_before_hero-observatory__20260929T072858Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_320x740_before_about-compass__20260929T072859Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_320x740_before_experience-explorer__20260929T072901Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_320x740_before_skills-trace__20260929T072913Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_320x740_before_mechanism-diagram__20260929T072917Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_320x740_before_listen-resonance__20260929T072918Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_390x844_before_hero-observatory__20260929T072934Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_390x844_before_about-compass__20260929T072935Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_390x844_before_experience-explorer__20260929T072938Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_390x844_before_skills-trace__20260929T072942Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_390x844_before_mechanism-diagram__20260929T072944Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_390x844_before_listen-resonance__20260929T072945Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_1440x900_before_hero-observatory__20260929T073005Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_1440x900_before_about-compass__20260929T073006Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_1440x900_before_experience-explorer__20260929T073007Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_1440x900_before_skills-trace__20260929T073008Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_1440x900_before_mechanism-diagram__20260929T073010Z.webp",
-    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_1440x900_before_listen-resonance__20260929T073011Z.webp"
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_320x740_before_hero-observatory__20260929T095210Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_320x740_before_about-compass__20260929T095211Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_320x740_before_experience-explorer__20260929T095212Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_320x740_before_skills-trace__20260929T095213Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_320x740_before_mechanism-diagram__20260929T095214Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_320x740_before_listen-resonance__20260929T095214Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_390x844_before_hero-observatory__20260929T095222Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_390x844_before_about-compass__20260929T095223Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_390x844_before_experience-explorer__20260929T095224Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_390x844_before_skills-trace__20260929T095225Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_390x844_before_mechanism-diagram__20260929T095226Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_390x844_before_listen-resonance__20260929T095227Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_1440x900_before_hero-observatory__20260929T095243Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_1440x900_before_about-compass__20260929T095244Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_1440x900_before_experience-explorer__20260929T095245Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_1440x900_before_skills-trace__20260929T095247Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_1440x900_before_mechanism-diagram__20260929T095248Z.webp",
+    "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_1440x900_before_listen-resonance__20260929T095248Z.webp"
   ],
   "nojs": [
     {
@@ -12934,7 +12702,7 @@
     }
   ],
   "delayedHydration": {
-    "shot": "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_delayedhydration_320_500ms_hero__20260929T073029Z.webp",
+    "shot": "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_delayedhydration_320_500ms_hero__20260929T095300Z.webp",
     "heroCopyComplete": true,
     "text": "Vikram\nDeshpande\n\nDelivery leadership · AI solutions architecture\n\nSixteen years leading delivery across government, banking and telecommunications, May 2010 to September 2026 — currently Scrum Master and Project Manager on the Australian Taxation Office's Payday Super program.\n\nSee the evidence\nDownload CV\n\nSESSION OBSERVATORY\n\nStart session sample\n\nBrowser-local sample only. No server, GPU, portfolio or tracking metrics are read or sent.\n\nNot sampled\n\nMELBOURNE, AUSTRALIA\n\n≈92%\n(Self-reported figure.)\nevidence effort removedATO Payday Super · 200+ SIT scenarios\n$5M+\n(Self-reported figure.)\nprogram portfolio ledANZ · 5+ squads, up to 40 practitioners\n10k+\n(Self-reported figure.)\ndevices at P95 < 200 msANZ · real-time telemetry platform\n\nself-reported, from my CV. Repository figures below are harvested and dated.\n\nOpen to delivery-leadership and AI engagements\nLinkedIn\nGitHub\nEmail\n\nPlay the portrait\n\nPhotograph · Melbourne",
     "hiddenIntro": 0
@@ -13202,30 +12970,30 @@
     "axeAudits": 2,
     "noJsViewports": 2,
     "crossengineSmokes": 0,
-    "findings": 8
+    "findings": 0
   },
   "verdict": {
-    "result": "fail",
+    "result": "pass",
     "evidence": [
       "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before.json",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_320x740_before_hero-observatory__20260929T072858Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_320x740_before_about-compass__20260929T072859Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_320x740_before_experience-explorer__20260929T072901Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_320x740_before_skills-trace__20260929T072913Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_320x740_before_mechanism-diagram__20260929T072917Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_320x740_before_listen-resonance__20260929T072918Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_390x844_before_hero-observatory__20260929T072934Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_390x844_before_about-compass__20260929T072935Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_390x844_before_experience-explorer__20260929T072938Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_390x844_before_skills-trace__20260929T072942Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_390x844_before_mechanism-diagram__20260929T072944Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_390x844_before_listen-resonance__20260929T072945Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_1440x900_before_hero-observatory__20260929T073005Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_1440x900_before_about-compass__20260929T073006Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_1440x900_before_experience-explorer__20260929T073007Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_1440x900_before_skills-trace__20260929T073008Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_1440x900_before_mechanism-diagram__20260929T073010Z.webp",
-      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_1440x900_before_listen-resonance__20260929T073011Z.webp"
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_320x740_before_hero-observatory__20260929T095210Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_320x740_before_about-compass__20260929T095211Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_320x740_before_experience-explorer__20260929T095212Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_320x740_before_skills-trace__20260929T095213Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_320x740_before_mechanism-diagram__20260929T095214Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_320x740_before_listen-resonance__20260929T095214Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_390x844_before_hero-observatory__20260929T095222Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_390x844_before_about-compass__20260929T095223Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_390x844_before_experience-explorer__20260929T095224Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_390x844_before_skills-trace__20260929T095225Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_390x844_before_mechanism-diagram__20260929T095226Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_390x844_before_listen-resonance__20260929T095227Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_hero_1440x900_before_hero-observatory__20260929T095243Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_about_1440x900_before_about-compass__20260929T095244Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_experience_1440x900_before_experience-explorer__20260929T095245Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_skills_1440x900_before_skills-trace__20260929T095247Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_vitrine_1440x900_before_mechanism-diagram__20260929T095248Z.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-visual/before_listen_1440x900_before_listen-resonance__20260929T095248Z.webp"
     ],
     "notes": "Evidence is measured by script against production. Images are compact element/fold WebP captures for independent visual review; this report does not certify image aesthetics without human inspection. Desktop rail offscreen was treated as intentional only when document-level overflow and mobile card containment remained reachable."
   }

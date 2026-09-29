@@ -1,0 +1,44 @@
+{
+  "agent_role": "matrix-tester",
+  "status": "done",
+  "findings": [
+    {
+      "id": "desktop-1-experience",
+      "severity": "medium",
+      "observed": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m681\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\nReceived: \u001b[31m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m30\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate",
+      "expected": "Experience controls update inspection hairline.",
+      "recipe": "desktop-1",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/matrix/desktop-1-experience-1.webp"
+      ]
+    },
+    {
+      "id": "desktop-2-experience",
+      "severity": "medium",
+      "observed": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m681\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\nReceived: \u001b[31m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m30\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate",
+      "expected": "Experience controls update inspection hairline.",
+      "recipe": "desktop-2",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/matrix/desktop-2-experience-2.webp"
+      ]
+    }
+  ],
+  "matrix": {
+    "passed": [
+      "desktop-1-hero",
+      "desktop-1-about",
+      "desktop-1-skills",
+      "desktop-1-vitrine",
+      "desktop-1-listen",
+      "desktop-2-hero",
+      "desktop-2-about",
+      "desktop-2-skills",
+      "desktop-2-vitrine",
+      "desktop-2-listen"
+    ],
+    "failed": [
+      "desktop-1-experience",
+      "desktop-2-experience"
+    ]
+  }
+}

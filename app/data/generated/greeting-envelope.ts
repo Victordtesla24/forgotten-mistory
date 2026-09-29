@@ -274,7 +274,7 @@ export const greetingEnvelope = {
     0.00064
   ],
   /** The greeting's length in seconds, from `ffprobe` on the MP3. */
-  durationSeconds: 26.284989,
+  durationSeconds: 26.331429,
   /** SHA-256 of the MP3 these buckets were read from; equals greetingAudioSha256. */
   sourceSha256: '2eb7788feb96c49f69bc1a705218ad9562221a582fd471a11964af79bba9ba2d',
 } as const;

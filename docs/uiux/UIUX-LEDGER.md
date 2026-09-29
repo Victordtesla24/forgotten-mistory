@@ -6,17 +6,23 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
-### C4 authoritative update — 2026-09-29T07:41Z
+### C4 authoritative update — 2026-09-29T10:15Z
 
-**Four repairs shipped and independently production-verified; broad adversarial campaign NOT complete.** Earlier authorization, missing-hash and unshipped statements below are historical, not current. Original Firebase hosting remains the target. Current deployed main: `82ffb9ee4909cf03037fc2c0ef0a4f9c9a3e3f04`; live meta `82ffb9ee`. PR #46 squash merged; preview Actions `36537399630` SUCCESS; live Actions `36537718878` SUCCESS. Source commit `ec3d135`. Proven existing gh CLI scope names: repo, workflow, read:org, gist. Unsafe legacy merge-all remains disabled; simplified ship pipeline unchanged; functions source unchanged.
+**Four repairs shipped; adversarial evaluation identified fresh regressions in accessibility and performance.** Earlier status is superseded. Current deployed main: `82ffb9ee4909cf03037fc2c0ef0a4f9c9a3e3f04`; live meta `82ffb9ee`. PR #46 merged. Cycle 4 adversarial evaluation is active.
 
-- Independent Test Author: five fresh failing production assertions (four root causes) in `evidence/c4-repairs/before.json`.
-- Separate Fixer: default-visible Experience bars with observer-triggered entry animation; Vitrine descendant arrow focus guard and aria-pressed; token-based Menu target minimum. Initial eager timer rejected by independent Reviewer, removed, final review approved (`review.json`, `review-final.json`).
-- Build succeeded; local **16/16**, Firebase preview **16/16**, independent Production QA live **16/16**: five repair cases plus eleven six-feature regression cases. `evidence/c4-repairs/production-qa.json` is closure authority. No full-suite or all-future-load reliability claim.
-- Production QA eight-width overflow check covered 320/360/390/414/768/1024/1280/1440, NOT 1920; zero document overflow, one h1, empty cookie string, zero captured console/page errors. Its `italicOrEmCount=0` queries element tags and is NOT a CSS-italic invariant measurement; do not treat as a failure or pass for the sole italic.
-- Wider pre-release visual sweep covered the prescribed seven widths plus320, 48 section before/after observations and two axe audits. Raw audits include harness false positives; no blanket PASS accepted. Separate visual reviewer looked at compressed six-section desktop/mobile sequences; reported readability/possible overlap concerns. Long-section downscaling and element-capture edges confound that review: recheck full-resolution viewport crops before changing facts/layout.
-- Extended state matrix made three desktop/two mobile repetitions plus adversarial paths, but Experience reset comparison included scroll-dependent top coordinates; these draft failures are not proven product defects. Adjudication remains incomplete. No new Lighthouse, full J1–J8, browser-engine completeness, leak census, or preview rollback drill claimed this cycle. Remaining precise work: validate draft assertions, actual Skills wire/text contrast at full-resolution, Listen dock hit-testing, all-entry animation lifecycle and post-release finite matrix.
-- Prior uncommitted work preserved in stash `preserve pre-adversarial flagship docs and generated outputs`. No daemon state changed.
+- **Status:** **OPEN**. Regressions in Performance and Accessibility (contrast) identified on production.
+- **Independent Test Author:** Fresh evaluative sweep covered 8 widths, 48 section checks, 7 adversarial matrix cases, and 2 Axe audits. 
+- **regressions:**
+    - **UX-P0-001: Hero CTA Contrast.** Axe-core serious violation on `.Hero_primaryAction` ("See the evidence"). Observed ratio 1.05:1 (#252525 on #292929). Likely animation-state or background-scrim collision.
+    - **UX-P1-006: Performance Regression.** Lighthouse mobile score 71 (threshold 90). TBT 690ms (threshold 200ms), LCP 3.3s (threshold 2.5s).
+- **Passes:**
+    - Visual consistency: 0 section-level layout findings across all target viewports.
+    - Adversarial Matrix: 7/7 passes (Deep Anchors, Warm Reload, Back/Forward Nav, Fast Scroll Lifecycle, Hidden Tab Resume, Resize Stress, Slow Network LCP).
+    - Repairs: All 4 repairs from PR46 (SSR bars, Vitrine focus, Stage state, Menu target) remain verified on live.
+- **Identiveness:** Main ↔ Live parity 100% (82ffb9ee).
+- **Evidence:** `evidence/c4-visual/before.json`, `tests/e2e/adversarial-matrix-20260929.spec.ts`, `lighthouse.json`.
+
+---
 
 
 ### Continuation evidence — 2026-09-29T04:26Z
