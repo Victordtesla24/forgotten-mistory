@@ -33,7 +33,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Hero', () => {
-  test('TC-HERO-01: the name is the page h1', async ({ page }) => {
+  test('TC-HERO-01: the name is the page h1 @smoke', async ({ page }) => {
     const name = page.locator(`${HERO} h1`);
     await expect(name).toBeVisible();
     await expect(name).toHaveText('Vikram Deshpande');
@@ -71,7 +71,7 @@ test.describe('Hero', () => {
     await expect(hero).toContainText('ANZ');
   });
 
-  test('TC-HERO-05: both actions are present and reachable', async ({ page }) => {
+  test('TC-HERO-05: both actions are present and reachable @smoke', async ({ page }) => {
     const evidence = page.locator(`${HERO} a[href="#experience"]`);
     await expect(evidence).toBeVisible();
     await expect(evidence).toContainText('See the evidence');
@@ -82,7 +82,7 @@ test.describe('Hero', () => {
     await expect(cv).toHaveAttribute('download', '');
   });
 
-  test('TC-HERO-06: recruiter channels are linked', async ({ page }) => {
+  test('TC-HERO-06: recruiter channels are linked @smoke', async ({ page }) => {
     await expect(
       page.locator(`${HERO} a[href*="linkedin.com/in/vikramd-profile"]`),
     ).toBeVisible();

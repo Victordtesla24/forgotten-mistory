@@ -117,7 +117,7 @@ test.describe('Skills', () => {
     await expect(live).toContainText('capabilities shown');
   });
 
-  test('TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against', async ({
+  test('TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against @smoke', async ({
     page,
   }) => {
     const footer = page.locator(`${SKILLS}`).getByText('Calibrated against');

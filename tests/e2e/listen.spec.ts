@@ -53,7 +53,7 @@ test.describe('Listen', () => {
     await expect(page.locator('iframe')).toHaveCount(0);
   });
 
-  test('TC-LISTEN-04: all four channels are real anchors matching the CV', async ({ page }) => {
+  test('TC-LISTEN-04: all four channels are real anchors matching the CV @smoke', async ({ page }) => {
     await expect(page.locator(`${LISTEN} a[href="mailto:sarkar.vikram@gmail.com"]`)).toBeVisible();
     await expect(page.locator(`${LISTEN} a[href="tel:+61433224556"]`)).toBeVisible();
     await expect(

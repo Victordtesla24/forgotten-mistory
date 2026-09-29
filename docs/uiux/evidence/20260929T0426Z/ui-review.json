@@ -1,0 +1,103 @@
+{
+  "agent_role": "reviewer",
+  "task_id": "UX-P1-001+UX-P2-002",
+  "status": "rejected",
+  "findings": [
+    {
+      "id": "REV-NAV-01",
+      "severity": "P1",
+      "file": "components/site/Navigation.tsx",
+      "location": "syncToLocationHash (lines ~163-171)",
+      "framework": "Nielsen #1 · TDD failure repro · §2.3 nav state",
+      "observed": "After initial mount initialHashSyncedRef.current is true, so the popstate/hashchange handler only refreshes pendingAnchorRef when pendingAnchorRef.current?.hash already equals the new hash. On a real browser Back from #about to #skills, pendingAnchorRef is either null (cleared once #about became visible) or still {#about,...}; neither matches #skills, so no smooth-scroll lock is registered. The subsequent scroll-restoration fires onScroll, chooseVisibleHash returns whatever section is momentarily near the target line during restore, setCurrentHash overwrites active to that section and replaceHash rewrites the URL, so aria-current for #skills never materialises. This matches the TDD failure log: `[chromium] tests/a11y/uiux-regressions.spec.ts:113 … browser Back restores Skills current state; Received 0` at both mobile and desktop.",
+      "expected": "popstate and hashchange must always arm pendingAnchorRef with the incoming hash (and refresh the deadline) whenever the hash is one of INTERNAL_NAV_LINKS, not only during the first sync. Guard should drop the `pendingAnchorRef.current?.hash === hash` clause so Back/Forward navigation locks the target through scroll restoration exactly like a click.",
+      "evidence": [
+        "components/site/Navigation.tsx diff lines ~163-171 (guard `if (!initialHashSyncedRef.current || pendingAnchorRef.current?.hash === hash)`)",
+        "/tmp/uiux-cont/tdd-before-final.log: 'browser Back restores Skills current state; exactly one current nav link … Received: 0' (desktop and mobile)",
+        "docs/uiux/evidence/20260929T0426Z/production-qa.json: UX-P2-002 aria-current count 0/7 post-navigation"
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "REV-NAV-02",
+      "severity": "P2",
+      "file": "components/site/Navigation.tsx",
+      "location": "onScroll pending branch (lines ~178-190)",
+      "framework": "§2.3 smooth-scroll target lock",
+      "observed": "While pendingAnchorRef is armed the handler returns before replaceHash, so the URL hash is not updated until the pending lock releases. If the user's smooth scroll never lands exactly on the section within 2200 ms (long pages, slow scroll on mobile) the URL will silently diverge from the highlighted token until the next scroll event after timeout. Also, once the lock clears mid-scroll on the same event, the code falls through and both setCurrentHash(visibleHash) and replaceHash(visibleHash) run using the current mid-flight visible section rather than the pending target, briefly flipping aria-current away from the anchored section.",
+      "expected": "When pending is active, still call replaceHash(pending.hash) so the address bar mirrors the locked token. When pending expires, prefer pending.hash for one more tick if visibleHash differs, or clear pending only after visibleHash has been stable for one frame.",
+      "evidence": [
+        "components/site/Navigation.tsx diff: pending branch returns before replaceHash and clears on first equality/timeout without hysteresis"
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "REV-NAV-03",
+      "severity": "P3",
+      "file": "components/site/Navigation.tsx",
+      "location": "chooseVisibleHash (lines ~72-90)",
+      "framework": "§2.3 active section accuracy",
+      "observed": "targetLine uses Math.min(innerHeight*0.42, 220) but the sticky nav chrome and section scroll-margin-top are not accounted for. On very tall sections the section top may sit far above targetLine while bottom is still on-screen, still winning by |top-target| distance, which is fine, but adjacent short sections can flip active state near boundaries because tie-breaking is purely nearest-top. Not test-blocking under the current spec expectations (Listen test polls |top|<160), but worth noting for edge sections like Contact/hero.",
+      "expected": "Prefer the section whose [top, bottom] straddles targetLine; fall back to nearest-top only when none straddles.",
+      "evidence": [
+        "components/site/Navigation.tsx diff chooseVisibleHash implementation"
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "REV-CSS-01",
+      "severity": "P3",
+      "file": "components/sections/Listen/Listen.module.css",
+      "location": ".ctaPrimary (lines ~332-353)",
+      "framework": "WCAG 1.4.10 Reflow · §9 no horizontal overflow",
+      "observed": "Fix adds box-sizing:border-box, width:fit-content, max-width:100%, min-width:0, overflow-wrap:anywhere, white-space:normal. This resolves the 320px right-edge overflow only if the CTA's ancestor chain also constrains width to the viewport; production QA measured body.scrollWidth 344 vs client 320 driven by this CTA at x=24 width=320 (right=344). max-width:100% will now clamp the CTA to its container width, which should eliminate the 24px overflow, but the CTA text 'Book a listening session' at fs-lede with padding var(--space-2) var(--space-4) may still measure wider than 272px min-content on a 320-24-24=272 track, forcing overflow-wrap:anywhere to break mid-word ('Book a listen-ing…'). That is legible but visually harsh. Not a spec violation, flagging as follow-up polish.",
+      "expected": "Confirm word-break behaviour is acceptable (or reduce padding / letter-spacing at ≤360px) before ship.",
+      "evidence": [
+        "components/sections/Listen/Listen.module.css diff",
+        "docs/uiux/evidence/20260929T0426Z/production-qa.json: UX-P1-001 scrollWidth 344 vs clientWidth 320"
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "REV-A11Y-01",
+      "severity": "P3",
+      "file": "app/globals.css",
+      "location": ".nav-link[aria-current=\"location\"] (lines 1025-1030)",
+      "framework": "WCAG 1.4.11 non-text contrast · §8 token discipline",
+      "observed": "Active state uses --mist-200 with 1px underline at 0.16em offset. Colour and underline are token-based and distinct from resting --mist-400. No non-token colour introduced. Contrast against nav backdrop not measured in this review but --mist-200 on frosted nav has been used elsewhere. No hover/focus regression because rule only targets aria-current='location'.",
+      "expected": "OK as source; production contrast to be re-verified by QA after deploy.",
+      "evidence": [
+        "app/globals.css diff lines 1025-1030"
+      ],
+      "status": "INFO"
+    },
+    {
+      "id": "REV-INV-01",
+      "severity": "info",
+      "file": "components/site/Navigation.tsx, components/sections/Listen/Listen.module.css, app/globals.css",
+      "location": "diff scope",
+      "framework": "§§2.3, 8, 9 invariants",
+      "observed": "Diff touches only nav active-state logic, Listen CTA reflow, and one CSS rule for aria-current. No caliper-state count change (still three), no italic-usage change, no self-scores added, no CV/résumé content edited, no privacy copy edited, no WebGL policy or renderer change. tsc --noEmit clean on full project.",
+      "expected": "Invariants preserved.",
+      "evidence": [
+        "git diff HEAD -- components/site/Navigation.tsx components/sections/Listen/Listen.module.css app/globals.css",
+        "npx tsc --noEmit -p tsconfig.json exit 0"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "patch": {
+    "files": [],
+    "summary": "no edits"
+  },
+  "verdict": {
+    "result": "fail",
+    "evidence": [
+      "/tmp/uiux-cont/tdd-before-final.log shows 3 failing UX-P1-001/UX-P2-002 tests under current patch (browser Back restores Skills; mobile+desktop nav active state; 320 CTA test also failing pre-fix)",
+      "docs/uiux/evidence/20260929T0426Z/production-qa.json:findings[UX-P1-001,UX-P2-002] both OPEN",
+      "components/site/Navigation.tsx diff: popstate/hashchange guard prevents smooth-scroll target lock on browser Back — root cause of REV-NAV-01",
+      "npx tsc --noEmit clean (source compiles) but source-level correctness gap remains"
+    ],
+    "notes": "Source review only; production verification NOT performed and is explicitly out of scope for this pass (out/ pre-fix, no clean build). Ship is NOT approved. Minimal blocker to unblock TDD: REV-NAV-01 — drop the `pendingAnchorRef.current?.hash === hash` clause in syncToLocationHash so popstate/hashchange always arm the pending lock for INTERNAL_NAV_LINKS; without this, browser Back UX-P2-002 will keep failing. REV-NAV-02 is a smaller correctness follow-up (URL/hash drift during long smooth scrolls). REV-CSS-01 and REV-A11Y-01 are polish-only and do not block. Invariants (one italic policy, three caliper states, no self scores, no content/CV changes, privacy, WebGL renderer) are preserved by this diff. Re-run tests/a11y/uiux-regressions.spec.ts after REV-NAV-01 is applied and rebuild before any production QA rerun."
+  }
+}

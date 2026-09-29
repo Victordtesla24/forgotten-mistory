@@ -82,7 +82,7 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await expect(toggle).toBeVisible();
   });
 
-  test('TC-BOT-02: Opening MiniVic reveals the panel and chat input', async ({ page }) => {
+  test('TC-BOT-02: Opening MiniVic reveals the panel and chat input @smoke', async ({ page }) => {
     await gotoHome(page);
 
     const { panel, input } = await openMiniVic(page);
@@ -100,7 +100,7 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await expect(panel.getByRole('button', { name: 'Biggest measured result' })).toBeVisible();
   });
 
-  test('TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state', async ({ page }) => {
+  test('TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state @smoke', async ({ page }) => {
     await gotoHome(page);
 
     const { toggle, panel, audio } = await openMiniVic(page);

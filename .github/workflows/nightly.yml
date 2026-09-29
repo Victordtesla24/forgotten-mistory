@@ -1,0 +1,107 @@
+name: nightly
+
+# Evidence, not a gate (UX-C0-001, D-005). Everything here is too long, too
+# flaky or too hardware-bound for the critical path in ship.yml:
+# the full Playwright suite, npm audit, and the GPU frame-rate harness.
+# Nothing in `ship` waits on any of these jobs and none of them deploys.
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  e2e-full:
+    name: full Playwright suite against the static export
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build:static
+      - name: Serve the export and run the whole suite
+        run: |
+          set -euo pipefail
+          python3 -m http.server 5599 --directory out --bind 127.0.0.1 &
+          for _ in $(seq 1 30); do curl -fsS http://127.0.0.1:5599/ >/dev/null 2>&1 && break; sleep 1; done
+          PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-full
+          path: playwright-report/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 14
+
+  audit:
+    name: npm audit (high and critical)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high
+
+  # ── Optional signal, on hardware GitHub does not rent ───────────────────────
+  # R2 asks for 60 fps and tests/perf/scene-framerate.spec.ts measures it, but
+  # every Linux host this project owns renders through SwiftShader. GPU-class
+  # confirmation (docs/architecture/SIGNATURE-SCENES-v1.md D7) needs the
+  # Owner's Mac, registered as a self-hosted runner and named by the repository
+  # variable E2E_RUNNER_LABELS — a JSON array of its labels.
+  #
+  # That Mac is offline most of the day. A self-hosted GPU job once sat in the
+  # deploy job's needs: chain and an absent runner left production stale, hence
+  # three independent guards — if: (never queued without the variable),
+  # continue-on-error (never turns the workflow red), timeout-minutes (never
+  # lingers) — and nothing in any workflow waits on it. All of this is enforced
+  # by tests/ci_pipeline.test.mjs.
+  scene-fps-gpu:
+    name: scene frame-rate on GPU hardware (optional signal)
+    if: ${{ vars.E2E_RUNNER_LABELS != '' }}
+    runs-on: "${{ fromJSON(vars.E2E_RUNNER_LABELS || '[\"self-hosted\"]') }}"
+    continue-on-error: true
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      # No --with-deps: that flag installs Linux system packages and fails on macOS.
+      - run: npx playwright install chromium
+      - run: npm run build:static
+      - name: Serve the export and measure every scene
+        run: |
+          set -euo pipefail
+          # A self-hosted runner is a shared machine; the port is discovered, not assumed.
+          port="$(python3 -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')"
+          echo "serving out/ on 127.0.0.1:$port"
+          python3 -m http.server "$port" --directory out --bind 127.0.0.1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$port/" >/dev/null 2>&1 && break; sleep 1; done
+          # One worker: a frame-pacing median is only meaningful when nothing else competes for the GPU.
+          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$port" \
+          SCENE_FPS_ARTEFACT_DIR="$GITHUB_WORKSPACE/artifacts/scene-fps" \
+            npx playwright test tests/perf/scene-framerate.spec.ts --workers=1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scene-fps-gpu
+          path: artifacts/scene-fps/
+          if-no-files-found: warn
+          retention-days: 14

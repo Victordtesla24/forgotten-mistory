@@ -1,0 +1,37 @@
+{
+  "role": "fixer",
+  "task_id": "UX-P1-001+UX-P2-002",
+  "status": "done",
+  "findings": [
+    {
+      "id": "UX-P1-001",
+      "section": "Listen CTA",
+      "observed": "Production QA and red regression showed the Listen engage CTA at 320px had a 344px right edge / document scrollWidth, caused by an intrinsic-width inline-flex pill with no max-width/wrapping constraints.",
+      "resolution": "Constrained the Listen engage CTA itself with border-box sizing, max-width:100%, min-width:0, normal wrapping, centered text, and overflow-wrap:anywhere; no page-level overflow hiding was added. Skills was not edited because the red run already had its Skills check passing."
+    },
+    {
+      "id": "UX-P2-002",
+      "section": "Navigation overlay",
+      "observed": "Production QA and red regression showed overlay nav links had no aria-current, and manual scrolling did not update the hash/current state.",
+      "resolution": "Added token-based active section state for internal nav anchors, exactly one aria-current=location in the overlay, click/hash/popstate synchronization, and manual-scroll hash replacement via history.replaceState(window.history.state, ...) without adding entries. Pending clicked/hash targets are protected during smooth-scroll settling so intermediate sections do not replace the requested target mid-scroll."
+    }
+  ],
+  "patch": {
+    "files": [
+      "components/sections/Listen/Listen.module.css",
+      "components/site/Navigation.tsx",
+      "app/globals.css"
+    ],
+    "summary": "Minimal implementation for UX-P1-001 and UX-P2-002: Listen CTA containment/wrapping at 320px; navigation active hash/current state and manual-scroll hash replacement while preserving real anchor hrefs and no-JS navigation; small aria-current CSS state only.",
+    "tests_added": []
+  },
+  "verdict": {
+    "result": "ready",
+    "evidence": [
+      "/tmp/uiux-cont/tdd-before-final.log completed red: 3 failed, 1 passed after refined tests; failures were Listen CTA overflow and nav current state on mobile/desktop; Skills check passed.",
+      "npx tsc --noEmit exited 0.",
+      "npx next lint --file components/site/Navigation.tsx --file components/sections/Listen/Listen.tsx exited 0 with 'No ESLint warnings or errors'."
+    ],
+    "notes": "No tests were edited by this fixer. No build, full browser suite, production deploy, git mutation, Skills edit, factual content change, italics/caliper/WebGL change, or overflow hiding was performed. Verdict is implementation readiness only; findings remain for reviewer/QA verification."
+  }
+}

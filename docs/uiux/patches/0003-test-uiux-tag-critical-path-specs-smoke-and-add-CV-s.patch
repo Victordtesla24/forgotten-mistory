@@ -1,0 +1,139 @@
+From 0d6301b63a91491419df6e97430f931c35df1131 Mon Sep 17 00:00:00 2001
+From: uiux-swarm-bot <uiux-swarm@users.noreply.github.com>
+Date: Tue, 29 Sep 2026 03:33:54 +0000
+Subject: [PATCH 3/4] test(uiux): tag critical-path specs @smoke and add CV
+ smoke (UX-C0-001)
+
+---
+ tests/e2e/chatbot.spec.ts    |  4 ++--
+ tests/e2e/hero.spec.ts       |  6 +++---
+ tests/e2e/listen.spec.ts     |  2 +-
+ tests/e2e/navigation.spec.ts |  2 +-
+ tests/e2e/skills.spec.ts     |  2 +-
+ tests/e2e/smoke-cv.spec.ts   | 22 ++++++++++++++++++++++
+ 6 files changed, 30 insertions(+), 8 deletions(-)
+ create mode 100644 tests/e2e/smoke-cv.spec.ts
+
+diff --git a/tests/e2e/chatbot.spec.ts b/tests/e2e/chatbot.spec.ts
+index 14b0e22..bd09c9d 100644
+--- a/tests/e2e/chatbot.spec.ts
++++ b/tests/e2e/chatbot.spec.ts
+@@ -82,7 +82,7 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
+     await expect(toggle).toBeVisible();
+   });
+ 
+-  test('TC-BOT-02: Opening MiniVic reveals the panel and chat input', async ({ page }) => {
++  test('TC-BOT-02: Opening MiniVic reveals the panel and chat input @smoke', async ({ page }) => {
+     await gotoHome(page);
+ 
+     const { panel, input } = await openMiniVic(page);
+@@ -100,7 +100,7 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
+     await expect(panel.getByRole('button', { name: 'Biggest measured result' })).toBeVisible();
+   });
+ 
+-  test('TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state', async ({ page }) => {
++  test('TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state @smoke', async ({ page }) => {
+     await gotoHome(page);
+ 
+     const { toggle, panel, audio } = await openMiniVic(page);
+diff --git a/tests/e2e/hero.spec.ts b/tests/e2e/hero.spec.ts
+index 34ba434..24469c6 100644
+--- a/tests/e2e/hero.spec.ts
++++ b/tests/e2e/hero.spec.ts
+@@ -33,7 +33,7 @@ test.beforeEach(async ({ page }) => {
+ });
+ 
+ test.describe('Hero', () => {
+-  test('TC-HERO-01: the name is the page h1', async ({ page }) => {
++  test('TC-HERO-01: the name is the page h1 @smoke', async ({ page }) => {
+     const name = page.locator(`${HERO} h1`);
+     await expect(name).toBeVisible();
+     await expect(name).toHaveText('Vikram Deshpande');
+@@ -71,7 +71,7 @@ test.describe('Hero', () => {
+     await expect(hero).toContainText('ANZ');
+   });
+ 
+-  test('TC-HERO-05: both actions are present and reachable', async ({ page }) => {
++  test('TC-HERO-05: both actions are present and reachable @smoke', async ({ page }) => {
+     const evidence = page.locator(`${HERO} a[href="#experience"]`);
+     await expect(evidence).toBeVisible();
+     await expect(evidence).toContainText('See the evidence');
+@@ -82,7 +82,7 @@ test.describe('Hero', () => {
+     await expect(cv).toHaveAttribute('download', '');
+   });
+ 
+-  test('TC-HERO-06: recruiter channels are linked', async ({ page }) => {
++  test('TC-HERO-06: recruiter channels are linked @smoke', async ({ page }) => {
+     await expect(
+       page.locator(`${HERO} a[href*="linkedin.com/in/vikramd-profile"]`),
+     ).toBeVisible();
+diff --git a/tests/e2e/listen.spec.ts b/tests/e2e/listen.spec.ts
+index cdcd311..49c7916 100644
+--- a/tests/e2e/listen.spec.ts
++++ b/tests/e2e/listen.spec.ts
+@@ -53,7 +53,7 @@ test.describe('Listen', () => {
+     await expect(page.locator('iframe')).toHaveCount(0);
+   });
+ 
+-  test('TC-LISTEN-04: all four channels are real anchors matching the CV', async ({ page }) => {
++  test('TC-LISTEN-04: all four channels are real anchors matching the CV @smoke', async ({ page }) => {
+     await expect(page.locator(`${LISTEN} a[href="mailto:sarkar.vikram@gmail.com"]`)).toBeVisible();
+     await expect(page.locator(`${LISTEN} a[href="tel:+61433224556"]`)).toBeVisible();
+     await expect(
+diff --git a/tests/e2e/navigation.spec.ts b/tests/e2e/navigation.spec.ts
+index e706563..4321f43 100644
+--- a/tests/e2e/navigation.spec.ts
++++ b/tests/e2e/navigation.spec.ts
+@@ -65,7 +65,7 @@ test.describe('E2E: Navigation', () => {
+     await expect(overlay.locator('.nav-link').first()).toBeVisible();
+   });
+ 
+-  test('TC-NAV-04: Every in-page nav anchor resolves to a section that exists', async ({ page }) => {
++  test('TC-NAV-04: Every in-page nav anchor resolves to a section that exists @smoke', async ({ page }) => {
+     await gotoHome(page);
+     await page.locator('.menu-toggle').click();
+     const links = page.locator('#site-nav-overlay .nav-link');
+diff --git a/tests/e2e/skills.spec.ts b/tests/e2e/skills.spec.ts
+index 65be594..39439c6 100644
+--- a/tests/e2e/skills.spec.ts
++++ b/tests/e2e/skills.spec.ts
+@@ -117,7 +117,7 @@ test.describe('Skills', () => {
+     await expect(live).toContainText('capabilities shown');
+   });
+ 
+-  test('TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against', async ({
++  test('TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against @smoke', async ({
+     page,
+   }) => {
+     const footer = page.locator(`${SKILLS}`).getByText('Calibrated against');
+diff --git a/tests/e2e/smoke-cv.spec.ts b/tests/e2e/smoke-cv.spec.ts
+new file mode 100644
+index 0000000..bd3668d
+--- /dev/null
++++ b/tests/e2e/smoke-cv.spec.ts
+@@ -0,0 +1,22 @@
++import { test, expect } from '@playwright/test';
++
++/**
++ * Smoke: the CV dossier is downloadable (J2, UX-C0-001).
++ *
++ * Runs against the static export in the `gates` job and against production in
++ * the `deploy` job (`--grep @smoke`). It checks the one artefact a recruiter
++ * leaves the page with: the PDF must answer 200 with a PDF content-type and a
++ * real body. The MD5 parity with the Skills fingerprint is asserted by
++ * TC-SKILL-08; this test only guards the wire.
++ *
++ * Note: python3's http.server (the CI static server) labels .pdf as
++ * application/pdf too, so the content-type assertion holds on both hosts.
++ */
++test('TC-SMOKE-CV-01: the CV dossier answers 200 as a PDF @smoke', async ({ request }) => {
++  const response = await request.get('/docs/Vik_Resume_Final.pdf');
++  expect(response.status()).toBe(200);
++  expect(response.headers()['content-type'] ?? '').toContain('application/pdf');
++  const body = await response.body();
++  expect(body.byteLength).toBeGreaterThan(10_000);
++  expect(body.subarray(0, 5).toString('latin1')).toBe('%PDF-');
++});
+-- 
+2.43.0
+

@@ -1,0 +1,934 @@
+{
+  "agent_role": "qa",
+  "task_id": "production-baseline",
+  "status": "done",
+  "findings": [
+    {
+      "id": "UX-P1-001",
+      "section": "Global reflow / Listen CTA",
+      "viewport": "320x800",
+      "framework": "WCAG 1.4.10 Reflow · §7 J5 · §9 Horizontal overflow",
+      "observed": "Production / at 320x800 measured documentElement.scrollWidth 344 vs clientWidth 320; body.scrollWidth 344. Visible Listen primary CTA bounds x=24, width=320, right edge 344.",
+      "expected": "No horizontal overflow at §3.2/QA viewport widths; scrollWidth must equal clientWidth.",
+      "evidence": [
+        "docs/uiux/evidence/20260929T0426Z/production-qa.json:measurements.viewports[320x800]",
+        "/tmp/uiux-cont/raw-production-qa.json: 320x800 scrollWidth 344, clientWidth 320"
+      ],
+      "severity": "P1",
+      "rice": {
+        "reach": 4,
+        "impact": 4,
+        "confidence": 5,
+        "effort": 2,
+        "score": 40
+      },
+      "status": "OPEN"
+    },
+    {
+      "id": "UX-P2-002",
+      "section": "Navigation overlay active state and scroll/hash sync",
+      "viewport": "390x844 and 1440x900",
+      "framework": "Nielsen #1 system status · §7 J8 · §9 dead/ambiguous controls",
+      "observed": "After real .menu-toggle click and #skills overlay link click, URL hash became #skills and menu closed at both 390 and 1440, but aria-current count was 0/7 at 390 and 0/7 at 1440. After manual scroll to #listen and reopening the menu, URL hash remained #skills at 390 and #skills at 1440 while Listen heading was visible (top 232.86 / 240.91); #listen link still had aria-current null.",
+      "expected": "Every nav anchor scrolls to a real section, updates URL hash, and exposes the correct active state including after manual scroll and mobile menu reopen.",
+      "evidence": [
+        "docs/uiux/evidence/20260929T0426Z/production-qa.json:measurements.nav",
+        "/tmp/uiux-cont/raw-production-qa.json: nav 390 afterListenReopen hash #skills, menuExpanded true",
+        "/tmp/uiux-cont/raw-production-qa.json: nav 1440 afterListenReopen hash #skills, menuExpanded true"
+      ],
+      "severity": "P2",
+      "rice": {
+        "reach": 3,
+        "impact": 3,
+        "confidence": 5,
+        "effort": 2,
+        "score": 22.5
+      },
+      "status": "OPEN"
+    },
+    {
+      "id": "QA-BUILD-COMMIT-META-001",
+      "section": "Production build stamp / parity signal",
+      "viewport": "response/body",
+      "framework": "§9 Main ↔ live build-hash parity after deploy",
+      "observed": "HTTP GET / returned 200 (text/html; charset=utf-8, 93828 bytes), but no build-commit/x-build-commit/commit meta tag or body build-commit pattern was found; hydrated DOM metaBuildCommit was null at all checked viewports.",
+      "expected": "A production build-commit signal is available for parity checks.",
+      "evidence": [
+        "docs/uiux/evidence/20260929T0426Z/production-qa.json:measurements.http",
+        "docs/uiux/evidence/20260929T0426Z/production-qa.json:measurements.viewports[*].metaBuildCommit"
+      ],
+      "severity": "P2",
+      "rice": {
+        "reach": 2,
+        "impact": 3,
+        "confidence": 5,
+        "effort": 1,
+        "score": 30
+      },
+      "status": "OPEN"
+    }
+  ],
+  "patch": {
+    "branch": "",
+    "files": [],
+    "summary": "No implementation changes; production QA evidence only.",
+    "tests_added": []
+  },
+  "verdict": {
+    "result": "fail",
+    "evidence": [
+      "Production origin https://forgotten-mistory.web.app checked with Playwright Chromium channel chrome from 2026-09-29T04:27:41.492Z to 2026-09-29T04:28:19.209Z.",
+      "HTTP / status 200; meta/body build commit not found (null/null).",
+      "Reflow widths: 360x740: scrollWidth 360, clientWidth 360; 390x844: scrollWidth 390, clientWidth 390; 768x1024: scrollWidth 768, clientWidth 768; 1024x768: scrollWidth 1024, clientWidth 1024; 1280x800: scrollWidth 1280, clientWidth 1280; 1440x900: scrollWidth 1440, clientWidth 1440; 1920x1080: scrollWidth 1920, clientWidth 1920; 320x800: scrollWidth 344, clientWidth 320.",
+      "h1 count was 1 at every checked viewport: 360x740=1, 390x844=1, 768x1024=1, 1024x768=1, 1280x800=1, 1440x900=1, 1920x1080=1, 320x800=1.",
+      "Console/page errors on viewport load: 360x740: consoleErrors 0, pageErrors 0; 390x844: consoleErrors 0, pageErrors 0; 768x1024: consoleErrors 0, pageErrors 0; 1024x768: consoleErrors 0, pageErrors 0; 1280x800: consoleErrors 0, pageErrors 0; 1440x900: consoleErrors 0, pageErrors 0; 1920x1080: consoleErrors 0, pageErrors 0; 320x800: consoleErrors 0, pageErrors 0. Nav interaction console errors: 390x844: 0, 1440x900: 0.",
+      "Axe via @axe-core/playwright: 390x844: 0 serious/critical (0 total); 1440x900: 0 serious/critical (0 total).",
+      "CV PDF 200, content-type application/pdf, 157615 bytes, MD5 16b856c0f3f4ec0d801fdde6d084452c."
+    ],
+    "notes": "This is a production baseline only, not post-deploy QA. Findings remain OPEN. No manual screen-reader audit, Lighthouse, complete browser suite, or J1-J8 completion is claimed."
+  },
+  "measurements": {
+    "startedAt": "2026-09-29T04:27:41.492Z",
+    "origin": "https://forgotten-mistory.web.app",
+    "http": {
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bodyBytes": 93828,
+      "metaBuildCommit": null,
+      "bodyBuildCommit": null
+    },
+    "viewports": [
+      {
+        "viewport": "360x740",
+        "httpStatus": 200,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "bodyScrollWidth": 360,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 528.48,
+              "width": 320,
+              "height": 75.19
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 635.67,
+              "width": 224.48,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 711.67,
+              "width": 146.41,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "viewport": "390x844",
+        "httpStatus": 200,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 552.58,
+              "width": 342,
+              "height": 75.19
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 659.77,
+              "width": 224.48,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 735.77,
+              "width": 146.41,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "linkedin.com/in/vikramd-profile",
+            "href": "https://www.linkedin.com/in/vikramd-profile",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 811.77,
+              "width": 302.56,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "viewport": "768x1024",
+        "httpStatus": 200,
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "bodyScrollWidth": 768,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 38.39,
+              "y": 616.58,
+              "width": 378.09,
+              "height": 55.58
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 38.39,
+              "y": 704.16,
+              "width": 245.09,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 400,
+              "y": 704.16,
+              "width": 159.84,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "linkedin.com/in/vikramd-profile",
+            "href": "https://www.linkedin.com/in/vikramd-profile",
+            "visible": true,
+            "bounds": {
+              "x": 38.39,
+              "y": 780.16,
+              "width": 329.61,
+              "height": 63.16
+            }
+          },
+          {
+            "tag": "a",
+            "text": "github.com/Victordtesla24",
+            "href": "https://github.com/Victordtesla24",
+            "visible": true,
+            "bounds": {
+              "x": 400,
+              "y": 780.16,
+              "width": 266.41,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "viewport": "1024x768",
+        "httpStatus": 200,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "bodyScrollWidth": 1024,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 51.19,
+              "y": 569.95,
+              "width": 387.64,
+              "height": 56.3
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 51.19,
+              "y": 658.25,
+              "width": 252.55,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 528,
+              "y": 658.25,
+              "width": 164.7,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "linkedin.com/in/vikramd-profile",
+            "href": "https://www.linkedin.com/in/vikramd-profile",
+            "visible": true,
+            "bounds": {
+              "x": 51.19,
+              "y": 734.25,
+              "width": 340.39,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "github.com/Victordtesla24",
+            "href": "https://github.com/Victordtesla24",
+            "visible": true,
+            "bounds": {
+              "x": 528,
+              "y": 734.25,
+              "width": 274.5,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "viewport": "1280x800",
+        "httpStatus": 200,
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "bodyScrollWidth": 1280,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 64,
+              "y": 587.09,
+              "width": 387.64,
+              "height": 56.3
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 64,
+              "y": 675.39,
+              "width": 252.55,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 458.66,
+              "y": 675.39,
+              "width": 164.7,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "linkedin.com/in/vikramd-profile",
+            "href": "https://www.linkedin.com/in/vikramd-profile",
+            "visible": true,
+            "bounds": {
+              "x": 853.33,
+              "y": 675.39,
+              "width": 340.39,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "github.com/Victordtesla24",
+            "href": "https://github.com/Victordtesla24",
+            "visible": true,
+            "bounds": {
+              "x": 64,
+              "y": 751.39,
+              "width": 274.5,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "viewport": "1440x900",
+        "httpStatus": 200,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 96,
+              "y": 614.22,
+              "width": 387.64,
+              "height": 56.3
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 96,
+              "y": 702.52,
+              "width": 252.55,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 522.66,
+              "y": 702.52,
+              "width": 164.7,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "linkedin.com/in/vikramd-profile",
+            "href": "https://www.linkedin.com/in/vikramd-profile",
+            "visible": true,
+            "bounds": {
+              "x": 949.33,
+              "y": 702.52,
+              "width": 340.39,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "github.com/Victordtesla24",
+            "href": "https://github.com/Victordtesla24",
+            "visible": true,
+            "bounds": {
+              "x": 96,
+              "y": 778.52,
+              "width": 274.5,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "viewport": "1920x1080",
+        "httpStatus": 200,
+        "scrollWidth": 1920,
+        "clientWidth": 1920,
+        "bodyScrollWidth": 1920,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 336,
+              "y": 658.42,
+              "width": 387.64,
+              "height": 56.3
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 336,
+              "y": 746.72,
+              "width": 252.55,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 762.66,
+              "y": 746.72,
+              "width": 164.7,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "linkedin.com/in/vikramd-profile",
+            "href": "https://www.linkedin.com/in/vikramd-profile",
+            "visible": true,
+            "bounds": {
+              "x": 1189.33,
+              "y": 746.72,
+              "width": 340.39,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "github.com/Victordtesla24",
+            "href": "https://github.com/Victordtesla24",
+            "visible": true,
+            "bounds": {
+              "x": 336,
+              "y": 822.72,
+              "width": 274.5,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      },
+      {
+        "viewport": "320x800",
+        "httpStatus": 200,
+        "scrollWidth": 344,
+        "clientWidth": 320,
+        "bodyScrollWidth": 344,
+        "h1Count": 1,
+        "h1Texts": [
+          "Vikram Deshpande"
+        ],
+        "urlHash": "",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "metaBuildCommit": null,
+        "listenCtas": [
+          {
+            "tag": "a",
+            "text": "Email a 20-minute-call agenda",
+            "href": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 568.08,
+              "width": 320,
+              "height": 75.19
+            }
+          },
+          {
+            "tag": "a",
+            "text": "sarkar.vikram@gmail.com",
+            "href": "mailto:sarkar.vikram@gmail.com",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 675.27,
+              "width": 224.48,
+              "height": 44
+            }
+          },
+          {
+            "tag": "a",
+            "text": "+61 433 224 556",
+            "href": "tel:+61433224556",
+            "visible": true,
+            "bounds": {
+              "x": 24,
+              "y": 751.27,
+              "width": 146.41,
+              "height": 44
+            }
+          }
+        ],
+        "consoleErrors": [],
+        "pageErrors": []
+      }
+    ],
+    "nav": [
+      {
+        "viewport": "390x844",
+        "before": {
+          "hash": "",
+          "menuExpanded": "false"
+        },
+        "afterSkills": {
+          "hash": "#skills",
+          "menuExpanded": "false",
+          "overlayOpenClass": false,
+          "overlayAriaHidden": "true",
+          "skillsHeading": {
+            "text": "Calibration card",
+            "top": 232.64,
+            "bottom": 266.23
+          },
+          "linkStates": [
+            {
+              "href": "#hero",
+              "text": "VIKRAM.",
+              "ariaCurrent": null,
+              "className": "logo"
+            },
+            {
+              "href": "#hero",
+              "text": "Home",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#about",
+              "text": "About",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#experience",
+              "text": "Experience",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#skills",
+              "text": "Skills",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#vitrine",
+              "text": "Keeping me busy",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#listen",
+              "text": "Feedback & coffee",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            }
+          ]
+        },
+        "afterListenReopen": {
+          "hash": "#skills",
+          "scrollY": 16103,
+          "menuExpanded": "true",
+          "overlayOpenClass": true,
+          "overlayAriaHidden": "false",
+          "listenHeading": {
+            "text": "Feedback & coffee?",
+            "top": 232.86,
+            "bottom": 266.45
+          },
+          "linkStates": [
+            {
+              "href": "#hero",
+              "text": "VIKRAM.",
+              "ariaCurrent": null,
+              "className": "logo"
+            },
+            {
+              "href": "#hero",
+              "text": "Home",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#about",
+              "text": "About",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#experience",
+              "text": "Experience",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#skills",
+              "text": "Skills",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#vitrine",
+              "text": "Keeping me busy",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#listen",
+              "text": "Feedback & coffee",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            }
+          ]
+        },
+        "consoleErrors": []
+      },
+      {
+        "viewport": "1440x900",
+        "before": {
+          "hash": "",
+          "menuExpanded": "false"
+        },
+        "afterSkills": {
+          "hash": "#skills",
+          "menuExpanded": "false",
+          "overlayOpenClass": false,
+          "overlayAriaHidden": "true",
+          "skillsHeading": {
+            "text": "Calibration card",
+            "top": 240.83,
+            "bottom": 297.95
+          },
+          "linkStates": [
+            {
+              "href": "#hero",
+              "text": "VIKRAM.",
+              "ariaCurrent": null,
+              "className": "logo"
+            },
+            {
+              "href": "#hero",
+              "text": "Home",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#about",
+              "text": "About",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#experience",
+              "text": "Experience",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#skills",
+              "text": "Skills",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#vitrine",
+              "text": "Keeping me busy",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#listen",
+              "text": "Feedback & coffee",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            }
+          ]
+        },
+        "afterListenReopen": {
+          "hash": "#skills",
+          "scrollY": 11084,
+          "menuExpanded": "true",
+          "overlayOpenClass": true,
+          "overlayAriaHidden": "false",
+          "listenHeading": {
+            "text": "Feedback & coffee?",
+            "top": 240.91,
+            "bottom": 298.03
+          },
+          "linkStates": [
+            {
+              "href": "#hero",
+              "text": "VIKRAM.",
+              "ariaCurrent": null,
+              "className": "logo"
+            },
+            {
+              "href": "#hero",
+              "text": "Home",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#about",
+              "text": "About",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#experience",
+              "text": "Experience",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#skills",
+              "text": "Skills",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#vitrine",
+              "text": "Keeping me busy",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            },
+            {
+              "href": "#listen",
+              "text": "Feedback & coffee",
+              "ariaCurrent": null,
+              "className": "nav-link"
+            }
+          ]
+        },
+        "consoleErrors": []
+      }
+    ],
+    "axe": [
+      {
+        "viewport": "390x844",
+        "violationCount": 0,
+        "seriousCriticalCount": 0,
+        "violations": []
+      },
+      {
+        "viewport": "1440x900",
+        "violationCount": 0,
+        "seriousCriticalCount": 0,
+        "violations": []
+      }
+    ],
+    "cvPdf": {
+      "url": "https://forgotten-mistory.web.app/docs/Vik_Resume_Final.pdf",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 157615,
+      "md5": "16b856c0f3f4ec0d801fdde6d084452c"
+    },
+    "finishedAt": "2026-09-29T04:28:19.209Z"
+  },
+  "spec_sections_read": {
+    "§2.3": "Design-system invariants reviewed: no content/fact changes, privacy/static constraints, caliper/typography/WebGL policy; no implementation touched.",
+    "§7": "Persona journey acceptance reviewed; this task only exercised narrow J5/J8-related checks and CV/PDF subset, not all journeys.",
+    "§9": "Quality thresholds reviewed; measured console errors, axe serious/critical, horizontal overflow, build-commit parity signal subset."
+  }
+}

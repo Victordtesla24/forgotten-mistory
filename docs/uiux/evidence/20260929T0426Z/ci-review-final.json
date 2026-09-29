@@ -1,0 +1,31 @@
+{
+  "agent_role": "reviewer",
+  "task_id": "UX-C0-001",
+  "status": "done",
+  "findings": [
+    {"id": "R1-fixed", "severity": "P0-blocker", "resolved": true, "evidence": "ship.yml preview (L124-129) and deploy (~L200-211) identity checks now use `node - <<'NODE' ... NODE` single-quoted heredocs; no bash expansion of ${id.commit}/${process.env.GITHUB_SHA}. New contract test `never wraps node template-literal identity checks in double quotes` asserts the pattern and requires the heredoc form in both jobs."},
+    {"id": "R2-fixed", "severity": "P0-blocker", "resolved": true, "evidence": "Rollback step opens with `git checkout -- firebase.json` before `git revert --no-edit HEAD`, restoring the jq-mutated tracked file so revert cannot conflict. Ordering enforced by test assertion `indexOf('git checkout -- firebase.json') < indexOf('git revert --no-edit HEAD')`. Additionally `git fetch origin main` + `remote_head == GITHUB_SHA` guard refuses stale rollback."},
+    {"id": "R3-fixed", "severity": "P0-blocker", "resolved": true, "evidence": "Rollback re-runs full gates on the reverted source (npm ci, functions npm ci, tsc, lint, static audit, node --test, build:static, python3 http.server + full playwright, LHCI) BEFORE `firebase-tools@13 deploy --only hosting`; then bounded 12x10s poll sets explicit parity_ok=true/false with hard `[ \"$parity_ok\" = true ]` assertion, followed by `PLAYWRIGHT_BASE_URL=\"$PROD_URL\" npx playwright test --grep @smoke`. Revert-of-revert guard preserved (`^Revert ` grep exits 1)."},
+    {"id": "R4-fixed", "severity": "P1", "resolved": true, "evidence": "tests/ci_pipeline.test.mjs new suite `every run: block is shell-safe` (a) spawns `bash -n` on every extracted run: step across ship.yml and nightly.yml (with GitHub expressions replaced by a placeholder so bash parses them), (b) regex-forbids `node -e \"...`...${...}...`\"` double-quoted template-literal pattern in both files, (c) requires quoted heredoc identity check in preview and deploy."},
+    {"id": "R5-fixed", "severity": "P1", "resolved": true, "evidence": "Rollback contract in `smokes production...and rolls back` asserts git checkout firebase.json ordering, git fetch origin main, remote_head != GITHUB_SHA stale guard, full gate chain, parity_ok flag pattern with hard assertion, post-parity @smoke against $PROD_URL, EXIT trap covers cred_file and tmp, no --force / push -f, revert-of-revert guard."},
+    {"id": "R6-info", "severity": "info", "resolved": true, "evidence": "Rollback still deploys in-run via firebase-tools rather than relying on GITHUB_TOKEN push retrigger. Same footgun avoided; branch protection remains an ops-doc concern only."},
+    {"id": "concurrency-and-cron", "severity": "info", "resolved": true, "evidence": "concurrency group `ship-${{ github.ref }}` with cancel-in-progress:false unchanged; cron `5 * * * *` hourly cap enforced by contract test."},
+    {"id": "legacy-deploy-yml", "severity": "info", "resolved": true, "evidence": "`.github/workflows/` contains only nightly.yml and ship.yml. Contract test explicitly asserts absence of deploy.yml. No enabling of the old dangerous workflow required or performed."},
+    {"id": "no-quarantine", "severity": "info", "resolved": true, "evidence": "Reviewer scope: no test quarantine markers introduced; contract test suite counts 34/34 pass locally."},
+    {"id": "unverified-production", "severity": "info", "resolved": false, "evidence": "No production deploy or live rollback was executed by the reviewer; production status not asserted. Release author's report also states production was not exercised. This is a scope boundary, not a defect in the workflow file."}
+  ],
+  "patch": {"files": [], "summary": "No edits"},
+  "verdict": {
+    "result": "pass",
+    "evidence": [
+      "Local: `node --test tests/ci_pipeline.test.mjs` -> exit 0, tests 34, suites 8, pass 34, fail 0, duration_ms 543.",
+      "ship.yml preview step (L124-131) and deploy step Use-the-gated-export (L200-215) both use `node - <<'NODE' ... NODE` heredoc with single-quoted delimiter — bash performs no expansion; original R1 substitution bug eliminated at source, and asserted by new contract.",
+      "Rollback step: `git checkout -- firebase.json` precedes `git revert --no-edit HEAD` (R2 fixed); `git fetch origin main` + `[ \"$remote_head\" != \"$GITHUB_SHA\" ]` refuses stale revert; full gates (tsc, lint, static audit, node tests, build:static, full Playwright on 127.0.0.1:$STATIC_PORT, LHCI) run BEFORE `firebase-tools@13 deploy --only hosting`; then parity_ok bool with hard assertion and `PLAYWRIGHT_BASE_URL=\"$PROD_URL\" npx playwright test --grep @smoke` (R3 fixed).",
+      "Contract test suite `every run: block is shell-safe` runs bash -n on every extracted step and forbids double-quoted node -e template literals in both workflows (R4 fixed).",
+      "Rollback contract enumerates checkout-firebase-ordering, fetch origin main, stale-guard, full gate chain, parity_ok pattern, post-parity @smoke, trapped credential cleanup, no --force, revert-of-revert guard (R5 fixed).",
+      "No race remaining: concurrency per ref with cancel-in-progress:false; heartbeat skip step prevents rollback on no-op runs (`steps.skip.outputs.skip != 'true'` on rollback if:).",
+      "Dirty-build risk mitigated: rollback rebuilds after `git checkout -- firebase.json` so build_stamp sees a clean tracked tree and emits build-commit meta; jq mutation of firebase.json now occurs AFTER build in the rollback path, before deploy only."
+    ],
+    "notes": "All three P0 blockers (R1 shell quoting, R2 dirty-tree revert, R3 ungated rollback) and both matching P1 contract-test gaps (R4, R5) are resolved in the source. Contract suite passes 34/34 locally; release author reports 117/117 across the four node-test files. Production has NOT been verified by the reviewer and no such claim is made — CI must run to establish live behavior. Approving the source; a live post-merge deploy plus a deliberate rollback drill remain recommended follow-ups, outside this review's scope."
+  }
+}
