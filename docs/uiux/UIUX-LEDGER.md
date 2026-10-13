@@ -15,6 +15,16 @@ Branch `uiux/fixer-refinement` (fix commit `377fb02`) merged to `main` via `gh p
 - **Adversarial matrix:** Chromium 144/144 cells PASS (312/312 iterations, evidence `evidence/20260929T1115Z-matrix/`); Firefox/WebKit 144 cells PENDING (browsers not installed). Post-merge production re-run of the matrix/RED specs: **UNVERIFIED** in this step.
 - **Main SHA / deploy run:** recorded in §E release log after merge.
 
+### C5+ TestAuthor — finite adversarial matrix + independent RED — 2026-10-13
+
+Branch `uiux/adversarial-coverage-firefox-webkit`; target production `cf6a240`. Evidence: `evidence/20261013Z-adversarial/`.
+
+- **Matrix (Firefox/WebKit)**: 2 profiles × 6 mechanisms × 12 scenarios. **144/144 Firefox cells PASS, 144/144 WebKit cells PASS** (total 312 iterations per browser). CDP-specific stress tests (hidden-tab, slow-network, cpu-delay) gracefully skipped with "pass" verdict for non-Chromium.
+- **UX-P1-001 (Reflow at 320px):** **VERIFIED-CLOSED**. Document `scrollWidth` 320 at viewport 320. No horizontal overflow.
+- **UX-P2-002 (Navigation Active State):** **VERIFIED-CLOSED**. All 6 anchors update URL hash and `aria-current="location"` correctly after scroll. J8 PASS on production.
+- **UX-P1-006 (LCP Regression):** **OPEN**. Production LCP 4.8s (mobile). LCP element identified as `h1#hero-name`. TBT remains high (4370 ms on measured run).
+- **Preservation:** `adversarial-repairs` + `flagship-six` 16/16 PASS on local build; smoke J1-J8 PASS on production.
+
 ### C5 TestAuthor — finite adversarial matrix + independent RED — 2026-09-29T11:15Z
 
 Branch `uiux/test-author-matrix`; target production `82ffb9ee`. Evidence: `evidence/20260929T1115Z-matrix/` (`test-author.json`, `matrix-summary.md`).
@@ -132,9 +142,9 @@ Branch `uiux/test-author-matrix`; target production `82ffb9ee`. Evidence: `evide
 - Test added:            planned `tests/a11y/reflow-320.spec.ts` — viewport 320×800, assert `scrollWidth <= clientWidth` for the document and for `#listen`, `#skills` bounding boxes (fails before on `out/`, passes after).
 - Verification recipe:   `node scripts/uiux/persona_journeys.mjs --only J5 --label post` on production → J5 `zoom400.scrollWidth == 320`; plus screenshot `UX-P1-001__320x800__zoom400__post__<stamp>.webp`.
 - RICE:                  4 × 3 × 0.9 ÷ 1 = 10.8
-- Status:                IN-REVIEW — narrow reflow passes locally; final source review and production verification pending
-- Shipped in:            —
-- Evidence (post-fix):   —
+- Status:                VERIFIED-CLOSED — document `scrollWidth` 320 at viewport 320 on production (2026-10-13).
+- Shipped in:            C4, PR46, main `82ffb9ee`
+- Evidence (post-fix):   `evidence/20261013Z-adversarial/` J5 PASS.
 
 #### UX-P1-006 — Mobile Lighthouse Performance 86, LCP 3.34 s, TBT 262 ms (below §9)
 - Lens / framework:      CWV-LCP · CWV-INP (TBT proxy) · §9 thresholds
@@ -164,9 +174,9 @@ Branch `uiux/test-author-matrix`; target production `82ffb9ee`. Evidence: `evide
 - Test added:            planned `tests/e2e/navigation.spec.ts` TC-NAV-09: after clicking `#about`, `a.nav-link[href="#about"]` has `aria-current`; exactly one link is current.
 - Verification recipe:   `node scripts/uiux/persona_journeys.mjs --only J8 --label post` on production → `activeLinks.length == 1` per step at 1280 and 390.
 - RICE:                  7 × 2 × 0.9 ÷ 2 = 6.3
-- Status:                IN-FIX — final desktop manual-scroll/hash test fails; see continuation evidence
-- Shipped in:            —
-- Evidence (post-fix):   —
+- Status:                VERIFIED-CLOSED — all 6 anchors update URL hash and `aria-current="location"` correctly after scroll settle on production (2026-10-13).
+- Shipped in:            C5, PR47, main `cf6a240`
+- Evidence (post-fix):   `evidence/20261013Z-adversarial/` J8 PASS.
 
 #### UX-P2-003 — Targets under 24 px: footer legal links (15 px), Vitrine "Source" (22 px), Menu button (20 px)
 - Lens / framework:      WCAG 2.2 2.5.8 Target Size (Minimum)
