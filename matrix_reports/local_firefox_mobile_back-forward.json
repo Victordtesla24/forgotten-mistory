@@ -1,0 +1,473 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/adversarial-matrix-full.spec.ts",
+      "file": "e2e/adversarial-matrix-full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "matrix firefox-mobile",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 522,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[firefox-mobile] Hero × back-forward ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Hero\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 20064,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T08:29:10.665Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Hero\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJIZXJvIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwiaGFzaCAjaGVybyIsImhhc2ggI2xpc3RlbiIsIndhaXQgMCIsImJhY2siLCJmb3J3YXJkIiwiYmFjayJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ3YWl0TXMiOjAsImFuY2hvcjpiYWNrIjp7InRvcCI6MCwiYm90dG9tIjoxNjY1LCJ2aCI6ODQ0LCJzY3JvbGxZIjowfSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY2NSwid2lkdGgiOjM5MCwidGV4dExlbiI6OTM3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6MCwiYm90dG9tIjoxNjY1LCJ2aCI6ODQ0LCJzY3JvbGxZIjowfSwibm9uQmxhbms6YmFjay0yIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjY1LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjo5MzcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJIZXJvIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwiaGFzaCAjaGVybyIsImhhc2ggI2Fib3V0Iiwid2FpdCAyNTAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjoyNTAsImFuY2hvcjpiYWNrIjp7InRvcCI6MCwiYm90dG9tIjoxNjY1LCJ2aCI6ODQ0LCJzY3JvbGxZIjowfSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY2NSwid2lkdGgiOjM5MCwidGV4dExlbiI6OTM3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6MCwiYm90dG9tIjoxNjY1LCJ2aCI6ODQ0LCJzY3JvbGxZIjowfSwibm9uQmxhbms6YmFjay0yIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjY1LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjo5MzcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJIZXJvIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwiaGFzaCAjaGVybyIsImhhc2ggI3NraWxscyIsIndhaXQgMTAwMCIsImJhY2siLCJmb3J3YXJkIiwiYmFjayJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ3YWl0TXMiOjEwMDAsImFuY2hvcjpiYWNrIjp7InRvcCI6MCwiYm90dG9tIjoxNjY1LCJ2aCI6ODQ0LCJzY3JvbGxZIjowfSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY2NSwid2lkdGgiOjM5MCwidGV4dExlbiI6OTM3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6MCwiYm90dG9tIjoxNjY1LCJ2aCI6ODQ0LCJzY3JvbGxZIjowfSwibm9uQmxhbms6YmFjay0yIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjY1LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjo5MzcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-3a15370d4d9093276243",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 526,
+              "column": 13
+            },
+            {
+              "title": "[firefox-mobile] About × back-forward ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"About\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 21552,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T08:29:10.972Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"About\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJBYm91dCIsInNjZW5hcmlvIjoiYmFjay1mb3J3YXJkIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjg0NH0sInNlcXVlbmNlIjpbImdvdG8gLyNoZXJvIiwiaGFzaCAjYWJvdXQiLCJoYXNoICNsaXN0ZW4iLCJ3YWl0IDAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjowLCJhbmNob3I6YmFjayI6eyJ0b3AiOjk2LCJib3R0b20iOjQ0MTAsInZoIjo4NDQsInNjcm9sbFkiOjE1Njl9LCJub25CbGFuazpiYWNrIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo0MzE0LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6OTYsImJvdHRvbSI6NDQxMCwidmgiOjg0NCwic2Nyb2xsWSI6MTU2OX0sIm5vbkJsYW5rOmJhY2stMiI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDMxNCwid2lkdGgiOjM5MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJBYm91dCIsInNjZW5hcmlvIjoiYmFjay1mb3J3YXJkIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjg0NH0sInNlcXVlbmNlIjpbImdvdG8gLyNoZXJvIiwiaGFzaCAjYWJvdXQiLCJoYXNoICNoZXJvIiwid2FpdCAyNTAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjoyNTAsImFuY2hvcjpiYWNrIjp7InRvcCI6OTYsImJvdHRvbSI6NDQxMCwidmgiOjg0NCwic2Nyb2xsWSI6MTU2OX0sIm5vbkJsYW5rOmJhY2siOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjQzMTQsIndpZHRoIjozOTAsInRleHRMZW4iOjM2ODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjpiYWNrLTIiOnsidG9wIjo5NiwiYm90dG9tIjo0NDEwLCJ2aCI6ODQ0LCJzY3JvbGxZIjoxNTY5fSwibm9uQmxhbms6YmFjay0yIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo0MzE0LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJBYm91dCIsInNjZW5hcmlvIjoiYmFjay1mb3J3YXJkIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjg0NH0sInNlcXVlbmNlIjpbImdvdG8gLyNoZXJvIiwiaGFzaCAjYWJvdXQiLCJoYXNoICNza2lsbHMiLCJ3YWl0IDEwMDAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjoxMDAwLCJhbmNob3I6YmFjayI6eyJ0b3AiOjk2LCJib3R0b20iOjQ0MTAsInZoIjo4NDQsInNjcm9sbFkiOjE1Njl9LCJub25CbGFuazpiYWNrIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo0MzE0LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6OTYsImJvdHRvbSI6NDQxMCwidmgiOjg0NCwic2Nyb2xsWSI6MTU2OX0sIm5vbkJsYW5rOmJhY2stMiI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDMxNCwid2lkdGgiOjM5MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-80e4ff2b82c33c2575bc",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 526,
+              "column": 13
+            },
+            {
+              "title": "[firefox-mobile] Experience × back-forward ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Experience\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17605,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T08:29:31.827Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Experience\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJFeHBlcmllbmNlIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJoYXNoICNleHBlcmllbmNlIiwiaGFzaCAjbGlzdGVuIiwid2FpdCAwIiwiYmFjayIsImZvcndhcmQiLCJiYWNrIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7IndhaXRNcyI6MCwiYW5jaG9yOmJhY2siOnsidG9wIjo5NiwiYm90dG9tIjo0NjM1LCJ2aCI6ODQ0LCJzY3JvbGxZIjo1ODgyfSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDUzOSwid2lkdGgiOjM5MCwidGV4dExlbiI6MzQ1OSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmJhY2stMiI6eyJ0b3AiOjk2LCJib3R0b20iOjQ2MzUsInZoIjo4NDQsInNjcm9sbFkiOjU4ODJ9LCJub25CbGFuazpiYWNrLTIiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjQ1MzksIndpZHRoIjozOTAsInRleHRMZW4iOjM0NTksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJFeHBlcmllbmNlIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJoYXNoICNleHBlcmllbmNlIiwiaGFzaCAjYWJvdXQiLCJ3YWl0IDI1MCIsImJhY2siLCJmb3J3YXJkIiwiYmFjayJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ3YWl0TXMiOjI1MCwiYW5jaG9yOmJhY2siOnsidG9wIjo5NiwiYm90dG9tIjo0NjM1LCJ2aCI6ODQ0LCJzY3JvbGxZIjo1ODgyfSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDUzOSwid2lkdGgiOjM5MCwidGV4dExlbiI6MzQ1OSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmJhY2stMiI6eyJ0b3AiOjk2LCJib3R0b20iOjQ2MzUsInZoIjo4NDQsInNjcm9sbFkiOjU4ODJ9LCJub25CbGFuazpiYWNrLTIiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjQ1MzksIndpZHRoIjozOTAsInRleHRMZW4iOjM0NTksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJFeHBlcmllbmNlIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJoYXNoICNleHBlcmllbmNlIiwiaGFzaCAjc2tpbGxzIiwid2FpdCAxMDAwIiwiYmFjayIsImZvcndhcmQiLCJiYWNrIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7IndhaXRNcyI6MTAwMCwiYW5jaG9yOmJhY2siOnsidG9wIjo5NiwiYm90dG9tIjo0NjM1LCJ2aCI6ODQ0LCJzY3JvbGxZIjo1ODgyfSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDUzOSwid2lkdGgiOjM5MCwidGV4dExlbiI6MzQ1OSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmJhY2stMiI6eyJ0b3AiOjk2LCJib3R0b20iOjQ2MzUsInZoIjo4NDQsInNjcm9sbFkiOjU4ODJ9LCJub25CbGFuazpiYWNrLTIiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjQ1MzksIndpZHRoIjozOTAsInRleHRMZW4iOjM0NTksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-12490a5ef21fab778fe2",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 526,
+              "column": 13
+            },
+            {
+              "title": "[firefox-mobile] Skills × back-forward ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Skills\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 18125,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T08:29:34.032Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Skills\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJTa2lsbHMiLCJzY2VuYXJpbyI6ImJhY2stZm9yd2FyZCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsImhhc2ggI3NraWxscyIsImhhc2ggI2xpc3RlbiIsIndhaXQgMCIsImJhY2siLCJmb3J3YXJkIiwiYmFjayJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ3YWl0TXMiOjAsImFuY2hvcjpiYWNrIjp7InRvcCI6OTYsImJvdHRvbSI6NjcyMSwidmgiOjg0NCwic2Nyb2xsWSI6MTA0MjJ9LCJub25CbGFuazpiYWNrIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo2NjI1LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjo0NTEzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6OTYsImJvdHRvbSI6NjcyMSwidmgiOjg0NCwic2Nyb2xsWSI6MTA0MjJ9LCJub25CbGFuazpiYWNrLTIiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjY2MjUsIndpZHRoIjozOTAsInRleHRMZW4iOjQ1MTMsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJTa2lsbHMiLCJzY2VuYXJpbyI6ImJhY2stZm9yd2FyZCIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsImhhc2ggI3NraWxscyIsImhhc2ggI2Fib3V0Iiwid2FpdCAyNTAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjoyNTAsImFuY2hvcjpiYWNrIjp7InRvcCI6OTYsImJvdHRvbSI6NjcyMSwidmgiOjg0NCwic2Nyb2xsWSI6MTA0MjJ9LCJub25CbGFuazpiYWNrIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo2NjI1LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjo0NTEzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6OTYsImJvdHRvbSI6NjcyMSwidmgiOjg0NCwic2Nyb2xsWSI6MTA0MjJ9LCJub25CbGFuazpiYWNrLTIiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjY2MjUsIndpZHRoIjozOTAsInRleHRMZW4iOjQ1MTMsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJTa2lsbHMiLCJzY2VuYXJpbyI6ImJhY2stZm9yd2FyZCIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsImhhc2ggI3NraWxscyIsImhhc2ggI2hlcm8iLCJ3YWl0IDEwMDAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjoxMDAwLCJhbmNob3I6YmFjayI6eyJ0b3AiOjk2LCJib3R0b20iOjY3MjEsInZoIjo4NDQsInNjcm9sbFkiOjEwNDIyfSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NjYyNSwid2lkdGgiOjM5MCwidGV4dExlbiI6NDUxMywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmJhY2stMiI6eyJ0b3AiOjk2LCJib3R0b20iOjY3MjEsInZoIjo4NDQsInNjcm9sbFkiOjEwNDIyfSwibm9uQmxhbms6YmFjay0yIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo2NjI1LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjo0NTEzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-ec7f0bee9f6924a38781",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 526,
+              "column": 13
+            },
+            {
+              "title": "[firefox-mobile] Vitrine × back-forward ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Vitrine\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17903,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T08:29:49.478Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Vitrine\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJWaXRyaW5lIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJoYXNoICN2aXRyaW5lIiwiaGFzaCAjbGlzdGVuIiwid2FpdCAwIiwiYmFjayIsImZvcndhcmQiLCJiYWNrIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7IndhaXRNcyI6MCwiYW5jaG9yOmJhY2siOnsidG9wIjo5NiwiYm90dG9tIjo3NTE2LCJ2aCI6ODQ0LCJzY3JvbGxZIjoxNzA0N30sIm5vbkJsYW5rOmJhY2siOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjc0MjAsIndpZHRoIjozOTAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjpiYWNrLTIiOnsidG9wIjo5NiwiYm90dG9tIjo3NTE2LCJ2aCI6ODQ0LCJzY3JvbGxZIjoxNzA0N30sIm5vbkJsYW5rOmJhY2stMiI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NzQyMCwid2lkdGgiOjM5MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJWaXRyaW5lIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJoYXNoICN2aXRyaW5lIiwiaGFzaCAjYWJvdXQiLCJ3YWl0IDI1MCIsImJhY2siLCJmb3J3YXJkIiwiYmFjayJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ3YWl0TXMiOjI1MCwiYW5jaG9yOmJhY2siOnsidG9wIjo5NiwiYm90dG9tIjo3NTE2LCJ2aCI6ODQ0LCJzY3JvbGxZIjoxNzA0N30sIm5vbkJsYW5rOmJhY2siOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjc0MjAsIndpZHRoIjozOTAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjpiYWNrLTIiOnsidG9wIjo5NiwiYm90dG9tIjo3NTE2LCJ2aCI6ODQ0LCJzY3JvbGxZIjoxNzA0N30sIm5vbkJsYW5rOmJhY2stMiI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NzQyMCwid2lkdGgiOjM5MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJWaXRyaW5lIiwic2NlbmFyaW8iOiJiYWNrLWZvcndhcmQiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJoYXNoICN2aXRyaW5lIiwiaGFzaCAjc2tpbGxzIiwid2FpdCAxMDAwIiwiYmFjayIsImZvcndhcmQiLCJiYWNrIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7IndhaXRNcyI6MTAwMCwiYW5jaG9yOmJhY2siOnsidG9wIjo5NiwiYm90dG9tIjo3NTE2LCJ2aCI6ODQ0LCJzY3JvbGxZIjoxNzA0N30sIm5vbkJsYW5rOmJhY2siOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjc0MjAsIndpZHRoIjozOTAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjpiYWNrLTIiOnsidG9wIjo5NiwiYm90dG9tIjo3NTE2LCJ2aCI6ODQ0LCJzY3JvbGxZIjoxNzA0N30sIm5vbkJsYW5rOmJhY2stMiI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NzQyMCwid2lkdGgiOjM5MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-f78c127b8c827af8fda1",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 526,
+              "column": 13
+            },
+            {
+              "title": "[firefox-mobile] Listen × back-forward ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Listen\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 17969,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T08:29:52.193Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-mobile\",\"mechanism\":\"Listen\",\"scenario\":\"back-forward\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJMaXN0ZW4iLCJzY2VuYXJpbyI6ImJhY2stZm9yd2FyZCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsImhhc2ggI2xpc3RlbiIsImhhc2ggI2hlcm8iLCJ3YWl0IDAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjowLCJhbmNob3I6YmFjayI6eyJ0b3AiOjk2LCJib3R0b20iOjExODcsInZoIjo4NDQsInNjcm9sbFkiOjI0NDY3fSwibm9uQmxhbms6YmFjayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTA5MSwid2lkdGgiOjM5MCwidGV4dExlbiI6Mzg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YmFjay0yIjp7InRvcCI6OTYsImJvdHRvbSI6MTE4NywidmgiOjg0NCwic2Nyb2xsWSI6MjQ0Njd9LCJub25CbGFuazpiYWNrLTIiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjEwOTEsIndpZHRoIjozOTAsInRleHRMZW4iOjM4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJMaXN0ZW4iLCJzY2VuYXJpbyI6ImJhY2stZm9yd2FyZCIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsImhhc2ggI2xpc3RlbiIsImhhc2ggI2Fib3V0Iiwid2FpdCAyNTAiLCJiYWNrIiwiZm9yd2FyZCIsImJhY2siXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsid2FpdE1zIjoyNTAsImFuY2hvcjpiYWNrIjp7InRvcCI6OTYsImJvdHRvbSI6MTE4NywidmgiOjg0NCwic2Nyb2xsWSI6MjQ0Njd9LCJub25CbGFuazpiYWNrIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxMDkxLCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjpiYWNrLTIiOnsidG9wIjo5NiwiYm90dG9tIjoxMTg3LCJ2aCI6ODQ0LCJzY3JvbGxZIjoyNDQ2N30sIm5vbkJsYW5rOmJhY2stMiI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTA5MSwid2lkdGgiOjM5MCwidGV4dExlbiI6Mzg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1tb2JpbGUiLCJtZWNoYW5pc20iOiJMaXN0ZW4iLCJzY2VuYXJpbyI6ImJhY2stZm9yd2FyZCIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsImhhc2ggI2xpc3RlbiIsImhhc2ggI3NraWxscyIsIndhaXQgMTAwMCIsImJhY2siLCJmb3J3YXJkIiwiYmFjayJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ3YWl0TXMiOjEwMDAsImFuY2hvcjpiYWNrIjp7InRvcCI6OTYsImJvdHRvbSI6MTE4NywidmgiOjg0NCwic2Nyb2xsWSI6MjQ0Njd9LCJub25CbGFuazpiYWNrIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxMDkxLCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjpiYWNrLTIiOnsidG9wIjo5NiwiYm90dG9tIjoxMTg3LCJ2aCI6ODQ0LCJzY3JvbGxZIjoyNDQ2N30sIm5vbkJsYW5rOmJhY2stMiI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTA5MSwid2lkdGgiOjM5MCwidGV4dExlbiI6Mzg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-96f589274a1be2d5b479",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 526,
+              "column": 13
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-13T08:29:09.374Z",
+    "duration": 61731.662000000004,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

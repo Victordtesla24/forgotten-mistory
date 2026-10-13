@@ -160,6 +160,15 @@
     animation-name: heroRiseSolid;
 }
 
+.name {
+    /* High element render delay (1.26s) identified as the LCP bottleneck (UX-P1-006).
+       Removing the animation and delay ensure the mark paints at its final
+       position in the first possible frame. */
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
 @keyframes heroRiseSolid {
     from {
         transform: translateY(14px);
@@ -372,7 +381,7 @@
        plate as `.ledgerItem` because it stands on the same ground, and a
        sentence whose whole job is to keep three figures honest is the last one
        that should depend on where a gradient happens to stop. `fit-content`
-       keeps it the sentence's own box rather than a band ruled across the
+       keeps it the sentence's own box rather than a bar ruled across the
        fold, and the inline padding is given back as a negative margin so no
        glyph moves. */
     width: fit-content;
