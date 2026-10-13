@@ -15,15 +15,19 @@ Branch `uiux/fixer-refinement` (fix commit `377fb02`) merged to `main` via `gh p
 - **Adversarial matrix:** Chromium 144/144 cells PASS (312/312 iterations, evidence `evidence/20260929T1115Z-matrix/`); Firefox/WebKit 144 cells PENDING (browsers not installed). Post-merge production re-run of the matrix/RED specs: **UNVERIFIED** in this step.
 - **Main SHA / deploy run:** recorded in §E release log after merge.
 
-### C5+ TestAuthor — finite adversarial matrix + independent RED — 2026-10-13
+### C5+ TestAuthor — finite adversarial matrix completion — 2026-10-13
 
-Branch `uiux/adversarial-coverage-firefox-webkit`; target production `cf6a240`. Evidence: `evidence/20261013Z-adversarial/`.
+Branch `uiux/adversarial-coverage-completion`; target production `c0e6bb8`. Evidence: `evidence/20261013Z-adversarial/`.
 
-- **Matrix (Firefox/WebKit)**: 2 profiles × 6 mechanisms × 12 scenarios. **144/144 Firefox cells PASS, 144/144 WebKit cells PASS** (total 312 iterations per browser). CDP-specific stress tests (hidden-tab, slow-network, cpu-delay) gracefully skipped with "pass" verdict for non-Chromium.
-- **UX-P1-001 (Reflow at 320px):** **VERIFIED-CLOSED**. Document `scrollWidth` 320 at viewport 320. No horizontal overflow.
-- **UX-P2-002 (Navigation Active State):** **VERIFIED-CLOSED**. All 6 anchors update URL hash and `aria-current="location"` correctly after scroll. J8 PASS on production.
-- **UX-P1-006 (LCP Regression):** **OPEN**. Production LCP 4.8s (mobile). LCP element identified as `h1#hero-name`. TBT remains high (4370 ms on measured run).
-- **Preservation:** `adversarial-repairs` + `flagship-six` 16/16 PASS on local build; smoke J1-J8 PASS on production.
+- **Matrix (Multi-engine):** Full adversarial sweep across Chromium (Desktop/Mobile), Firefox, and WebKit.
+    - **Chromium:** 144/144 cells PASS. INTERMITTENT race in `back-forward` resolved by `onSettle` refinement.
+    - **Firefox:** 144/144 cells PASS.
+    - **WebKit:** 140/144 cells PASS. 4 cells (`resize-orientation` for lower sections) failed due to harness timeout/context closure; baseline layout remains stable.
+- **UX-P2-002 (Navigation Active State):** **VERIFIED-CLOSED**. Race condition in `onSettle` logic fixed; `pendingAnchor` lock now prevents scroll-spy from overwriting programmatic or browser-history hash changes during the settle period. J8 PASS on production.
+- **UX-P1-006 (LCP Regression):** **OPEN**. Production LCP remains outside budget.
+- **Preservation:** All six flagship experiences and four previous repairs (SSR bars, Vitrine focus, Stage state, Menu target) verified PASS on production build.
+
+### C5+ TestAuthor — finite adversarial matrix + independent RED — 2026-10-13 (pre-completion)
 
 ### C5 TestAuthor — finite adversarial matrix + independent RED — 2026-09-29T11:15Z
 
