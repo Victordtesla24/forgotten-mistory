@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { motion, useScroll } from 'framer-motion';
-
 import dynamic from 'next/dynamic';
+import ScrollProgress from '@/components/site/ScrollProgress';
 
 const About = dynamic(() => import('@/components/sections/About/About'), { ssr: true });
 const Experience = dynamic(() => import('@/components/sections/Experience/Experience'), { ssr: true });
@@ -37,19 +36,9 @@ export default function Home() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // Whole-document progress drives the slim reading indicator pinned to the top edge.
-  const { scrollYProgress: pageProgress } = useScroll();
-
-
-
   return (
     <>
-      <motion.div
-        className="scroll-progress"
-        data-scroll-progress
-        aria-hidden="true"
-        style={{ scaleX: pageProgress }}
-      />
+      <ScrollProgress />
       <Navigation />
 
       <main id="main">
