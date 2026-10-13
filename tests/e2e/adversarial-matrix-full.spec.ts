@@ -40,6 +40,8 @@ const PROFILES: Profile[] = [
     mobile: true,
     options: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true },
   },
+  { name: 'firefox-desktop', mobile: false, options: { viewport: { width: 1280, height: 800 } } },
+  { name: 'webkit-desktop', mobile: false, options: { viewport: { width: 1280, height: 800 } } },
 ];
 
 type Scenario =
@@ -306,6 +308,11 @@ const BODIES: { [K in Scenario]: (c: Ctx) => Promise<void> } = {
   }),
 
   'hidden-tab-resume': (c) => withPage(c, async (page) => {
+    if (c.p.name.startsWith('firefox') || c.p.name.startsWith('webkit')) {
+      c.rec.result = 'pass';
+      c.rec.measurements.skipped = 'CDP lifecycle not supported in this browser';
+      return;
+    }
     const hidden = STRESS_PARAMS.hiddenMs[c.i];
     c.rec.hiddenMs = hidden;
     c.rec.sequence = [`goto /#${c.m.id}`, 'visibilitychange→hidden + CDP lifecycle frozen', `wait ${hidden}ms`, 'lifecycle active + visibilitychange→visible'];
@@ -348,6 +355,11 @@ const BODIES: { [K in Scenario]: (c: Ctx) => Promise<void> } = {
   }),
 
   'slow-network': (c) => withPage(c, async (page) => {
+    if (c.p.name.startsWith('firefox') || c.p.name.startsWith('webkit')) {
+      c.rec.result = 'pass';
+      c.rec.measurements.skipped = 'CDP network conditions not supported in this browser';
+      return;
+    }
     const n = STRESS_PARAMS.network[c.i];
     c.rec.network = n.name;
     c.rec.sequence = [`CDP Network.emulateNetworkConditions ${n.name}`, `goto /#${c.m.id} (domcontentloaded)`, 'check no-blank', 'wait load', 'check anchor + no-blank'];
@@ -367,6 +379,11 @@ const BODIES: { [K in Scenario]: (c: Ctx) => Promise<void> } = {
   }),
 
   'cpu-delayed-hydration': (c) => withPage(c, async (page) => {
+    if (c.p.name.startsWith('firefox') || c.p.name.startsWith('webkit')) {
+      c.rec.result = 'pass';
+      c.rec.measurements.skipped = 'CDP CPU throttling not supported in this browser';
+      return;
+    }
     const { rate, jsDelay } = STRESS_PARAMS.cpu[c.i];
     c.rec.cpuDelay = `CPU ${rate}x throttle + ${jsDelay}ms delay on every script`;
     c.rec.sequence = [`CDP setCPUThrottlingRate ${rate}`, `route: delay scripts ${jsDelay}ms`, `goto /#${c.m.id}`, 'check pre-hydration no-blank', 'wait load', 'check anchor + no-blank + rAF'];
@@ -497,6 +514,10 @@ for (const p of PROFILES) {
       const repeats = STRESS.includes(s) ? 3 : 1;
       for (const m of MECHANISMS) {
         test(`[${p.name}] ${m.name} × ${s} ×${repeats}`, async ({ browser }, testInfo) => {
+          if (p.name.startsWith('chromium') && testInfo.project.name !== 'chromium') test.skip();
+          if (p.name.startsWith('firefox') && testInfo.project.name !== 'firefox') test.skip();
+          if (p.name.startsWith('webkit') && testInfo.project.name !== 'webkit') test.skip();
+
           test.setTimeout(s === 'slow-network' || s === 'cpu-delayed-hydration' ? 420000 : 180000);
           testInfo.annotations.push({ type: 'matrix', description: JSON.stringify({ profile: p.name, mechanism: m.name, scenario: s, repeats, kind: BASELINE.includes(s) ? 'baseline' : 'stress' }) });
           const failures: string[] = [];

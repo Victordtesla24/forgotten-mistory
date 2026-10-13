@@ -37,7 +37,16 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' },
-      // Allow describe-level overrides (telemetry-stability / hero D-NAME suites).
+      timeout: 90000,
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+      timeout: 90000,
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
       timeout: 90000,
     },
   ],
