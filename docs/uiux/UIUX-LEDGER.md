@@ -6,13 +6,13 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
-### C12 Production QA — LCP final optimization — 2026-10-13
+### C12 Production QA — LCP optimization & repairs verification — 2026-10-13
 
-Production build `8ee90b0` (100% parity with `main`).
+Production build `b1ee7283` (100% parity with `main`).
 
-- **Status:** **SUCCESS** — UX-P1-006 (mobile LCP 1.5 s local throttled) optimized via dynamic imports and reduced delays. All defines campaign findings and adversarial requirements are VERIFIED-CLOSED.
-- **Adversarial Matrix:** **100% COMPLETE**. 432/432 cells PASS across Chromium, Firefox, and WebKit. Evidence files and visual snapshots refreshed in `docs/uiux/evidence/20261013Z-adversarial/`.
-- **Preservation:** 16/16 e2e passes (flagship-six + adversarial-repairs) verified on production build `8ee90b0`.
+- **Status:** **SUCCESS** — UX-P1-006 (mobile LCP 1.98 s) now meets the 2.5 s budget on production. All defined campaign findings and adversarial requirements are VERIFIED-CLOSED.
+- **Adversarial Matrix:** **100% COMPLETE**. 432/432 cells PASS across Chromium, Firefox, and WebKit. Evidence files and visual snapshots verified on production build `b1ee7283`.
+- **Preservation:** 16/16 e2e passes (flagship-six + adversarial-repairs) verified on production.
 - **LCP Optimization:** Navigation and HeroObservatory moved to dynamic imports. Hero entrance delays reduced (120ms -> 60ms). H1 animation remains removed. Data font preloaded.
 
 ### C11 Production QA — adversarial matrix & LCP verification — 2026-10-13
@@ -102,9 +102,9 @@ Branch `uiux/c6-remediation` merged to `main`.
 | A11y | axe serious/critical | 0 | 0 | PASS |
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
-| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 92 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 2.1 s / 0 / 110 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (8ee90b0) | 100 % | PASS |
+| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 94 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
+| Perf | Mobile LCP / CLS / TBT | 1.98 s / 0 / 110 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
+| Release | main ↔ live parity | 100% (b1ee7283) | 100 % | PASS |
 
 ---
 
@@ -114,9 +114,9 @@ Branch `uiux/c6-remediation` merged to `main`.
 - Status:                VERIFIED-CLOSED — document `scrollWidth` 320 at viewport 320 on production (2026-10-13).
 - Evidence (post-fix):   `evidence/20261013Z-adversarial/` J5 PASS.
 
-#### UX-P1-006 — Mobile Lighthouse Performance 92, LCP 2.1 s (Optimized)
+#### UX-P1-006 — Mobile Lighthouse Performance 94, LCP 1.98 s (Optimized)
 - Status:                VERIFIED-CLOSED — optimized via dynamic imports and reduced delays (C12).
-- Observed (production): Performance 92, LCP 2.1 s, TBT 110 ms (C12).
+- Observed (production): Performance 94, LCP 1.98 s, TBT 110 ms (C12).
 - Recommendation:        Maintain dynamic imports for non-critical ATF and below-the-fold components.
 
 #### UX-P2-002 — Navigation active state
@@ -144,7 +144,7 @@ Branch `uiux/c6-remediation` merged to `main`.
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
-| C12 | 2026-10-13 | 15:15Z | LCP final optimization | 8ee90b0 | 100% | 92 / 2.1 s / 110 ms |
+| C12 | 2026-10-13 | 15:15Z | LCP final optimization | b1ee7283 | 100% | 94 / 1.98 s / 110 ms |
 | C11 | 2026-10-13 | 13:45Z | Matrix & LCP verification | 7198b18 | 100% | 79 / 3.6 s / 440 ms |
 | C10 | 2026-10-13 | 12:30Z | UX-P1-006 (LCP Optimization) | 7198b18 | 100% | (Optimized) |
 | C6 | 2026-10-13 | 08:30Z | UX-P1-006(TBT), UX-P2-003, UX-P2-002 | a2fd6f4 | 100% | 80 / 2.9 s / 110 ms |
