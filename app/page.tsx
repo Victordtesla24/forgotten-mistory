@@ -10,9 +10,9 @@ const Experience = dynamic(() => import('@/components/sections/Experience/Experi
 const Skills = dynamic(() => import('@/components/sections/Skills/Skills'), { ssr: true });
 const Vitrine = dynamic(() => import('@/components/sections/Vitrine/Vitrine'), { ssr: true });
 const Listen = dynamic(() => import('@/components/sections/Listen/Listen'), { ssr: true });
+const Navigation = dynamic(() => import('@/components/site/Navigation'), { ssr: true });
 
 import Hero from '@/components/sections/Hero/Hero';
-import Navigation from '@/components/site/Navigation';
 
 /**
  * The page is a composition and nothing else.

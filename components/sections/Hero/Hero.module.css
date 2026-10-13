@@ -132,8 +132,10 @@
 .ledgerRow,
 .actions,
 .availability {
-    animation: heroRise var(--motion-cine) var(--motion-ease-emphasized) both;
-    animation-delay: calc(var(--step, 0) * var(--stagger) + 120ms);
+    --hero-stagger: 60ms;
+    --hero-delay: 60ms;
+    animation: heroRise 600ms var(--motion-ease-emphasized) both;
+    animation-delay: calc(var(--step, 0) * var(--hero-stagger) + var(--hero-delay));
 }
 
 @keyframes heroRise {
@@ -167,6 +169,7 @@
     animation: none !important;
     transform: none !important;
     opacity: 1 !important;
+    contain: paint;
 }
 
 @keyframes heroRiseSolid {
