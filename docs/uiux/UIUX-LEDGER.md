@@ -6,6 +6,17 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C13 Production QA — Browser-specific visual coverage & repairs verification — 2026-10-13
+
+Production build `cd3ae56f` (100% parity with `main`).
+
+- **Status:** **PARTIAL** — UX-P1-006 (mobile LCP 3.3 s > 2.5 s budget) regressed or measured higher on production; all other defined campaign findings and adversarial requirements are VERIFIED-CLOSED.
+- **Adversarial Matrix:** **100% COMPLETE**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
+    - **Fresh Visual Evidence**: Browser-specific screenshots captured for all 3 browsers x 6 sections x 2 viewports (plus adversarial states).
+- **Preservation:** 16/16 e2e passes (flagship-six + adversarial-repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Fixed:** WebKit-specific interaction bug in Experience scrubber (now using keyboard `ArrowRight` sequence).
+- **Optimized:** `ScrollProgress` isolated into its own component to reduce `useScroll` re-renders in `Home`.
+
 ### C12 Production QA — LCP optimization & repairs verification — 2026-10-13
 
 Production build `b1ee7283` (100% parity with `main`).
@@ -102,9 +113,9 @@ Branch `uiux/c6-remediation` merged to `main`.
 | A11y | axe serious/critical | 0 | 0 | PASS |
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
-| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 94 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 1.98 s / 0 / 110 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (b1ee7283) | 100 % | PASS |
+| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 81 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PARTIAL |
+| Perf | Mobile LCP / CLS / TBT | 3.3 s / 0 / 430 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | FAIL |
+| Release | main ↔ live parity | 100% (cd3ae56f) | 100 % | PASS |
 
 ---
 
