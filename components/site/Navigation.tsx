@@ -171,8 +171,19 @@ export default function Navigation() {
     let settleTimer: number | undefined;
     const onSettle = () => {
       window.clearTimeout(settleTimer);
-      pendingAnchorRef.current = null;
+      
+      const pending = pendingAnchorRef.current;
       const visibleHash = chooseVisibleHash();
+      
+      if (pending) {
+        if (visibleHash === pending.hash || performance.now() > pending.until) {
+          pendingAnchorRef.current = null;
+        } else {
+          // Still moving towards the pending anchor; don't clear it or overwrite hash.
+          return;
+        }
+      }
+      
       setCurrentHash(visibleHash);
       replaceHash(visibleHash);
     };

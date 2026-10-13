@@ -1,0 +1,413 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/adversarial-matrix-full.spec.ts",
+      "file": "e2e/adversarial-matrix-full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "matrix firefox-desktop",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[firefox-desktop] Hero × deep-anchor ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21546,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:34:20.898Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoiZGVlcC1hbmNob3IiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyIsIm9wZW4gLm1lbnUtdG9nZ2xlIiwiY2xpY2sgI3NpdGUtbmF2LW92ZXJsYXkgYVtocmVmPSNoZXJvXSIsImdvdG8gLyNoZXJvIChmcmVzaCBkb2N1bWVudCkiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiYW5jaG9yOm5hdi1saW5rIjp7InRvcCI6MCwiYm90dG9tIjoxNTI0LCJ2aCI6ODAwLCJzY3JvbGxZIjowfSwibm9uQmxhbms6bmF2LWxpbmsiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE1MjQsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo5NDAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImhhc2hBZnRlckNsaWNrIjoiI2hlcm8iLCJhbmNob3I6ZGlyZWN0Ijp7InRvcCI6MCwiYm90dG9tIjoxNTI0LCJ2aCI6ODAwLCJzY3JvbGxZIjowfSwibm9uQmxhbms6ZGlyZWN0Ijp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNTI0LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6OTQwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOlsiW0phdmFTY3JpcHQgRXJyb3I6IFwiSW52YWxpZFN0YXRlRXJyb3I6IE5hdmlnYXRlZCBhd2F5IGZyb20gcGFnZVwiXSJdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-c71f6549740b5727fffe",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] About × deep-anchor ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"About\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 20782,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:34:21.048Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"About\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6ImRlZXAtYW5jaG9yIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjoxLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8iLCJvcGVuIC5tZW51LXRvZ2dsZSIsImNsaWNrICNzaXRlLW5hdi1vdmVybGF5IGFbaHJlZj0jYWJvdXRdIiwiZ290byAvI2Fib3V0IChmcmVzaCBkb2N1bWVudCkiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiYW5jaG9yOm5hdi1saW5rIjp7InRvcCI6OTYsImJvdHRvbSI6MjYyMywidmgiOjgwMCwic2Nyb2xsWSI6MTQyOH0sIm5vbkJsYW5rOm5hdi1saW5rIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoyNTI3LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiaGFzaEFmdGVyQ2xpY2siOiIjYWJvdXQiLCJhbmNob3I6ZGlyZWN0Ijp7InRvcCI6OTYsImJvdHRvbSI6MjYyMywidmgiOjgwMCwic2Nyb2xsWSI6MTQyOH0sIm5vbkJsYW5rOmRpcmVjdCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MjUyNywid2lkdGgiOjEyODAsInRleHRMZW4iOjM2ODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6WyJbSmF2YVNjcmlwdCBFcnJvcjogXCJJbnZhbGlkU3RhdGVFcnJvcjogTmF2aWdhdGVkIGF3YXkgZnJvbSBwYWdlXCJdIl19"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-97385e917f5fc3fc9c5c",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Experience × deep-anchor ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14496,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:34:45.540Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoiZGVlcC1hbmNob3IiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyIsIm9wZW4gLm1lbnUtdG9nZ2xlIiwiY2xpY2sgI3NpdGUtbmF2LW92ZXJsYXkgYVtocmVmPSNleHBlcmllbmNlXSIsImdvdG8gLyNleHBlcmllbmNlIChmcmVzaCBkb2N1bWVudCkiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiYW5jaG9yOm5hdi1saW5rIjp7InRvcCI6OTYsImJvdHRvbSI6MzI2OCwidmgiOjgwMCwic2Nyb2xsWSI6Mzk1NX0sIm5vbkJsYW5rOm5hdi1saW5rIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTcyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzUwOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiaGFzaEFmdGVyQ2xpY2siOiIjZXhwZXJpZW5jZSIsImFuY2hvcjpkaXJlY3QiOnsidG9wIjo5NiwiYm90dG9tIjozMjY4LCJ2aCI6ODAwLCJzY3JvbGxZIjozOTU1fSwibm9uQmxhbms6ZGlyZWN0Ijp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTcyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzUwOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbIltKYXZhU2NyaXB0IEVycm9yOiBcIkludmFsaWRTdGF0ZUVycm9yOiBOYXZpZ2F0ZWQgYXdheSBmcm9tIHBhZ2VcIl0iXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-c1f7bc5cc769da531882",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Skills × deep-anchor ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 16439,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:34:47.100Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJkZWVwLWFuY2hvciIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvIiwib3BlbiAubWVudS10b2dnbGUiLCJjbGljayAjc2l0ZS1uYXYtb3ZlcmxheSBhW2hyZWY9I3NraWxsc10iLCJnb3RvIC8jc2tpbGxzIChmcmVzaCBkb2N1bWVudCkiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiYW5jaG9yOm5hdi1saW5rIjp7InRvcCI6OTYsImJvdHRvbSI6MzY3OCwidmgiOjgwMCwic2Nyb2xsWSI6NzEyNn0sIm5vbkJsYW5rOm5hdi1saW5rIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNTgyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6NDU2Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiaGFzaEFmdGVyQ2xpY2siOiIjc2tpbGxzIiwiYW5jaG9yOmRpcmVjdCI6eyJ0b3AiOjk2LCJib3R0b20iOjM2NzgsInZoIjo4MDAsInNjcm9sbFkiOjcxMjZ9LCJub25CbGFuazpkaXJlY3QiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjM1ODIsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo0NTY2LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOlsiW0phdmFTY3JpcHQgRXJyb3I6IFwiSW52YWxpZFN0YXRlRXJyb3I6IE5hdmlnYXRlZCBhd2F5IGZyb20gcGFnZVwiXSJdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-210576c1539dd0345e9c",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Vitrine × deep-anchor ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 19381,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:35:00.161Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoiZGVlcC1hbmNob3IiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyIsIm9wZW4gLm1lbnUtdG9nZ2xlIiwiY2xpY2sgI3NpdGUtbmF2LW92ZXJsYXkgYVtocmVmPSN2aXRyaW5lXSIsImdvdG8gLyN2aXRyaW5lIChmcmVzaCBkb2N1bWVudCkiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiYW5jaG9yOm5hdi1saW5rIjp7InRvcCI6OTYsImJvdHRvbSI6MTc3MSwidmgiOjgwMCwic2Nyb2xsWSI6MTA3MDh9LCJub25CbGFuazpuYXYtbGluayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY3NSwid2lkdGgiOjEyODAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImhhc2hBZnRlckNsaWNrIjoiI3ZpdHJpbmUiLCJhbmNob3I6ZGlyZWN0Ijp7InRvcCI6OTYsImJvdHRvbSI6MTc3MSwidmgiOjgwMCwic2Nyb2xsWSI6MTA3MDh9LCJub25CbGFuazpkaXJlY3QiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE2NzUsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTU2LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOlsiW0phdmFTY3JpcHQgRXJyb3I6IFwiSW52YWxpZFN0YXRlRXJyb3I6IE5hdmlnYXRlZCBhd2F5IGZyb20gcGFnZVwiXSJdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-d483f0eb054c076ee5b2",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Listen × deep-anchor ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 21745,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:35:03.648Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"deep-anchor\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJkZWVwLWFuY2hvciIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvIiwib3BlbiAubWVudS10b2dnbGUiLCJjbGljayAjc2l0ZS1uYXYtb3ZlcmxheSBhW2hyZWY9I2xpc3Rlbl0iLCJnb3RvIC8jbGlzdGVuIChmcmVzaCBkb2N1bWVudCkiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiYW5jaG9yOm5hdi1saW5rIjp7InRvcCI6OTYsImJvdHRvbSI6MTAyNiwidmgiOjgwMCwic2Nyb2xsWSI6MTIzODN9LCJub25CbGFuazpuYXYtbGluayI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6OTMwLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6Mzg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJoYXNoQWZ0ZXJDbGljayI6IiNsaXN0ZW4iLCJhbmNob3I6ZGlyZWN0Ijp7InRvcCI6OTYsImJvdHRvbSI6MTAyNiwidmgiOjgwMCwic2Nyb2xsWSI6MTIzODN9LCJub25CbGFuazpkaXJlY3QiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjkzMCwid2lkdGgiOjEyODAsInRleHRMZW4iOjM4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbIltKYXZhU2NyaXB0IEVycm9yOiBcIkludmFsaWRTdGF0ZUVycm9yOiBOYXZpZ2F0ZWQgYXdheSBmcm9tIHBhZ2VcIl0iXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-ffdf23f429e182f77ac5",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-13T03:34:16.382Z",
+    "duration": 73756.821,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

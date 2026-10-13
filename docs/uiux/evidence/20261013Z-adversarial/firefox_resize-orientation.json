@@ -1,0 +1,473 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/adversarial-matrix-full.spec.ts",
+      "file": "e2e/adversarial-matrix-full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "matrix firefox-desktop",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[firefox-desktop] Hero × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 25240,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:42:16.577Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA3Njh4MTAyNCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNoZXJvIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNTI0LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6OTQwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo3Njh4MTAyNCI6eyJzdyI6NzY4LCJjdyI6NzY4fSwibm9uQmxhbms6NzY4eDEwMjQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE5MTcsIndpZHRoIjo3NjgsInRleHRMZW4iOjk0MCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjAsImJvdHRvbSI6MTUyNCwidmgiOjgwMCwic2Nyb2xsWSI6MH19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSAxMDI0eDYwMCIsInJlc2l6ZSAxNDQweDkwMCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNoZXJvIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNTI0LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6OTQwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxMDI0eDYwMCI6eyJzdyI6MTAyNCwiY3ciOjEwMjR9LCJub25CbGFuazoxMDI0eDYwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTM3MSwid2lkdGgiOjEwMjQsInRleHRMZW4iOjk0MCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTQ0MHg5MDAiOnsic3ciOjE0NDAsImN3IjoxNDQwfSwibm9uQmxhbms6MTQ0MHg5MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE2NTUsIndpZHRoIjoxNDQwLCJ0ZXh0TGVuIjo5NDAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjowLCJib3R0b20iOjE1MjQsInZoIjo4MDAsInNjcm9sbFkiOjB9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA2MDB4ODAwIiwicmVzaXplIDE5MjB4MTA4MCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNoZXJvIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNTI0LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6OTQwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo2MDB4ODAwIjp7InN3Ijo2MDAsImN3Ijo2MDB9LCJub25CbGFuazo2MDB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjc4LCJ3aWR0aCI6NjAwLCJ0ZXh0TGVuIjo5MzcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjE5MjB4MTA4MCI6eyJzdyI6MTkyMCwiY3ciOjE5MjB9LCJub25CbGFuazoxOTIweDEwODAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE3NzYsIndpZHRoIjoxOTIwLCJ0ZXh0TGVuIjo5NDAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjowLCJib3R0b20iOjE1MjQsInZoIjo4MDAsInNjcm9sbFkiOjB9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-08963be155cc397b4bc0",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] About × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"About\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 27596,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:42:16.646Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"About\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDc2OHgxMDI0IiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2Fib3V0Il0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoyNTI3LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NzY4eDEwMjQiOnsic3ciOjc2OCwiY3ciOjc2OH0sIm5vbkJsYW5rOjc2OHgxMDI0Ijp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMjQ1LCJ3aWR0aCI6NzY4LCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YWZ0ZXItcmVzaXplIjp7InRvcCI6OTYsImJvdHRvbSI6MjYyMywidmgiOjgwMCwic2Nyb2xsWSI6MTQyOH19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDEwMjR4NjAwIiwicmVzaXplIDE0NDB4OTAwIiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2Fib3V0Il0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoyNTI3LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTAyNHg2MDAiOnsic3ciOjEwMjQsImN3IjoxMDI0fSwibm9uQmxhbms6MTAyNHg2MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjI4NzIsIndpZHRoIjoxMDI0LCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxNDQweDkwMCI6eyJzdyI6MTQ0MCwiY3ciOjE0NDB9LCJub25CbGFuazoxNDQweDkwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MjUxMywid2lkdGgiOjE0NDAsInRleHRMZW4iOjM2ODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoyNjIzLCJ2aCI6ODAwLCJzY3JvbGxZIjoxNDI4fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDYwMHg4MDAiLCJyZXNpemUgMTkyMHgxMDgwIiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2Fib3V0Il0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoyNTI3LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NjAweDgwMCI6eyJzdyI6NjAwLCJjdyI6NjAwfSwibm9uQmxhbms6NjAweDgwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6Mzk2Mywid2lkdGgiOjYwMCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTkyMHgxMDgwIjp7InN3IjoxOTIwLCJjdyI6MTkyMH0sIm5vbkJsYW5rOjE5MjB4MTA4MCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MjYwMywid2lkdGgiOjE5MjAsInRleHRMZW4iOjM2ODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoyNjIzLCJ2aCI6ODAwLCJzY3JvbGxZIjoxNDI4fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-9afd940bad8a61d99f25",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Experience × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 23458,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:42:44.113Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jZXhwZXJpZW5jZSIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA3Njh4MTAyNCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNleHBlcmllbmNlIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTcyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzUwOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NzY4eDEwMjQiOnsic3ciOjc2OCwiY3ciOjc2OH0sIm5vbkJsYW5rOjc2OHgxMDI0Ijp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNDQ0LCJ3aWR0aCI6NzY4LCJ0ZXh0TGVuIjozNDU5LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YWZ0ZXItcmVzaXplIjp7InRvcCI6OTYsImJvdHRvbSI6MzI2OCwidmgiOjgwMCwic2Nyb2xsWSI6Mzk1NX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jZXhwZXJpZW5jZSIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSAxMDI0eDYwMCIsInJlc2l6ZSAxNDQweDkwMCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNleHBlcmllbmNlIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTcyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzUwOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTAyNHg2MDAiOnsic3ciOjEwMjQsImN3IjoxMDI0fSwibm9uQmxhbms6MTAyNHg2MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjMwOTAsIndpZHRoIjoxMDI0LCJ0ZXh0TGVuIjozNTA5LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxNDQweDkwMCI6eyJzdyI6MTQ0MCwiY3ciOjE0NDB9LCJub25CbGFuazoxNDQweDkwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzIxMiwid2lkdGgiOjE0NDAsInRleHRMZW4iOjM1MDksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjozMjY4LCJ2aCI6ODAwLCJzY3JvbGxZIjozOTU1fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jZXhwZXJpZW5jZSIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA2MDB4ODAwIiwicmVzaXplIDE5MjB4MTA4MCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNleHBlcmllbmNlIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTcyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzUwOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NjAweDgwMCI6eyJzdyI6NjAwLCJjdyI6NjAwfSwibm9uQmxhbms6NjAweDgwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6Mzg5MCwid2lkdGgiOjYwMCwidGV4dExlbiI6MzQ1OSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTkyMHgxMDgwIjp7InN3IjoxOTIwLCJjdyI6MTkyMH0sIm5vbkJsYW5rOjE5MjB4MTA4MCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzMwOSwid2lkdGgiOjE5MjAsInRleHRMZW4iOjM1MDksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjozMjY4LCJ2aCI6ODAwLCJzY3JvbGxZIjozOTU1fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-491c55d8d4390872eb68",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Skills × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 25675,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:42:47.584Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNza2lsbHMiLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgNzY4eDEwMjQiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjc2tpbGxzIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNTgyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6NDU2Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NzY4eDEwMjQiOnsic3ciOjc2OCwiY3ciOjc2OH0sIm5vbkJsYW5rOjc2OHgxMDI0Ijp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo1NjIzLCJ3aWR0aCI6NzY4LCJ0ZXh0TGVuIjo0NTEzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YWZ0ZXItcmVzaXplIjp7InRvcCI6OTYsImJvdHRvbSI6MzY3OCwidmgiOjgwMCwic2Nyb2xsWSI6NzEyNn19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNza2lsbHMiLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgMTAyNHg2MDAiLCJyZXNpemUgMTQ0MHg5MDAiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjc2tpbGxzIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNTgyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6NDU2Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTAyNHg2MDAiOnsic3ciOjEwMjQsImN3IjoxMDI0fSwibm9uQmxhbms6MTAyNHg2MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjM3MjYsIndpZHRoIjoxMDI0LCJ0ZXh0TGVuIjo0NTY2LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxNDQweDkwMCI6eyJzdyI6MTQ0MCwiY3ciOjE0NDB9LCJub25CbGFuazoxNDQweDkwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzYxMywid2lkdGgiOjE0NDAsInRleHRMZW4iOjQ1NjYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjozNjc4LCJ2aCI6ODAwLCJzY3JvbGxZIjo3MTI2fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNza2lsbHMiLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgNjAweDgwMCIsInJlc2l6ZSAxOTIweDEwODAiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjc2tpbGxzIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNTgyLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6NDU2Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NjAweDgwMCI6eyJzdyI6NjAwLCJjdyI6NjAwfSwibm9uQmxhbms6NjAweDgwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NTc4MCwid2lkdGgiOjYwMCwidGV4dExlbiI6NDUxMywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTkyMHgxMDgwIjp7InN3IjoxOTIwLCJjdyI6MTkyMH0sIm5vbkJsYW5rOjE5MjB4MTA4MCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzY4NCwid2lkdGgiOjE5MjAsInRleHRMZW4iOjQ1NjYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjozNjc4LCJ2aCI6ODAwLCJzY3JvbGxZIjo3MTI2fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-93ed8157b41e6b358066",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Vitrine × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 22024,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:43:07.596Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jdml0cmluZSIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA3Njh4MTAyNCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICN2aXRyaW5lIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjc1LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NzY4eDEwMjQiOnsic3ciOjc2OCwiY3ciOjc2OH0sIm5vbkJsYW5rOjc2OHgxMDI0Ijp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxODYwLCJ3aWR0aCI6NzY4LCJ0ZXh0TGVuIjozNTU2LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YWZ0ZXItcmVzaXplIjp7InRvcCI6OTYsImJvdHRvbSI6MTc3MSwidmgiOjgwMCwic2Nyb2xsWSI6MTA3MDh9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jdml0cmluZSIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSAxMDI0eDYwMCIsInJlc2l6ZSAxNDQweDkwMCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICN2aXRyaW5lIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjc1LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTAyNHg2MDAiOnsic3ciOjEwMjQsImN3IjoxMDI0fSwibm9uQmxhbms6MTAyNHg2MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE3NTMsIndpZHRoIjoxMDI0LCJ0ZXh0TGVuIjozNTU2LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxNDQweDkwMCI6eyJzdyI6MTQ0MCwiY3ciOjE0NDB9LCJub25CbGFuazoxNDQweDkwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTcxNSwid2lkdGgiOjE0NDAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoxNzcxLCJ2aCI6ODAwLCJzY3JvbGxZIjoxMDcwOH19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jdml0cmluZSIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA2MDB4ODAwIiwicmVzaXplIDE5MjB4MTA4MCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICN2aXRyaW5lIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjc1LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NjAweDgwMCI6eyJzdyI6NjAwLCJjdyI6NjAwfSwibm9uQmxhbms6NjAweDgwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6Nzc1NSwid2lkdGgiOjYwMCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTkyMHgxMDgwIjp7InN3IjoxOTIwLCJjdyI6MTkyMH0sIm5vbkJsYW5rOjE5MjB4MTA4MCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTc4NSwid2lkdGgiOjE5MjAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoxNzcxLCJ2aCI6ODAwLCJzY3JvbGxZIjoxMDcwOH19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-4ad3e9a9cf0e5812cb31",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[firefox-desktop] Listen × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 19022,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T03:43:13.342Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"firefox-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNsaXN0ZW4iLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgNzY4eDEwMjQiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjbGlzdGVuIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo5MzAsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93Ojc2OHgxMDI0Ijp7InN3Ijo3NjgsImN3Ijo3Njh9LCJub25CbGFuazo3Njh4MTAyNCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTAwNywid2lkdGgiOjc2OCwidGV4dExlbiI6Mzg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YWZ0ZXItcmVzaXplIjp7InRvcCI6OTYsImJvdHRvbSI6MTAyNiwidmgiOjgwMCwic2Nyb2xsWSI6MTIzODN9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNsaXN0ZW4iLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgMTAyNHg2MDAiLCJyZXNpemUgMTQ0MHg5MDAiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjbGlzdGVuIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo5MzAsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjEwMjR4NjAwIjp7InN3IjoxMDI0LCJjdyI6MTAyNH0sIm5vbkJsYW5rOjEwMjR4NjAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo4NzksIndpZHRoIjoxMDI0LCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjE0NDB4OTAwIjp7InN3IjoxNDQwLCJjdyI6MTQ0MH0sIm5vbkJsYW5rOjE0NDB4OTAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo5NzUsIndpZHRoIjoxNDQwLCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoxMDI2LCJ2aCI6ODAwLCJzY3JvbGxZIjoxMjM4M319LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiZmlyZWZveC1kZXNrdG9wIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNsaXN0ZW4iLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgNjAweDgwMCIsInJlc2l6ZSAxOTIweDEwODAiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjbGlzdGVuIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7Im92ZXJmbG93OjEyODB4ODAwIjp7InN3IjoxMjgwLCJjdyI6MTI4MH0sIm5vbkJsYW5rOjEyODB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo5MzAsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjYwMHg4MDAiOnsic3ciOjYwMCwiY3ciOjYwMH0sIm5vbkJsYW5rOjYwMHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjEwMjYsIndpZHRoIjo2MDAsInRleHRMZW4iOjM4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTkyMHgxMDgwIjp7InN3IjoxOTIwLCJjdyI6MTkyMH0sIm5vbkJsYW5rOjE5MjB4MTA4MCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTA1MCwid2lkdGgiOjE5MjAsInRleHRMZW4iOjM4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjk2LCJib3R0b20iOjEwMjYsInZoIjo4MDAsInNjcm9sbFkiOjEyMzgzfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-2b4182dfed42d8285dfb",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-13T03:42:12.652Z",
+    "duration": 81005.11,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,413 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/adversarial-matrix-full.spec.ts",
+      "file": "e2e/adversarial-matrix-full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "matrix webkit-desktop",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[webkit-desktop] Hero × keyboard ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 13654,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:14:40.846Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJIZXJvIiwic2NlbmFyaW8iOiJrZXlib2FyZCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJrZXlib2FyZCBtb2RhbGl0eSIsImZvY3VzIGZpcnN0IGZvY3VzYWJsZSBpbiBzZWN0aW9uIiwiVGFiIMOX4omkNiBpbnNpZGUgc2VjdGlvbiJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJmb2N1c1N0b3BzIjpbeyJ0YWciOiJBIiwibGFiZWwiOiJTZWUgdGhlIGV2aWRlbmNlIiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJBIiwibGFiZWwiOiJEb3dubG9hZCBDViIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJTdGFydCBzZXNzaW9uIHNhbXBsZSIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQSIsImxhYmVsIjoiTGlua2VkSW4iLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkEiLCJsYWJlbCI6IkdpdEh1YiIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQSIsImxhYmVsIjoiRW1haWwiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfV19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-366af9ada86bc1303550",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] About × keyboard ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"About\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 15531,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:14:40.812Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"About\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJBYm91dCIsInNjZW5hcmlvIjoia2V5Ym9hcmQiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNhYm91dCIsImtleWJvYXJkIG1vZGFsaXR5IiwiZm9jdXMgZmlyc3QgZm9jdXNhYmxlIGluIHNlY3Rpb24iLCJUYWIgw5fiiaQ2IGluc2lkZSBzZWN0aW9uIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7ImZvY3VzU3RvcHMiOlt7InRhZyI6IkEiLCJsYWJlbCI6IlZpY3RvcmR0ZXNsYTI0L2FldGhlci1qb2ItY2FyZWVyLWFnZW50IiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJCVVRUT04iLCJsYWJlbCI6IjAxVGVjaG5pY2FsIFNraWxscyIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiIwMkV4cGVyaWVuY2UgTGV2ZWwiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkJVVFRPTiIsImxhYmVsIjoiMDNJbmR1c3RyeSBNYXRjaCIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiIwNFJvbGUgQWxpZ25tZW50IiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJCVVRUT04iLCJsYWJlbCI6IjA1Q3VsdHVyZSBGaXQiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfV19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-ae212afcd688909d91be",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Experience × keyboard ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 15703,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:14:54.762Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJFeHBlcmllbmNlIiwic2NlbmFyaW8iOiJrZXlib2FyZCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2V4cGVyaWVuY2UiLCJrZXlib2FyZCBtb2RhbGl0eSIsImZvY3VzIGZpcnN0IGZvY3VzYWJsZSBpbiBzZWN0aW9uIiwiVGFiIMOX4omkNiBpbnNpZGUgc2VjdGlvbiJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJmb2N1c1N0b3BzIjpbeyJ0YWciOiJCVVRUT04iLCJsYWJlbCI6IlNjcnVtIE1hc3RlciAvIFByb2plY3QgTWFuYWdlciDigJQgUGF5ZGF5ICIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJBSSBTb2x1dGlvbnMgQ29uc3VsdGFudCDigJQgQXBwbGllZCBMTE0gRW4iLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkJVVFRPTiIsImxhYmVsIjoiU2VuaW9yIERlbGl2ZXJ5IExlYWQgLyBBSS1NTCBTb2x1dGlvbnMgQSIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJTZW5pb3IgUHJvamVjdCBNYW5hZ2VyICYgQnVzaW5lc3MgQW5hbHlzIiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJCVVRUT04iLCJsYWJlbCI6IkxlYWQgQnVzaW5lc3MgQW5hbHlzdCwgTWljcm9zb2Z0LCBPY3QgMjAiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkJVVFRPTiIsImxhYmVsIjoiQnVzaW5lc3MgQW5hbHlzdCAvIFByb2plY3QgQ29vcmRpbmF0b3IsICIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9XX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-5d98abbb083b9819b734",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Skills × keyboard ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 14475,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:14:56.715Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJTa2lsbHMiLCJzY2VuYXJpbyI6ImtleWJvYXJkIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjoxLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jc2tpbGxzIiwia2V5Ym9hcmQgbW9kYWxpdHkiLCJmb2N1cyBmaXJzdCBmb2N1c2FibGUgaW4gc2VjdGlvbiIsIlRhYiDDl+KJpDYgaW5zaWRlIHNlY3Rpb24iXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiZm9jdXNTdG9wcyI6W3sidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJBVE8gwrcgUGF5ZGF5IFN1cGVyIOKAlCAyIGNhcGFiaWxpdGllcyIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJBTlogQmFua2luZyBHcm91cCDigJQgMyBjYXBhYmlsaXRpZXMiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkJVVFRPTiIsImxhYmVsIjoiSW5kZXBlbmRlbnQgY29uc3VsdGluZyDigJQgMSBjYXBhYmlsaXR5IiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJCVVRUT04iLCJsYWJlbCI6ImFldGhlci1qb2ItY2FyZWVyLWFnZW50IOKAlCA0IGNhcGFiaWxpdGllcyIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJhYmVudGVydGFpbm1lbnQg4oCUIDIgY2FwYWJpbGl0aWVzIiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJCVVRUT04iLCJsYWJlbCI6InRoaXMgc2l0ZSDigJQgMSBjYXBhYmlsaXR5IiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX1dfSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-2462d9be86c60976f450",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Vitrine × keyboard ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 32688,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:15:10.540Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJWaXRyaW5lIiwic2NlbmFyaW8iOiJrZXlib2FyZCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI3ZpdHJpbmUiLCJrZXlib2FyZCBtb2RhbGl0eSIsImZvY3VzIGZpcnN0IGZvY3VzYWJsZSBpbiBzZWN0aW9uIiwiVGFiIMOX4omkNiBpbnNpZGUgc2VjdGlvbiIsIlZpdHJpbmUgc3RhZ2UgQXJyb3dSaWdodCBrZWVwcyBmb2N1cyJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJmb2N1c1N0b3BzIjpbeyJ0YWciOiJMSSIsImxhYmVsIjoiMDFhZXRoZXItam9iLWNhcmVlci1hZ2VudEFldGhlckEgam9iLWFwcCIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJjbGFpbSIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJyw6lzdW3DqSBndWFyZCIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9LHsidGFnIjoiQlVUVE9OIiwibGFiZWwiOiJyZXZlcnQiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkJVVFRPTiIsImxhYmVsIjoiSW5zcGVjdCBBZXRoZXIgbWVjaGFuaXNtIiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJTVU1NQVJZIiwibGFiZWwiOiJTb3VyY2UgYW5kIGxpbWl0cyIsImluU2VjdGlvbiI6dHJ1ZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9XX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-775d9bee31c0f76621f5",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Listen × keyboard ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 31281,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:15:11.334Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"keyboard\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJMaXN0ZW4iLCJzY2VuYXJpbyI6ImtleWJvYXJkIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjoxLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jbGlzdGVuIiwia2V5Ym9hcmQgbW9kYWxpdHkiLCJmb2N1cyBmaXJzdCBmb2N1c2FibGUgaW4gc2VjdGlvbiIsIlRhYiDDl+KJpDYgaW5zaWRlIHNlY3Rpb24iXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsiZm9jdXNTdG9wcyI6W3sidGFnIjoiQSIsImxhYmVsIjoiRW1haWwgYSAyMC1taW51dGUtY2FsbCBhZ2VuZGEiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkEiLCJsYWJlbCI6InNhcmthci52aWtyYW1AZ21haWwuY29tIiwiaW5TZWN0aW9uIjp0cnVlLCJpblZpZXdwb3J0Ijp0cnVlLCJpbmRpY2F0b3IiOnRydWUsImZvY3VzVmlzaWJsZSI6dHJ1ZX0seyJ0YWciOiJBIiwibGFiZWwiOiIrNjEgNDMzIDIyNCA1NTYiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkEiLCJsYWJlbCI6ImxpbmtlZGluLmNvbS9pbi92aWtyYW1kLXByb2ZpbGUiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkEiLCJsYWJlbCI6ImdpdGh1Yi5jb20vVmljdG9yZHRlc2xhMjQiLCJpblNlY3Rpb24iOnRydWUsImluVmlld3BvcnQiOnRydWUsImluZGljYXRvciI6dHJ1ZSwiZm9jdXNWaXNpYmxlIjp0cnVlfSx7InRhZyI6IkEiLCJsYWJlbCI6IlByaXZhY3kgUG9saWN5IiwiaW5TZWN0aW9uIjpmYWxzZSwiaW5WaWV3cG9ydCI6dHJ1ZSwiaW5kaWNhdG9yIjp0cnVlLCJmb2N1c1Zpc2libGUiOnRydWV9XX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-b2c8e62f07448edf99a6",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-13T04:14:37.922Z",
+    "duration": 67057.242,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

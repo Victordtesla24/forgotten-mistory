@@ -1,0 +1,721 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/adversarial-matrix-full.spec.ts",
+      "file": "e2e/adversarial-matrix-full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "matrix chromium-desktop",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[chromium-desktop] Hero × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5023,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:42.236Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikhlcm8iLCJzY2VuYXJpbyI6InRvdWNoIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjoxLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsInRhcCBmaXJzdCB2aXNpYmxlIDxidXR0b24+IGluIHNlY3Rpb24iLCJFc2NhcGUiLCJjaGVjayBuby1ibGFuayArIHRhcmdldCBzaXplIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InRhcFRhcmdldCI6eyJraW5kIjoiYnV0dG9uIiwiYm94Ijp7IngiOjQ4My41MzEyNSwieSI6NTAwLjkwNjI1LCJ3aWR0aCI6MTcxLjQ2ODc1LCJoZWlnaHQiOjQ0fX0sIm5vbkJsYW5rOmFmdGVyLXRhcCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTYxNCwid2lkdGgiOjEyODAsInRleHRMZW4iOjEyNDMsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-c7e1de74ce277dfa0f9a",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] About × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"About\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5140,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:42.337Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"About\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkFib3V0Iiwic2NlbmFyaW8iOiJ0b3VjaCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwidGFwIGZpcnN0IHZpc2libGUgPGJ1dHRvbj4gaW4gc2VjdGlvbiIsIkVzY2FwZSIsImNoZWNrIG5vLWJsYW5rICsgdGFyZ2V0IHNpemUiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsidGFwVGFyZ2V0Ijp7ImtpbmQiOiJidXR0b24iLCJib3giOnsieCI6MzY5LCJ5Ijo2MzguNDUzMTI1LCJ3aWR0aCI6MTU4LjAxNTYyNSwiaGVpZ2h0Ijo0NH19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjI1MjcsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-81218d3707d62d95a37d",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Experience × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4450,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:47.853Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkV4cGVyaWVuY2UiLCJzY2VuYXJpbyI6InRvdWNoIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjoxLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jZXhwZXJpZW5jZSIsInRhcCBmaXJzdCB2aXNpYmxlIDxidXR0b24+IGluIHNlY3Rpb24iLCJFc2NhcGUiLCJjaGVjayBuby1ibGFuayArIHRhcmdldCBzaXplIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InRhcFRhcmdldCI6eyJraW5kIjoiYnV0dG9uIiwiYm94Ijp7IngiOjY0LCJ5Ijo0OTguNTc4MTI1LCJ3aWR0aCI6MTE1MiwiaGVpZ2h0Ijo0MS41OTM3NX19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjMxNjksIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTA5LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-741224d9b60013d26d4f",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Skills × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4883,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:48.235Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlNraWxscyIsInNjZW5hcmlvIjoidG91Y2giLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNza2lsbHMiLCJ0YXAgZmlyc3QgdmlzaWJsZSA8YnV0dG9uPiBpbiBzZWN0aW9uIiwiRXNjYXBlIiwiY2hlY2sgbm8tYmxhbmsgKyB0YXJnZXQgc2l6ZSJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ0YXBUYXJnZXQiOnsia2luZCI6ImJ1dHRvbiIsImJveCI6eyJ4Ijo2NCwieSI6NTgwLjgxMjUsIndpZHRoIjoyNDAsImhlaWdodCI6NDR9fSwibm9uQmxhbms6YWZ0ZXItdGFwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNTI0LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6NDQ1NSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-5a776e1afec66888af10",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Vitrine × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4450,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:52.336Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlZpdHJpbmUiLCJzY2VuYXJpbyI6InRvdWNoIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjoxLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jdml0cmluZSIsInRhcCBmaXJzdCB2aXNpYmxlIDxidXR0b24+IGluIHNlY3Rpb24iLCJFc2NhcGUiLCJjaGVjayBuby1ibGFuayArIHRhcmdldCBzaXplIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InRhcFRhcmdldCI6eyJraW5kIjoiYnV0dG9uIiwiYm94Ijp7IngiOjExNCwieSI6Mzc4LjE0MDYyNSwid2lkdGgiOjcwLjAxNTYyNSwiaGVpZ2h0Ijo0NH19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE2NzUsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTU2LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-3404d0779f290006299c",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Listen × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4433,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:53.204Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikxpc3RlbiIsInNjZW5hcmlvIjoidG91Y2giLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNsaXN0ZW4iLCJ0YXAgZmlyc3QgdmlzaWJsZSA8YnV0dG9uPiBpbiBzZWN0aW9uIiwiRXNjYXBlIiwiY2hlY2sgbm8tYmxhbmsgKyB0YXJnZXQgc2l6ZSJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ0YXBUYXJnZXQiOnsia2luZCI6ImFuY2hvciIsImJveCI6eyJ4Ijo2NCwieSI6NjI3LjA2MjUsIndpZHRoIjozODcuNjQwNjI1LCJoZWlnaHQiOjU2LjI5Njg3NX19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjkzMCwid2lkdGgiOjEyODAsInRleHRMZW4iOjM3Miwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-188e48c9ab2acf7dcfbb",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        },
+        {
+          "title": "matrix chromium-mobile",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[chromium-mobile] Hero × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Hero\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6197,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:56.849Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Hero\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoidG91Y2giLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJ0YXAgZmlyc3QgdmlzaWJsZSA8YnV0dG9uPiBpbiBzZWN0aW9uIiwiRXNjYXBlIiwiY2hlY2sgbm8tYmxhbmsgKyB0YXJnZXQgc2l6ZSJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ0YXBUYXJnZXQiOnsia2luZCI6ImJ1dHRvbiIsImJveCI6eyJ4IjozMywieSI6NTk0LjcwMzEyNSwid2lkdGgiOjMwMiwiaGVpZ2h0Ijo0NH19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE3ODEsIndpZHRoIjozOTAsInRleHRMZW4iOjEyMzksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-86466247550ad58c351e",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] About × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"About\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6213,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:49:57.733Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"About\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6InRvdWNoIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjoxLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjg0NH0sInNlcXVlbmNlIjpbImdvdG8gLyNhYm91dCIsInRhcCBmaXJzdCB2aXNpYmxlIDxidXR0b24+IGluIHNlY3Rpb24iLCJFc2NhcGUiLCJjaGVjayBuby1ibGFuayArIHRhcmdldCBzaXplIl0sImhpZGRlbk1zIjpudWxsLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InRhcFRhcmdldCI6eyJraW5kIjoiYnV0dG9uIiwiYm94Ijp7IngiOjQxLCJ5Ijo0MDAuMDc4MTI1LCJ3aWR0aCI6MzA4LCJoZWlnaHQiOjQ0fX0sIm5vbkJsYW5rOmFmdGVyLXRhcCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDMxMywid2lkdGgiOjM5MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-781ffc9e9a03ed8a5208",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Experience × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Experience\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3711,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:50:03.094Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Experience\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoidG91Y2giLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2V4cGVyaWVuY2UiLCJ0YXAgZmlyc3QgdmlzaWJsZSA8YnV0dG9uPiBpbiBzZWN0aW9uIiwiRXNjYXBlIiwiY2hlY2sgbm8tYmxhbmsgKyB0YXJnZXQgc2l6ZSJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ0YXBUYXJnZXQiOnsia2luZCI6ImJ1dHRvbiIsImJveCI6eyJ4IjoyNCwieSI6NTI1Ljk2ODc1LCJ3aWR0aCI6MzQyLCJoZWlnaHQiOjc2LjQyMTg3NX19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjQ1MzksIndpZHRoIjozOTAsInRleHRMZW4iOjM0NTksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-ebf5ac9857bcef440654",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Skills × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Skills\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4223,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:50:03.999Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Skills\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJ0b3VjaCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jc2tpbGxzIiwidGFwIGZpcnN0IHZpc2libGUgPGJ1dHRvbj4gaW4gc2VjdGlvbiIsIkVzY2FwZSIsImNoZWNrIG5vLWJsYW5rICsgdGFyZ2V0IHNpemUiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsidGFwVGFyZ2V0Ijp7ImtpbmQiOiJidXR0b24iLCJib3giOnsieCI6MjQsInkiOjYzNi45NTMxMjUsIndpZHRoIjoxNTMuNzk2ODc1LCJoZWlnaHQiOjQ0fX0sIm5vbkJsYW5rOmFmdGVyLXRhcCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NjUxNCwid2lkdGgiOjM5MCwidGV4dExlbiI6NDQwMiwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-f3cfc6d4c0381d8676c5",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Vitrine × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Vitrine\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4005,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:50:06.822Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Vitrine\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoidG91Y2giLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjEsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI3ZpdHJpbmUiLCJ0YXAgZmlyc3QgdmlzaWJsZSA8YnV0dG9uPiBpbiBzZWN0aW9uIiwiRXNjYXBlIiwiY2hlY2sgbm8tYmxhbmsgKyB0YXJnZXQgc2l6ZSJdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJ0YXBUYXJnZXQiOnsia2luZCI6ImJ1dHRvbiIsImJveCI6eyJ4Ijo1OCwieSI6NDAwLjEwOTM3NSwid2lkdGgiOjI3NCwiaGVpZ2h0Ijo0NH19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjc0MjEsIndpZHRoIjozOTAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-b18badc1c4d26114163a",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Listen × touch ×1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Listen\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3814,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:50:08.283Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Listen\",\"scenario\":\"touch\",\"repeats\":1,\"kind\":\"baseline\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJ0b3VjaCIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6MSwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jbGlzdGVuIiwidGFwIGZpcnN0IHZpc2libGUgPGJ1dHRvbj4gaW4gc2VjdGlvbiIsIkVzY2FwZSIsImNoZWNrIG5vLWJsYW5rICsgdGFyZ2V0IHNpemUiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsidGFwVGFyZ2V0Ijp7ImtpbmQiOiJhbmNob3IiLCJib3giOnsieCI6MjQsInkiOjU3Ni40ODQzNzUsIndpZHRoIjozNDIsImhlaWdodCI6NzUuMTg3NX19LCJub25CbGFuazphZnRlci10YXAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjEwNzUsIndpZHRoIjozOTAsInRleHRMZW4iOjM3Miwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-3e4860744baab66bf934",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-13T04:49:40.869Z",
+    "duration": 61406.576,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
