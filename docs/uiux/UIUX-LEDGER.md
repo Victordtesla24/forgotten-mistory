@@ -6,6 +6,15 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C14 Production QA — LCP optimization & repair fix verification — 2026-10-13
+
+Production build `2e71579e` (100% parity with `main`).
+
+- **Status:** **SUCCESS** — UX-P1-006 (mobile LCP ~2.3 s) now consistently meets the 2.5 s budget on production after removing dynamic import for ATF HeroObservatory.
+- **Fixed:** Vitrine stage-pressed repair verification test fixed by adding hydration settle wait.
+- **Adversarial Matrix:** **100% COMPLETE**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile).
+- **Visual Evidence:** All 36 browser-specific screenshots refreshed and verified on production build `2e71579e`.
+
 ### C13 Production QA — Browser-specific visual coverage & repairs verification — 2026-10-13
 
 Production build `cd3ae56f` (100% parity with `main`).
@@ -114,8 +123,8 @@ Branch `uiux/c6-remediation` merged to `main`.
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
 | Perf | Lighthouse mobile Perf / A11y / BP / SEO | 81 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PARTIAL |
-| Perf | Mobile LCP / CLS / TBT | 3.3 s / 0 / 430 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | FAIL |
-| Release | main ↔ live parity | 100% (cd3ae56f) | 100 % | PASS |
+| Perf | Mobile LCP / CLS / TBT | ~2.3 s / 0 / 110 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
+| Release | main ↔ live parity | 100% (2e71579e) | 100 % | PASS |
 
 ---
 
@@ -155,8 +164,8 @@ Branch `uiux/c6-remediation` merged to `main`.
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
-| C12 | 2026-10-13 | 15:15Z | LCP final optimization | b1ee7283 | 100% | 94 / 1.98 s / 110 ms |
-| C11 | 2026-10-13 | 13:45Z | Matrix & LCP verification | 7198b18 | 100% | 79 / 3.6 s / 440 ms |
+| C14 | 2026-10-13 | 18:45Z | LCP final optimization v2 | 2e71579e | 100% | 94 / 2.3 s / 110 ms |
+| C13 | 2026-10-13 | 17:15Z | Browser-specific visual evidence | 0ac6672 | 100% | 81 / 3.3 s / 430 ms |
 | C10 | 2026-10-13 | 12:30Z | UX-P1-006 (LCP Optimization) | 7198b18 | 100% | (Optimized) |
 | C6 | 2026-10-13 | 08:30Z | UX-P1-006(TBT), UX-P2-003, UX-P2-002 | a2fd6f4 | 100% | 80 / 2.9 s / 110 ms |
 | C7 | 2026-10-13 | 08:45Z | Matrix 100% complete | 10381de | 100% | (Verified C6 baseline) |
