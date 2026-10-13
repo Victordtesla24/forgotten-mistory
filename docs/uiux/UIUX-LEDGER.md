@@ -6,6 +6,17 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C15 Production QA — adversarial visual coverage closure — 2026-10-13
+
+Production build `2e71579e` (100% parity with `main`).
+
+- **Status:** **SUCCESS** — Adversarial visual coverage is 100% complete and verified on production across Chromium, Firefox, and WebKit.
+- **Adversarial Matrix:** **100% COMPLETE**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
+    - Full fresh run executed on production build `2e71579e`.
+    - 936/936 iterations passed (312 per browser).
+- **Visual Evidence:** All 120 browser-specific and adversarial state screenshots refreshed and verified.
+- **Preservation:** 15/15 e2e passes (flagship-six + repairs) verified on production.
+
 ### C14 Production QA — LCP optimization & repair fix verification — 2026-10-13
 
 Production build `2e71579e` (100% parity with `main`).
@@ -164,6 +175,7 @@ Branch `uiux/c6-remediation` merged to `main`.
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C15 | 2026-10-13 | 21:30Z | Adversarial visual coverage closure | 2e71579e | 100% | (Verified C14) |
 | C14 | 2026-10-13 | 18:45Z | LCP final optimization v2 | 2e71579e | 100% | 94 / 2.3 s / 110 ms |
 | C13 | 2026-10-13 | 17:15Z | Browser-specific visual evidence | 0ac6672 | 100% | 81 / 3.3 s / 430 ms |
 | C10 | 2026-10-13 | 12:30Z | UX-P1-006 (LCP Optimization) | 7198b18 | 100% | (Optimized) |
