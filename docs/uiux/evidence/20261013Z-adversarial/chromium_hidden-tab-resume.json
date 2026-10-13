@@ -1,0 +1,841 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/adversarial-matrix-full.spec.ts",
+      "file": "e2e/adversarial-matrix-full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "matrix chromium-desktop",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[chromium-desktop] Hero × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 18104,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:04.445Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikhlcm8iLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjUwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTUyNCwid2lkdGgiOjEyODAsInRleHRMZW4iOjk0MCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikhlcm8iLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgMjAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjoyMDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNTI0LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6OTQwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikhlcm8iLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jaGVybyIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNTI0LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6OTQwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-c21c2e0d11a17f751569",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] About × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"About\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 19754,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:04.428Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"About\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkFib3V0Iiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCA1MDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoyNTI3LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkFib3V0Iiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCAyMDAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjIwMDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjI1MjcsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkFib3V0Iiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2Fib3V0IiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCA1MDAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjUwMDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjI1MjcsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-e9ac2cf2b9c23798e1e3",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Experience × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16163,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:22.955Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkV4cGVyaWVuY2UiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jZXhwZXJpZW5jZSIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjUwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzE2OSwid2lkdGgiOjEyODAsInRleHRMZW4iOjM1MDksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkV4cGVyaWVuY2UiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jZXhwZXJpZW5jZSIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgMjAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjoyMDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTY5LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzUwOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IkV4cGVyaWVuY2UiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jZXhwZXJpZW5jZSIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTY5LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzUwOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-098280117f902b8090ac",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Skills × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 16501,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:24.591Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlNraWxscyIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNza2lsbHMiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjM1ODIsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo0NTY2LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlNraWxscyIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNza2lsbHMiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDIwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6MjAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzU4Miwid2lkdGgiOjEyODAsInRleHRMZW4iOjQ1NjYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlNraWxscyIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNza2lsbHMiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzU4Miwid2lkdGgiOjEyODAsInRleHRMZW4iOjQ1NjYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-9b6187b8f1f8d1cd4ea9",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Vitrine × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16172,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:39.157Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlZpdHJpbmUiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jdml0cmluZSIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjUwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY3NSwid2lkdGgiOjEyODAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlZpdHJpbmUiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jdml0cmluZSIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgMjAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjoyMDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjc1LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6IlZpdHJpbmUiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jdml0cmluZSIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNjc1LCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-bebd304cbacbc828141e",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-desktop] Listen × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 16035,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:41.128Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikxpc3RlbiIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNsaXN0ZW4iLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjkzMCwid2lkdGgiOjEyODAsInRleHRMZW4iOjM4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikxpc3RlbiIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNsaXN0ZW4iLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDIwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6MjAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6OTMwLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6Mzg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tZGVza3RvcCIsIm1lY2hhbmlzbSI6Ikxpc3RlbiIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNsaXN0ZW4iLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6OTMwLCJ3aWR0aCI6MTI4MCwidGV4dExlbiI6Mzg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-1f007850e55048672238",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        },
+        {
+          "title": "matrix chromium-mobile",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[chromium-mobile] Hero × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Hero\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17122,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:55.385Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Hero\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE2NjUsIndpZHRoIjozOTAsInRleHRMZW4iOjkzNywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDIwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6MjAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY2NSwid2lkdGgiOjM5MCwidGV4dExlbiI6OTM3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiSGVybyIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2hlcm8iLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY2NSwid2lkdGgiOjM5MCwidGV4dExlbiI6OTM3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-b23a366bb0083a1f552e",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] About × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"About\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 17058,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:42:57.195Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"About\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjg0NH0sInNlcXVlbmNlIjpbImdvdG8gLyNhYm91dCIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjUwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDMxMywid2lkdGgiOjM5MCwidGV4dExlbiI6MzY4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjg0NH0sInNlcXVlbmNlIjpbImdvdG8gLyNhYm91dCIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgMjAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjoyMDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo0MzEzLCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiQWJvdXQiLCJzY2VuYXJpbyI6ImhpZGRlbi10YWItcmVzdW1lIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjg0NH0sInNlcXVlbmNlIjpbImdvdG8gLyNhYm91dCIsInZpc2liaWxpdHljaGFuZ2XihpJoaWRkZW4gKyBDRFAgbGlmZWN5Y2xlIGZyb3plbiIsIndhaXQgNTAwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo0MzEzLCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozNjg3LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-91bdd0b7b761be59cb35",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Experience × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Experience\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16478,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:43:12.548Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Experience\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2V4cGVyaWVuY2UiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjQ1MzksIndpZHRoIjozOTAsInRleHRMZW4iOjM0NTksInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2V4cGVyaWVuY2UiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDIwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6MjAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDUzOSwid2lkdGgiOjM5MCwidGV4dExlbiI6MzQ1OSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiRXhwZXJpZW5jZSIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI2V4cGVyaWVuY2UiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NDUzOSwid2lkdGgiOjM5MCwidGV4dExlbiI6MzQ1OSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-f21e646764941ff49078",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Skills × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Skills\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 16369,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:43:14.277Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Skills\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jc2tpbGxzIiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCA1MDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo2NjI0LCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjo0NTEzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jc2tpbGxzIiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCAyMDAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjIwMDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjY2MjQsIndpZHRoIjozOTAsInRleHRMZW4iOjQ1MTMsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiU2tpbGxzIiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jc2tpbGxzIiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCA1MDAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjUwMDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjY2MjQsIndpZHRoIjozOTAsInRleHRMZW4iOjQ1MTMsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-fb77b21247d1ef67f8d5",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Vitrine × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Vitrine\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16777,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:43:29.105Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Vitrine\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI3ZpdHJpbmUiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMG1zIiwibGlmZWN5Y2xlIGFjdGl2ZSArIHZpc2liaWxpdHljaGFuZ2XihpJ2aXNpYmxlIl0sImhpZGRlbk1zIjo1MDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjc0MjEsIndpZHRoIjozOTAsInRleHRMZW4iOjM1NTYsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI3ZpdHJpbmUiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDIwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6MjAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NzQyMSwid2lkdGgiOjM5MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiVml0cmluZSIsInNjZW5hcmlvIjoiaGlkZGVuLXRhYi1yZXN1bWUiLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6ODQ0fSwic2VxdWVuY2UiOlsiZ290byAvI3ZpdHJpbmUiLCJ2aXNpYmlsaXR5Y2hhbmdl4oaSaGlkZGVuICsgQ0RQIGxpZmVjeWNsZSBmcm96ZW4iLCJ3YWl0IDUwMDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwMCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoicGFzcyIsIm1lYXN1cmVtZW50cyI6eyJzY3JvbGxEcmlmdCI6MCwibm9uQmxhbms6cmVzdW1lZCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6NzQyMSwid2lkdGgiOjM5MCwidGV4dExlbiI6MzU1Niwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-ab61e2be6787887f8fbe",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[chromium-mobile] Listen × hidden-tab-resume ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Listen\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 16484,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:43:30.691Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"chromium-mobile\",\"mechanism\":\"Listen\",\"scenario\":\"hidden-tab-resume\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jbGlzdGVuIiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCA1MDBtcyIsImxpZmVjeWNsZSBhY3RpdmUgKyB2aXNpYmlsaXR5Y2hhbmdl4oaSdmlzaWJsZSJdLCJoaWRkZW5NcyI6NTAwLCJuZXR3b3JrIjoidW50aHJvdHRsZWQiLCJjcHVEZWxheSI6Im5vbmUiLCJyZXN1bHQiOiJwYXNzIiwibWVhc3VyZW1lbnRzIjp7InNjcm9sbERyaWZ0IjowLCJub25CbGFuazpyZXN1bWVkIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxMDkxLCJ3aWR0aCI6MzkwLCJ0ZXh0TGVuIjozODcsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jbGlzdGVuIiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCAyMDAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjIwMDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjEwOTEsIndpZHRoIjozOTAsInRleHRMZW4iOjM4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoiY2hyb21pdW0tbW9iaWxlIiwibWVjaGFuaXNtIjoiTGlzdGVuIiwic2NlbmFyaW8iOiJoaWRkZW4tdGFiLXJlc3VtZSIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0Ijo4NDR9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jbGlzdGVuIiwidmlzaWJpbGl0eWNoYW5nZeKGkmhpZGRlbiArIENEUCBsaWZlY3ljbGUgZnJvemVuIiwid2FpdCA1MDAwbXMiLCJsaWZlY3ljbGUgYWN0aXZlICsgdmlzaWJpbGl0eWNoYW5nZeKGknZpc2libGUiXSwiaGlkZGVuTXMiOjUwMDAsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsic2Nyb2xsRHJpZnQiOjAsIm5vbkJsYW5rOnJlc3VtZWQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjEwOTEsIndpZHRoIjozOTAsInRleHRMZW4iOjM4Nywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-97cd5b48310eb81be353",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-13T04:42:03.064Z",
+    "duration": 104364.895,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,587 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/adversarial-matrix-full.spec.ts",
+      "file": "e2e/adversarial-matrix-full.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "matrix webkit-desktop",
+          "file": "e2e/adversarial-matrix-full.spec.ts",
+          "line": 512,
+          "column": 8,
+          "specs": [
+            {
+              "title": "[webkit-desktop] Hero × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 95604,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:02:42.490Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Hero\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJIZXJvIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNoZXJvIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDc2OHgxMDI0IiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2hlcm8iXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE1MjAsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo5MzAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93Ojc2OHgxMDI0Ijp7InN3Ijo3NjgsImN3Ijo3Njh9LCJub25CbGFuazo3Njh4MTAyNCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTkwNSwid2lkdGgiOjc2OCwidGV4dExlbiI6OTMwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJhbmNob3I6YWZ0ZXItcmVzaXplIjp7InRvcCI6MCwiYm90dG9tIjoxNTIwLCJ2aCI6ODAwLCJzY3JvbGxZIjowfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJIZXJvIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNoZXJvIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDEwMjR4NjAwIiwicmVzaXplIDE0NDB4OTAwIiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2hlcm8iXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE1MjAsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo5MzAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjEwMjR4NjAwIjp7InN3IjoxMDI0LCJjdyI6MTAyNH0sIm5vbkJsYW5rOjEwMjR4NjAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxMzY4LCJ3aWR0aCI6MTAyNCwidGV4dExlbiI6OTMwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxNDQweDkwMCI6eyJzdyI6MTQ0MCwiY3ciOjE0NDB9LCJub25CbGFuazoxNDQweDkwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTY1MSwid2lkdGgiOjE0NDAsInRleHRMZW4iOjkzMCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjAsImJvdHRvbSI6MTUyMCwidmgiOjgwMCwic2Nyb2xsWSI6MH19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJIZXJvIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNoZXJvIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDYwMHg4MDAiLCJyZXNpemUgMTkyMHgxMDgwIiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2hlcm8iXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE1MjAsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo5MzAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjYwMHg4MDAiOnsic3ciOjYwMCwiY3ciOjYwMH0sIm5vbkJsYW5rOjYwMHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE2NjUsIndpZHRoIjo2MDAsInRleHRMZW4iOjkyNywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6MTkyMHgxMDgwIjp7InN3IjoxOTIwLCJjdyI6MTkyMH0sIm5vbkJsYW5rOjE5MjB4MTA4MCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTc3Miwid2lkdGgiOjE5MjAsInRleHRMZW4iOjkzMCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjAsImJvdHRvbSI6MTUyMCwidmgiOjgwMCwic2Nyb2xsWSI6MH19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-0a7e060a9618306dd413",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] About × resize-orientation ×3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"About\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 132542,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:02:42.280Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"About\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJBYm91dCIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoxLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jYWJvdXQiLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgNzY4eDEwMjQiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjYWJvdXQiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjI0OTUsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNjczLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo3Njh4MTAyNCI6eyJzdyI6NzY4LCJjdyI6NzY4fSwibm9uQmxhbms6NzY4eDEwMjQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjMxOTcsIndpZHRoIjo3NjgsInRleHRMZW4iOjM2NzQsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoyNTkxLCJ2aCI6ODAwLCJzY3JvbGxZIjoxNDI0fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJBYm91dCIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjoyLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jYWJvdXQiLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgMTAyNHg2MDAiLCJyZXNpemUgMTQ0MHg5MDAiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjYWJvdXQiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjI0OTUsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNjczLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxMDI0eDYwMCI6eyJzdyI6MTAyNCwiY3ciOjEwMjR9LCJub25CbGFuazoxMDI0eDYwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6Mjg0Miwid2lkdGgiOjEwMjQsInRleHRMZW4iOjM2NzQsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjE0NDB4OTAwIjp7InN3IjoxNDQwLCJjdyI6MTQ0MH0sIm5vbkJsYW5rOjE0NDB4OTAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoyNDgyLCJ3aWR0aCI6MTQ0MCwidGV4dExlbiI6MzY3Mywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjk2LCJib3R0b20iOjI1OTEsInZoIjo4MDAsInNjcm9sbFkiOjE0MjR9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJBYm91dCIsInNjZW5hcmlvIjoicmVzaXplLW9yaWVudGF0aW9uIiwiaXRlcmF0aW9uIjozLCJyZXBlYXRzIjozLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MTI4MCwiaGVpZ2h0Ijo4MDB9LCJzZXF1ZW5jZSI6WyJnb3RvIC8jYWJvdXQiLCJyZXNpemUgMTI4MHg4MDAiLCJyZXNpemUgNjAweDgwMCIsInJlc2l6ZSAxOTIweDEwODAiLCJyZXNpemUgMTI4MHg4MDAiLCJzY3JvbGxJbnRvVmlldyAjYWJvdXQiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjI0OTUsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNjczLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo2MDB4ODAwIjp7InN3Ijo2MDAsImN3Ijo2MDB9LCJub25CbGFuazo2MDB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozOTI1LCJ3aWR0aCI6NjAwLCJ0ZXh0TGVuIjozNjc0LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxOTIweDEwODAiOnsic3ciOjE5MjAsImN3IjoxOTIwfSwibm9uQmxhbms6MTkyMHgxMDgwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoyNTczLCJ3aWR0aCI6MTkyMCwidGV4dExlbiI6MzY3NCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjk2LCJib3R0b20iOjI1OTEsInZoIjo4MDAsInNjcm9sbFkiOjE0MjR9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-ffb5731589f43b01e2c6",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Experience × resize-orientation ×3",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 195287,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts",
+                            "column": 79,
+                            "line": 532
+                          },
+                          "message": "Error: 1/3 iterations failed\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"iter 3: browserContext.close: Test ended.\u001b[39m\n\u001b[31m+ Browser logs:\u001b[39m\n\u001b[31m+\u001b[39m\n\u001b[31m+ <launching> /home/ubuntu/.cache/ms-playwright/webkit-2227/pw_run.sh --inspector-pipe --headless --no-startup-window\u001b[39m\n\u001b[31m+ <launched> pid=2092844\u001b[39m\n\u001b[31m+ [pid=2092844][err] \u001b[39m\n\u001b[31m+ [pid=2092844][err] ** (MiniBrowser:2092850): CRITICAL **: 04:02:43.295: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.\u001b[39m\n\u001b[31m+ [pid=2092844][err] libEGL warning: failed to get driver name for fd -1\u001b[39m\n\u001b[31m+ [pid=2092844][err] \u001b[39m\n\u001b[31m+ [pid=2092844][err] libEGL warning: MESA-LOADER: failed to retrieve device information\u001b[39m\n\u001b[31m+ [pid=2092844][err]\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  530 |             }\n  531 |           }\n> 532 |           expect(failures, `${failures.length}/${repeats} iterations failed`).toEqual([]);\n      |                                                                               ^\n  533 |         });\n  534 |       }\n  535 |     }\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts:532:79"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:04:18.838Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Experience\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJFeHBlcmllbmNlIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNleHBlcmllbmNlIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDc2OHgxMDI0IiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2V4cGVyaWVuY2UiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjMxMzgsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTAzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo3Njh4MTAyNCI6eyJzdyI6NzY4LCJjdyI6NzY4fSwibm9uQmxhbms6NzY4eDEwMjQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjMzOTksIndpZHRoIjo3NjgsInRleHRMZW4iOjM0NTQsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjozMjM0LCJ2aCI6ODAwLCJzY3JvbGxZIjozOTE5fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJFeHBlcmllbmNlIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNleHBlcmllbmNlIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDEwMjR4NjAwIiwicmVzaXplIDE0NDB4OTAwIiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2V4cGVyaWVuY2UiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjMxMzgsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTAzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxMDI0eDYwMCI6eyJzdyI6MTAyNCwiY3ciOjEwMjR9LCJub25CbGFuazoxMDI0eDYwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzA1NSwid2lkdGgiOjEwMjQsInRleHRMZW4iOjM1MDQsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjE0NDB4OTAwIjp7InN3IjoxNDQwLCJjdyI6MTQ0MH0sIm5vbkJsYW5rOjE0NDB4OTAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMTc4LCJ3aWR0aCI6MTQ0MCwidGV4dExlbiI6MzUwMywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjk2LCJib3R0b20iOjMyMzQsInZoIjo4MDAsInNjcm9sbFkiOjM5MTl9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-ff89d-nce-×-resize-orientation-×3-webkit/test-failed-2.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-ff89d-nce-×-resize-orientation-×3-webkit/test-failed-3.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-ff89d-nce-×-resize-orientation-×3-webkit/error-context.md"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJFeHBlcmllbmNlIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyNleHBlcmllbmNlIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDYwMHg4MDAiLCJyZXNpemUgMTkyMHgxMDgwIiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI2V4cGVyaWVuY2UiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6ImZhaWwiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjMxMzgsIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTAzLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo2MDB4ODAwIjp7InN3Ijo2MDAsImN3Ijo2MDB9LCJub25CbGFuazo2MDB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozODQ2LCJ3aWR0aCI6NjAwLCJ0ZXh0TGVuIjozNDU0LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxOTIweDEwODAiOnsic3ciOjE5MjAsImN3IjoxOTIwfSwibm9uQmxhbms6MTkyMHgxMDgwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozMjc1LCJ3aWR0aCI6MTkyMCwidGV4dExlbiI6MzUwMywic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXSwiZXJyb3IiOiJicm93c2VyQ29udGV4dC5jbG9zZTogVGVzdCBlbmRlZC5cbkJyb3dzZXIgbG9nczpcblxuPGxhdW5jaGluZz4gL2hvbWUvdWJ1bnR1Ly5jYWNoZS9tcy1wbGF5d3JpZ2h0L3dlYmtpdC0yMjI3L3B3X3J1bi5zaCAtLWluc3BlY3Rvci1waXBlIC0taGVhZGxlc3MgLS1uby1zdGFydHVwLXdpbmRvd1xuPGxhdW5jaGVkPiBwaWQ9MjA5Mjg0NFxuW3BpZD0yMDkyODQ0XVtlcnJdIFxuW3BpZD0yMDkyODQ0XVtlcnJdICoqIChNaW5pQnJvd3NlcjoyMDkyODUwKTogQ1JJVElDQUwgKio6IDA0OjAyOjQzLjI5NTogV2ViS2l0V2ViVmlldyBpcy1jb250cm9sbGVkLWJ5LWF1dG9tYXRpb24gc2V0IGJ1dCBhdXRvbWF0aW9uIGlzIG5vdCBhbGxvd2VkIGluIHRoZSBjb250ZXh0LCBmYWxsaW5nIGJhY2sgdG8gZGVmYXVsdCBzZXNzaW9uLlxuW3BpZD0yMDkyODQ0XVtlcnJdIGxpYkVHTCB3YXJuaW5nOiBmYWlsZWQgdG8gZ2V0IGRyaXZlciBuYW1lIGZvciBmZCAtMVxuW3BpZD0yMDkyODQ0XVtlcnJdIFxuW3BpZD0yMDkyODQ0XVtlcnJdIGxpYkVHTCB3YXJuaW5nOiBNRVNBLUxPQURFUjogZmFpbGVkIHRvIHJldHJpZXZlIGRldmljZSBpbmZvcm1hdGlvblxuW3BpZD0yMDkyODQ0XVtlcnJdIn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-a0daddda1079597c6b76",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Skills × resize-orientation ×3",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 183382,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts",
+                            "column": 79,
+                            "line": 532
+                          },
+                          "message": "Error: 1/3 iterations failed\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"iter 3: browserContext.close: Test ended.\u001b[39m\n\u001b[31m+ Browser logs:\u001b[39m\n\u001b[31m+\u001b[39m\n\u001b[31m+ <launching> /home/ubuntu/.cache/ms-playwright/webkit-2227/pw_run.sh --inspector-pipe --headless --no-startup-window\u001b[39m\n\u001b[31m+ <launched> pid=2092831\u001b[39m\n\u001b[31m+ [pid=2092831][err] \u001b[39m\n\u001b[31m+ [pid=2092831][err] ** (MiniBrowser:2092837): CRITICAL **: 04:02:42.977: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.\u001b[39m\n\u001b[31m+ [pid=2092831][err] libEGL warning: failed to get driver name for fd -1\u001b[39m\n\u001b[31m+ [pid=2092831][err] \u001b[39m\n\u001b[31m+ [pid=2092831][err] libEGL warning: MESA-LOADER: failed to retrieve device information\u001b[39m\n\u001b[31m+ [pid=2092831][err]\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  530 |             }\n  531 |           }\n> 532 |           expect(failures, `${failures.length}/${repeats} iterations failed`).toEqual([]);\n      |                                                                               ^\n  533 |         });\n  534 |       }\n  535 |     }\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts:532:79"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:04:55.489Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Skills\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJTa2lsbHMiLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI3NraWxscyIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA3Njh4MTAyNCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNza2lsbHMiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjM1NDksIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo0NTUwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo3Njh4MTAyNCI6eyJzdyI6NzY4LCJjdyI6NzY4fSwibm9uQmxhbms6NzY4eDEwMjQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjU1NjQsIndpZHRoIjo3NjgsInRleHRMZW4iOjQ1MzEsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjozNjQ0LCJ2aCI6ODAwLCJzY3JvbGxZIjo3MDU3fX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXX0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJTa2lsbHMiLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI3NraWxscyIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSAxMDI0eDYwMCIsInJlc2l6ZSAxNDQweDkwMCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNza2lsbHMiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjM1NDksIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo0NTUwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxMDI0eDYwMCI6eyJzdyI6MTAyNCwiY3ciOjEwMjR9LCJub25CbGFuazoxMDI0eDYwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MzY4NSwid2lkdGgiOjEwMjQsInRleHRMZW4iOjQ1NTEsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjE0NDB4OTAwIjp7InN3IjoxNDQwLCJjdyI6MTQ0MH0sIm5vbkJsYW5rOjE0NDB4OTAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNTgyLCJ3aWR0aCI6MTQ0MCwidGV4dExlbiI6NDU1MCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwiYW5jaG9yOmFmdGVyLXJlc2l6ZSI6eyJ0b3AiOjk2LCJib3R0b20iOjM2NDQsInZoIjo4MDAsInNjcm9sbFkiOjcwNTd9fSwicGFnZUVycm9ycyI6W10sImNvbnNvbGVFcnJvcnMiOltdfQ=="
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-7b102-lls-×-resize-orientation-×3-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-7b102-lls-×-resize-orientation-×3-webkit/test-failed-3.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-7b102-lls-×-resize-orientation-×3-webkit/error-context.md"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJTa2lsbHMiLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI3NraWxscyIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA2MDB4ODAwIiwicmVzaXplIDE5MjB4MTA4MCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNza2lsbHMiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6ImZhaWwiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjM1NDksIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjo0NTUwLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo2MDB4ODAwIjp7InN3Ijo2MDAsImN3Ijo2MDB9LCJub25CbGFuazo2MDB4ODAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0Ijo1NzMwLCJ3aWR0aCI6NjAwLCJ0ZXh0TGVuIjo0NTMxLCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxOTIweDEwODAiOnsic3ciOjE5MjAsImN3IjoxOTIwfSwibm9uQmxhbms6MTkyMHgxMDgwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjozNjUyLCJ3aWR0aCI6MTkyMCwidGV4dExlbiI6NDU1MCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXSwiZXJyb3IiOiJicm93c2VyQ29udGV4dC5jbG9zZTogVGVzdCBlbmRlZC5cbkJyb3dzZXIgbG9nczpcblxuPGxhdW5jaGluZz4gL2hvbWUvdWJ1bnR1Ly5jYWNoZS9tcy1wbGF5d3JpZ2h0L3dlYmtpdC0yMjI3L3B3X3J1bi5zaCAtLWluc3BlY3Rvci1waXBlIC0taGVhZGxlc3MgLS1uby1zdGFydHVwLXdpbmRvd1xuPGxhdW5jaGVkPiBwaWQ9MjA5MjgzMVxuW3BpZD0yMDkyODMxXVtlcnJdIFxuW3BpZD0yMDkyODMxXVtlcnJdICoqIChNaW5pQnJvd3NlcjoyMDkyODM3KTogQ1JJVElDQUwgKio6IDA0OjAyOjQyLjk3NzogV2ViS2l0V2ViVmlldyBpcy1jb250cm9sbGVkLWJ5LWF1dG9tYXRpb24gc2V0IGJ1dCBhdXRvbWF0aW9uIGlzIG5vdCBhbGxvd2VkIGluIHRoZSBjb250ZXh0LCBmYWxsaW5nIGJhY2sgdG8gZGVmYXVsdCBzZXNzaW9uLlxuW3BpZD0yMDkyODMxXVtlcnJdIGxpYkVHTCB3YXJuaW5nOiBmYWlsZWQgdG8gZ2V0IGRyaXZlciBuYW1lIGZvciBmZCAtMVxuW3BpZD0yMDkyODMxXVtlcnJdIFxuW3BpZD0yMDkyODMxXVtlcnJdIGxpYkVHTCB3YXJuaW5nOiBNRVNBLUxPQURFUjogZmFpbGVkIHRvIHJldHJpZXZlIGRldmljZSBpbmZvcm1hdGlvblxuW3BpZD0yMDkyODMxXVtlcnJdIn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-b442c85fd38aafbcccab",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Vitrine × resize-orientation ×3",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 362889,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts",
+                            "column": 79,
+                            "line": 532
+                          },
+                          "message": "Error: 2/3 iterations failed\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 14\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"iter 2: browserContext.close: Test ended.\u001b[39m\n\u001b[31m+ Browser logs:\u001b[39m\n\u001b[31m+\u001b[39m\n\u001b[31m+ <launching> /home/ubuntu/.cache/ms-playwright/webkit-2227/pw_run.sh --inspector-pipe --headless --no-startup-window\u001b[39m\n\u001b[31m+ <launched> pid=2094690\u001b[39m\n\u001b[31m+ [pid=2094690][err] \u001b[39m\n\u001b[31m+ [pid=2094690][err] ** (MiniBrowser:2094699): CRITICAL **: 04:07:44.954: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.\u001b[39m\n\u001b[31m+ [pid=2094690][err] libEGL warning: failed to get driver name for fd -1\u001b[39m\n\u001b[31m+ [pid=2094690][err] \u001b[39m\n\u001b[31m+ [pid=2094690][err] libEGL warning: MESA-LOADER: failed to retrieve device information\u001b[39m\n\u001b[31m+ [pid=2094690][err]\",\u001b[39m\n\u001b[31m+   \"iter 3: browser.newContext: Target page, context or browser has been closed\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  530 |             }\n  531 |           }\n> 532 |           expect(failures, `${failures.length}/${repeats} iterations failed`).toEqual([]);\n      |                                                                               ^\n  533 |         });\n  534 |       }\n  535 |     }\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts:532:79"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:07:43.648Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Vitrine\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJWaXRyaW5lIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjEsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyN2aXRyaW5lIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDc2OHgxMDI0IiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI3ZpdHJpbmUiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6InBhc3MiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE2NjksIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTI5LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzo3Njh4MTAyNCI6eyJzdyI6NzY4LCJjdyI6NzY4fSwibm9uQmxhbms6NzY4eDEwMjQiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE4NDcsIndpZHRoIjo3NjgsInRleHRMZW4iOjM1MzAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoxNzY2LCJ2aCI6ODAwLCJzY3JvbGxZIjoxMDYwNX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W119"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-9066e-ine-×-resize-orientation-×3-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-9066e-ine-×-resize-orientation-×3-webkit/test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-9066e-ine-×-resize-orientation-×3-webkit/error-context.md"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJWaXRyaW5lIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjIsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbImdvdG8gLyN2aXRyaW5lIiwicmVzaXplIDEyODB4ODAwIiwicmVzaXplIDEwMjR4NjAwIiwicmVzaXplIDE0NDB4OTAwIiwicmVzaXplIDEyODB4ODAwIiwic2Nyb2xsSW50b1ZpZXcgI3ZpdHJpbmUiXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6ImZhaWwiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjE2NjksIndpZHRoIjoxMjgwLCJ0ZXh0TGVuIjozNTI5LCJzZWN0aW9uVmlzaWJpbGl0eSI6InZpc2libGUiLCJoZWFkaW5nVmlzaWJsZSI6dHJ1ZSwiaGVhZGluZ0VmZmVjdGl2ZU9wYWNpdHkiOjF9LCJvdmVyZmxvdzoxMDI0eDYwMCI6eyJzdyI6MTAyNCwiY3ciOjEwMjR9LCJub25CbGFuazoxMDI0eDYwMCI6eyJleGlzdHMiOnRydWUsImhlaWdodCI6MTc0Niwid2lkdGgiOjEwMjQsInRleHRMZW4iOjM1MzAsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sIm92ZXJmbG93OjE0NDB4OTAwIjp7InN3IjoxNDQwLCJjdyI6MTQ0MH0sIm5vbkJsYW5rOjE0NDB4OTAwIjp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxNzA5LCJ3aWR0aCI6MTQ0MCwidGV4dExlbiI6MzUyOSwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfX0sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXSwiZXJyb3IiOiJicm93c2VyQ29udGV4dC5jbG9zZTogVGVzdCBlbmRlZC5cbkJyb3dzZXIgbG9nczpcblxuPGxhdW5jaGluZz4gL2hvbWUvdWJ1bnR1Ly5jYWNoZS9tcy1wbGF5d3JpZ2h0L3dlYmtpdC0yMjI3L3B3X3J1bi5zaCAtLWluc3BlY3Rvci1waXBlIC0taGVhZGxlc3MgLS1uby1zdGFydHVwLXdpbmRvd1xuPGxhdW5jaGVkPiBwaWQ9MjA5NDY5MFxuW3BpZD0yMDk0NjkwXVtlcnJdIFxuW3BpZD0yMDk0NjkwXVtlcnJdICoqIChNaW5pQnJvd3NlcjoyMDk0Njk5KTogQ1JJVElDQUwgKio6IDA0OjA3OjQ0Ljk1NDogV2ViS2l0V2ViVmlldyBpcy1jb250cm9sbGVkLWJ5LWF1dG9tYXRpb24gc2V0IGJ1dCBhdXRvbWF0aW9uIGlzIG5vdCBhbGxvd2VkIGluIHRoZSBjb250ZXh0LCBmYWxsaW5nIGJhY2sgdG8gZGVmYXVsdCBzZXNzaW9uLlxuW3BpZD0yMDk0NjkwXVtlcnJdIGxpYkVHTCB3YXJuaW5nOiBmYWlsZWQgdG8gZ2V0IGRyaXZlciBuYW1lIGZvciBmZCAtMVxuW3BpZD0yMDk0NjkwXVtlcnJdIFxuW3BpZD0yMDk0NjkwXVtlcnJdIGxpYkVHTCB3YXJuaW5nOiBNRVNBLUxPQURFUjogZmFpbGVkIHRvIHJldHJpZXZlIGRldmljZSBpbmZvcm1hdGlvblxuW3BpZD0yMDk0NjkwXVtlcnJdIn0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJWaXRyaW5lIiwic2NlbmFyaW8iOiJyZXNpemUtb3JpZW50YXRpb24iLCJpdGVyYXRpb24iOjMsInJlcGVhdHMiOjMsInZpZXdwb3J0Ijp7IndpZHRoIjoxMjgwLCJoZWlnaHQiOjgwMH0sInNlcXVlbmNlIjpbXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6ImZhaWwiLCJtZWFzdXJlbWVudHMiOnt9LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W10sImVycm9yIjoiYnJvd3Nlci5uZXdDb250ZXh0OiBUYXJnZXQgcGFnZSwgY29udGV4dCBvciBicm93c2VyIGhhcyBiZWVuIGNsb3NlZCJ9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-ced09b91af60c061c90d",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            },
+            {
+              "title": "[webkit-desktop] Listen × resize-orientation ×3",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "matrix",
+                      "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 338930,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 180000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts",
+                            "column": 79,
+                            "line": 532
+                          },
+                          "message": "Error: 3/3 iterations failed\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 15\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"iter 1: browserContext.close: Test ended.\u001b[39m\n\u001b[31m+ Browser logs:\u001b[39m\n\u001b[31m+\u001b[39m\n\u001b[31m+ <launching> /home/ubuntu/.cache/ms-playwright/webkit-2227/pw_run.sh --inspector-pipe --headless --no-startup-window\u001b[39m\n\u001b[31m+ <launched> pid=2094880\u001b[39m\n\u001b[31m+ [pid=2094880][err] \u001b[39m\n\u001b[31m+ [pid=2094880][err] ** (MiniBrowser:2094886): CRITICAL **: 04:08:05.799: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.\u001b[39m\n\u001b[31m+ [pid=2094880][err] libEGL warning: failed to get driver name for fd -1\u001b[39m\n\u001b[31m+ [pid=2094880][err] \u001b[39m\n\u001b[31m+ [pid=2094880][err] libEGL warning: MESA-LOADER: failed to retrieve device information\u001b[39m\n\u001b[31m+ [pid=2094880][err]\",\u001b[39m\n\u001b[31m+   \"iter 2: browser.newContext: Target page, context or browser has been closed\",\u001b[39m\n\u001b[31m+   \"iter 3: browser.newContext: Target page, context or browser has been closed\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  530 |             }\n  531 |           }\n> 532 |           expect(failures, `${failures.length}/${repeats} iterations failed`).toEqual([]);\n      |                                                                               ^\n  533 |         });\n  534 |       }\n  535 |     }\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/adversarial-matrix-full.spec.ts:532:79"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-13T04:08:04.865Z",
+                      "annotations": [
+                        {
+                          "type": "matrix",
+                          "description": "{\"profile\":\"webkit-desktop\",\"mechanism\":\"Listen\",\"scenario\":\"resize-orientation\",\"repeats\":3,\"kind\":\"stress\"}"
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-adversarial-matrix-ful-f4562-ten-×-resize-orientation-×3-webkit/error-context.md"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJMaXN0ZW4iLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MSwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOlsiZ290byAvI2xpc3RlbiIsInJlc2l6ZSAxMjgweDgwMCIsInJlc2l6ZSA3Njh4MTAyNCIsInJlc2l6ZSAxMjgweDgwMCIsInNjcm9sbEludG9WaWV3ICNsaXN0ZW4iXSwiaGlkZGVuTXMiOm51bGwsIm5ldHdvcmsiOiJ1bnRocm90dGxlZCIsImNwdURlbGF5Ijoibm9uZSIsInJlc3VsdCI6ImZhaWwiLCJtZWFzdXJlbWVudHMiOnsib3ZlcmZsb3c6MTI4MHg4MDAiOnsic3ciOjEyODAsImN3IjoxMjgwfSwibm9uQmxhbms6MTI4MHg4MDAiOnsiZXhpc3RzIjp0cnVlLCJoZWlnaHQiOjkyOSwid2lkdGgiOjEyODAsInRleHRMZW4iOjM4NCwic2VjdGlvblZpc2liaWxpdHkiOiJ2aXNpYmxlIiwiaGVhZGluZ1Zpc2libGUiOnRydWUsImhlYWRpbmdFZmZlY3RpdmVPcGFjaXR5IjoxfSwib3ZlcmZsb3c6NzY4eDEwMjQiOnsic3ciOjc2OCwiY3ciOjc2OH0sIm5vbkJsYW5rOjc2OHgxMDI0Ijp7ImV4aXN0cyI6dHJ1ZSwiaGVpZ2h0IjoxMDAwLCJ3aWR0aCI6NzY4LCJ0ZXh0TGVuIjozODQsInNlY3Rpb25WaXNpYmlsaXR5IjoidmlzaWJsZSIsImhlYWRpbmdWaXNpYmxlIjp0cnVlLCJoZWFkaW5nRWZmZWN0aXZlT3BhY2l0eSI6MX0sImFuY2hvcjphZnRlci1yZXNpemUiOnsidG9wIjo5NiwiYm90dG9tIjoxMDI1LCJ2aCI6ODAwLCJzY3JvbGxZIjoxMjI3NX19LCJwYWdlRXJyb3JzIjpbXSwiY29uc29sZUVycm9ycyI6W10sImVycm9yIjoiYnJvd3NlckNvbnRleHQuY2xvc2U6IFRlc3QgZW5kZWQuXG5Ccm93c2VyIGxvZ3M6XG5cbjxsYXVuY2hpbmc+IC9ob21lL3VidW50dS8uY2FjaGUvbXMtcGxheXdyaWdodC93ZWJraXQtMjIyNy9wd19ydW4uc2ggLS1pbnNwZWN0b3ItcGlwZSAtLWhlYWRsZXNzIC0tbm8tc3RhcnR1cC13aW5kb3dcbjxsYXVuY2hlZD4gcGlkPTIwOTQ4ODBcbltwaWQ9MjA5NDg4MF1bZXJyXSBcbltwaWQ9MjA5NDg4MF1bZXJyXSAqKiAoTWluaUJyb3dzZXI6MjA5NDg4Nik6IENSSVRJQ0FMICoqOiAwNDowODowNS43OTk6IFdlYktpdFdlYlZpZXcgaXMtY29udHJvbGxlZC1ieS1hdXRvbWF0aW9uIHNldCBidXQgYXV0b21hdGlvbiBpcyBub3QgYWxsb3dlZCBpbiB0aGUgY29udGV4dCwgZmFsbGluZyBiYWNrIHRvIGRlZmF1bHQgc2Vzc2lvbi5cbltwaWQ9MjA5NDg4MF1bZXJyXSBsaWJFR0wgd2FybmluZzogZmFpbGVkIHRvIGdldCBkcml2ZXIgbmFtZSBmb3IgZmQgLTFcbltwaWQ9MjA5NDg4MF1bZXJyXSBcbltwaWQ9MjA5NDg4MF1bZXJyXSBsaWJFR0wgd2FybmluZzogTUVTQS1MT0FERVI6IGZhaWxlZCB0byByZXRyaWV2ZSBkZXZpY2UgaW5mb3JtYXRpb25cbltwaWQ9MjA5NDg4MF1bZXJyXSJ9"
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJMaXN0ZW4iLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MiwicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOltdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoiZmFpbCIsIm1lYXN1cmVtZW50cyI6e30sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXSwiZXJyb3IiOiJicm93c2VyLm5ld0NvbnRleHQ6IFRhcmdldCBwYWdlLCBjb250ZXh0IG9yIGJyb3dzZXIgaGFzIGJlZW4gY2xvc2VkIn0="
+                        },
+                        {
+                          "name": "matrix-profile",
+                          "contentType": "application/json",
+                          "body": "eyJwcm9maWxlIjoid2Via2l0LWRlc2t0b3AiLCJtZWNoYW5pc20iOiJMaXN0ZW4iLCJzY2VuYXJpbyI6InJlc2l6ZS1vcmllbnRhdGlvbiIsIml0ZXJhdGlvbiI6MywicmVwZWF0cyI6Mywidmlld3BvcnQiOnsid2lkdGgiOjEyODAsImhlaWdodCI6ODAwfSwic2VxdWVuY2UiOltdLCJoaWRkZW5NcyI6bnVsbCwibmV0d29yayI6InVudGhyb3R0bGVkIiwiY3B1RGVsYXkiOiJub25lIiwicmVzdWx0IjoiZmFpbCIsIm1lYXN1cmVtZW50cyI6e30sInBhZ2VFcnJvcnMiOltdLCJjb25zb2xlRXJyb3JzIjpbXSwiZXJyb3IiOiJicm93c2VyLm5ld0NvbnRleHQ6IFRhcmdldCBwYWdlLCBjb250ZXh0IG9yIGJyb3dzZXIgaGFzIGJlZW4gY2xvc2VkIn0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "56a02ecd9a9fc23bf359-96326572aea088bc93f3",
+              "file": "e2e/adversarial-matrix-full.spec.ts",
+              "line": 516,
+              "column": 13
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-13T04:02:38.150Z",
+    "duration": 671637.65,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}
