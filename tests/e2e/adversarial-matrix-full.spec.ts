@@ -41,7 +41,17 @@ const PROFILES: Profile[] = [
     options: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true },
   },
   { name: 'firefox-desktop', mobile: false, options: { viewport: { width: 1280, height: 800 } } },
+  {
+    name: 'firefox-mobile',
+    mobile: true,
+    options: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, hasTouch: true },
+  },
   { name: 'webkit-desktop', mobile: false, options: { viewport: { width: 1280, height: 800 } } },
+  {
+    name: 'webkit-mobile',
+    mobile: true,
+    options: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, hasTouch: true },
+  },
 ];
 
 type Scenario =

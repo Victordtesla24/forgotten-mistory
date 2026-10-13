@@ -3,12 +3,15 @@
 import { useEffect } from 'react';
 import { motion, useScroll } from 'framer-motion';
 
+import dynamic from 'next/dynamic';
+
+const About = dynamic(() => import('@/components/sections/About/About'), { ssr: true });
+const Experience = dynamic(() => import('@/components/sections/Experience/Experience'), { ssr: true });
+const Skills = dynamic(() => import('@/components/sections/Skills/Skills'), { ssr: true });
+const Vitrine = dynamic(() => import('@/components/sections/Vitrine/Vitrine'), { ssr: true });
+const Listen = dynamic(() => import('@/components/sections/Listen/Listen'), { ssr: true });
+
 import Hero from '@/components/sections/Hero/Hero';
-import About from '@/components/sections/About/About';
-import Experience from '@/components/sections/Experience/Experience';
-import Skills from '@/components/sections/Skills/Skills';
-import Vitrine from '@/components/sections/Vitrine/Vitrine';
-import Listen from '@/components/sections/Listen/Listen';
 import Navigation from '@/components/site/Navigation';
 
 /**

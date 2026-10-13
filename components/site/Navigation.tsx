@@ -192,20 +192,6 @@ export default function Navigation() {
       window.clearTimeout(settleTimer);
       settleTimer = window.setTimeout(onSettle, 180);
       nav.setAttribute('data-scrolled', String(window.scrollY > 24));
-
-      const pending = pendingAnchorRef.current;
-      const visibleHash = chooseVisibleHash();
-      if (pending) {
-        if (visibleHash === pending.hash || performance.now() > pending.until) {
-          pendingAnchorRef.current = null;
-        } else {
-          setCurrentHash(pending.hash);
-          return;
-        }
-      }
-
-      setCurrentHash(visibleHash);
-      replaceHash(visibleHash);
     };
 
     syncToLocationHash();

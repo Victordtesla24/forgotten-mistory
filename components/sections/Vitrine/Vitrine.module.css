@@ -327,6 +327,9 @@
 
 .source,
 .live {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     font-size: var(--fs-small);
     text-decoration: none;
     color: var(--mist-200);

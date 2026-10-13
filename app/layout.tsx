@@ -3,11 +3,13 @@ import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 import { buildStamp } from '@/app/data/generated/build-stamp';
 import { MINIVIC_CHAT_ORIGIN } from '@/app/data/generated/minivic-origin';
-import MiniVicBot from '../components/MiniVicBot';
+import dynamic from 'next/dynamic';
 import Footer from '@/components/site/Footer';
 import MotionProvider from '../components/MotionProvider';
 import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
 import { AvatarSpeakingProvider } from '@/lib/avatarContext';
+
+const MiniVicBot = dynamic(() => import('../components/MiniVicBot'), { ssr: true });
 
 // Three faces, each with one job (design direction §1.1).
 //
