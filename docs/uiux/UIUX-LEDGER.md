@@ -6,6 +6,21 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C8 Production QA — final cycle verification — 2026-10-13
+
+Production build `45673ed5` (100% parity with `main`).
+
+- **Status:** **PARTIAL** — UX-P1-006 (mobile LCP 3.8 s > 2.5 s budget) remains open; all other defined campaign findings are VERIFIED-CLOSED.
+- **Verified-Closed:** 
+    - **UX-P1-001 (320px Reflow):** Verified in C7.
+    - **UX-P2-002 (Nav Active State):** Verified in C7.
+    - **UX-P2-003 (Target Size):** Verified in C7.
+- **Performance (Production):**
+    - Desktop: 100/100/100/100 (LCP 0.6s, TBT 20ms).
+    - Mobile: 82 Performance (LCP 3.8s, TBT 160ms).
+- **Adversarial matrix:** 100% COMPLETE. 432/432 cells PASS.
+- **Preservation:** 16/16 e2e passes (flagship-six + adversarial-repairs) on production build `45673ed5`.
+
 ### C7 Production QA — matrix closure & verified parity — 2026-10-13
 
 Production build `10381de4` (100% parity with `main`).
@@ -50,9 +65,9 @@ Branch `uiux/c6-remediation` merged to `main`.
 | A11y | axe serious/critical | 0 | 0 | PASS |
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
-| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 80 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | FAIL Perf |
-| Perf | Mobile LCP / CLS / TBT | 2.9 s / 0 / 110 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | FAIL LCP |
-| Release | main ↔ live parity | 100% (10381de4) | 100 % | PASS |
+| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 82 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | FAIL Perf |
+| Perf | Mobile LCP / CLS / TBT | 3.8 s / 0 / 160 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | FAIL LCP |
+| Release | main ↔ live parity | 100% (45673ed5) | 100 % | PASS |
 
 ---
 
