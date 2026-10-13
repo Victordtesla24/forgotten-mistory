@@ -283,14 +283,10 @@ test.describe('flagship six interaction contract', () => {
     const inspection = page.getByTestId('career-inspection');
     const before = await inspection.innerText();
     const target = roles.length - 1;
-    await scrubber.evaluate((input, value) => {
-      const el = input as HTMLInputElement;
-      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
-      if (!setter) throw new Error('HTMLInputElement value setter unavailable');
-      setter.call(el, String(value));
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-      el.dispatchEvent(new Event('change', { bubbles: true }));
-    }, target);
+    await scrubber.focus();
+    for (let i = 0; i < target; i++) {
+      await page.keyboard.press('ArrowRight');
+    }
     await expect(inspection).not.toHaveText(before);
     await expect(inspection).toContainText(roles[target].company);
     await expect(inspection).toContainText(roles[target].dates);
