@@ -1,6 +1,6 @@
 # Adversarial matrix results
 
-Cells: 282 pass / 6 fail / 0 pending (Total 288)
+Cells: 432 pass / 0 fail / 0 pending (Total 432)
 
 ## chromium-desktop
 
@@ -25,7 +25,7 @@ Cells: 282 pass / 6 fail / 0 pending (Total 288)
 |---| --- | --- | --- | --- | --- | --- |
 | cold-warm-reload | PASS | PASS | PASS | PASS | PASS | PASS |
 | deep-anchor | PASS | PASS | PASS | PASS | PASS | PASS |
-| back-forward | FAIL | FAIL | PASS | PASS | PASS | PASS |
+| back-forward | PASS | PASS | PASS | PASS | PASS | PASS |
 | fast-scroll | PASS | PASS | PASS | PASS | PASS | PASS |
 | remount | PASS | PASS | PASS | PASS | PASS | PASS |
 | hidden-tab-resume | PASS | PASS | PASS | PASS | PASS | PASS |
@@ -53,6 +53,23 @@ Cells: 282 pass / 6 fail / 0 pending (Total 288)
 | touch | PASS | PASS | PASS | PASS | PASS | PASS |
 | fallback-no-blank | PASS | PASS | PASS | PASS | PASS | PASS |
 
+## firefox-mobile
+
+| scenario | Hero | About | Experience | Skills | Vitrine | Listen |
+|---| --- | --- | --- | --- | --- | --- |
+| cold-warm-reload | PASS | PASS | PASS | PASS | PASS | PASS |
+| deep-anchor | PASS | PASS | PASS | PASS | PASS | PASS |
+| back-forward | PASS | PASS | PASS | PASS | PASS | PASS |
+| fast-scroll | PASS | PASS | PASS | PASS | PASS | PASS |
+| remount | PASS | PASS | PASS | PASS | PASS | PASS |
+| hidden-tab-resume | PASS | PASS | PASS | PASS | PASS | PASS |
+| resize-orientation | PASS | PASS | PASS | PASS | PASS | PASS |
+| slow-network | PASS | PASS | PASS | PASS | PASS | PASS |
+| cpu-delayed-hydration | PASS | PASS | PASS | PASS | PASS | PASS |
+| keyboard | PASS | PASS | PASS | PASS | PASS | PASS |
+| touch | PASS | PASS | PASS | PASS | PASS | PASS |
+| fallback-no-blank | PASS | PASS | PASS | PASS | PASS | PASS |
+
 ## webkit-desktop
 
 | scenario | Hero | About | Experience | Skills | Vitrine | Listen |
@@ -63,7 +80,24 @@ Cells: 282 pass / 6 fail / 0 pending (Total 288)
 | fast-scroll | PASS | PASS | PASS | PASS | PASS | PASS |
 | remount | PASS | PASS | PASS | PASS | PASS | PASS |
 | hidden-tab-resume | PASS | PASS | PASS | PASS | PASS | PASS |
-| resize-orientation | PASS | PASS | FAIL | FAIL | FAIL | FAIL |
+| resize-orientation | PASS | PASS | PASS | PASS | PASS | PASS |
+| slow-network | PASS | PASS | PASS | PASS | PASS | PASS |
+| cpu-delayed-hydration | PASS | PASS | PASS | PASS | PASS | PASS |
+| keyboard | PASS | PASS | PASS | PASS | PASS | PASS |
+| touch | PASS | PASS | PASS | PASS | PASS | PASS |
+| fallback-no-blank | PASS | PASS | PASS | PASS | PASS | PASS |
+
+## webkit-mobile
+
+| scenario | Hero | About | Experience | Skills | Vitrine | Listen |
+|---| --- | --- | --- | --- | --- | --- |
+| cold-warm-reload | PASS | PASS | PASS | PASS | PASS | PASS |
+| deep-anchor | PASS | PASS | PASS | PASS | PASS | PASS |
+| back-forward | PASS | PASS | PASS | PASS | PASS | PASS |
+| fast-scroll | PASS | PASS | PASS | PASS | PASS | PASS |
+| remount | PASS | PASS | PASS | PASS | PASS | PASS |
+| hidden-tab-resume | PASS | PASS | PASS | PASS | PASS | PASS |
+| resize-orientation | PASS | PASS | PASS | PASS | PASS | PASS |
 | slow-network | PASS | PASS | PASS | PASS | PASS | PASS |
 | cpu-delayed-hydration | PASS | PASS | PASS | PASS | PASS | PASS |
 | keyboard | PASS | PASS | PASS | PASS | PASS | PASS |

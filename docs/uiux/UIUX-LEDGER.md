@@ -6,6 +6,16 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C9 Production QA — adversarial coverage closure — 2026-10-13
+
+Production build `b4f891df` (100% parity with `main`).
+
+- **Status:** **PARTIAL** — UX-P1-006 (mobile LCP 3.8 s > 2.5 s budget) remains open.
+- **Adversarial matrix:** **100% COMPLETE**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
+    - Visual evidence (screenshots) captured for all 6 flagships under adversarial conditions.
+- **Preservation:** 16/16 e2e passes (flagship-six + adversarial-repairs + small-targets) on production build `b4f891df`.
+- **Reconciliation:** Evidence from `uiux/c4-evidence` branch reconciled into main repository.
+
 ### C8 Production QA — final cycle verification — 2026-10-13
 
 Production build `45673ed5` (100% parity with `main`).
