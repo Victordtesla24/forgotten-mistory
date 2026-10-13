@@ -12,7 +12,7 @@ import { heroContent } from '@/app/data/portfolio/hero';
 
 import styles from './Hero.module.css';
 
-const HeroObservatory = dynamic(() => import('./HeroObservatory'), { ssr: true });
+const HeroObservatory = dynamic(() => import('./HeroObservatory'), { ssr: false });
 
 /**
  * Hero — the front door.
