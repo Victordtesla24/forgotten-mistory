@@ -133,22 +133,20 @@ Branch `uiux/c6-remediation` merged to `main`.
 | A11y | axe serious/critical | 0 | 0 | PASS |
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
-| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 81 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PARTIAL |
-| Perf | Mobile LCP / CLS / TBT | ~2.3 s / 0 / 110 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
+| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 86 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PARTIAL |
+| Perf | Mobile LCP / CLS / TBT | ~3.6 s / 0 / 212 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | FAIL |
 | Release | main ↔ live parity | 100% (2e71579e) | 100 % | PASS |
 
 ---
 
 ## C. Prioritized findings backlog
 
-#### UX-P1-001 — Horizontal overflow at 320 px (400 % zoom)
-- Status:                VERIFIED-CLOSED — document `scrollWidth` 320 at viewport 320 on production (2026-10-13).
-- Evidence (post-fix):   `evidence/20261013Z-adversarial/` J5 PASS.
+#### UX-P1-006 — Mobile field performance
+- Status:                OPEN — measured 3.6s LCP on production (C15); regressed from 2.3s (C14).
+- Observed (production): Performance 86, LCP 3.6 s, TBT 212 ms (C15).
+- Recommendation:        Audit hydration bottlenecks and ATF resource priority. Previous optimization in C12 (1.98s) and C14 (2.3s) provided a baseline.
 
-#### UX-P1-006 — Mobile Lighthouse Performance 94, LCP 1.98 s (Optimized)
-- Status:                VERIFIED-CLOSED — optimized via dynamic imports and reduced delays (C12).
-- Observed (production): Performance 94, LCP 1.98 s, TBT 110 ms (C12).
-- Recommendation:        Maintain dynamic imports for non-critical ATF and below-the-fold components.
+#### UX-P1-001 — Horizontal overflow at 320 px (400 % zoom)
 
 #### UX-P2-002 — Navigation active state
 - Status:                VERIFIED-CLOSED — all 6 anchors update URL hash and `aria-current="location"` correctly on production (2026-10-13).
