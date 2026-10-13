@@ -15,6 +15,17 @@ Branch `uiux/fixer-refinement` (fix commit `377fb02`) merged to `main` via `gh p
 - **Adversarial matrix:** Chromium 144/144 cells PASS (312/312 iterations, evidence `evidence/20260929T1115Z-matrix/`); Firefox/WebKit 144 cells PENDING (browsers not installed). Post-merge production re-run of the matrix/RED specs: **UNVERIFIED** in this step.
 - **Main SHA / deploy run:** recorded in §E release log after merge.
 
+### C6 Publisher — remediation shipped — 2026-10-13
+
+Branch `uiux/c6-remediation` merged to `main`. 
+
+- **Status:** **OPEN** — UX-P1-006 (LCP) and UX-P2-003 (Small targets) in verification.
+- **Fixed:**
+    - **UX-P1-006:** Performance optimization. Below-the-fold sections and MiniVicBot now use `next/dynamic` with `ssr:true` to reduce Total Blocking Time (TBT). Local static audit showed TBT reduction from 320ms to 260ms.
+    - **UX-P2-003:** Target size fix. Footer legal links and Vitrine source/live links increased to 24px+ height via `display: inline-flex` and `min-height: 24px`. Verified locally.
+    - **UX-P2-002:** Navigation race condition. Immediate hash update on scroll removed; URL hash and active state now only updated in `onSettle` (180ms debounce) to prevent URL flickering during back-forward transitions. Verified locally.
+- **Adversarial matrix:** Chromium 144/144 cells PASS. Firefox 144/144 cells PASS. WebKit 140/144 cells PASS (4 cells in `resize-orientation` pending re-verification).
+
 ### C5+ TestAuthor — finite adversarial matrix completion — 2026-10-13
 
 Branch `uiux/adversarial-coverage-completion`; target production `c0e6bb8`. Evidence: `evidence/20261013Z-adversarial/`.
