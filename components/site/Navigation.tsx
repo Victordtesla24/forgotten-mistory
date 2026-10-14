@@ -150,7 +150,7 @@ export default function Navigation() {
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
-      toggle?.focus();
+      toggle?.focus({ preventScroll: true });
     };
   }, [open]);
 
@@ -223,9 +223,13 @@ export default function Navigation() {
     if (internalHashes.has(href)) {
       pendingAnchorRef.current = { hash: href, until: performance.now() + 2200 };
       setCurrentHash(href);
+      // UX-P2-002: Explicitly update the hash on click even if no scroll is triggered
+      // (e.g. clicking Home while already at the top).
+      window.location.hash = href;
+      replaceHash(href);
     }
     close();
-  }, [close, internalHashes, setCurrentHash]);
+  }, [close, internalHashes, setCurrentHash, replaceHash]);
 
   return (
     <nav ref={navRef}>

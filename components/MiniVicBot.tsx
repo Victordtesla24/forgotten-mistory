@@ -489,7 +489,7 @@ const MiniVicBot = () => {
       stopAudio();
       setIsOpen(false);
       if (restoreFocus) {
-        requestAnimationFrame(() => toggleRef.current?.focus());
+        requestAnimationFrame(() => toggleRef.current?.focus({ preventScroll: true }));
       }
     },
     [stopAudio, stopListening],
@@ -543,7 +543,11 @@ const MiniVicBot = () => {
       skipEntryRef.current = false;
       return;
     }
-    panelRef.current?.focus();
+    // G-MV4: The panel enters on a 200ms slide. Focus it a frame later to ensure
+    // it's ready to receive focus and the active state settles (J4).
+    requestAnimationFrame(() => {
+        panelRef.current?.focus();
+    });
   }, [isOpen]);
 
   // Keep the open panel clear of the hero name, on both axes. The placement is
@@ -652,9 +656,16 @@ const MiniVicBot = () => {
   // reader just operated and the anchor the dialog is attached to.
   useEffect(() => {
     const onSkipToLauncher = () => {
-      skipEntryRef.current = true;
       setIsOpen(true);
-      requestAnimationFrame(() => toggleRef.current?.focus());
+      // G-MV4: Focus the panel even when using the skip link, so the reader can
+      // immediately start typing. Focus the toggle first to arm the state, then
+      // move into the panel on the next frame.
+      requestAnimationFrame(() => {
+        toggleRef.current?.focus();
+        requestAnimationFrame(() => {
+            panelRef.current?.focus();
+        });
+      });
     };
     window.addEventListener(MINIVIC_OPEN_EVENT, onSkipToLauncher);
     return () => window.removeEventListener(MINIVIC_OPEN_EVENT, onSkipToLauncher);
