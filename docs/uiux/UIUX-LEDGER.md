@@ -6,6 +6,18 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C18 Production QA — closure verification & repo cleanup — 2026-10-14
+
+Production build `cb1cbf0` (100% parity with `main`).
+
+- **Status:** **SUCCESS** — Adversarial visual coverage is 100% PASS across all browsers. 
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
+- **Flagship Preservation:** 16/16 e2e passes (flagship-six + repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Journeys:** J1-J8 mostly PASS. 
+    - Resolved J4 focus management (panel now focused on open).
+    - Resolved J8 hash sync for Home section (hash now updated to #hero).
+- **Repo Cleanup:** Removed accidental `${HOME}` directory mess (241,506 lines of Chrome config) from the repository.
+
 ### C17 Production QA — matrix 100% PASS closure — 2026-10-14
 
 Production build `f7b854d` (100% parity with `main`).
@@ -108,6 +120,7 @@ Production build `2e71579e` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C18 | 2026-10-14 | 04:30Z | J4, J8, Repo cleanup | cb1cbf0 | 100% | 92 / 1.5 s / 110 ms |
 | C17 | 2026-10-14 | 01:15Z | Matrix 100% PASS closure | 0dc973b | 100% | 92 / 1.8 s / 110 ms |
 | C16 | 2026-10-13 | 23:30Z | Matrix verification & LCP success | ca13446 | 100% | 92 / 1.8 s / 110 ms |
 | C15 | 2026-10-13 | 21:30Z | Adversarial visual coverage closure | 2e71579e | 100% | (Verified C14) |
