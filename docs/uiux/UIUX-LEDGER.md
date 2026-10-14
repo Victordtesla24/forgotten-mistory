@@ -6,6 +6,16 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C20 Production QA — performance audit & matrix continuation — 2026-10-14
+
+Production build `6b8c1ce2` (100% parity with `main`).
+
+- **Status:** **PARTIAL** — Flagship preservation and repairs verified (48/48). Adversarial matrix continuation in progress (301/432 cells). Performance regression remains on mobile LCP (3.0s).
+- **Flagship Preservation:** 48/48 e2e passes (flagship-six + repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Adversarial Matrix:** **IN PROGRESS**. 301/432 cells verified PASS on production. 7 failures in Firefox (flakes in `back-forward` and `deep-anchor` scenarios).
+- **Performance Audit:** **FAIL**. Mobile LCP measured at 3.0s (target ≤ 2.5s). TBT measured at 199ms (target ≤ 200ms).
+- **Identity:** Live build `6b8c1ce2` confirmed.
+
 ### C19 Production QA — adversarial verification & performance audit — 2026-10-14
 
 Production build `cfb8bdcd` (100% parity with `main`).
@@ -140,6 +150,7 @@ Production build `2e71579e` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C20 | 2026-10-14 | 09:30Z | Performance Audit, Matrix Continuation | 6b8c1ce | 100% | 91 / 3.0 s / 199 ms |
 | C18 | 2026-10-14 | 04:30Z | J4, J8, Repo cleanup | cb1cbf0 | 100% | 92 / 1.5 s / 110 ms |
 | C17 | 2026-10-14 | 01:15Z | Matrix 100% PASS closure | 0dc973b | 100% | 92 / 1.8 s / 110 ms |
 | C16 | 2026-10-13 | 23:30Z | Matrix verification & LCP success | ca13446 | 100% | 92 / 1.8 s / 110 ms |
