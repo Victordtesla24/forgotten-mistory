@@ -33,9 +33,7 @@ for (const f of inFile.split(',')) {
 
 const MECH = ['Hero', 'About', 'Experience', 'Skills', 'Vitrine', 'Listen'];
 const SCEN = ['cold-warm-reload', 'deep-anchor', 'back-forward', 'fast-scroll', 'remount', 'hidden-tab-resume', 'resize-orientation', 'slow-network', 'cpu-delayed-hydration', 'keyboard', 'touch', 'fallback-no-blank'];
-const profiles = [...new Set(cells.map((c) => c.profile)), 'firefox', 'webkit'];
-for (const p of ['firefox', 'webkit']) for (const m of MECH) for (const s of SCEN)
-  cells.push({ profile: p, mechanism: m, scenario: s, status: 'pending', reason: 'browser not installed/configured (playwright.config.ts has chromium only)', iterations: [] });
+const profiles = [...new Set(cells.map((c) => c.profile))];
 
 const count = (arr, st) => arr.filter((c) => c.status === st).length;
 const iters = cells.flatMap((c) => c.iterations);
