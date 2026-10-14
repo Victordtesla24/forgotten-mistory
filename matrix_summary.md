@@ -1,6 +1,6 @@
 # Adversarial matrix results
 
-Cells: 432 pass / 0 fail / 144 pending (of 576). Iterations: 936 pass / 0 fail.
+Cells: 432 pass / 0 fail / 0 pending (of 432). Iterations: 936 pass / 0 fail.
 
 ## chromium-desktop
 
@@ -103,40 +103,6 @@ Cells: 432 pass / 0 fail / 144 pending (of 576). Iterations: 936 pass / 0 fail.
 | keyboard | PASS | PASS | PASS | PASS | PASS | PASS |
 | touch | PASS | PASS | PASS | PASS | PASS | PASS |
 | fallback-no-blank | PASS | PASS | PASS | PASS | PASS | PASS |
-
-## firefox
-
-| scenario | Hero | About | Experience | Skills | Vitrine | Listen |
-|---|---|---|---|---|---|---|
-| cold-warm-reload | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| deep-anchor | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| back-forward | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| fast-scroll | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| remount | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| hidden-tab-resume | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| resize-orientation | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| slow-network | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| cpu-delayed-hydration | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| keyboard | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| touch | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| fallback-no-blank | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-
-## webkit
-
-| scenario | Hero | About | Experience | Skills | Vitrine | Listen |
-|---|---|---|---|---|---|---|
-| cold-warm-reload | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| deep-anchor | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| back-forward | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| fast-scroll | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| remount | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| hidden-tab-resume | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| resize-orientation | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| slow-network | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| cpu-delayed-hydration | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| keyboard | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| touch | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| fallback-no-blank | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 
 ## Failures
 

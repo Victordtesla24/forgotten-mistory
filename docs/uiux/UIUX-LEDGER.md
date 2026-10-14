@@ -8,11 +8,11 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ### C18 Production QA — closure verification & repo cleanup — 2026-10-14
 
-Production build `cb1cbf0` (100% parity with `main`).
+Production build `7a55f02` (100% parity with `main`).
 
 - **Status:** **SUCCESS** — Adversarial visual coverage is 100% PASS across all browsers. 
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
-- **Flagship Preservation:** 16/16 e2e passes (flagship-six + repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Flagship Preservation:** 46/46 e2e passes (flagship-six + repairs + LCP) verified on production across Chromium, Firefox, and WebKit.
 - **Journeys:** J1-J8 mostly PASS. 
     - Resolved J4 focus management (panel now focused on open).
     - Resolved J8 hash sync for Home section (hash now updated to #hero).
