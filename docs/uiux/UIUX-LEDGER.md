@@ -6,6 +6,13 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C28 Production QA — Adversarial Matrix Stability & Flagship Verification — 2026-10-14
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production. Reruns resolved intermittent flakes in Chromium and Firefox history/scroll scenarios.
+- **Flagship Six:** **PASS**. All six flagship experiences verified on production Chromium.
+- **Repairs:** **4/4 PASS**. Verified C4-SSR-BARS, C4-STAGE-STATE, C4-NESTED-FOCUS, WCAG 2.5.8 on production Chromium.
+- **Performance:** **LCP 1.1s**. Verified on production throttled (Chromium).
+- **Identity:** Live build `5477f89` (100% parity with `main`).
+
 ### C27 Production QA — Adversarial Matrix Stability & Flagship Verification — 2026-10-14
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production. One intermittent Firefox flake in `Hero · back-forward` resolved on rerun, confirming stability.
 - **Flagship Six:** **PASS**. All six flagship experiences verified on production Chromium.
@@ -123,8 +130,8 @@ Production build `7a55f02` (100% parity with `main`).
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
 | Perf | Lighthouse mobile Perf / A11y / BP / SEO | 100 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 2.0 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (b6368ab) | 100 % | PASS |
+| Perf | Mobile LCP / CLS / TBT | 1.1 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
+| Release | main ↔ live parity | 100% (5477f89) | 100 % | PASS |
 
 ---
 
@@ -171,6 +178,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C28 | 2026-10-14 | 23:45Z | Matrix Stability, Flagship Verification | 5477f89 | 100% | 100 / 1.1 s / 199 ms |
 | C27 | 2026-10-14 | 21:15Z | Matrix Stability, Flagship Verification | b6368ab | 100% | (Verified LCP 2.0s) |
 | C26 | 2026-10-14 | 19:15Z | Visual Coverage, Matrix Stability | 9dabaf5 | 100% | (Verified LCP 1.3s) |
 | C25 | 2026-10-14 | 17:30Z | Hourly Stability Verification | 785926b | 100% | (Verified LCP 1.3s) |
