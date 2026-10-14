@@ -6,6 +6,16 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C19 Production QA — adversarial verification & performance audit — 2026-10-14
+
+Production build `cfb8bdcd` (100% parity with `main`).
+
+- **Status:** **PARTIAL** — Flagship preservation and repairs verified (46/46). Adversarial matrix 90% verified on production. Performance regression detected on mobile LCP.
+- **Flagship Preservation:** 46/46 e2e passes (flagship-six + repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Adversarial Matrix:** **IN PROGRESS**. 388/432 cells verified PASS on production. 24 visual-coverage iterations failed (flakes in screenshot harness).
+- **Performance Audit:** **REGRESSION**. Mobile LCP measured at 3.4s (target ≤ 2.5s). TBT measured at 678ms (target ≤ 200ms). Previous C18 reported 1.5s/110ms.
+- **Identity:** Live build `cfb8bdcd` confirmed.
+
 ### C18 Production QA — closure verification & repo cleanup — 2026-10-14
 
 Production build `7a55f02` (100% parity with `main`).
@@ -73,13 +83,23 @@ Production build `2e71579e` (100% parity with `main`).
 | A11y | axe serious/critical | 0 | 0 | PASS |
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
-| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 92 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 1.8 s / 0 / 110 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (ca13446) | 100 % | PASS |
+| Perf | Lighthouse mobile Perf / A11y / BP / SEO | 74 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | **FAIL** |
+| Perf | Mobile LCP / CLS / TBT | 3.4 s / 0 / 678 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | **FAIL** |
+| Release | main ↔ live parity | 100% (cfb8bdcd) | 100 % | PASS |
 
 ---
 
 ## C. Prioritized findings backlog
+
+#### UX-P0-008 — Mobile Performance Regression (LCP/TBT)
+- Lens / framework:      CWV-LCP · CWV-TBT · Lighthouse Performance
+- Persona(s) affected:   P1 | P2 | P3 | P4
+- Section / viewport:    Global · Mobile throttled
+- Observed (production): LCP 3.4s, TBT 678ms, Perf 74. (C19)
+- Expected:              LCP ≤ 2.5s, TBT ≤ 200ms, Perf ≥ 90.
+- Root cause:            PENDING investigation. High element render delay on H1 mark.
+- Status:                OPEN
+- Evidence (pre-fix):   Lighthouse run on cfb8bdcd.
 
 #### UX-P1-007 — Adversarial Matrix Stability
 - Status:                VERIFIED-CLOSED — 432/432 cells PASS (C17).
