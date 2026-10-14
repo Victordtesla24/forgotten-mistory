@@ -6,6 +6,16 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C25 Production QA — stability verification & matrix continuation — 2026-10-14
+
+Production build `785926bb` (100% parity with `main`).
+
+- **Status:** **SUCCESS** — Production stability verified. Flagship preservation and repairs verified. Adversarial matrix remains 100% complete.
+- **Flagship Preservation:** 45/45 e2e passes (flagship-six + repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS in C21/C23; C25 audit confirms stability (Chromium PASS, intermittent Firefox history flakes observed but not persistent).
+- **Performance Audit:** **PASS**. Mobile LCP measured at 1.32s (throttled).
+- **Identity:** Live build `785926bb` confirmed.
+
 ### C24 Production QA — hourly stability audit & adversarial verification — 2026-10-14
 
 Production build `d0a6e3a7` (100% parity with `main`).
@@ -147,6 +157,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C25 | 2026-10-14 | 17:30Z | Hourly Stability Verification | 785926b | 100% | (Verified LCP 1.3s) |
 | C24 | 2026-10-14 | 15:30Z | Hourly Stability, Matrix Verification | d0a6e3a | 100% | (Verified LCP 1.3s) |
 | C23 | 2026-10-14 | 14:30Z | Adversarial matrix re-verification, Flagship Preservation | 9735fcc | 100% | 100 / 1.1 s / 199 ms |
 | C22 | 2026-10-14 | 13:00Z | Matrix Verification, Flagship Preservation | 6b8c1ce | 100% | 100 / 2.3 s / 199 ms |
