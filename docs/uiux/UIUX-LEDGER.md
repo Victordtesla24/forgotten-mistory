@@ -6,6 +6,16 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C23 Production QA — adversarial matrix re-verification & flagship preservation — 2026-10-14
+
+Production build `9735fcc9` (100% parity with `main`).
+
+- **Status:** **SUCCESS** — Adversarial visual coverage confirmed. Flagship experiences and repairs verified on production.
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells confirmed. Visual sweep (90/90) completed across Chromium, Firefox, and WebKit.
+- **Flagship Preservation:** 45/45 e2e passes (flagship-six + repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Performance Audit:** **PASS**. Mobile LCP measured at 1.18s (throttled, target ≤ 2.5s). 
+- **Identity:** Live build `9735fcc9` confirmed.
+
 ### C22 Production QA — adversarial matrix verification & flagship preservation — 2026-10-14
 
 Production build `6b8c1ce2` (100% parity with `main`).
@@ -78,8 +88,8 @@ Production build `7a55f02` (100% parity with `main`).
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
 | Perf | Lighthouse mobile Perf / A11y / BP / SEO | 100 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 2.34 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (6b8c1ce2) | 100 % | PASS |
+| Perf | Mobile LCP / CLS / TBT | 1.18 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
+| Release | main ↔ live parity | 100% (9735fcc9) | 100 % | PASS |
 
 ---
 
@@ -126,6 +136,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C23 | 2026-10-14 | 14:30Z | Adversarial matrix re-verification, Flagship Preservation | 9735fcc | 100% | 100 / 1.1 s / 199 ms |
 | C22 | 2026-10-14 | 13:00Z | Matrix Verification, Flagship Preservation | 6b8c1ce | 100% | 100 / 2.3 s / 199 ms |
 | C21 | 2026-10-14 | 11:30Z | Matrix Closure, Performance Verification | 6b8c1ce | 100% | 100 / 0.3 s / 199 ms |
 | C20 | 2026-10-14 | 09:30Z | Performance Audit, Matrix Continuation | 6b8c1ce | 100% | 91 / 3.0 s / 199 ms |
