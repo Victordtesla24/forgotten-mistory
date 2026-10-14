@@ -8,13 +8,15 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ### C17 Production QA — matrix 100% PASS closure — 2026-10-14
 
-Production build `ca13446` (100% parity with `main`).
+Production build `f7b854d` (100% parity with `main`).
 
 - **Status:** **SUCCESS** — Adversarial visual coverage is 100% PASS across all browsers. 
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
     - Resolved `fallback-no-blank` flakiness via `.no-js` CSS visibility guard.
     - Resolved `back-forward` flakiness via `Navigation.tsx` scroll-spy history lock.
-    - Full fresh run executed: 1296/1296 iterations passed (312 per browser).
+    - Full fresh run executed: 936/936 iterations passed (156 per profile).
+- **Flagship Preservation:** 16/16 e2e passes (flagship-six + repairs) verified on production.
+    - Stabilized `Hero` observatory and `Experience` scrubber tests for WebKit.
 - **Visual Evidence:** All browser-specific and adversarial state screenshots refreshed and verified.
 - **Preservation:** 16/16 e2e passes (flagship-six + repairs) verified.
 
