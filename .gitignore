@@ -230,3 +230,13 @@ reports/static-audit.json
 # UI/UX swarm: rendered copies of the markdown ledgers are never committed
 docs/uiux/*.pdf
 docs/uiux/*.docx
+
+# Junk: a literal "${HOME}" directory gets created when a validation script launches
+# Chrome with an unexpanded ${HOME} (dumps a ~180MB chrome profile). Never commit it.
+${HOME}/
+
+# Scratch: Playwright JSON reporter dumps written to repo root by ad-hoc matrix/lighthouse
+# runs. Regenerated on demand; never committed.
+/lighthouse_production.json
+/matrix_production_report.json
+/matrix_run_results.json
