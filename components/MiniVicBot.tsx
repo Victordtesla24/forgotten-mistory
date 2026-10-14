@@ -676,7 +676,8 @@ const MiniVicBot = () => {
     if (!isOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closePanel();
+        // J4: Ensure focus restoration doesn't trigger unwanted scrolls (J3-like issues)
+        closePanel(true);
       }
     };
     document.addEventListener("keydown", onKeyDown);

@@ -95,6 +95,11 @@ export default function Navigation() {
 
   const replaceHash = useCallback((hash: string) => {
     if (window.location.hash === hash) return;
+    // UX-P2-002: Ensure hash is updated even for #hero on first fold
+    if (hash === '#hero' && !window.location.hash) {
+        window.location.hash = '#hero';
+        return;
+    }
     window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}${hash}`);
   }, []);
 
