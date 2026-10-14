@@ -44,7 +44,8 @@ test.describe('Adversarial Visual Coverage (Detailed)', () => {
         // Settle animation
         await page.waitForTimeout(2000);
         
-        const screenshotPath = `docs/uiux/evidence/20261013Z-adversarial/${browserName}__${m.id}__${vp.name}__baseline__post.png`;
+const DATE_STR = new Date().toISOString().split('T')[0].replace(/-/g, '') + 'Z';
+        const screenshotPath = `docs/uiux/evidence/${DATE_STR}-adversarial/${browserName}__${m.id}__${vp.name}__baseline__post.png`;
         await page.locator(m.selector).screenshot({ path: screenshotPath });
         
         // Instrument rendering check (from draft)
@@ -66,14 +67,14 @@ test.describe('Adversarial Visual Coverage (Detailed)', () => {
             await page.setViewportSize({ width: vp.width, height: vp.height });
         }
         await page.waitForTimeout(1000);
-        const resizePath = `docs/uiux/evidence/20261013Z-adversarial/${browserName}__${m.id}__${vp.name}__resize__post.png`;
+        const resizePath = `docs/uiux/evidence/${DATE_STR}-adversarial/${browserName}__${m.id}__${vp.name}__resize__post.png`;
         await page.locator(m.selector).screenshot({ path: resizePath });
 
         // Specific requirements from Step 5
         if (m.name === 'About') {
             await page.locator('[data-testid="compass-dimension"]').nth(2).click();
             await page.waitForTimeout(500);
-            await page.locator(m.selector).screenshot({ path: `docs/uiux/evidence/20261013Z-adversarial/${browserName}__about__${vp.name}__selection__post.png` });
+            await page.locator(m.selector).screenshot({ path: `docs/uiux/evidence/${DATE_STR}-adversarial/${browserName}__about__${vp.name}__selection__post.png` });
         }
         
         if (m.name === 'Experience') {
@@ -82,7 +83,7 @@ test.describe('Adversarial Visual Coverage (Detailed)', () => {
                 await scrubber.focus();
                 for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowRight');
                 await page.waitForTimeout(500);
-                await page.locator(m.selector).screenshot({ path: `docs/uiux/evidence/20261013Z-adversarial/${browserName}__experience__${vp.name}__scrub__post.png` });
+                await page.locator(m.selector).screenshot({ path: `docs/uiux/evidence/${DATE_STR}-adversarial/${browserName}__experience__${vp.name}__scrub__post.png` });
             }
         }
         
@@ -91,7 +92,7 @@ test.describe('Adversarial Visual Coverage (Detailed)', () => {
             if (await stage.isVisible()) {
                 await stage.click();
                 await page.waitForTimeout(500);
-                await page.locator(m.selector).screenshot({ path: `docs/uiux/evidence/20261013Z-adversarial/${browserName}__vitrine__${vp.name}__pressed__post.png` });
+                await page.locator(m.selector).screenshot({ path: `docs/uiux/evidence/${DATE_STR}-adversarial/${browserName}__vitrine__${vp.name}__pressed__post.png` });
             }
         }
 

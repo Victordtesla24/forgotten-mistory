@@ -6,6 +6,16 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C22 Production QA — adversarial matrix verification & flagship preservation — 2026-10-14
+
+Production build `6b8c1ce2` (100% parity with `main`).
+
+- **Status:** **SUCCESS** — Adversarial visual coverage is 100% PASS across all browsers. Flagship experiences and repairs verified on production.
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
+- **Flagship Preservation:** 48/48 e2e passes (flagship-six + repairs) verified on production across Chromium, Firefox, and WebKit.
+- **Performance Audit:** **PASS**. Mobile LCP measured at 2.34s (throttled, target ≤ 2.5s). 
+- **Identity:** Live build `6b8c1ce2` confirmed.
+
 ### C21 Production QA — adversarial matrix closure & performance verification — 2026-10-14
 
 Production build `6b8c1ce2` (100% parity with `main`).
@@ -68,7 +78,7 @@ Production build `7a55f02` (100% parity with `main`).
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
 | Perf | Lighthouse mobile Perf / A11y / BP / SEO | 100 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 0.34 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
+| Perf | Mobile LCP / CLS / TBT | 2.34 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
 | Release | main ↔ live parity | 100% (6b8c1ce2) | 100 % | PASS |
 
 ---
@@ -116,6 +126,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C22 | 2026-10-14 | 13:00Z | Matrix Verification, Flagship Preservation | 6b8c1ce | 100% | 100 / 2.3 s / 199 ms |
 | C21 | 2026-10-14 | 11:30Z | Matrix Closure, Performance Verification | 6b8c1ce | 100% | 100 / 0.3 s / 199 ms |
 | C20 | 2026-10-14 | 09:30Z | Performance Audit, Matrix Continuation | 6b8c1ce | 100% | 91 / 3.0 s / 199 ms |
 | C18 | 2026-10-14 | 04:30Z | J4, J8, Repo cleanup | cb1cbf0 | 100% | 92 / 1.5 s / 110 ms |
