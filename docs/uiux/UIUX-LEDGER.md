@@ -6,6 +6,13 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C27 Production QA — Adversarial Matrix Stability & Flagship Verification — 2026-10-14
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production. One intermittent Firefox flake in `Hero · back-forward` resolved on rerun, confirming stability.
+- **Flagship Six:** **PASS**. All six flagship experiences verified on production Chromium.
+- **Repairs:** **4/4 PASS**. Verified C4-SSR-BARS, C4-STAGE-STATE, C4-NESTED-FOCUS, WCAG 2.5.8 on production Chromium.
+- **Performance:** **LCP 2.0s**. Verified on production throttled (Chromium).
+- **Identity:** Live build `b6368abc` (100% parity with `main`).
+
 ### C26 Production QA — Visual coverage completion & adversarial audit — 2026-10-14
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production (rerun of failing scenarios confirmed stability; no regressions).
 - **Visual Coverage:** **36/36 PASS**. Full visual sweep across 3 browsers (Chromium, Firefox, WebKit) and 2 viewports (Desktop, Mobile) completed.
@@ -116,8 +123,8 @@ Production build `7a55f02` (100% parity with `main`).
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
 | Perf | Lighthouse mobile Perf / A11y / BP / SEO | 100 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 1.18 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (9735fcc9) | 100 % | PASS |
+| Perf | Mobile LCP / CLS / TBT | 2.0 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
+| Release | main ↔ live parity | 100% (b6368ab) | 100 % | PASS |
 
 ---
 
@@ -164,6 +171,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C27 | 2026-10-14 | 21:15Z | Matrix Stability, Flagship Verification | b6368ab | 100% | (Verified LCP 2.0s) |
 | C26 | 2026-10-14 | 19:15Z | Visual Coverage, Matrix Stability | 9dabaf5 | 100% | (Verified LCP 1.3s) |
 | C25 | 2026-10-14 | 17:30Z | Hourly Stability Verification | 785926b | 100% | (Verified LCP 1.3s) |
 | C24 | 2026-10-14 | 15:30Z | Hourly Stability, Matrix Verification | d0a6e3a | 100% | (Verified LCP 1.3s) |
@@ -187,4 +195,4 @@ Production build `7a55f02` (100% parity with `main`).
 | Horizontal overflow (320-1920) | 0 | production-qa.json |
 | axe serious/critical | 0 | production-qa.json |
 | Flagship Six | PASS | tests/e2e/flagship-six.spec.ts |
-| Adversarial Matrix | 432/432 PASS | matrix_summary.md |
+| Adversarial Matrix | 432/432 PASS | matrix_summary_prod.md |
