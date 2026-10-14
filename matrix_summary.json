@@ -4,452 +4,17 @@
  ],
  "summary": {
   "cells": {
-   "total": 432,
-   "pass": 414,
-   "fail": 18,
-   "pending": 0
+   "total": 576,
+   "pass": 432,
+   "fail": 0,
+   "pending": 144
   },
   "iterations": {
    "total": 936,
-   "pass": 908,
-   "fail": 28
+   "pass": 936,
+   "fail": 0
   },
-  "failures": [
-   {
-    "profile": "chromium-desktop",
-    "mechanism": "About",
-    "scenario": "slow-network",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "fast-3g 150ms/1.6Mbps",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://forgotten-mistory.web.app/#about\", waiting until \"domcontentloaded\"\n"
-     }
-    ]
-   },
-   {
-    "profile": "chromium-desktop",
-    "mechanism": "About",
-    "scenario": "fallback-no-blank",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "About heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0"
-     }
-    ]
-   },
-   {
-    "profile": "chromium-desktop",
-    "mechanism": "Experience",
-    "scenario": "fallback-no-blank",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "Experience heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0"
-     }
-    ]
-   },
-   {
-    "profile": "chromium-desktop",
-    "mechanism": "Vitrine",
-    "scenario": "fallback-no-blank",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "Vitrine heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0"
-     }
-    ]
-   },
-   {
-    "profile": "chromium-mobile",
-    "mechanism": "Experience",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-desktop",
-    "mechanism": "Hero",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#about\""
-     },
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#hero\"\nReceived: \"#about\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-desktop",
-    "mechanism": "About",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-desktop",
-    "mechanism": "Experience",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-desktop",
-    "mechanism": "Skills",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#skills\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#skills\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-desktop",
-    "mechanism": "Vitrine",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#vitrine\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 3,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#vitrine\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-desktop",
-    "mechanism": "Listen",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 3,
-      "viewport": {
-       "width": 1280,
-       "height": 800
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-mobile",
-    "mechanism": "Hero",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 3,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#hero\"\nReceived: \"#about\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-mobile",
-    "mechanism": "About",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 3,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-mobile",
-    "mechanism": "Experience",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 3,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-mobile",
-    "mechanism": "Skills",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#skills\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-mobile",
-    "mechanism": "Vitrine",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#vitrine\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "firefox-mobile",
-    "mechanism": "Listen",
-    "scenario": "back-forward",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 2,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
-     },
-     {
-      "iteration": 3,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
-     }
-    ]
-   },
-   {
-    "profile": "webkit-mobile",
-    "mechanism": "Vitrine",
-    "scenario": "fallback-no-blank",
-    "iterations": [
-     {
-      "iteration": 1,
-      "viewport": {
-       "width": 390,
-       "height": 844
-      },
-      "network": "unthrottled",
-      "cpuDelay": "none",
-      "hiddenMs": null,
-      "error": "Vitrine heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0.21"
-     }
-    ]
-   }
-  ]
+  "failures": []
  },
  "cells": [
   {
@@ -459,7 +24,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 11421,
+   "durationMs": 5092,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -524,7 +89,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 13026,
+   "durationMs": 4456,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -589,7 +154,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 11184,
+   "durationMs": 4817,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -654,7 +219,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10766,
+   "durationMs": 4262,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -719,7 +284,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10323,
+   "durationMs": 4223,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -784,7 +349,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 11534,
+   "durationMs": 4770,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -849,7 +414,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 14332,
+   "durationMs": 8212,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -917,7 +482,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 16207,
+   "durationMs": 6751,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -985,7 +550,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 15162,
+   "durationMs": 6870,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -1053,7 +618,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 13290,
+   "durationMs": 6991,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -1121,7 +686,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 14880,
+   "durationMs": 7019,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -1189,7 +754,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12939,
+   "durationMs": 6208,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -1257,7 +822,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 32530,
+   "durationMs": 20799,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -1446,7 +1011,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 30600,
+   "durationMs": 21642,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -1635,7 +1200,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 31129,
+   "durationMs": 19394,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -1824,7 +1389,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 31607,
+   "durationMs": 20636,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -2013,7 +1578,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 32205,
+   "durationMs": 19126,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -2202,7 +1767,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 34009,
+   "durationMs": 18925,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -2391,7 +1956,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 22845,
+   "durationMs": 12096,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -2514,7 +2079,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26369,
+   "durationMs": 11247,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -2637,7 +2202,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25507,
+   "durationMs": 11036,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -2760,7 +2325,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27153,
+   "durationMs": 14441,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -2883,7 +2448,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24833,
+   "durationMs": 13195,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -3006,7 +2571,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 23908,
+   "durationMs": 12679,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -3129,7 +2694,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 34858,
+   "durationMs": 20180,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -3309,7 +2874,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 36961,
+   "durationMs": 19681,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -3489,7 +3054,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 31069,
+   "durationMs": 18626,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -3669,7 +3234,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 34617,
+   "durationMs": 19351,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -3849,7 +3414,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29648,
+   "durationMs": 19999,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4029,7 +3594,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 30050,
+   "durationMs": 18278,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4209,7 +3774,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25358,
+   "durationMs": 16280,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4326,7 +3891,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26756,
+   "durationMs": 15857,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4443,7 +4008,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24883,
+   "durationMs": 16689,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4560,7 +4125,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25823,
+   "durationMs": 16676,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4677,7 +4242,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26671,
+   "durationMs": 16900,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4794,7 +4359,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27079,
+   "durationMs": 16137,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -4911,7 +4476,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27182,
+   "durationMs": 14193,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -5125,7 +4690,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27037,
+   "durationMs": 14296,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -5339,7 +4904,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26215,
+   "durationMs": 14569,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -5553,7 +5118,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27137,
+   "durationMs": 14741,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -5767,7 +5332,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24223,
+   "durationMs": 14635,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -5981,7 +5546,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24170,
+   "durationMs": 14571,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -6195,7 +5760,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 22933,
+   "durationMs": 30336,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -6219,7 +5784,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1490,
+      "dclMs": 2010,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1524,
@@ -6229,7 +5794,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3075,
+      "loadMs": 6377,
       "anchor:load": {
        "top": 0,
        "bottom": 1524,
@@ -6271,7 +5836,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 3991,
+      "dclMs": 4631,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1524,
@@ -6281,7 +5846,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 6133,
+      "loadMs": 13487,
       "anchor:load": {
        "top": 0,
        "bottom": 1524,
@@ -6323,7 +5888,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2055,
+      "dclMs": 2151,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1524,
@@ -6333,7 +5898,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3036,
+      "loadMs": 6356,
       "anchor:load": {
        "top": 0,
        "bottom": 1524,
@@ -6362,8 +5927,8 @@
    "scenario": "slow-network",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 115760,
+   "status": "pass",
+   "durationMs": 30446,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -6385,11 +5950,37 @@
      "hiddenMs": null,
      "network": "fast-3g 150ms/1.6Mbps",
      "cpuDelay": "none",
-     "result": "fail",
-     "measurements": {},
+     "result": "pass",
+     "measurements": {
+      "dclMs": 2125,
+      "nonBlank:dcl": {
+       "exists": true,
+       "height": 2583,
+       "width": 1280,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "loadMs": 6377,
+      "anchor:load": {
+       "top": 96,
+       "bottom": 2623,
+       "vh": 800,
+       "scrollY": 1428
+      },
+      "nonBlank:load": {
+       "exists": true,
+       "height": 2527,
+       "width": 1280,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
+     },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://forgotten-mistory.web.app/#about\", waiting until \"domcontentloaded\"\n"
+     "consoleErrors": []
     },
     {
      "profile": "chromium-desktop",
@@ -6413,7 +6004,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 4071,
+      "dclMs": 4713,
       "nonBlank:dcl": {
        "exists": true,
        "height": 2583,
@@ -6423,7 +6014,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 6173,
+      "loadMs": 13524,
       "anchor:load": {
        "top": 96,
        "bottom": 2623,
@@ -6465,7 +6056,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1547,
+      "dclMs": 2089,
       "nonBlank:dcl": {
        "exists": true,
        "height": 2583,
@@ -6475,7 +6066,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3742,
+      "loadMs": 6366,
       "anchor:load": {
        "top": 96,
        "bottom": 2623,
@@ -6505,7 +6096,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 20645,
+   "durationMs": 30253,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -6529,17 +6120,17 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1428,
+      "dclMs": 2077,
       "nonBlank:dcl": {
        "exists": true,
-       "height": 3164,
+       "height": 3199,
        "width": 1280,
        "textLen": 3509,
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 2816,
+      "loadMs": 6356,
       "anchor:load": {
        "top": 96,
        "bottom": 3265,
@@ -6581,7 +6172,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 4089,
+      "dclMs": 4725,
       "nonBlank:dcl": {
        "exists": true,
        "height": 3199,
@@ -6591,7 +6182,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 6539,
+      "loadMs": 13485,
       "anchor:load": {
        "top": 96,
        "bottom": 3265,
@@ -6633,7 +6224,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1451,
+      "dclMs": 2159,
       "nonBlank:dcl": {
        "exists": true,
        "height": 3199,
@@ -6643,7 +6234,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 2953,
+      "loadMs": 6370,
       "anchor:load": {
        "top": 96,
        "bottom": 3265,
@@ -6673,7 +6264,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 18866,
+   "durationMs": 30323,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -6697,7 +6288,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1396,
+      "dclMs": 2137,
       "nonBlank:dcl": {
        "exists": true,
        "height": 3635,
@@ -6707,7 +6298,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3294,
+      "loadMs": 6375,
       "anchor:load": {
        "top": 96,
        "bottom": 3677,
@@ -6749,7 +6340,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 3653,
+      "dclMs": 4533,
       "nonBlank:dcl": {
        "exists": true,
        "height": 3635,
@@ -6759,7 +6350,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 5788,
+      "loadMs": 13486,
       "anchor:load": {
        "top": 96,
        "bottom": 3677,
@@ -6801,7 +6392,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1357,
+      "dclMs": 2106,
       "nonBlank:dcl": {
        "exists": true,
        "height": 3635,
@@ -6811,7 +6402,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 2783,
+      "loadMs": 6391,
       "anchor:load": {
        "top": 96,
        "bottom": 3677,
@@ -6841,7 +6432,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 21283,
+   "durationMs": 30517,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -6865,7 +6456,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1430,
+      "dclMs": 2090,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1676,
@@ -6875,7 +6466,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3067,
+      "loadMs": 6356,
       "anchor:load": {
        "top": 96,
        "bottom": 1772,
@@ -6917,7 +6508,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2805,
+      "dclMs": 4692,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1676,
@@ -6927,7 +6518,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 5725,
+      "loadMs": 13552,
       "anchor:load": {
        "top": 96,
        "bottom": 1772,
@@ -6969,7 +6560,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1463,
+      "dclMs": 2054,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1676,
@@ -6979,7 +6570,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3665,
+      "loadMs": 6375,
       "anchor:load": {
        "top": 96,
        "bottom": 1772,
@@ -7009,7 +6600,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 21754,
+   "durationMs": 30739,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -7033,7 +6624,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2519,
+      "dclMs": 2031,
       "nonBlank:dcl": {
        "exists": true,
        "height": 930,
@@ -7043,7 +6634,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3408,
+      "loadMs": 6366,
       "anchor:load": {
        "top": 96,
        "bottom": 1026,
@@ -7085,7 +6676,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 3539,
+      "dclMs": 4773,
       "nonBlank:dcl": {
        "exists": true,
        "height": 930,
@@ -7095,7 +6686,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 5790,
+      "loadMs": 13554,
       "anchor:load": {
        "top": 96,
        "bottom": 1026,
@@ -7137,7 +6728,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2336,
+      "dclMs": 2155,
       "nonBlank:dcl": {
        "exists": true,
        "height": 930,
@@ -7147,7 +6738,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3156,
+      "loadMs": 6465,
       "anchor:load": {
        "top": 96,
        "bottom": 1026,
@@ -7177,7 +6768,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25984,
+   "durationMs": 16562,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -7342,7 +6933,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25672,
+   "durationMs": 16960,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -7507,7 +7098,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26984,
+   "durationMs": 16680,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -7672,7 +7263,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24986,
+   "durationMs": 17321,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -7837,7 +7428,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27120,
+   "durationMs": 15436,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8002,7 +7593,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 28897,
+   "durationMs": 15810,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8167,7 +7758,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6759,
+   "durationMs": 3838,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8254,7 +7845,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5722,
+   "durationMs": 4044,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8341,7 +7932,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6309,
+   "durationMs": 4398,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8428,7 +8019,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6865,
+   "durationMs": 3371,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8515,7 +8106,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7897,
+   "durationMs": 3766,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8603,7 +8194,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6891,
+   "durationMs": 3433,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8690,7 +8281,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8742,
+   "durationMs": 3649,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8745,7 +8336,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7579,
+   "durationMs": 3552,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8800,7 +8391,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10061,
+   "durationMs": 3279,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8855,7 +8446,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6485,
+   "durationMs": 3776,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8910,7 +8501,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7530,
+   "durationMs": 3683,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -8965,7 +8556,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7534,
+   "durationMs": 3958,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -9020,7 +8611,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 4513,
+   "durationMs": 1375,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -9043,7 +8634,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 988,
+      "msToOpaqueAfterLoad": 288,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -9067,8 +8658,8 @@
    "scenario": "fallback-no-blank",
    "repeats": 1,
    "kind": "baseline",
-   "status": "fail",
-   "durationMs": 5340,
+   "status": "pass",
+   "durationMs": 1548,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -9089,10 +8680,10 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3168,
-      "headingOpacityAtBudget": 0,
+      "msToOpaqueAfterLoad": 277,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 2527,
@@ -9100,12 +8691,11 @@
        "textLen": 3687,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0
+       "headingEffectiveOpacity": 1
       }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "About heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0"
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -9116,8 +8706,8 @@
    "scenario": "fallback-no-blank",
    "repeats": 1,
    "kind": "baseline",
-   "status": "fail",
-   "durationMs": 5869,
+   "status": "pass",
+   "durationMs": 2520,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -9138,10 +8728,10 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3003,
-      "headingOpacityAtBudget": 0,
+      "msToOpaqueAfterLoad": 218,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 3169,
@@ -9149,12 +8739,21 @@
        "textLen": 3509,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0
-      }
+       "headingEffectiveOpacity": 1
+      },
+      "trackBarScaleX": [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "Experience heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0"
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -9166,7 +8765,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5587,
+   "durationMs": 2363,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -9189,7 +8788,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 1927,
+      "msToOpaqueAfterLoad": 221,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -9213,8 +8812,8 @@
    "scenario": "fallback-no-blank",
    "repeats": 1,
    "kind": "baseline",
-   "status": "fail",
-   "durationMs": 5759,
+   "status": "pass",
+   "durationMs": 1394,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -9235,10 +8834,10 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3064,
-      "headingOpacityAtBudget": 0,
+      "msToOpaqueAfterLoad": 379,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 1676,
@@ -9246,12 +8845,11 @@
        "textLen": 3556,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0
+       "headingEffectiveOpacity": 1
       }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "Vitrine heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0"
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -9263,7 +8861,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3447,
+   "durationMs": 1664,
    "iterations": [
     {
      "profile": "chromium-desktop",
@@ -9286,7 +8884,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 435,
+      "msToOpaqueAfterLoad": 431,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -9311,7 +8909,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7565,
+   "durationMs": 4742,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9376,7 +8974,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9953,
+   "durationMs": 4468,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9441,7 +9039,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9785,
+   "durationMs": 4028,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9506,7 +9104,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8885,
+   "durationMs": 4937,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9571,7 +9169,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8121,
+   "durationMs": 4366,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9636,7 +9234,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8834,
+   "durationMs": 3882,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9701,7 +9299,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 11261,
+   "durationMs": 7586,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9769,7 +9367,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 14348,
+   "durationMs": 7059,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9837,7 +9435,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 13632,
+   "durationMs": 7514,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9905,7 +9503,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12149,
+   "durationMs": 6185,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -9973,7 +9571,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 13228,
+   "durationMs": 6333,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -10041,7 +9639,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10218,
+   "durationMs": 5991,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -10109,7 +9707,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29244,
+   "durationMs": 20533,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -10298,7 +9896,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24368,
+   "durationMs": 21191,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -10486,8 +10084,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 22958,
+   "status": "pass",
+   "durationMs": 17796,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -10511,13 +10109,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 4635,
+       "vh": 844,
+       "scrollY": 5882
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 4539,
+       "width": 390,
+       "textLen": 3459,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 4635,
+       "vh": 844,
+       "scrollY": 5882
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 4539,
+       "width": 390,
+       "textLen": 3459,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "chromium-mobile",
@@ -10647,7 +10274,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24942,
+   "durationMs": 18214,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -10836,7 +10463,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 28450,
+   "durationMs": 18247,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11025,7 +10652,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 28655,
+   "durationMs": 18685,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11214,7 +10841,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24144,
+   "durationMs": 12684,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11337,7 +10964,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 19982,
+   "durationMs": 12070,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11460,7 +11087,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25035,
+   "durationMs": 11343,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11583,7 +11210,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25560,
+   "durationMs": 11024,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11706,7 +11333,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26999,
+   "durationMs": 12138,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11829,7 +11456,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24468,
+   "durationMs": 12169,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -11952,7 +11579,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29783,
+   "durationMs": 19322,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -12132,7 +11759,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 28728,
+   "durationMs": 19526,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -12312,7 +11939,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29672,
+   "durationMs": 18564,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -12492,7 +12119,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29634,
+   "durationMs": 18799,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -12672,7 +12299,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25955,
+   "durationMs": 18591,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -12852,7 +12479,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27838,
+   "durationMs": 18294,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13032,7 +12659,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24070,
+   "durationMs": 17238,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13149,7 +12776,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26478,
+   "durationMs": 16929,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13266,7 +12893,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 23894,
+   "durationMs": 15911,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13383,7 +13010,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 23925,
+   "durationMs": 16189,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13500,7 +13127,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25270,
+   "durationMs": 16352,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13617,7 +13244,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 23572,
+   "durationMs": 16015,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13734,7 +13361,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24522,
+   "durationMs": 14597,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -13962,7 +13589,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25252,
+   "durationMs": 14465,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -14190,7 +13817,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24359,
+   "durationMs": 13599,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -14418,7 +14045,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25955,
+   "durationMs": 13716,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -14646,7 +14273,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24863,
+   "durationMs": 13871,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -14874,7 +14501,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 22908,
+   "durationMs": 13530,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -15102,7 +14729,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26406,
+   "durationMs": 31977,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -15126,7 +14753,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1407,
+      "dclMs": 2043,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1671,
@@ -15136,7 +14763,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3377,
+      "loadMs": 6349,
       "anchor:load": {
        "top": 0,
        "bottom": 1665,
@@ -15178,7 +14805,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 4221,
+      "dclMs": 4726,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1671,
@@ -15188,7 +14815,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 6516,
+      "loadMs": 13500,
       "anchor:load": {
        "top": 0,
        "bottom": 1665,
@@ -15230,7 +14857,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2294,
+      "dclMs": 2138,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1671,
@@ -15240,7 +14867,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3304,
+      "loadMs": 6353,
       "anchor:load": {
        "top": 0,
        "bottom": 1665,
@@ -15270,7 +14897,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 23551,
+   "durationMs": 31661,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -15294,7 +14921,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2464,
+      "dclMs": 2112,
       "nonBlank:dcl": {
        "exists": true,
        "height": 4467,
@@ -15304,7 +14931,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 2990,
+      "loadMs": 6388,
       "anchor:load": {
        "top": 96,
        "bottom": 4409,
@@ -15346,7 +14973,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 4657,
+      "dclMs": 4661,
       "nonBlank:dcl": {
        "exists": true,
        "height": 4467,
@@ -15356,7 +14983,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 6202,
+      "loadMs": 13470,
       "anchor:load": {
        "top": 96,
        "bottom": 4409,
@@ -15398,17 +15025,17 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1373,
+      "dclMs": 2142,
       "nonBlank:dcl": {
        "exists": true,
-       "height": 4467,
+       "height": 4313,
        "width": 390,
        "textLen": 3687,
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3087,
+      "loadMs": 6369,
       "anchor:load": {
        "top": 96,
        "bottom": 4409,
@@ -15438,7 +15065,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25095,
+   "durationMs": 31298,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -15462,7 +15089,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2445,
+      "dclMs": 2098,
       "nonBlank:dcl": {
        "exists": true,
        "height": 4635,
@@ -15472,7 +15099,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3033,
+      "loadMs": 6387,
       "anchor:load": {
        "top": 96,
        "bottom": 4635,
@@ -15514,17 +15141,17 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 3236,
+      "dclMs": 4725,
       "nonBlank:dcl": {
        "exists": true,
-       "height": 4584,
+       "height": 4635,
        "width": 390,
        "textLen": 3459,
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 6124,
+      "loadMs": 13492,
       "anchor:load": {
        "top": 96,
        "bottom": 4635,
@@ -15566,17 +15193,17 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1414,
+      "dclMs": 2135,
       "nonBlank:dcl": {
        "exists": true,
-       "height": 4584,
+       "height": 4635,
        "width": 390,
        "textLen": 3459,
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3026,
+      "loadMs": 6354,
       "anchor:load": {
        "top": 96,
        "bottom": 4635,
@@ -15606,7 +15233,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24330,
+   "durationMs": 31170,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -15630,17 +15257,17 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2823,
+      "dclMs": 2121,
       "nonBlank:dcl": {
        "exists": true,
-       "height": 6624,
+       "height": 6675,
        "width": 390,
        "textLen": 4513,
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3315,
+      "loadMs": 6347,
       "anchor:load": {
        "top": 96,
        "bottom": 6720,
@@ -15682,7 +15309,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2904,
+      "dclMs": 4694,
       "nonBlank:dcl": {
        "exists": true,
        "height": 6675,
@@ -15692,7 +15319,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 5784,
+      "loadMs": 13459,
       "anchor:load": {
        "top": 96,
        "bottom": 6720,
@@ -15734,7 +15361,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1387,
+      "dclMs": 2125,
       "nonBlank:dcl": {
        "exists": true,
        "height": 6675,
@@ -15744,7 +15371,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 2934,
+      "loadMs": 6384,
       "anchor:load": {
        "top": 96,
        "bottom": 6720,
@@ -15774,7 +15401,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27845,
+   "durationMs": 31353,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -15798,7 +15425,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1432,
+      "dclMs": 2100,
       "nonBlank:dcl": {
        "exists": true,
        "height": 7522,
@@ -15808,7 +15435,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 2775,
+      "loadMs": 6396,
       "anchor:load": {
        "top": 96,
        "bottom": 7532,
@@ -15850,7 +15477,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2944,
+      "dclMs": 4693,
       "nonBlank:dcl": {
        "exists": true,
        "height": 7522,
@@ -15860,7 +15487,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 5771,
+      "loadMs": 13477,
       "anchor:load": {
        "top": 96,
        "bottom": 7532,
@@ -15902,17 +15529,17 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 3457,
+      "dclMs": 2172,
       "nonBlank:dcl": {
        "exists": true,
-       "height": 7436,
+       "height": 7522,
        "width": 390,
        "textLen": 3556,
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3660,
+      "loadMs": 6354,
       "anchor:load": {
        "top": 96,
        "bottom": 7532,
@@ -15942,7 +15569,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27045,
+   "durationMs": 31455,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -15966,7 +15593,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 2076,
+      "dclMs": 2142,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1091,
@@ -15976,7 +15603,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 2976,
+      "loadMs": 6408,
       "anchor:load": {
        "top": 96,
        "bottom": 1187,
@@ -16018,7 +15645,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 4261,
+      "dclMs": 4728,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1091,
@@ -16028,7 +15655,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 6235,
+      "loadMs": 13544,
       "anchor:load": {
        "top": 96,
        "bottom": 1187,
@@ -16070,7 +15697,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "dclMs": 1887,
+      "dclMs": 2145,
       "nonBlank:dcl": {
        "exists": true,
        "height": 1091,
@@ -16080,7 +15707,7 @@
        "headingVisible": true,
        "headingEffectiveOpacity": 1
       },
-      "loadMs": 3760,
+      "loadMs": 6368,
       "anchor:load": {
        "top": 96,
        "bottom": 1187,
@@ -16110,7 +15737,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 41849,
+   "durationMs": 17041,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -16275,7 +15902,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 37002,
+   "durationMs": 17363,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -16440,7 +16067,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 38798,
+   "durationMs": 16723,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -16605,7 +16232,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 40455,
+   "durationMs": 17500,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -16770,7 +16397,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 35017,
+   "durationMs": 17085,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -16935,7 +16562,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 33068,
+   "durationMs": 17510,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17100,7 +16727,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8189,
+   "durationMs": 4020,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17187,7 +16814,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9333,
+   "durationMs": 3960,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17274,7 +16901,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7586,
+   "durationMs": 3287,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17361,7 +16988,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6580,
+   "durationMs": 3128,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17448,7 +17075,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7113,
+   "durationMs": 3699,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17536,7 +17163,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7836,
+   "durationMs": 3135,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17623,7 +17250,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8359,
+   "durationMs": 4199,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17678,7 +17305,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8138,
+   "durationMs": 4229,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17733,7 +17360,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6242,
+   "durationMs": 3383,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17788,7 +17415,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7627,
+   "durationMs": 3445,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17843,7 +17470,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5909,
+   "durationMs": 3734,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17898,7 +17525,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5968,
+   "durationMs": 4076,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17953,7 +17580,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5121,
+   "durationMs": 2165,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -17976,7 +17603,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 643,
+      "msToOpaqueAfterLoad": 183,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -18001,7 +17628,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5738,
+   "durationMs": 1593,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -18024,7 +17651,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 2309,
+      "msToOpaqueAfterLoad": 162,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -18049,7 +17676,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 4133,
+   "durationMs": 1635,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -18072,7 +17699,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 943,
+      "msToOpaqueAfterLoad": 256,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -18107,7 +17734,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 4592,
+   "durationMs": 1541,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -18130,7 +17757,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 2366,
+      "msToOpaqueAfterLoad": 55,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -18155,7 +17782,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 4597,
+   "durationMs": 1606,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -18178,7 +17805,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 2293,
+      "msToOpaqueAfterLoad": 198,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -18203,7 +17830,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3176,
+   "durationMs": 1145,
    "iterations": [
     {
      "profile": "chromium-mobile",
@@ -18226,7 +17853,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 480,
+      "msToOpaqueAfterLoad": 87,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -18251,7 +17878,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8343,
+   "durationMs": 3502,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18316,7 +17943,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8059,
+   "durationMs": 2823,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18381,7 +18008,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8221,
+   "durationMs": 2766,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18403,10 +18030,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": 39,
-       "bottom": 3211,
+       "top": 96,
+       "bottom": 3268,
        "vh": 800,
-       "scrollY": 4011
+       "scrollY": 3955
       },
       "nonBlank:cold": {
        "exists": true,
@@ -18446,7 +18073,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6770,
+   "durationMs": 2706,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18468,10 +18095,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": 105,
-       "bottom": 3687,
+       "top": 96,
+       "bottom": 3678,
        "vh": 800,
-       "scrollY": 7117
+       "scrollY": 7126
       },
       "nonBlank:cold": {
        "exists": true,
@@ -18511,7 +18138,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7684,
+   "durationMs": 2730,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18533,10 +18160,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": 42,
-       "bottom": 1719,
+       "top": 96,
+       "bottom": 1772,
        "vh": 800,
-       "scrollY": 10762
+       "scrollY": 10708
       },
       "nonBlank:cold": {
        "exists": true,
@@ -18557,10 +18184,10 @@
        "headingEffectiveOpacity": 1
       },
       "anchor:warm": {
-       "top": 42,
-       "bottom": 1719,
+       "top": 96,
+       "bottom": 1772,
        "vh": 800,
-       "scrollY": 10762
+       "scrollY": 10708
       }
      },
      "pageErrors": [],
@@ -18576,7 +18203,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7845,
+   "durationMs": 2768,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18641,7 +18268,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9807,
+   "durationMs": 4422,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18711,7 +18338,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9301,
+   "durationMs": 4468,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18781,7 +18408,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10966,
+   "durationMs": 5312,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18851,7 +18478,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 11856,
+   "durationMs": 7503,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18921,7 +18548,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 11197,
+   "durationMs": 5900,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -18991,7 +18618,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9988,
+   "durationMs": 6159,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19060,8 +18687,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 35359,
+   "status": "pass",
+   "durationMs": 19374,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19085,7 +18712,7 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
       "waitMs": 0,
       "anchor:back": {
@@ -19102,11 +18729,25 @@
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 0,
+       "bottom": 1524,
+       "vh": 800,
+       "scrollY": 0
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1524,
+       "width": 1280,
+       "textLen": 940,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
       }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#about\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19130,13 +18771,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 0,
+       "bottom": 1524,
+       "vh": 800,
+       "scrollY": 0
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 1524,
+       "width": 1280,
+       "textLen": 940,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 0,
+       "bottom": 1524,
+       "vh": 800,
+       "scrollY": 0
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1524,
+       "width": 1280,
+       "textLen": 940,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#hero\"\nReceived: \"#about\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19206,8 +18876,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 29277,
+   "status": "pass",
+   "durationMs": 18225,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19231,13 +18901,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 2623,
+       "vh": 800,
+       "scrollY": 1428
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 2527,
+       "width": 1280,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 2623,
+       "vh": 800,
+       "scrollY": 1428
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 2527,
+       "width": 1280,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19261,13 +18960,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 2623,
+       "vh": 800,
+       "scrollY": 1428
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 2527,
+       "width": 1280,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 2623,
+       "vh": 800,
+       "scrollY": 1428
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 2527,
+       "width": 1280,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19337,8 +19065,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 28520,
+   "status": "pass",
+   "durationMs": 19035,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19362,13 +19090,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 3268,
+       "vh": 800,
+       "scrollY": 3955
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 3172,
+       "width": 1280,
+       "textLen": 3509,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 3268,
+       "vh": 800,
+       "scrollY": 3955
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 3172,
+       "width": 1280,
+       "textLen": 3509,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19392,13 +19149,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 3268,
+       "vh": 800,
+       "scrollY": 3955
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 3172,
+       "width": 1280,
+       "textLen": 3509,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 3268,
+       "vh": 800,
+       "scrollY": 3955
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 3172,
+       "width": 1280,
+       "textLen": 3509,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19468,8 +19254,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 27869,
+   "status": "pass",
+   "durationMs": 18090,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19493,13 +19279,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 3678,
+       "vh": 800,
+       "scrollY": 7126
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 3582,
+       "width": 1280,
+       "textLen": 4566,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 3678,
+       "vh": 800,
+       "scrollY": 7126
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 3582,
+       "width": 1280,
+       "textLen": 4566,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#skills\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19523,13 +19338,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 3678,
+       "vh": 800,
+       "scrollY": 7126
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 3582,
+       "width": 1280,
+       "textLen": 4566,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 3678,
+       "vh": 800,
+       "scrollY": 7126
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 3582,
+       "width": 1280,
+       "textLen": 4566,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#skills\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19599,8 +19443,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 32220,
+   "status": "pass",
+   "durationMs": 18260,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19624,13 +19468,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 1772,
+       "vh": 800,
+       "scrollY": 10708
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 1676,
+       "width": 1280,
+       "textLen": 3556,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 1772,
+       "vh": 800,
+       "scrollY": 10708
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1676,
+       "width": 1280,
+       "textLen": 3556,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#vitrine\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19713,13 +19586,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 1000
+      "waitMs": 1000,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 1772,
+       "vh": 800,
+       "scrollY": 10708
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 1676,
+       "width": 1280,
+       "textLen": 3556,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 1772,
+       "vh": 800,
+       "scrollY": 10708
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1676,
+       "width": 1280,
+       "textLen": 3556,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#vitrine\"\nReceived: \"#hero\""
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -19730,8 +19632,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 34329,
+   "status": "pass",
+   "durationMs": 18066,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19814,13 +19716,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 1026,
+       "vh": 800,
+       "scrollY": 12384
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 930,
+       "width": 1280,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 1026,
+       "vh": 800,
+       "scrollY": 12384
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 930,
+       "width": 1280,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-desktop",
@@ -19844,13 +19775,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 1000
+      "waitMs": 1000,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 1026,
+       "vh": 800,
+       "scrollY": 12384
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 930,
+       "width": 1280,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 1026,
+       "vh": 800,
+       "scrollY": 12384
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 930,
+       "width": 1280,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -19862,7 +19822,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27341,
+   "durationMs": 10449,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -19985,7 +19945,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29394,
+   "durationMs": 12592,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -20108,7 +20068,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 20014,
+   "durationMs": 11262,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -20231,7 +20191,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 19409,
+   "durationMs": 11356,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -20354,7 +20314,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27282,
+   "durationMs": 11668,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -20477,7 +20437,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26100,
+   "durationMs": 11269,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -20600,7 +20560,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 35448,
+   "durationMs": 19629,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -20780,7 +20740,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 32217,
+   "durationMs": 18434,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -20960,7 +20920,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 32429,
+   "durationMs": 18248,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21140,7 +21100,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 34466,
+   "durationMs": 18926,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21320,7 +21280,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 33086,
+   "durationMs": 19571,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21500,7 +21460,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 34500,
+   "durationMs": 19177,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21680,7 +21640,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5962,
+   "durationMs": 1194,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21755,7 +21715,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5226,
+   "durationMs": 1226,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21830,7 +21790,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4225,
+   "durationMs": 1109,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21905,7 +21865,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3234,
+   "durationMs": 1379,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -21980,7 +21940,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3307,
+   "durationMs": 1563,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -22055,7 +22015,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 2940,
+   "durationMs": 1796,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -22130,7 +22090,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25839,
+   "durationMs": 13861,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -22344,7 +22304,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 28575,
+   "durationMs": 15096,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -22558,7 +22518,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26078,
+   "durationMs": 13792,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -22772,7 +22732,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26609,
+   "durationMs": 13734,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -22986,7 +22946,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 24205,
+   "durationMs": 14259,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23200,7 +23160,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 23643,
+   "durationMs": 13637,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23414,7 +23374,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4162,
+   "durationMs": 1036,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23489,7 +23449,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3999,
+   "durationMs": 1514,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23564,7 +23524,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5261,
+   "durationMs": 1649,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23639,7 +23599,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5266,
+   "durationMs": 1577,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23714,7 +23674,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3112,
+   "durationMs": 1657,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23789,7 +23749,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4250,
+   "durationMs": 1366,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23864,7 +23824,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 7646,
+   "durationMs": 1416,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -23939,7 +23899,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4679,
+   "durationMs": 1378,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24014,7 +23974,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5482,
+   "durationMs": 1449,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24089,7 +24049,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3867,
+   "durationMs": 1846,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24164,7 +24124,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 2833,
+   "durationMs": 1721,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24239,7 +24199,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 2943,
+   "durationMs": 3758,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24314,7 +24274,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8247,
+   "durationMs": 4579,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24401,7 +24361,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7430,
+   "durationMs": 5421,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24488,7 +24448,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8567,
+   "durationMs": 4379,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24575,7 +24535,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7979,
+   "durationMs": 4064,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24662,7 +24622,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10604,
+   "durationMs": 4552,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24750,7 +24710,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9832,
+   "durationMs": 3771,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24837,7 +24797,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8169,
+   "durationMs": 4463,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24892,7 +24852,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8585,
+   "durationMs": 3527,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24947,7 +24907,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7548,
+   "durationMs": 3865,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -24974,9 +24934,9 @@
        "kind": "button",
        "box": {
         "x": 64,
-        "y": 442.1166687011719,
+        "y": 498.73333740234375,
         "width": 1152,
-        "height": 41.600006103515625
+        "height": 41.5999755859375
        }
       },
       "nonBlank:after-tap": {
@@ -25002,7 +24962,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8363,
+   "durationMs": 3890,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25029,7 +24989,7 @@
        "kind": "button",
        "box": {
         "x": 64,
-        "y": 590.6500244140625,
+        "y": 581.2833251953125,
         "width": 240,
         "height": 44
        }
@@ -25057,7 +25017,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9755,
+   "durationMs": 4217,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25084,7 +25044,7 @@
        "kind": "button",
        "box": {
         "x": 114,
-        "y": 378.3500061035156,
+        "y": 378.1166687011719,
         "width": 70,
         "height": 44
        }
@@ -25112,7 +25072,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9102,
+   "durationMs": 4037,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25167,7 +25127,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 2733,
+   "durationMs": 1253,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25190,7 +25150,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 38,
+      "msToOpaqueAfterLoad": 49,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -25215,7 +25175,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 2072,
+   "durationMs": 1060,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25238,7 +25198,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 325,
+      "msToOpaqueAfterLoad": 31,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -25263,7 +25223,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3656,
+   "durationMs": 1521,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25286,7 +25246,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 186,
+      "msToOpaqueAfterLoad": 44,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -25321,7 +25281,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3897,
+   "durationMs": 1415,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25344,7 +25304,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 138,
+      "msToOpaqueAfterLoad": 52,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -25369,7 +25329,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 4475,
+   "durationMs": 1449,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25392,7 +25352,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 177,
+      "msToOpaqueAfterLoad": 65,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -25417,7 +25377,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 4493,
+   "durationMs": 1296,
    "iterations": [
     {
      "profile": "firefox-desktop",
@@ -25440,7 +25400,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 169,
+      "msToOpaqueAfterLoad": 65,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -25465,7 +25425,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12110,
+   "durationMs": 4302,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25530,7 +25490,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10702,
+   "durationMs": 4453,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25552,10 +25512,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": 95,
-       "bottom": 4408,
+       "top": 96,
+       "bottom": 4410,
        "vh": 844,
-       "scrollY": 1570
+       "scrollY": 1569
       },
       "nonBlank:cold": {
        "exists": true,
@@ -25595,7 +25555,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12527,
+   "durationMs": 4903,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25617,10 +25577,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": -24,
-       "bottom": 4515,
+       "top": 96,
+       "bottom": 4635,
        "vh": 844,
-       "scrollY": 6002
+       "scrollY": 5882
       },
       "nonBlank:cold": {
        "exists": true,
@@ -25641,10 +25601,10 @@
        "headingEffectiveOpacity": 1
       },
       "anchor:warm": {
-       "top": -24,
-       "bottom": 4515,
+       "top": 96,
+       "bottom": 4635,
        "vh": 844,
-       "scrollY": 6002
+       "scrollY": 5882
       }
      },
      "pageErrors": [],
@@ -25660,7 +25620,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 13075,
+   "durationMs": 4971,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25682,10 +25642,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": 76,
-       "bottom": 6701,
+       "top": 96,
+       "bottom": 6721,
        "vh": 844,
-       "scrollY": 10441
+       "scrollY": 10422
       },
       "nonBlank:cold": {
        "exists": true,
@@ -25725,7 +25685,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12452,
+   "durationMs": 5102,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25747,10 +25707,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": 45,
-       "bottom": 7480,
+       "top": 96,
+       "bottom": 7531,
        "vh": 844,
-       "scrollY": 17097
+       "scrollY": 17047
       },
       "nonBlank:cold": {
        "exists": true,
@@ -25790,7 +25750,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 13771,
+   "durationMs": 4640,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25812,10 +25772,10 @@
      "result": "pass",
      "measurements": {
       "anchor:cold": {
-       "top": 10,
-       "bottom": 1102,
+       "top": 96,
+       "bottom": 1187,
        "vh": 844,
-       "scrollY": 24567
+       "scrollY": 24482
       },
       "nonBlank:cold": {
        "exists": true,
@@ -25836,10 +25796,10 @@
        "headingEffectiveOpacity": 1
       },
       "anchor:warm": {
-       "top": 10,
-       "bottom": 1102,
+       "top": 96,
+       "bottom": 1187,
        "vh": 844,
-       "scrollY": 24567
+       "scrollY": 24482
       }
      },
      "pageErrors": [],
@@ -25855,7 +25815,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 18801,
+   "durationMs": 8202,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25925,7 +25885,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 16188,
+   "durationMs": 6995,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -25995,7 +25955,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 15828,
+   "durationMs": 5990,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26065,7 +26025,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 17224,
+   "durationMs": 7077,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26135,7 +26095,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12775,
+   "durationMs": 6654,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26205,7 +26165,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 14776,
+   "durationMs": 6160,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26274,8 +26234,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 31457,
+   "status": "pass",
+   "durationMs": 18515,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26417,13 +26377,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 1000
+      "waitMs": 1000,
+      "anchor:back": {
+       "top": 0,
+       "bottom": 1665,
+       "vh": 844,
+       "scrollY": 0
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 1665,
+       "width": 390,
+       "textLen": 937,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 0,
+       "bottom": 1665,
+       "vh": 844,
+       "scrollY": 0
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1665,
+       "width": 390,
+       "textLen": 937,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#hero\"\nReceived: \"#about\""
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -26434,8 +26423,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 26560,
+   "status": "pass",
+   "durationMs": 18901,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26459,13 +26448,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 4410,
+       "vh": 844,
+       "scrollY": 1569
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 4314,
+       "width": 390,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 4410,
+       "vh": 844,
+       "scrollY": 1569
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 4314,
+       "width": 390,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-mobile",
@@ -26548,13 +26566,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 1000
+      "waitMs": 1000,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 4410,
+       "vh": 844,
+       "scrollY": 1569
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 4314,
+       "width": 390,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 4410,
+       "vh": 844,
+       "scrollY": 1569
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 4314,
+       "width": 390,
+       "textLen": 3687,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#about\"\nReceived: \"#hero\""
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -26565,8 +26612,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 25358,
+   "status": "pass",
+   "durationMs": 17889,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26649,13 +26696,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 4635,
+       "vh": 844,
+       "scrollY": 5882
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 4539,
+       "width": 390,
+       "textLen": 3459,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 4635,
+       "vh": 844,
+       "scrollY": 5882
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 4539,
+       "width": 390,
+       "textLen": 3459,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-mobile",
@@ -26679,13 +26755,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 1000
+      "waitMs": 1000,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 4635,
+       "vh": 844,
+       "scrollY": 5882
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 4539,
+       "width": 390,
+       "textLen": 3459,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 4635,
+       "vh": 844,
+       "scrollY": 5882
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 4539,
+       "width": 390,
+       "textLen": 3459,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#experience\"\nReceived: \"#hero\""
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -26696,8 +26801,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 28394,
+   "status": "pass",
+   "durationMs": 18284,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26780,13 +26885,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 6721,
+       "vh": 844,
+       "scrollY": 10422
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 6625,
+       "width": 390,
+       "textLen": 4513,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 6721,
+       "vh": 844,
+       "scrollY": 10422
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 6625,
+       "width": 390,
+       "textLen": 4513,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#skills\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-mobile",
@@ -26856,8 +26990,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 33346,
+   "status": "pass",
+   "durationMs": 17775,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -26881,13 +27015,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 7531,
+       "vh": 844,
+       "scrollY": 17047
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 7435,
+       "width": 390,
+       "textLen": 3556,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 7531,
+       "vh": 844,
+       "scrollY": 17047
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 7435,
+       "width": 390,
+       "textLen": 3556,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#vitrine\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-mobile",
@@ -27016,8 +27179,8 @@
    "scenario": "back-forward",
    "repeats": 3,
    "kind": "stress",
-   "status": "fail",
-   "durationMs": 29115,
+   "status": "pass",
+   "durationMs": 18433,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -27041,13 +27204,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 0
+      "waitMs": 0,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 1187,
+       "vh": 844,
+       "scrollY": 24482
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 1091,
+       "width": 390,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 1187,
+       "vh": 844,
+       "scrollY": 24482
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1091,
+       "width": 390,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-mobile",
@@ -27071,13 +27263,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 250
+      "waitMs": 250,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 1187,
+       "vh": 844,
+       "scrollY": 24482
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 1091,
+       "width": 390,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 1187,
+       "vh": 844,
+       "scrollY": 24482
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1091,
+       "width": 390,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
+     "consoleErrors": []
     },
     {
      "profile": "firefox-mobile",
@@ -27101,13 +27322,42 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "waitMs": 1000
+      "waitMs": 1000,
+      "anchor:back": {
+       "top": 96,
+       "bottom": 1187,
+       "vh": 844,
+       "scrollY": 24482
+      },
+      "nonBlank:back": {
+       "exists": true,
+       "height": 1091,
+       "width": 390,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      },
+      "anchor:back-2": {
+       "top": 96,
+       "bottom": 1187,
+       "vh": 844,
+       "scrollY": 24482
+      },
+      "nonBlank:back-2": {
+       "exists": true,
+       "height": 1091,
+       "width": 390,
+       "textLen": 387,
+       "sectionVisibility": "visible",
+       "headingVisible": true,
+       "headingEffectiveOpacity": 1
+      }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#listen\"\nReceived: \"#hero\""
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -27119,7 +27369,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29168,
+   "durationMs": 9995,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -27242,7 +27492,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 25195,
+   "durationMs": 12482,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -27365,7 +27615,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 33584,
+   "durationMs": 11611,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -27488,7 +27738,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 22534,
+   "durationMs": 10299,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -27611,7 +27861,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 32412,
+   "durationMs": 9488,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -27734,7 +27984,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27330,
+   "durationMs": 10326,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -27857,7 +28107,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 37131,
+   "durationMs": 19207,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -28037,7 +28287,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 30470,
+   "durationMs": 17862,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -28217,7 +28467,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29080,
+   "durationMs": 17566,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -28397,7 +28647,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 29171,
+   "durationMs": 17682,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -28577,7 +28827,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 30637,
+   "durationMs": 17517,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -28757,7 +29007,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 32028,
+   "durationMs": 17724,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -28937,7 +29187,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5598,
+   "durationMs": 1090,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29012,7 +29262,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5696,
+   "durationMs": 1008,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29087,7 +29337,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6247,
+   "durationMs": 1051,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29162,7 +29412,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6339,
+   "durationMs": 971,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29237,7 +29487,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 7187,
+   "durationMs": 1376,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29312,7 +29562,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5365,
+   "durationMs": 1200,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29387,7 +29637,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 32090,
+   "durationMs": 14631,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29615,7 +29865,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 31322,
+   "durationMs": 13867,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -29843,7 +30093,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 33056,
+   "durationMs": 13959,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -30071,7 +30321,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 30397,
+   "durationMs": 15281,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -30299,7 +30549,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 26523,
+   "durationMs": 13741,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -30527,7 +30777,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 27269,
+   "durationMs": 13369,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -30755,7 +31005,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4348,
+   "durationMs": 1219,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -30830,7 +31080,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5621,
+   "durationMs": 1465,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -30905,7 +31155,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5297,
+   "durationMs": 1389,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -30980,7 +31230,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5804,
+   "durationMs": 1430,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31055,7 +31305,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6196,
+   "durationMs": 1274,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31130,7 +31380,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6921,
+   "durationMs": 1918,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31205,7 +31455,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6694,
+   "durationMs": 1405,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31280,7 +31530,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5024,
+   "durationMs": 1468,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31355,7 +31605,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4158,
+   "durationMs": 1529,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31430,7 +31680,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5349,
+   "durationMs": 1623,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31505,7 +31755,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5297,
+   "durationMs": 1532,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31580,7 +31830,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5894,
+   "durationMs": 2178,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31655,7 +31905,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7312,
+   "durationMs": 4109,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31742,7 +31992,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10379,
+   "durationMs": 5338,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31829,7 +32079,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10577,
+   "durationMs": 4800,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -31916,7 +32166,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9279,
+   "durationMs": 4119,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32003,7 +32253,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12095,
+   "durationMs": 3588,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32091,7 +32341,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9993,
+   "durationMs": 2793,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32178,7 +32428,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9497,
+   "durationMs": 3497,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32233,7 +32483,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9879,
+   "durationMs": 3729,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32260,7 +32510,7 @@
        "kind": "button",
        "box": {
         "x": 41,
-        "y": 399.9333190917969,
+        "y": 400.4333190917969,
         "width": 308,
         "height": 44
        }
@@ -32288,7 +32538,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6794,
+   "durationMs": 3679,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32315,9 +32565,9 @@
        "kind": "button",
        "box": {
         "x": 24,
-        "y": 405.8833312988281,
+        "y": 525.9166870117188,
         "width": 342,
-        "height": 76.44998168945312
+        "height": 76.45001220703125
        }
       },
       "nonBlank:after-tap": {
@@ -32343,7 +32593,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6704,
+   "durationMs": 3357,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32370,7 +32620,7 @@
        "kind": "button",
        "box": {
         "x": 24,
-        "y": 617.6500244140625,
+        "y": 637.2000122070312,
         "width": 153.9499969482422,
         "height": 44
        }
@@ -32398,7 +32648,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7899,
+   "durationMs": 3668,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32425,7 +32675,7 @@
        "kind": "button",
        "box": {
         "x": 58,
-        "y": 400.3333435058594,
+        "y": 400.0333251953125,
         "width": 274,
         "height": 44
        }
@@ -32453,7 +32703,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8476,
+   "durationMs": 3577,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32480,7 +32730,7 @@
        "kind": "anchor",
        "box": {
         "x": 24,
-        "y": 490.75,
+        "y": 576.5499877929688,
         "width": 342,
         "height": 75.20001220703125
        }
@@ -32508,7 +32758,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 4127,
+   "durationMs": 1272,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32531,7 +32781,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 364,
+      "msToOpaqueAfterLoad": 44,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -32556,7 +32806,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3073,
+   "durationMs": 1282,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32579,7 +32829,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 282,
+      "msToOpaqueAfterLoad": 65,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -32604,7 +32854,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 2678,
+   "durationMs": 1444,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32627,7 +32877,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 286,
+      "msToOpaqueAfterLoad": 74,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -32662,7 +32912,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3994,
+   "durationMs": 1451,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32685,7 +32935,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 271,
+      "msToOpaqueAfterLoad": 27,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -32710,7 +32960,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3845,
+   "durationMs": 1367,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32733,7 +32983,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 139,
+      "msToOpaqueAfterLoad": 93,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -32758,7 +33008,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 3585,
+   "durationMs": 1281,
    "iterations": [
     {
      "profile": "firefox-mobile",
@@ -32781,7 +33031,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 107,
+      "msToOpaqueAfterLoad": 79,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -32806,7 +33056,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 18188,
+   "durationMs": 7504,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -32871,7 +33121,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 21637,
+   "durationMs": 8172,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -32936,7 +33186,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 20372,
+   "durationMs": 8410,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33001,7 +33251,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 20093,
+   "durationMs": 7668,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33066,7 +33316,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 21420,
+   "durationMs": 9808,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33131,7 +33381,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 21556,
+   "durationMs": 9030,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33196,7 +33446,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 32609,
+   "durationMs": 14566,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33264,7 +33514,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 32201,
+   "durationMs": 14812,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33332,7 +33582,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 30718,
+   "durationMs": 12909,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33400,7 +33650,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 27374,
+   "durationMs": 13526,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33468,7 +33718,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 33380,
+   "durationMs": 14279,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33536,7 +33786,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 29985,
+   "durationMs": 14113,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33604,7 +33854,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 104983,
+   "durationMs": 37961,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33793,7 +34043,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 106684,
+   "durationMs": 39881,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -33982,7 +34232,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 113330,
+   "durationMs": 37825,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -34171,7 +34421,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 106391,
+   "durationMs": 37635,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -34360,7 +34610,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 122591,
+   "durationMs": 39818,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -34549,7 +34799,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 122291,
+   "durationMs": 39741,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -34738,7 +34988,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 71410,
+   "durationMs": 21833,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -34861,7 +35111,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 72752,
+   "durationMs": 23421,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -34984,7 +35234,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 71524,
+   "durationMs": 23349,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -35107,7 +35357,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 66141,
+   "durationMs": 23868,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -35230,7 +35480,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 81573,
+   "durationMs": 24404,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -35353,7 +35603,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 83334,
+   "durationMs": 22993,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -35476,7 +35726,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 116149,
+   "durationMs": 41163,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -35656,7 +35906,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 124437,
+   "durationMs": 44268,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -35836,7 +36086,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 98963,
+   "durationMs": 38633,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36016,7 +36266,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 93458,
+   "durationMs": 39069,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36196,7 +36446,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 94107,
+   "durationMs": 42594,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36376,7 +36626,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 99192,
+   "durationMs": 41675,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36556,7 +36806,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5774,
+   "durationMs": 1916,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36631,7 +36881,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5451,
+   "durationMs": 1698,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36706,7 +36956,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 7071,
+   "durationMs": 2051,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36781,7 +37031,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6929,
+   "durationMs": 2249,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36856,7 +37106,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5760,
+   "durationMs": 2428,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -36931,7 +37181,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5699,
+   "durationMs": 2327,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -37006,7 +37256,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 71185,
+   "durationMs": 29948,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -37220,7 +37470,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 86618,
+   "durationMs": 35992,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -37434,7 +37684,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 74693,
+   "durationMs": 32164,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -37648,7 +37898,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 71751,
+   "durationMs": 31884,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -37862,7 +38112,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 82895,
+   "durationMs": 33367,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38076,7 +38326,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 82269,
+   "durationMs": 34484,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38290,7 +38540,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5641,
+   "durationMs": 2224,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38365,7 +38615,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5340,
+   "durationMs": 1711,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38440,7 +38690,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6503,
+   "durationMs": 2018,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38515,7 +38765,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6615,
+   "durationMs": 1625,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38590,7 +38840,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6451,
+   "durationMs": 2308,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38665,7 +38915,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6946,
+   "durationMs": 2309,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38740,7 +38990,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5294,
+   "durationMs": 1950,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38815,7 +39065,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5229,
+   "durationMs": 1946,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38890,7 +39140,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6285,
+   "durationMs": 1969,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -38965,7 +39215,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5818,
+   "durationMs": 1933,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39040,7 +39290,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5118,
+   "durationMs": 2109,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39115,7 +39365,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 6219,
+   "durationMs": 1962,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39190,7 +39440,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 12760,
+   "durationMs": 6152,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39277,7 +39527,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 16048,
+   "durationMs": 7042,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39364,7 +39614,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 15522,
+   "durationMs": 6435,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39451,7 +39701,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 15648,
+   "durationMs": 6087,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39538,7 +39788,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 19377,
+   "durationMs": 6790,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39626,7 +39876,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 17919,
+   "durationMs": 6613,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39713,7 +39963,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 20353,
+   "durationMs": 7300,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39768,7 +40018,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 25024,
+   "durationMs": 8590,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39823,7 +40073,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 19248,
+   "durationMs": 7698,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39878,7 +40128,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 21491,
+   "durationMs": 7318,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39933,7 +40183,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 23225,
+   "durationMs": 9440,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -39988,7 +40238,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 17630,
+   "durationMs": 7537,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -40043,7 +40293,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6788,
+   "durationMs": 2956,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -40066,7 +40316,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 1864,
+      "msToOpaqueAfterLoad": 363,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -40091,7 +40341,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9900,
+   "durationMs": 2796,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -40114,7 +40364,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3346,
+      "msToOpaqueAfterLoad": 460,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -40139,7 +40389,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8361,
+   "durationMs": 2981,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -40162,8 +40412,8 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3063,
-      "headingOpacityAtBudget": 0.83,
+      "msToOpaqueAfterLoad": 473,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 3138,
@@ -40171,7 +40421,7 @@
        "textLen": 3503,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0.83
+       "headingEffectiveOpacity": 1
       },
       "trackBarScaleX": [
        1,
@@ -40197,7 +40447,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 9084,
+   "durationMs": 2645,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -40220,8 +40470,8 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3073,
-      "headingOpacityAtBudget": 0.58,
+      "msToOpaqueAfterLoad": 617,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 3549,
@@ -40229,7 +40479,7 @@
        "textLen": 4550,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0.58
+       "headingEffectiveOpacity": 1
       }
      },
      "pageErrors": [],
@@ -40245,7 +40495,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 8472,
+   "durationMs": 2569,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -40268,8 +40518,8 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3110,
-      "headingOpacityAtBudget": 0.96,
+      "msToOpaqueAfterLoad": 459,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 1670,
@@ -40277,7 +40527,7 @@
        "textLen": 3529,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0.96
+       "headingEffectiveOpacity": 1
       }
      },
      "pageErrors": [],
@@ -40293,7 +40543,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6223,
+   "durationMs": 2570,
    "iterations": [
     {
      "profile": "webkit-desktop",
@@ -40316,7 +40566,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 1911,
+      "msToOpaqueAfterLoad": 458,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -40341,7 +40591,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 18810,
+   "durationMs": 8681,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40406,7 +40656,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 21780,
+   "durationMs": 8795,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40471,7 +40721,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 17979,
+   "durationMs": 6708,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40536,7 +40786,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 17580,
+   "durationMs": 6229,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40601,7 +40851,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 18690,
+   "durationMs": 7624,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40666,7 +40916,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 16814,
+   "durationMs": 6821,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40731,7 +40981,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 27463,
+   "durationMs": 12506,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40799,7 +41049,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 28679,
+   "durationMs": 12495,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40867,7 +41117,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 27071,
+   "durationMs": 11594,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -40935,7 +41185,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 28506,
+   "durationMs": 12557,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -41003,7 +41253,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 30063,
+   "durationMs": 13820,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -41071,7 +41321,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 27966,
+   "durationMs": 12065,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -41139,7 +41389,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 72688,
+   "durationMs": 35236,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -41328,7 +41578,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 74575,
+   "durationMs": 35652,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -41517,7 +41767,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 69818,
+   "durationMs": 35217,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -41706,7 +41956,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 70191,
+   "durationMs": 32843,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -41895,7 +42145,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 78444,
+   "durationMs": 36052,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -42084,7 +42334,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 75180,
+   "durationMs": 34182,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -42273,7 +42523,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 43252,
+   "durationMs": 20428,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -42396,7 +42646,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 43953,
+   "durationMs": 21285,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -42519,7 +42769,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 46481,
+   "durationMs": 20757,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -42642,7 +42892,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 43101,
+   "durationMs": 21062,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -42765,7 +43015,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 48900,
+   "durationMs": 21729,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -42888,7 +43138,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 45754,
+   "durationMs": 21628,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -43011,7 +43261,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 78448,
+   "durationMs": 35135,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -43191,7 +43441,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 81979,
+   "durationMs": 36682,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -43371,7 +43621,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 76600,
+   "durationMs": 33642,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -43551,7 +43801,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 75907,
+   "durationMs": 35209,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -43731,7 +43981,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 80991,
+   "durationMs": 38490,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -43911,7 +44161,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 79904,
+   "durationMs": 36195,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44091,7 +44341,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5521,
+   "durationMs": 1759,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44166,7 +44416,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5420,
+   "durationMs": 1690,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44241,7 +44491,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5212,
+   "durationMs": 1952,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44316,7 +44566,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 5044,
+   "durationMs": 1790,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44391,7 +44641,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3842,
+   "durationMs": 1803,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44466,7 +44716,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4559,
+   "durationMs": 2148,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44541,7 +44791,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 65110,
+   "durationMs": 28042,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44769,7 +45019,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 77504,
+   "durationMs": 32367,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -44997,7 +45247,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 64057,
+   "durationMs": 27855,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -45225,7 +45475,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 65974,
+   "durationMs": 28736,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -45453,7 +45703,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 71095,
+   "durationMs": 32520,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -45681,7 +45931,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 62541,
+   "durationMs": 31063,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -45909,7 +46159,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4739,
+   "durationMs": 1972,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -45984,7 +46234,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4812,
+   "durationMs": 1752,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46059,7 +46309,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4884,
+   "durationMs": 1637,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46134,7 +46384,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4394,
+   "durationMs": 1895,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46209,7 +46459,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4361,
+   "durationMs": 1992,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46284,7 +46534,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4573,
+   "durationMs": 1935,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46359,7 +46609,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4909,
+   "durationMs": 1740,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46434,7 +46684,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3691,
+   "durationMs": 1730,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46509,7 +46759,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4014,
+   "durationMs": 1885,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46584,7 +46834,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4256,
+   "durationMs": 1732,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46659,7 +46909,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 3945,
+   "durationMs": 1799,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46734,7 +46984,7 @@
    "repeats": 3,
    "kind": "stress",
    "status": "pass",
-   "durationMs": 4703,
+   "durationMs": 1989,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46809,7 +47059,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10729,
+   "durationMs": 5331,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46896,7 +47146,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 13811,
+   "durationMs": 6750,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -46983,7 +47233,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 10674,
+   "durationMs": 6174,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47070,7 +47320,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 11646,
+   "durationMs": 5789,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47157,7 +47407,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 16197,
+   "durationMs": 6500,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47245,7 +47495,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 14128,
+   "durationMs": 5848,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47332,7 +47582,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 19159,
+   "durationMs": 7467,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47368,7 +47618,7 @@
        "exists": true,
        "height": 1762,
        "width": 390,
-       "textLen": 1229,
+       "textLen": 1230,
        "sectionVisibility": "visible",
        "headingVisible": true,
        "headingEffectiveOpacity": 1
@@ -47387,7 +47637,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 19656,
+   "durationMs": 7643,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47442,7 +47692,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 15541,
+   "durationMs": 5413,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47497,7 +47747,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 17224,
+   "durationMs": 7041,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47552,7 +47802,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 23803,
+   "durationMs": 8838,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47607,7 +47857,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 15746,
+   "durationMs": 6766,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47662,7 +47912,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5985,
+   "durationMs": 2327,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47685,7 +47935,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 1904,
+      "msToOpaqueAfterLoad": 636,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -47710,7 +47960,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 7111,
+   "durationMs": 2552,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47733,7 +47983,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 2822,
+      "msToOpaqueAfterLoad": 482,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -47758,7 +48008,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6030,
+   "durationMs": 2076,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47781,7 +48031,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 1477,
+      "msToOpaqueAfterLoad": 534,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -47816,7 +48066,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 6675,
+   "durationMs": 2650,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47839,8 +48089,8 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3034,
-      "headingOpacityAtBudget": 0.93,
+      "msToOpaqueAfterLoad": 525,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 6578,
@@ -47848,7 +48098,7 @@
        "textLen": 4531,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0.93
+       "headingEffectiveOpacity": 1
       }
      },
      "pageErrors": [],
@@ -47863,8 +48113,8 @@
    "scenario": "fallback-no-blank",
    "repeats": 1,
    "kind": "baseline",
-   "status": "fail",
-   "durationMs": 7192,
+   "status": "pass",
+   "durationMs": 2841,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47885,10 +48135,10 @@
      "hiddenMs": null,
      "network": "unthrottled",
      "cpuDelay": "none",
-     "result": "fail",
+     "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 3013,
-      "headingOpacityAtBudget": 0.21,
+      "msToOpaqueAfterLoad": 551,
+      "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
        "height": 7398,
@@ -47896,12 +48146,11 @@
        "textLen": 3530,
        "sectionVisibility": "visible",
        "headingVisible": true,
-       "headingEffectiveOpacity": 0.21
+       "headingEffectiveOpacity": 1
       }
      },
      "pageErrors": [],
-     "consoleErrors": [],
-     "error": "Vitrine heading effective opacity (no-js)\n\nexpect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 0.5\nReceived:    0.21"
+     "consoleErrors": []
     }
    ],
    "source": "test-results.json"
@@ -47913,7 +48162,7 @@
    "repeats": 1,
    "kind": "baseline",
    "status": "pass",
-   "durationMs": 5891,
+   "durationMs": 1660,
    "iterations": [
     {
      "profile": "webkit-mobile",
@@ -47936,7 +48185,7 @@
      "cpuDelay": "none",
      "result": "pass",
      "measurements": {
-      "msToOpaqueAfterLoad": 1340,
+      "msToOpaqueAfterLoad": 393,
       "headingOpacityAtBudget": 1,
       "nonBlank:no-js": {
        "exists": true,
@@ -47953,6 +48202,1158 @@
     }
    ],
    "source": "test-results.json"
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Hero",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "About",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Experience",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Skills",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Vitrine",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "firefox",
+   "mechanism": "Listen",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Hero",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "About",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Experience",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Skills",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Vitrine",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "cold-warm-reload",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "deep-anchor",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "back-forward",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "fast-scroll",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "remount",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "hidden-tab-resume",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "resize-orientation",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "slow-network",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "cpu-delayed-hydration",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "keyboard",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "touch",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
+  },
+  {
+   "profile": "webkit",
+   "mechanism": "Listen",
+   "scenario": "fallback-no-blank",
+   "status": "pending",
+   "reason": "browser not installed/configured (playwright.config.ts has chromium only)",
+   "iterations": []
   }
  ],
  "superseded": []

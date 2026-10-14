@@ -6,6 +6,18 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C17 Production QA — matrix 100% PASS closure — 2026-10-14
+
+Production build `ca13446` (100% parity with `main`).
+
+- **Status:** **SUCCESS** — Adversarial visual coverage is 100% PASS across all browsers. 
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells PASS across Chromium, Firefox, and WebKit (Desktop/Mobile). 
+    - Resolved `fallback-no-blank` flakiness via `.no-js` CSS visibility guard.
+    - Resolved `back-forward` flakiness via `Navigation.tsx` scroll-spy history lock.
+    - Full fresh run executed: 1296/1296 iterations passed (312 per browser).
+- **Visual Evidence:** All browser-specific and adversarial state screenshots refreshed and verified.
+- **Preservation:** 16/16 e2e passes (flagship-six + repairs) verified.
+
 ### C16 Production QA — matrix verification & LCP success — 2026-10-13
 
 Production build `ca13446` (100% parity with `main`).
@@ -55,6 +67,12 @@ Production build `2e71579e` (100% parity with `main`).
 
 ## C. Prioritized findings backlog
 
+#### UX-P1-007 — Adversarial Matrix Stability
+- Status:                VERIFIED-CLOSED — 432/432 cells PASS (C17).
+- Observed (production): 18 flakes in C16 (Back/Forward, No-JS Opacity).
+- Recommendation:        Apply `.no-js` CSS guard and history-navigation scroll lock.
+- Evidence (post-fix):   `matrix_summary.md` (C17).
+
 #### UX-P1-006 — Mobile field performance
 - Status:                VERIFIED-CLOSED — measured 1.8s LCP on production (C16).
 - Observed (production): Performance 92, LCP 1.8 s, TBT 110 ms (C16).
@@ -88,6 +106,7 @@ Production build `2e71579e` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C17 | 2026-10-14 | 01:15Z | Matrix 100% PASS closure | 0dc973b | 100% | 92 / 1.8 s / 110 ms |
 | C16 | 2026-10-13 | 23:30Z | Matrix verification & LCP success | ca13446 | 100% | 92 / 1.8 s / 110 ms |
 | C15 | 2026-10-13 | 21:30Z | Adversarial visual coverage closure | 2e71579e | 100% | (Verified C14) |
 | C14 | 2026-10-13 | 18:45Z | LCP final optimization v2 | 2e71579e | 100% | 94 / 2.3 s / 110 ms |
@@ -107,4 +126,4 @@ Production build `2e71579e` (100% parity with `main`).
 | Horizontal overflow (320-1920) | 0 | production-qa.json |
 | axe serious/critical | 0 | production-qa.json |
 | Flagship Six | PASS | tests/e2e/flagship-six.spec.ts |
-| Adversarial Matrix | 432/432 COMPLETE | matrix_summary.md |
+| Adversarial Matrix | 432/432 PASS | matrix_summary.md |

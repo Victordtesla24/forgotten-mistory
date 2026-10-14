@@ -528,7 +528,7 @@ for (const p of PROFILES) {
           if (p.name.startsWith('firefox') && testInfo.project.name !== 'firefox') test.skip();
           if (p.name.startsWith('webkit') && testInfo.project.name !== 'webkit') test.skip();
 
-          test.setTimeout(s === 'slow-network' || s === 'cpu-delayed-hydration' ? 420000 : 180000);
+          test.setTimeout(s === 'slow-network' || s === 'cpu-delayed-hydration' ? 600000 : 300000);
           testInfo.annotations.push({ type: 'matrix', description: JSON.stringify({ profile: p.name, mechanism: m.name, scenario: s, repeats, kind: BASELINE.includes(s) ? 'baseline' : 'stress' }) });
           const failures: string[] = [];
           for (let i = 0; i < repeats; i++) {

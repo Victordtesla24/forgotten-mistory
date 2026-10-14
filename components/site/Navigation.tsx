@@ -57,6 +57,8 @@ export default function Navigation() {
   const navRef = useRef<HTMLElement>(null);
   const activeHashRef = useRef(activeHash);
   const pendingAnchorRef = useRef<{ hash: string; until: number } | null>(null);
+  const isNavigatingHistoryRef = useRef(false);
+  const historyLockTimerRef = useRef<number | undefined>(undefined);
   const internalHashes = useMemo(() => new Set<string>(INTERNAL_NAV_LINKS), []);
 
   const close = useCallback(() => setOpen(false), []);
@@ -161,7 +163,12 @@ export default function Navigation() {
     const syncToLocationHash = () => {
       const hash = window.location.hash;
       if (!internalHashes.has(hash)) return;
-      pendingAnchorRef.current = { hash, until: performance.now() + 2200 };
+      
+      isNavigatingHistoryRef.current = true;
+      window.clearTimeout(historyLockTimerRef.current);
+      historyLockTimerRef.current = window.setTimeout(() => { isNavigatingHistoryRef.current = false; }, 3000);
+
+      pendingAnchorRef.current = { hash, until: performance.now() + 3000 };
       setCurrentHash(hash);
     };
 
@@ -176,6 +183,7 @@ export default function Navigation() {
       const visibleHash = chooseVisibleHash();
       
       if (pending) {
+        // If we reached the target or timed out, clear the lock.
         if (visibleHash === pending.hash || performance.now() > pending.until) {
           pendingAnchorRef.current = null;
         } else {
@@ -184,6 +192,9 @@ export default function Navigation() {
         }
       }
       
+      // Never replace hash during history navigation; the browser already did it.
+      if (isNavigatingHistoryRef.current) return;
+
       setCurrentHash(visibleHash);
       replaceHash(visibleHash);
     };

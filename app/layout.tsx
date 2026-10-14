@@ -133,8 +133,13 @@ export default function RootLayout({
     // tokens (which reference these next/font vars) resolve at :root. Placing
     // them on <body> would leave :root unable to see them — the tokens would
     // compute to empty and headings would fall back to the UA sans stack.
-    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${displayItalic.variable} ${dataFont.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`no-js ${bodyFont.variable} ${displayFont.variable} ${displayItalic.variable} ${dataFont.variable}`} suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.remove('no-js');`,
+          }}
+        />
         {/* The commit these bytes were built from. It used to render as a visible
             line in the footer; the footer is now a single legal line, so it lives
             here instead — invisible to a reader, still checkable by anyone who

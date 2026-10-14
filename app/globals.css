@@ -757,6 +757,19 @@ html {
     background-color: var(--ink-900); /* Fallback */
 }
 
+/* ── No-JS visibility guard (ADV-C16 fallback-no-blank) ─────────────────────
+   Ensures section headings and lede paragraphs are immediately opaque when
+   JavaScript is disabled, bypassing the entrance animations. */
+.no-js h1,
+.no-js h2,
+.no-js h3,
+.no-js p[class*="lede"],
+.no-js [class*="title"] {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+}
+
 body {
     /* Three washes that lift the ground away from flat black. They were
        rgb(40 42 50) and rgb(36 36 42) — a blue-steel cast at 26/22/18% alpha
