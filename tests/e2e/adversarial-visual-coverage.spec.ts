@@ -11,8 +11,14 @@ const MECHANISMS = [
 ];
 
 const VIEWPORTS = [
-  { name: 'desktop', width: 1280, height: 800 },
-  { name: 'mobile', width: 390, height: 844 },
+  { name: '320x800', width: 320, height: 800 },
+  { name: '360x740', width: 360, height: 740 },
+  { name: '390x844', width: 390, height: 844 },
+  { name: '768x1024', width: 768, height: 1024 },
+  { name: '1024x768', width: 1024, height: 768 },
+  { name: '1280x800', width: 1280, height: 800 },
+  { name: '1440x900', width: 1440, height: 900 },
+  { name: '1920x1080', width: 1920, height: 1080 },
 ];
 
 async function paintedGraphic(page, selector) {
