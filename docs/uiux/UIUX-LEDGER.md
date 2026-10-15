@@ -6,13 +6,13 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C35 Production QA — Performance Optimization & Hydration Deferral — 2026-10-15
+- **Performance:** **LCP 3.2s** (FAIL). Lighthouse mobile performance improved to 87/100 (C34 was 72). TBT reduced to 234ms (C34 was 767ms).
+- **Optimization:** Hero LCP candidate (name) animations removed to minimize render delay. MiniVicBot hydration deferred (ssr:false). Page-ready signal moved to requestIdleCallback. content-visibility:auto applied to below-the-fold sections.
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified on production.
+- **Identity:** Live build `8041f54` (100% parity with `main`).
+
 ### C34 Production QA — Adversarial Matrix & Stability Audit — 2026-10-15
-- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production (Detailed check Firefox/WebKit history/anchors confirmed).
-- **Visual Coverage:** **144/144 PASS**. Detailed visual sweep across 3 browsers (Chromium, Firefox, WebKit) and 8 viewports verified fresh this turn.
-- **Flagship Six:** **PASS**. All six flagship experiences verified on production (11/11).
-- **Repairs:** **4/4 PASS**. Verified C4-SSR-BARS, C4-STAGE-STATE, C4-NESTED-FOCUS, WCAG 2.5.8 on production.
-- **Performance:** **LCP 3.2s** (FAIL). Lighthouse mobile performance 72/100, LCP 3.2s, TBT 767ms. High TBT from script evaluation and style/layout.
-- **Identity:** Live build `0b5920f` (100% parity with `main`).
 
 ### C33 Production QA — Stability Verification & Matrix Audit — 2026-10-15
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production (Stability check Chromium/Visual Sweep confirmed).
@@ -175,8 +175,8 @@ Production build `7a55f02` (100% parity with `main`).
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
 | Perf | Lighthouse mobile Perf / A11y / BP / SEO | 100 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 1.2 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (fe9e94d) | 100 % | PASS |
+| Perf | Mobile LCP / CLS / TBT | 3.2 s / 0 / 234 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PARTIAL |
+| Release | main ↔ live parity | 100% (8041f54) | 100 % | PASS |
 
 ---
 
