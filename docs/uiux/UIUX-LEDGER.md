@@ -6,6 +6,13 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C29 Production QA — Adversarial Matrix Stability & Flagship Verification — 2026-10-15
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production. Reruns resolved intermittent flakes in Firefox history scenarios.
+- **Flagship Six:** **PASS**. All six flagship experiences verified on production across Chromium, Firefox, and WebKit.
+- **Repairs:** **4/4 PASS**. Verified C4-SSR-BARS, C4-STAGE-STATE, C4-NESTED-FOCUS, WCAG 2.5.8 on production across all browsers.
+- **Performance:** **LCP 1.1s**. Verified on production throttled.
+- **Identity:** Live build `6c81918` (100% parity with `main`).
+
 ### C28 Production QA — Adversarial Matrix Stability & Flagship Verification — 2026-10-14
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production. Reruns resolved intermittent flakes in Chromium and Firefox history/scroll scenarios.
 - **Flagship Six:** **PASS**. All six flagship experiences verified on production Chromium.
@@ -178,6 +185,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C29 | 2026-10-15 | 01:15Z | Matrix Stability, Flagship Verification | 6c81918 | 100% | 100 / 1.1 s / 199 ms |
 | C28 | 2026-10-14 | 23:45Z | Matrix Stability, Flagship Verification | 5477f89 | 100% | 100 / 1.1 s / 199 ms |
 | C27 | 2026-10-14 | 21:15Z | Matrix Stability, Flagship Verification | b6368ab | 100% | (Verified LCP 2.0s) |
 | C26 | 2026-10-14 | 19:15Z | Visual Coverage, Matrix Stability | 9dabaf5 | 100% | (Verified LCP 1.3s) |
