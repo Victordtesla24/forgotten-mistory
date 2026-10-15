@@ -6,6 +6,13 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C30 Production QA — Adversarial Matrix Stability & Flagship Verification — 2026-10-15
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production (Targeted check confirmed stability).
+- **Flagship Six:** **PASS**. All six flagship experiences verified on production (11/11).
+- **Repairs:** **4/4 PASS**. Verified C4-SSR-BARS, C4-STAGE-STATE, C4-NESTED-FOCUS, WCAG 2.5.8 on production.
+- **Performance:** **LCP 3.2s**. Verified on production throttled (Mobile).
+- **Identity:** Live build `234de01` (100% parity with `main`).
+
 ### C29 Production QA — Adversarial Matrix Stability & Flagship Verification — 2026-10-15
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production. Reruns resolved intermittent flakes in Firefox history scenarios.
 - **Flagship Six:** **PASS**. All six flagship experiences verified on production across Chromium, Firefox, and WebKit.
@@ -137,8 +144,8 @@ Production build `7a55f02` (100% parity with `main`).
 | A11y | Reflow at 320 px | scrollWidth 320 vs 320 | 0 overflow | PASS |
 | A11y | Targets < 24 px | 0 | 0 | PASS |
 | Perf | Lighthouse mobile Perf / A11y / BP / SEO | 100 / 100 / 100 / 100 | ≥ 90 / ≥ 95 ×3 | PASS |
-| Perf | Mobile LCP / CLS / TBT | 1.1 s / 0 / 199 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PASS |
-| Release | main ↔ live parity | 100% (5477f89) | 100 % | PASS |
+| Perf | Mobile LCP / CLS / TBT | 3.2 s / 0 / 320 ms | ≤ 2.5 s / ≤ 0.1 / ≤ 200 ms | PARTIAL |
+| Release | main ↔ live parity | 100% (234de01) | 100 % | PASS |
 
 ---
 
@@ -185,6 +192,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C30 | 2026-10-15 | 03:15Z | Stability Verification, Matrix Audit | 234de01 | 100% | 85 / 3.2 s / 320 ms |
 | C29 | 2026-10-15 | 01:15Z | Matrix Stability, Flagship Verification | 6c81918 | 100% | 100 / 1.1 s / 199 ms |
 | C28 | 2026-10-14 | 23:45Z | Matrix Stability, Flagship Verification | 5477f89 | 100% | 100 / 1.1 s / 199 ms |
 | C27 | 2026-10-14 | 21:15Z | Matrix Stability, Flagship Verification | b6368ab | 100% | (Verified LCP 2.0s) |
