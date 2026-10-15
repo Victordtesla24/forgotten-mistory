@@ -29,11 +29,14 @@ export default function Home() {
   // event are still what MiniVicBot and the test suite key on, so the page
   // raises them itself on the frame after mount.
   useEffect(() => {
-    const id = requestAnimationFrame(() => {
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1000));
+    const handle = idle(() => {
       document.body.classList.add('page-ready');
       window.dispatchEvent(new Event('fm:page-ready'));
     });
-    return () => cancelAnimationFrame(id);
+    return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(handle);
+    };
   }, []);
 
   return (
