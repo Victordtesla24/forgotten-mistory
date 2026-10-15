@@ -9,7 +9,7 @@ import MotionProvider from '../components/MotionProvider';
 import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
 import { AvatarSpeakingProvider } from '@/lib/avatarContext';
 
-const MiniVicBot = dynamic(() => import('../components/MiniVicBot'), { ssr: true });
+import MiniVicBotWrapper from '../components/site/MiniVicBotWrapper';
 
 // Three faces, each with one job (design direction §1.1).
 //
@@ -187,7 +187,7 @@ export default function RootLayout({
                 under the nav until the sections stream in. */}
             <div className="page-frame">{children}</div>
             <Footer />
-            <MiniVicBot />
+            <MiniVicBotWrapper />
           </MotionProvider>
         </AvatarSpeakingProvider>
         <ServiceWorkerRegister />

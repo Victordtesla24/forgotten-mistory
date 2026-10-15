@@ -13,20 +13,20 @@
    canvas, hiding the scene entirely. */
 .hero {
     position: relative;
-    /* Two bands, stacked: `.inner` is the fold and owns one whole screen;
-       `.proof` carries the evidence and starts below it. The section was a
-       single centred flexbox when it held both — which is exactly how the
-       ledger, the grading note and the availability line ended up standing in
-       the first viewport beside the name (ADV-FAIL P0, G-H1). */
     display: block;
-    /* Named once, so the photograph below 720 px can cancel exactly this much
-       and bleed to both screen edges without a magic number. */
     --hero-gutter: var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
-    /* The vertical rhythm belongs to the bands now: each sets its own, because
-       the fold measures itself against the viewport and the proof band does
-       not. */
     padding: 0 var(--hero-gutter);
     overflow: hidden;
+}
+
+.name {
+    /* High element render delay (1.26s) identified as the LCP bottleneck (UX-P1-006).
+       Removing the animation and delay ensure the mark paints at its final
+       position in the first possible frame. */
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    /* contain: paint removed to avoid layout overhead on text elements (UX-P0-008) */
 }
 
 /* The hero is one screen — never one-and-a-bit. On a 1280×720 laptop the
@@ -126,11 +126,9 @@
 
 /* Every direct child of the grid rises on its own beat. */
 .eyebrow,
-.name,
 .role,
 .statement,
 .ledgerRow,
-.actions,
 .availability {
     --hero-stagger: 60ms;
     --hero-delay: 60ms;
@@ -155,21 +153,11 @@
    opacity animation does not repaint it later — so a name that fades in emits
    no LCP entry at all (perf PERF-06 / PERF-07). It rises on the same beat as
    its siblings, but it is painted solid from the first frame. */
-.name,
 .actions {
     /* The actions ride the same solid rise: an opacity fade blends the CTA's
        ink into its plate, and axe sampling mid-entry measured 1.05:1 (UX-P0-001). */
-    animation-name: heroRiseSolid;
-}
-
-.name {
-    /* High element render delay (1.26s) identified as the LCP bottleneck (UX-P1-006).
-       Removing the animation and delay ensure the mark paints at its final
-       position in the first possible frame. */
-    animation: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-    contain: paint;
+    animation: heroRiseSolid 600ms var(--motion-ease-emphasized) both;
+    animation-delay: calc(var(--step, 0) * var(--hero-stagger) + var(--hero-delay));
 }
 
 @keyframes heroRiseSolid {
@@ -888,7 +876,7 @@
     height: 100%;
     fill: none;
     overflow: visible;
-    animation: opticReveal 840ms var(--motion-ease-emphasized) both;
+    /* animation: opticReveal removed for LCP optimization (UX-P0-008) */
 }
 
 .opticOuter,

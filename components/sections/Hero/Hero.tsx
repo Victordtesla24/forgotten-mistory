@@ -40,25 +40,7 @@ export default function Hero() {
 
   return (
     <section id="hero" className={styles.hero} aria-labelledby="hero-name">
-      {/* The figure and its named play/pause control are two halves of one
-          state — the loop follows the pointer over the photograph in the fold,
-          and the button in the proof band is the keyboard and touch path to the
-          same intent — so both stand inside the one provider. */}
-      <PortraitIntentProvider>
-        {/* The fold. One name, one sentence, ONE action group — `hero-actions`,
-            and nothing else pressable. An independent reviewer measured two
-            competing CTA groups in this screen on live `9b864752`; the second
-            was the button stamped on the face, and it is now in the proof band
-            below. The evidence is not deleted; it is one scroll away, in
-            `.proof`. A finite optical field now sits behind the editorial copy;
-            the role line came back to the fold with the interim frame
-            (TC-IF-02); the city and the photograph's provenance stay in the
-            proof band — `hero.ts` is unedited and not one word of it left the
-            page. */}
-        <div className={styles.inner} data-testid="hero-fold">
-        {/* The reading column, as one box: the name, the role, the sentence,
-            the actions. `display: contents`, so these are the fold's own flex
-            children and the photograph below them is the last of them. */}
+      <div className={styles.inner} data-testid="hero-fold">
         <div className={styles.copy}>
           <h1 id="hero-name" className={styles.name} style={{ '--step': 0 } as React.CSSProperties}>
             {nameLead}
@@ -67,11 +49,6 @@ export default function Hero() {
             {nameTail}
           </h1>
 
-          {/* The role line stands in the fold again. It was moved to the proof
-              band by the set-piece slice so the plane could hold the screen on
-              its own; with the plane gone the fold is the words, and a reader
-              who reads the name has to be told what he does in the same screen
-              (TC-IF-02). `hero.ts` is unedited — the node moved, not a word. */}
           <p className={styles.role} style={{ '--step': 1 } as React.CSSProperties}>
             {heroContent.role}
           </p>
@@ -100,67 +77,44 @@ export default function Hero() {
           <HeroObservatory />
         </div>
 
-        {/* The photograph, in normal flow at the foot of the fold: a still with
-            its loop behind the reader's own press, and nothing composited over
-            or under it. */}
-        <HeroPortrait />
+        <PortraitIntentProvider>
+          <HeroPortrait />
+        </PortraitIntentProvider>
 
-          <div className={styles.opticalField} aria-hidden="true">
-            <svg className={styles.opticalSvg} viewBox="0 0 720 420" focusable="false">
-              <circle className={styles.opticOuter} cx="486" cy="182" r="132" />
-              <circle className={styles.opticInner} cx="486" cy="182" r="68" />
-              <ellipse className={styles.opticOrbit} cx="486" cy="182" rx="198" ry="64" />
-              <ellipse className={styles.opticOrbitFine} cx="486" cy="182" rx="238" ry="92" />
-              <path className={styles.opticRule} d="M54 182H354M618 182H682M486 18V92M486 272V396" />
-              <path className={styles.opticGold} d="M558 76 612 34M594 136 684 118M552 286 628 356" />
-              <path className={styles.opticCalibrations} d="M108 166v32M150 174v16M192 174v16M234 174v16M276 166v32M318 174v16" />
-            </svg>
-          </div>
+        <div className={styles.opticalField} aria-hidden="true">
+          <svg className={styles.opticalSvg} viewBox="0 0 720 420" focusable="false">
+            <circle className={styles.opticOuter} cx="486" cy="182" r="132" />
+            <circle className={styles.opticInner} cx="486" cy="182" r="68" />
+            <ellipse className={styles.opticOrbit} cx="486" cy="182" rx="198" ry="64" />
+            <ellipse className={styles.opticOrbitFine} cx="486" cy="182" rx="238" ry="92" />
+            <path className={styles.opticRule} d="M54 182H354M618 182H682M486 18V92M486 272V396" />
+            <path className={styles.opticGold} d="M558 76 612 34M594 136 684 118M552 286 628 356" />
+            <path className={styles.opticCalibrations} d="M108 166v32M150 174v16M192 174v16M234 174v16M276 166v32M318 174v16" />
+          </svg>
         </div>
+      </div>
 
-      {/* The proof band. Everything the fold used to carry and could not
-          justify carrying: the three figures with their provenance, the line
-          that grades them, and the availability signal with its three
-          channels. Not one word was deleted — the band starts below 100vh,
-          inside #hero and before #about, so `#hero ul` still resolves and
-          CT-10 still finds 92 / $5M+ / 10k+ printed with their sources. */}
-        <div className={styles.proof} data-testid="hero-proof">
-        {/* The city, above the evidence it belongs beside. The role line that
-            stood here with it is back in the fold (TC-IF-02). Not one word is
-            deleted — `hero.ts` is untouched and both strings render. */}
+      <div className={styles.proof} data-testid="hero-proof">
         <p className={styles.eyebrow} style={{ '--step': 4 } as React.CSSProperties}>
           <span className={styles.locationDot} aria-hidden="true" />
           {heroContent.location}
         </p>
 
-        {/* The three figures, each carrying its own provenance, and the line
-            that grades them: sourced would be a lie, so the mark says
-            self-reported and says why. */}
         <div className={styles.ledgerRow} style={{ '--step': 4 } as React.CSSProperties}>
           <ul className={styles.ledger} aria-label="Delivery record">
             {heroContent.ledger.map((entry) => (
               <li key={entry.label} className={styles.ledgerItem}>
-                {/* Self-reported, not sourced. These three are his own account of
-                    his own programmes: the line beneath each says where the work
-                    happened, but no third party published a methodology a reader
-                    could go and check. Grading them as measured would be the
-                    first dishonest thing on a page arguing for the opposite. */}
                 <Caliper state="self-reported" className={styles.ledgerValue}>
                   {entry.value}
                 </Caliper>
-                {/* One cell on a phone, two rows beside the figure elsewhere:
-                    the wrapper has no box of its own above 600 px. */}
                 <span className={styles.ledgerText}>
                   <span className={styles.ledgerLabel}>{entry.label}</span>
-                  {/* Provenance sits with the figure. A number a reader cannot
-                      trace is a claim, not evidence. */}
                   <span className={styles.ledgerSource}>{entry.source}</span>
                 </span>
               </li>
             ))}
           </ul>
 
-          {/* The mark is learned here, with its grade stated once. */}
           <p className={styles.grading}>
             <span className={styles.gradingMark} aria-hidden="true" />
             self-reported, from my CV. Repository figures below are harvested and dated.
@@ -186,21 +140,15 @@ export default function Hero() {
               {link.label}
             </a>
           ))}
-          </p>
+        </p>
 
-          {/* The photograph's own control, where a control belongs: named, in
-              text, below the fold, beside the evidence — not a glyph stamped on
-              a face in the first screen. The loop still follows the pointer
-              over the figure; this is the keyboard and touch path to it, and it
-              works under reduced motion because a reader's own press is allowed
-              (WCAG 2.2.2). */}
+        <PortraitIntentProvider>
           <HeroPortraitControl />
+        </PortraitIntentProvider>
 
-          {/* The photograph's provenance, beside its control. Same words, same
-              source (`avatar.ts`), one scroll down from the figure. */}
-          <HeroPortraitCaption />
-        </div>
-      </PortraitIntentProvider>
+        <HeroPortraitCaption />
+      </div>
     </section>
   );
+
 }
