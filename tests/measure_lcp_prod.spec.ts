@@ -4,7 +4,8 @@ test.use({
   ...devices['Moto G Power'],
 });
 
-test('measure lcp on production throttled', async ({ page, context }) => {
+test('measure lcp on production throttled', async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium', 'CDP is only available in Chromium');
   const cdp = await context.newCDPSession(page);
   await cdp.send('Network.emulateNetworkConditions', {
     offline: false,

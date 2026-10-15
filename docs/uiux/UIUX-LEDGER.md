@@ -6,6 +6,14 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C34 Production QA — Adversarial Matrix & Stability Audit — 2026-10-15
+- **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production (Detailed check Firefox/WebKit history/anchors confirmed).
+- **Visual Coverage:** **144/144 PASS**. Detailed visual sweep across 3 browsers (Chromium, Firefox, WebKit) and 8 viewports verified fresh this turn.
+- **Flagship Six:** **PASS**. All six flagship experiences verified on production (11/11).
+- **Repairs:** **4/4 PASS**. Verified C4-SSR-BARS, C4-STAGE-STATE, C4-NESTED-FOCUS, WCAG 2.5.8 on production.
+- **Performance:** **LCP 3.2s** (FAIL). Lighthouse mobile performance 72/100, LCP 3.2s, TBT 767ms. High TBT from script evaluation and style/layout.
+- **Identity:** Live build `0b5920f` (100% parity with `main`).
+
 ### C33 Production QA — Stability Verification & Matrix Audit — 2026-10-15
 - **Adversarial Matrix:** **100% PASS**. 432/432 cells verified PASS on production (Stability check Chromium/Visual Sweep confirmed).
 - **Visual Coverage:** **144/144 PASS**. Detailed visual sweep across 3 browsers (Chromium, Firefox, WebKit) and 8 viewports verified fresh this turn.
@@ -178,11 +186,11 @@ Production build `7a55f02` (100% parity with `main`).
 - Lens / framework:      CWV-LCP · CWV-TBT · Lighthouse Performance
 - Persona(s) affected:   P1 | P2 | P3 | P4
 - Section / viewport:    Global · Mobile throttled
-- Observed (production): LCP 3.4s, TBT 678ms, Perf 74. (C19)
+- Observed (production): LCP 3.2s, TBT 767ms, Perf 72. (C34)
 - Expected:              LCP ≤ 2.5s, TBT ≤ 200ms, Perf ≥ 90.
-- Root cause:            Verified as environment/transient; re-measured at 0.34s LCP.
-- Status:                **VERIFIED-CLOSED**
-- Evidence (post-fix):   `tests/e2e/measure_lcp_mobile.spec.ts` (C21).
+- Root cause:            TBD; script evaluation and style/layout overhead observed in C34.
+- Status:                **OPEN**
+- Evidence (post-fix):   LHR C34.
 
 #### UX-P1-007 — Adversarial Matrix Stability
 - Status:                VERIFIED-CLOSED — 432/432 cells PASS (C21).
@@ -215,6 +223,7 @@ Production build `7a55f02` (100% parity with `main`).
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Parity | Lighthouse (Perf/LCP/TBT) |
 | --- | --- | --- | --- | --- | --- | --- |
+| C34 | 2026-10-15 | 07:45Z | Adversarial Matrix Completion, Visual Sweep | 0b5920f | 100% | 72 / 3.2 s / 767 ms |
 | C33 | 2026-10-15 | 06:15Z | Stability Verification, Visual Audit | fe9e94d | 100% | (Verified LCP 1.3s) |
 | C32 | 2026-10-15 | 05:45Z | Full Adversarial Visual Sweep | fe9e94d | 100% | (Verified LCP 1.2s) |
 | C31 | 2026-10-15 | 05:15Z | Matrix Stability, Flagship Verification, Evidence Reconciliation | 78d6b4d | 100% | (Verified LCP 1.2s) |
