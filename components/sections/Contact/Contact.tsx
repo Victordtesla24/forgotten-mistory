@@ -5,7 +5,7 @@ import { contact } from '@/content/contact';
 
 export function Contact() {
   return (
-    <Section id="contact" eyebrow="Contact" title="Get in touch" accent="touch" lede={contact.line}>
+    <Section id="contact" eyebrow="Contact" title="Start with a 20-minute call" accent="20-minute call" lede={contact.line}>
       <div className="reveal flex flex-wrap items-center gap-x-8 gap-y-4">
         <ButtonLink
           href={contact.action.href}

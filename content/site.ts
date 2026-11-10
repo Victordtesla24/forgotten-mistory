@@ -1,6 +1,6 @@
 /**
- * Identity, location, availability, public channels and the text search and social
- * previews show. Kept in parity with the CV (public/docs/Vik_Resume_Final.pdf).
+ * Identity, location, the one availability line, public channels and the text search and
+ * social previews show. Kept in parity with the CV (public/docs/Vik_Resume_Final.pdf).
  */
 
 export const SITE_URL = 'https://forgotten-mistory.web.app';
@@ -53,7 +53,8 @@ export const site: Site = {
     locality: 'Melbourne',
     country: 'AU',
   },
-  availability: 'Open to delivery leadership and AI engagements',
+  availability:
+    'Open to Scrum Master / Project Manager roles in Melbourne and selected AI delivery engagements.',
   url: SITE_URL,
   image: `${SITE_URL}/assets/my_avatar.png`,
   cvHref: '/docs/Vik_Resume_Final.pdf',

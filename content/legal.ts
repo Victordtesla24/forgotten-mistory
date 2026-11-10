@@ -26,9 +26,9 @@ export interface LegalDocument {
   sections: readonly LegalSection[];
 }
 
-const COMPANY = 'V² Group of Companies Pty. Ltd.';
+const COMPANY = 'V² Group of Companies Pty Ltd';
 
-export const copyright = `© 2026 Portfolio Website · Vikram Deshpande · A product of ${COMPANY} · All rights reserved.`;
+export const copyright = `© 2026 Vikram Deshpande · ${COMPANY} · All rights reserved.`;
 
 const mail = { text: site.channels.email, href: `mailto:${site.channels.email}` };
 
@@ -56,6 +56,11 @@ export const privacy: LegalDocument = {
           ', the site’s own, until you open the assistant (described below).',
         ],
         ['The CV is served directly and ungated; downloading it identifies no one.'],
+        [
+          'Switching the colour theme is the one action that stores anything: your choice is kept in your browser under the key ',
+          { term: 'theme' },
+          '.',
+        ],
       ],
       list: {
         after: 1,
@@ -162,7 +167,7 @@ export const terms: LegalDocument = {
   description: 'The terms on which the portfolio is published and may be used.',
   updated: 'Last updated 10 November 2026',
   lede: [
-    `The portfolio is the professional site of Vikram Deshpande, published by ${COMPANY} Using it means accepting the terms below. There is no account, no payment and no data to hand over.`,
+    `The portfolio is the professional site of Vikram Deshpande, published by ${COMPANY}. Using it means accepting the terms below. There is no account, no payment and no data to hand over.`,
   ],
   sections: [
     {

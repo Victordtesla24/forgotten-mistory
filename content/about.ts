@@ -40,9 +40,9 @@ export const about = {
   },
   /** Who and where; proof with scope; direction. Three sentences, at most 60 words. */
   bio: [
-    'Technical delivery leader and AI solutions architect, Melbourne.',
-    'I lead agile delivery as Scrum Master / Project Manager on the ATO’s Payday Super program.',
-    'Across sixteen years in government, finance and telecommunications, I have helped teams ship complex systems, from mainframe test automation to real-time AI platforms, with a focus on measurable business value.',
+    'At the ATO I lead the Agile Kookaburras, one of eight Payday Super squads.',
+    'At ANZ I led AI/ML delivery and core banking modernisation; on my own, I build multi-agent systems.',
+    'Next: programs where AI delivery and AI assurance are the hard part.',
   ],
   principles: [
     {
@@ -51,47 +51,35 @@ export const about = {
       statement: 'Delivery and architecture are one job.',
       detail:
         'At the ATO, the eight-squad test-evidence problem was a delivery problem solved with a toolchain.',
-      scope: 'Agile Kookaburras · PI 47–48',
+      scope: 'ATO · 200+ SIT scenarios',
     },
     {
       id: 'practise-agile',
       title: 'Practise agile',
-      statement: 'Agile as practice rather than ceremony.',
-      detail:
-        'Cadence and PI planning when the plan holds; a cross-discipline war room, inside three hours, when it does not.',
-      scope: '5+ squads · up to 40 practitioners',
+      statement:
+        'Cadence and PI planning when the plan holds; a cross-discipline war room in under three hours when it does not.',
+      scope: 'ATO · Payday Super',
     },
     {
       id: 'own-ai-assurance',
       title: 'Own AI assurance',
-      statement: 'I look for programs where AI delivery and AI assurance are the hard part.',
-      detail:
-        'Someone has to be accountable for whether model output can be trusted, not just whether it shipped.',
-      scope: 'Langfuse and Phoenix · −38% (simulated budget)',
+      statement: 'Accountable for whether model output can be trusted, as well as whether it shipped.',
+      scope: 'Langfuse and Phoenix · −38% (in simulation)',
     },
     {
       id: 'state-the-number',
       title: 'State the number',
-      statement: 'I look for organisations where a status report can carry bad news.',
-      detail:
-        'Every program I have rescued turned on someone stating the number early: 75+ hours of evidence against 64 available, escalated, then re-baselined.',
+      statement:
+        'A status report can carry bad news; every program I have rescued turned on someone stating the number early.',
+      detail: '75+ hours of evidence against 64 available: escalated, then re-baselined.',
       scope: 'ATO · SIT window',
     },
     {
-      id: 'check-every-claim',
-      title: 'Check every claim',
-      statement: 'Outputs cite their source; an unmeasured signal reads “not measured”, never zero.',
-      detail:
-        'Everything I ship refuses to fabricate its own evidence, and says so when it cannot measure something.',
-      scope: 'aether-job-career-agent',
-    },
-    {
-      id: 'engagement',
-      title: 'Engagement',
+      id: 'measure-then-claim',
+      title: 'Measure, then claim',
       statement:
-        'Open to Scrum Master / Project Manager roles in Melbourne and selected AI delivery engagements.',
-      detail: 'Coffee in the Melbourne CBD; I will come to you.',
-      scope: 'Melbourne',
+        'In Aether, market figures cite their source, and an unmeasured signal reads “not measured”, never zero.',
+      scope: 'aether-job-career-agent',
     },
   ] satisfies Principle[],
   education: [

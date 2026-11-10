@@ -44,15 +44,16 @@ test.describe('the content keeps to its contract', { tag: '@desktop' }, () => {
     }
   });
 
-  test('eight roles with a one-line summary and at most four achievement lines', () => {
+  test('eight roles, each with a short title, a one-line summary and one achievement to a line', () => {
     expect(roles).toHaveLength(8);
     for (const role of roles) {
+      expect(words(role.shortTitle), role.id).toBeLessThanOrEqual(4);
       expect(words(role.summary), role.id).toBeLessThanOrEqual(14);
       expect(role.achievements.length, role.id).toBeGreaterThanOrEqual(1);
-      expect(role.achievements.length, role.id).toBeLessThanOrEqual(4);
-      // The style guide's ceiling is 35 words. The ATO and independent roles carry seven
-      // and eight facts from the CV in four lines, so a line may run to 45.
-      for (const line of role.achievements) expect(words(line), line).toBeLessThanOrEqual(45);
+      // The CV gives the ATO five achievements and the independent period eight, each a
+      // line of its own; a line stays within the style guide's 35 words.
+      expect(role.achievements.length, role.id).toBeLessThanOrEqual(8);
+      for (const line of role.achievements) expect(words(line), line).toBeLessThanOrEqual(35);
     }
   });
 
@@ -80,16 +81,38 @@ test.describe('the content keeps to its contract', { tag: '@desktop' }, () => {
     }
   });
 
-  test('a three-sentence bio and six to ten principle cards', () => {
+  test('a three-sentence bio within the sentence ceiling and five to ten principle cards', () => {
     expect(about.bio).toHaveLength(3);
     expect(words(about.bio.join(' '))).toBeLessThanOrEqual(60);
-    expect(about.principles.length).toBeGreaterThanOrEqual(6);
+    for (const sentence of about.bio) expect(words(sentence), sentence).toBeLessThanOrEqual(25);
+    expect(about.principles.length).toBeGreaterThanOrEqual(5);
     expect(about.principles.length).toBeLessThanOrEqual(10);
     for (const principle of about.principles) {
       expect(words(principle.title), principle.id).toBeGreaterThanOrEqual(1);
       expect(words(principle.title), principle.id).toBeLessThanOrEqual(4);
       expect(words(principle.statement), principle.id).toBeLessThanOrEqual(20);
       expect(words(principle.scope), principle.id).toBeLessThanOrEqual(6);
+    }
+  });
+
+  test('no sentence of a project, a capability, a principle or a figure story passes the ceiling', () => {
+    const lines = [
+      ...projects.flatMap((project) => [...project.does, ...project.decisions]),
+      ...capabilities.map((capability) => capability.detail),
+      ...about.principles.flatMap((principle) => [principle.statement, principle.detail ?? '']),
+      ...headlineFigures.map((figure) => figure.story),
+    ];
+    for (const line of lines) {
+      for (const sentence of sentences(line)) expect(words(sentence), sentence).toBeLessThanOrEqual(25);
+    }
+  });
+
+  test('a certification still in progress says so wherever it is named', () => {
+    const pending = capabilities.filter((capability) => capability.id === 'cloud-certification');
+    expect(pending).toHaveLength(1);
+    expect(pending[0]?.label).toContain('in progress');
+    for (const entry of about.credentials) {
+      if ('status' in entry) expect(entry.status).toContain('in progress');
     }
   });
 
@@ -167,6 +190,86 @@ test.describe('the home page is two levels deep', () => {
     const viewport = page.viewportSize()?.height ?? 0;
     const limit = testInfo.project.name === 'mobile' ? MAX_SCREENS.mobile : MAX_SCREENS.desktop;
     expect(height / viewport, `${height}px at ${viewport}px`).toBeLessThanOrEqual(limit);
+  });
+});
+
+// What is on screen before anything opens: the words a reader meets in each section.
+test.describe('the always-visible copy keeps to its word budgets', { tag: '@desktop' }, () => {
+  const BUDGETS = { top: 45, work: 70, experience: 40, about: 90, contact: 35 } as const;
+
+  test('hero, work, experience, about and contact', async ({ page }) => {
+    await open(page, '/');
+    const counts = await page.evaluate((ids) => {
+      const visibleWords = (root: Element): number => {
+        let total = 0;
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+          const parent = node.parentElement;
+          const text = (node as Text).data.trim();
+          if (!parent || !text) continue;
+          let hidden = false;
+          for (let el: Element | null = parent; el && el !== root.parentElement; el = el.parentElement) {
+            const style = getComputedStyle(el);
+            if (style.display === 'none' || style.visibility === 'hidden') hidden = true;
+            if (el instanceof HTMLDetailsElement && !el.open) {
+              const summary = Array.from(el.children).find((child) => child.tagName === 'SUMMARY');
+              if (!summary?.contains(node)) hidden = true;
+            }
+          }
+          const box = parent.getBoundingClientRect();
+          if (hidden || (box.width <= 1 && box.height <= 1)) continue;
+          total += text.split(/\s+/).filter((token) => /[\p{L}\p{N}]/u.test(token)).length;
+        }
+        return total;
+      };
+      return Object.fromEntries(
+        ids.map((id) => [id, visibleWords(document.getElementById(id) as Element)]),
+      );
+    }, Object.keys(BUDGETS));
+
+    for (const [id, limit] of Object.entries(BUDGETS)) {
+      expect(counts[id], `#${id} shows ${counts[id]} words against a budget of ${limit}`).toBeLessThanOrEqual(limit);
+    }
+  });
+});
+
+test.describe('every detail can be linked to, and is open without script', () => {
+  test('a fragment that names a disclosure opens it, on load and on a later link', async ({ page }) => {
+    await open(page, '/#role-anz-detail');
+    await expect(page.locator('#role-anz-detail')).toHaveAttribute('open', '');
+    await expect(
+      page.getByText(roles.find((role) => role.id === 'anz')?.achievements[0] ?? '', { exact: false }),
+    ).toBeVisible();
+
+    await page.evaluate(() => {
+      window.location.hash = '#project-aether-job-career-agent-detail';
+    });
+    await expect(page.locator('#project-aether-job-career-agent-detail')).toHaveAttribute('open', '');
+
+    // A fragment that names a heading inside a closed card opens that card as well.
+    await page.evaluate(() => {
+      window.location.hash = '#role-nab';
+    });
+    await expect(page.locator('#role-nab-detail')).toHaveAttribute('open', '');
+  });
+
+  test('with script off, every detail is on the page', async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto('/');
+    expect(await page.locator('main details[open]').count()).toBe(0);
+    const samples = [
+      roles[0]?.achievements[5],
+      projects[0]?.decisions[0],
+      capabilities[0]?.detail,
+      about.principles[0]?.detail,
+      headlineFigures[0]?.story,
+    ];
+    for (const sample of samples) {
+      expect(sample).toBeTruthy();
+      await expect(page.getByText(sample ?? '', { exact: false }).first(), sample).toBeVisible();
+    }
+    await context.close();
   });
 });
 

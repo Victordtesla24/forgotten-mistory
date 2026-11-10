@@ -29,16 +29,20 @@ function RoleCard({ role }: { role: ExperienceRole }) {
         summaryClassName="p-4"
         panelClassName="grid gap-4 border-t border-line p-4"
         summary={
-          <div className="grid gap-1.5">
+          <div className="grid gap-1">
             <h3 id={`role-${role.id}`} className="text-[1.0625rem]">
               {role.short}
             </h3>
+            <p className="type-small text-muted">{role.shortTitle}</p>
             <p className="type-meta text-muted">{yearsOf(role.span)}</p>
           </div>
         }
       >
         <div className="grid gap-1">
           <p className="font-medium">{role.title}</p>
+          {role.additionalTitle ? (
+            <p className="type-small text-muted">{role.additionalTitle}</p>
+          ) : null}
           <p className="type-small text-muted">
             {role.employer} · {role.location}
           </p>
@@ -63,14 +67,14 @@ export function Experience() {
     <Section
       id="experience"
       eyebrow="Experience"
-      title="Eight roles over sixteen years"
-      accent="sixteen years"
+      title="Eight roles"
+      accent="roles"
     >
       <Ruler
         min={TIMELINE_START}
         max={Math.floor(NOW)}
         step={1}
-        labelStep={4}
+        labelStep={8}
         label={`Career timeline, ${TIMELINE_START} to ${Math.floor(NOW)}`}
         className="mb-8"
       />

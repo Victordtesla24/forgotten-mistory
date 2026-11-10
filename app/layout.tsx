@@ -4,8 +4,10 @@ import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
 import Assistant from '@/components/assistant/Assistant';
 import { Footer } from '@/components/site/Footer';
 import { Header } from '@/components/site/Header';
+import { DisclosureLinks } from '@/components/site/DisclosureLinks';
 import { Providers } from '@/components/site/Providers';
 import { themeInitScript } from '@/components/site/theme';
+import { about, type Credential } from '@/content/about';
 import { SITE_URL, site } from '@/content/site';
 
 import './globals.css';
@@ -29,6 +31,11 @@ const instrumentSerif = Instrument_Serif({
 });
 
 const { seo } = site;
+
+/** Certifications the CV lists as held; one still in progress is not yet a certification. */
+const heldCertifications: readonly Credential[] = about.credentials.filter(
+  (entry: Credential) => entry.status === undefined,
+);
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -71,7 +78,17 @@ const structuredData = [
     worksFor: { '@type': 'Organization', name: site.employer },
     url: SITE_URL,
     image: site.image,
-    sameAs: [site.channels.github, site.channels.youtube],
+    sameAs: [site.channels.linkedin, site.channels.github, site.channels.youtube],
+    alumniOf: about.education.map((qualification) => ({
+      '@type': 'CollegeOrUniversity',
+      name: qualification.institution,
+    })),
+    hasCredential: heldCertifications.map((entry) => ({
+      '@type': 'EducationalOccupationalCredential',
+      name: entry.name,
+      credentialCategory: 'certification',
+      recognizedBy: { '@type': 'Organization', name: entry.institution },
+    })),
     address: {
       '@type': 'PostalAddress',
       addressLocality: site.location.locality,
@@ -109,6 +126,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </main>
           <Footer />
           <Assistant />
+          <DisclosureLinks />
         </Providers>
       </body>
     </html>

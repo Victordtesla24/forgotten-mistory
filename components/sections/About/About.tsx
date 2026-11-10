@@ -39,7 +39,7 @@ function Chip({ item }: { item: Qualification | Credential }) {
 export function About() {
   const chips: readonly (Qualification | Credential)[] = [...about.education, ...about.credentials];
   return (
-    <Section id="about" eyebrow="About" title="Working principles" accent="principles">
+    <Section id="about" eyebrow="About" title="How I work" accent="work">
       <div className="grid gap-8">
         <div className="grid items-center gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-12">
           <figure className="reveal overflow-hidden rounded-md border border-line bg-surface">

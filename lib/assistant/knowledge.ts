@@ -239,7 +239,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'websocket',
     ],
     answer:
-      "I spent nearly eight years at ANZ Banking Group (Sept 2017 – Jun 2025) as Senior Delivery Lead / AI-ML Solutions Architect. I led delivery of AI/ML solutions including real-time WebSocket telemetry sustaining P95 latency under 200 ms across 10,000+ concurrent devices for critical banking services, and guided core banking platforms onto cloud-native .NET/Azure architectures — improving delivery efficiency by more than 30% and cutting infrastructure costs by over 15%. I managed a $5M+ program portfolio across 5+ squads (up to 40 onsite and offshore practitioners) with 100% compliance, and owned the technical vision and product backlog for the platform modernisations.",
+      "I spent nearly eight years at ANZ (Sept 2017 – Jun 2025) as Senior Delivery Lead / Technical Product Owner, and as AI/ML Strategy & Solutions Architect from 2017 to 2022. I led delivery of AI/ML solutions including real-time WebSocket telemetry that cut P95 latency to under 200 ms across 10,000+ concurrent devices for critical banking services, and guided core banking platforms onto cloud-native .NET/Azure architectures — cutting end-to-end delivery time by more than 30% and cutting infrastructure costs by over 15%. I managed a $5M+ program portfolio across 5+ squads (up to 40 onsite and offshore practitioners) with 100% compliance, and owned the technical vision and product backlog for the platform modernisations.",
   },
 
   // ── 10. Banking / financial services ───────────────────────────────────
@@ -413,7 +413,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'docker',
     ],
     answer:
-      "I work across all three major clouds — GCP, AWS, and Azure — with Kubernetes, Docker, and Terraform as my infrastructure toolkit. The flagship cloud project was at ANZ, where I guided core banking platforms onto cloud-native .NET/Azure architectures, improving delivery efficiency by more than 30% and reducing infrastructure costs by over 15%. I'm also formalising the credentials: AWS and GCP certifications are currently in progress, on top of my Certified Scrum Master.",
+      "I work across all three major clouds — GCP, AWS, and Azure — with Kubernetes, Docker, and Terraform as my infrastructure toolkit. The flagship cloud project was at ANZ, where I guided core banking platforms onto cloud-native .NET/Azure architectures, cutting end-to-end delivery time by more than 30% and reducing infrastructure costs by over 15%. I'm also formalising the credentials: AWS and GCP certifications are currently in progress, on top of my Certified Scrum Master.",
   },
 
   // ── 17. Education ──────────────────────────────────────────────────────
@@ -976,7 +976,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'experienced',
     ],
     answer:
-      "15+ years, and the shape matters more than the count: eight roles since May 2010, with nearly eight of those years at ANZ Banking Group (Sept 2017 – Jun 2025) — so I've done long-horizon delivery, not just short engagements. Roughly the last decade has been leadership: program and delivery management at ANZ and NAB, and now Scrum Master / Project Manager at the ATO. The sectors are government, financial services, and telecommunications, all of them regulated, which is why governance and evidence are habits rather than overhead.",
+      "15+ years, and the shape matters more than the count: eight roles since May 2010, with nearly eight of those years at ANZ (Sept 2017 – Jun 2025) — so I've done long-horizon delivery, not just short engagements. Roughly the last decade has been leadership: program and delivery management at ANZ and NAB, and now Scrum Master / Project Manager at the ATO. The sectors are government, financial services, and telecommunications, all of them regulated, which is why governance and evidence are habits rather than overhead.",
   },
 
   // ── 36. Industries & sectors ─────────────────────────────────────────────
@@ -1001,7 +1001,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'types of organizations',
     ],
     answer:
-      "Three sectors, with dates. Government: the Australian Taxation Office since March 2026, on the Payday Super reform program. Financial services: ANZ Banking Group (Sept 2017 – Jun 2025), NAB (Nov 2016 – Sept 2017), and MYOB (May 2010 – Aug 2011) on financial data processing. Telecommunications: Telstra (Nov 2014 – Oct 2015). Add Microsoft in Sydney (Oct 2015 – Oct 2016) for enterprise technology, InfoCentric (Aug 2011 – Nov 2014) for analytics and BI consulting, and Jun 2025 – Feb 2026 as an independent AI consultant. Every one of those is a regulated or governance-heavy environment, which is the common thread.",
+      "Three sectors, with dates. Government: the Australian Taxation Office since March 2026, on the Payday Super reform program. Financial services: ANZ (Sept 2017 – Jun 2025), NAB (Nov 2016 – Sept 2017), and MYOB (May 2010 – Aug 2011) on financial data processing. Telecommunications: Telstra (Nov 2014 – Oct 2015). Add Microsoft in Sydney (Oct 2015 – Oct 2016) for enterprise technology, InfoCentric (Aug 2011 – Nov 2014) for analytics and BI consulting, and Jun 2025 – Feb 2026 as an independent AI consultant. Every one of those is a regulated or governance-heavy environment, which is the common thread.",
   },
 
   // ── 37. CV / dossier download ────────────────────────────────────────────

@@ -1,11 +1,14 @@
 /**
  * Six public repositories, chosen from the full set. Each has a one-line value
  * statement and a detail level: what it does, how it works in three stages, its
- * stack, the engineering decisions behind it and its links. Repository statistics
- * were read from the GitHub API on 2026-09-03.
+ * stack, the engineering decisions behind it and its links. Commit counts and first-commit
+ * dates were read from each repository's default branch on the date below.
  */
 
 export const PUBLIC_REPO_COUNT = 38;
+
+/** The day the repository statistics were read. */
+export const STATS_AS_OF = '2026-11-10';
 
 type SchematicId =
   | 'pipeline-gate'
@@ -39,10 +42,8 @@ export interface ProjectFigure {
 
 export interface RepoStats {
   commits: number;
-  /** First commit, ISO date. */
+  /** First commit, ISO date, UTC. */
   firstCommit: string;
-  /** Last push, ISO date. */
-  lastPush: string;
 }
 
 export interface Project {
@@ -124,7 +125,7 @@ export const projects: readonly Project[] = [
     ],
     repoHref: 'https://github.com/Victordtesla24/aether-job-career-agent',
     live: { label: 'aether.srv1356245.hstgr.cloud', href: 'https://aether.srv1356245.hstgr.cloud' },
-    stats: { commits: 1664, firstCommit: '2026-07-01', lastPush: '2026-09-02' },
+    stats: { commits: 1666, firstCommit: '2026-07-01' },
   },
   {
     repo: 'abentertainment',
@@ -166,13 +167,13 @@ export const projects: readonly Project[] = [
     ],
     repoHref: 'https://github.com/Victordtesla24/abentertainment',
     live: { label: 'abentertainment.com.au', href: 'https://abentertainment.com.au' },
-    stats: { commits: 243, firstCommit: '2026-03-13', lastPush: '2026-08-06' },
+    stats: { commits: 499, firstCommit: '2026-03-28' },
   },
   {
     repo: 'ralph-loop-infinite',
     name: 'Ralph Loop',
-    value: 'Agent loop with a signed verifier exit.',
-    status: 'Local harness',
+    value: 'Agent loop that exits on a signed result.',
+    status: 'Verifier-gated',
     does: [
       'An agent loop that repeats a work pass until a verifier confirms that the work passed.',
       'A signed verifier result is the sole exit condition.',
@@ -193,13 +194,13 @@ export const projects: readonly Project[] = [
       'The harness runs in a trusted local environment.',
     ],
     repoHref: 'https://github.com/Victordtesla24/ralph-loop-infinite',
-    stats: { commits: 31, firstCommit: '2026-05-19', lastPush: '2026-05-20' },
+    stats: { commits: 31, firstCommit: '2026-05-19' },
   },
   {
     repo: 'prompt-reconstruction-engine',
     name: 'Prompt Reconstruction',
-    value: 'Raw prompts rebuilt into specifications, with provider failover.',
-    status: 'Operator-judged',
+    value: 'Raw prompts rebuilt into specifications.',
+    status: 'Provider failover',
     does: [
       'Rebuilds an operator’s raw prompt into a specification.',
       'When a model declines, provider failover takes over.',
@@ -232,12 +233,12 @@ export const projects: readonly Project[] = [
       'The operator judges reconstruction quality.',
     ],
     repoHref: 'https://github.com/Victordtesla24/prompt-reconstruction-engine',
-    stats: { commits: 34, firstCommit: '2026-06-16', lastPush: '2026-06-26' },
+    stats: { commits: 34, firstCommit: '2026-06-16' },
   },
   {
     repo: 'jyotish-shastra',
     name: 'Jyotish Shastra',
-    value: 'Vedic astrology API with an ephemeris accuracy gate.',
+    value: 'Vedic astrology API that computes positions from ephemeris data.',
     status: 'Accuracy-gated',
     does: [
       'A Vedic astrology API that computes positions from ephemeris data.',
@@ -263,16 +264,16 @@ export const projects: readonly Project[] = [
       'Positions are computed; interpretation is out of scope.',
     ],
     repoHref: 'https://github.com/Victordtesla24/jyotish-shastra',
-    stats: { commits: 214, firstCommit: '2025-06-24', lastPush: '2025-11-10' },
+    stats: { commits: 214, firstCommit: '2025-06-24' },
   },
   {
     repo: 'forgotten-mistory',
     name: 'Forgotten Mistory',
-    value: 'Static-export portfolio with no analytics.',
+    value: 'Static export; one script checks, builds, tests and deploys.',
     status: 'Live',
     does: [
-      'A portfolio built as a static export on Firebase Hosting, with no analytics.',
-      'Typed content files hold every fact, and one release script checks, builds, tests and deploys.',
+      'A portfolio built as a static export on Firebase Hosting.',
+      'Typed content files feed every page, and one release script checks, builds, tests and deploys.',
     ],
     schematic: {
       id: 'static-export',
@@ -281,7 +282,7 @@ export const projects: readonly Project[] = [
         {
           id: 'content',
           label: 'Typed content',
-          note: 'Every fact lives in a typed content file.',
+          note: 'Content lives in typed TypeScript files.',
         },
         {
           id: 'static',
@@ -307,12 +308,12 @@ export const projects: readonly Project[] = [
     ],
     figures: [],
     decisions: [
-      'No analytics, no cookies and no browser storage; a page load contacts one host.',
+      'No analytics and no cookies; a page load writes nothing to storage and contacts one host.',
       'A strict Content-Security-Policy is enforced by an automated test.',
-      'Every fact lives in typed content, matched to the CV or a named repository.',
+      'Content is typed, and the test suite checks its shape and wording before every release.',
     ],
     repoHref: 'https://github.com/Victordtesla24/forgotten-mistory',
     live: { label: 'forgotten-mistory.web.app', href: 'https://forgotten-mistory.web.app' },
-    stats: { commits: 205, firstCommit: '2025-11-25', lastPush: '2026-09-03' },
+    stats: { commits: 874, firstCommit: '2025-11-25' },
   },
 ];

@@ -2,7 +2,9 @@ import { readFileSync, readdirSync } from 'node:fs';
 
 import { expect, test } from '@playwright/test';
 
+import { THEME_KEY } from '@/components/site/theme';
 import { copyright } from '@/content/legal';
+import { site } from '@/content/site';
 
 import { SECTION_IDS } from './support';
 
@@ -64,6 +66,39 @@ test.describe('what the site says matches what it has', { tag: '@desktop' }, () 
     const counted = [...text.matchAll(new RegExp(`\\b(${COUNT_WORDS.join('|')})[- ]sections?\\b`, 'gi'))];
     for (const [phrase, word] of counted) {
       expect(word.toLowerCase(), phrase).toBe(COUNT_WORDS[SECTION_IDS.length - 1]);
+    }
+  });
+
+  test('a page load stores nothing, and the policy names the one key the theme toggle writes', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
+    expect(await page.evaluate(() => document.cookie)).toBe('');
+
+    await page.getByRole('button', { name: 'Switch colour theme' }).first().click();
+    expect(await page.evaluate(() => Object.keys(localStorage))).toEqual([THEME_KEY]);
+
+    await page.goto('/privacy');
+    const policy = await page.locator('main').innerText();
+    expect(policy).toContain(`under the key ${THEME_KEY}`);
+  });
+
+  test('the structured data names every profile the page links, and no unheld certification', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const graphs = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+    const person = graphs.find((graph) => graph['@type'] === 'Person');
+    expect(person.sameAs).toEqual(
+      expect.arrayContaining([site.channels.linkedin, site.channels.github]),
+    );
+    const held = (person.hasCredential as { name: string }[]).map((entry) => entry.name);
+    expect(held).toEqual(['Certified Scrum Master (CSM)']);
+    for (const href of [site.channels.linkedin, site.channels.github]) {
+      await expect(page.locator(`a[href="${href}"]`).first()).toBeAttached();
     }
   });
 

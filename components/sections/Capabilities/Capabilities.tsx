@@ -62,8 +62,8 @@ export function Capabilities() {
     <Section
       id="capabilities"
       eyebrow="Capabilities"
-      title="Seventeen capabilities, five domains"
-      accent="five domains"
+      title="Five domains"
+      accent="domains"
     >
       <SnapRow columns={5} className="reveal">
         {domains.map((domain) => (

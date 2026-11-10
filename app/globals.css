@@ -393,6 +393,16 @@
   .reveal-stagger > * {
     animation: none;
   }
+
+  /* Every detail is expanded inline, so the controls that would open it go. */
+  details:not([open])::details-content {
+    content-visibility: visible;
+    display: block;
+  }
+
+  details > summary > svg {
+    display: none;
+  }
 }
 
 /* Theme changes cross-fade through the View Transitions API where available. */

@@ -42,7 +42,6 @@ export function Hero() {
               <span className="@max-[21.75rem]:hidden"> · </span>
               <span className="@max-[21.75rem]:block">{hero.eyebrow.location}</span>
             </p>
-            <p className="type-small mt-1 max-w-none text-muted">{hero.eyebrow.availability}</p>
           </div>
           <h1 id="top-title" className={cn(styles.title, 'type-hero mt-3 sm:mt-5')}>
             {headline.lead}

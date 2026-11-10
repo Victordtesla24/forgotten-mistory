@@ -24,14 +24,14 @@ interface ContactChannel {
 }
 
 export const contact = {
-  line: 'Open to Scrum Master / Project Manager roles in Melbourne and selected AI delivery engagements.',
+  line: site.availability,
   /**
    * Percent-encoded with line breaks as %0A and held under 900 characters, because
    * older desktop mail clients truncate long mailto URLs.
    */
   action: {
     label: 'Book a 20-minute call',
-    hint: 'Opens an email with a five-line agenda.',
+    hint: 'Opens an email with a five-line agenda. Coffee in the Melbourne CBD; I will come to you.',
     href: `mailto:${channels.email}?subject=${encodeURIComponent(
       ENGAGEMENT_SUBJECT,
     )}&body=${encodeURIComponent(ENGAGEMENT_AGENDA.join('\n'))}`,

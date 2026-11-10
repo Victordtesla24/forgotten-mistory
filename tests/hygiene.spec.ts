@@ -17,6 +17,9 @@ const BANNED_PHRASES = [
   'one WebGL context per section',
   'model-generated likeness',
   'voice, cloned',
+  'no browser storage',
+  'enterprise-grade',
+  'simulated budget',
 ] as const;
 
 /**

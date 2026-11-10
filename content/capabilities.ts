@@ -1,8 +1,9 @@
 /**
- * Seventeen capabilities in five domains. Each has a label of at most five words and
- * a detail line saying where it was applied and with what outcome, linked by id to the
- * program, repository or credential behind it. A result obtained in simulation says so
- * inside its own sentence.
+ * Seventeen entries in five domains: sixteen held, and one certification in progress that
+ * its label says is in progress. Each has a label of at most five words and a detail line
+ * saying where it was applied and with what outcome, linked by id to the program,
+ * repository or credential behind it. A result obtained in simulation, and work done
+ * outside production, say so inside their own sentences.
  *
  * Facts trace to public/docs/Vik_Resume_Final.pdf and to the named repositories.
  */
@@ -82,7 +83,7 @@ export const capabilities: readonly Capability[] = [
     label: 'Agile delivery at scale',
     domain: 'delivery',
     detail:
-      'Eight squads on the ATO’s Payday Super program: PI 47–48 planning, and test capacity re-baselined from 30 to up to 90 person-days.',
+      'At the ATO, leads the Agile Kookaburras, one of eight Payday Super squads, and owns its PI planning (PI 47–48). Authored the change request that re-baselined test capacity from 30 to up to 90 person-days.',
     sources: ['ato'],
   },
   {
@@ -121,14 +122,14 @@ export const capabilities: readonly Capability[] = [
     label: 'LLM evaluation and guardrails',
     domain: 'ai',
     detail:
-      'A Langfuse and Phoenix evaluation stack delivered −38% error-budget breaches (simulated budget); in aether, an entailment guard reverts unsupported claims.',
+      'A Langfuse and Phoenix evaluation stack cut error-budget breaches by 38% in simulation; in Aether, an entailment guard reverts unsupported claims.',
     sources: ['independent', 'aether'],
   },
   {
     id: 'telemetry',
     label: 'Real-time telemetry',
     domain: 'ai',
-    detail: 'At ANZ, WebSocket telemetry held P95 latency under 200 ms across 10,000+ concurrent devices.',
+    detail: 'At ANZ, WebSocket telemetry cut P95 latency to under 200 ms across 10,000+ concurrent devices.',
     sources: ['anz'],
   },
   {
@@ -152,7 +153,7 @@ export const capabilities: readonly Capability[] = [
     label: 'Service orchestration',
     domain: 'platform',
     detail:
-      'containerised-birth-time-rectifier: a gateway, an AI service and Redis composed with Docker Compose across separate stacks.',
+      'containerised-birth-time-rectifier: a gateway, an AI service and Redis composed with Docker Compose across separate stacks (non-production).',
     sources: ['rectifier'],
   },
   {
@@ -165,9 +166,9 @@ export const capabilities: readonly Capability[] = [
   },
   {
     id: 'cloud-certification',
-    label: 'AWS and GCP certification',
+    label: 'AWS and GCP (in progress)',
     domain: 'platform',
-    detail: 'Certification in progress.',
+    detail: 'Cloud and data certifications with AWS and GCP are in progress.',
     sources: [],
   },
   {

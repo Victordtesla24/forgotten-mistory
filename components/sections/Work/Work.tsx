@@ -5,6 +5,7 @@ import { Section } from '@/components/ui/Section';
 import { SnapRow } from '@/components/ui/SnapRow';
 import { Tag } from '@/components/ui/Tag';
 import {
+  STATS_AS_OF,
   projects,
   type Project,
   type ProjectFigure,
@@ -41,8 +42,8 @@ function Count({ figure }: { figure: ProjectFigure }) {
 function Activity({ stats }: { stats: RepoStats }) {
   return (
     <p className="type-meta text-muted">
-      {count.format(stats.commits)} commits · {day.format(new Date(stats.firstCommit))} to{' '}
-      {day.format(new Date(stats.lastPush))}
+      First commit {day.format(new Date(stats.firstCommit))} · {count.format(stats.commits)} commits
+      as of {day.format(new Date(STATS_AS_OF))}
     </p>
   );
 }
