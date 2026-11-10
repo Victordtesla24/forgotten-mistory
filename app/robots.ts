@@ -4,7 +4,7 @@ import { SITE_URL } from '@/content/site';
 
 export const dynamic = 'force-static';
 
-/** Everything is open to crawlers except the chat and speech endpoints that Firebase rewrites to functions. */
+/** Everything is open to crawlers except the chat endpoint that Firebase rewrites to a function. */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: '*', allow: '/', disallow: '/api/' },

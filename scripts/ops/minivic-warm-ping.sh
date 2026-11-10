@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 # minivic-warm-ping.sh — keep the MiniVic brain hot on BOTH routes.
 #
-# Why this exists (G-M4, docs/architecture/MINIVIC-BRAIN-0-4.md §4.3):
-# `minInstances: 1` keeps a container running, but the per-instance provider
-# cooldown map only survives CREDENTIAL_COOLDOWN_MS (10 min). A visitor whose
-# send lands after the map lapsed pays the serial dead-rung walk — measured at
-# ~1.67 s — on top of the answering rung's own time, which alone takes
-# 865–1278 ms of the 1500 ms first-token budget. The independent review of
-# build 83590944 measured 1900 ms / 1793 ms cold precisely in that regime and
-# noted its own numbers were the *primed* (favourable) case.
+# Why this exists: `minInstances: 1` keeps a container running, but the
+# per-instance provider cooldown map only survives CREDENTIAL_COOLDOWN_MS
+# (10 min). A visitor whose send lands after the map lapsed pays the serial
+# dead-rung walk — measured at ~1.67 s — on top of the answering rung's own
+# time, which alone takes 865–1278 ms of the 1500 ms first-token budget.
 #
 # Firing every 2 minutes against both routes keeps the map primed and the TLS
 # path exercised at the edge, so the primed case is the only case a visitor
