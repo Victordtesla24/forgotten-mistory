@@ -1,6 +1,6 @@
 /**
- * Privacy policy, terms of use, the copyright line and the synthetic-media
- * disclosure. The text is shared by the footer, /privacy and /terms.
+ * Privacy policy, terms of use and the copyright line. The text is shared by the
+ * footer, /privacy and /terms.
  */
 
 import { site } from './site';
@@ -27,15 +27,6 @@ export interface LegalDocument {
 export const COMPANY = 'V² Group of Companies Pty. Ltd.';
 
 export const copyright = `© 2026 Portfolio Website · Vikram Deshpande · A product of ${COMPANY} · All rights reserved.`;
-
-export const syntheticMedia = {
-  /** The full disclosure, printed in the footer and wherever generated media is offered. */
-  notice:
-    'Synthetic media: The assistant’s face is a model-generated likeness built from Vikram Deshpande’s own photograph, and its greeting is his own voice, cloned. Both are his; neither is a recording of him.',
-  /** The privacy-policy paragraph on the same subject. */
-  policy:
-    'The assistant’s face is a model-generated likeness built from Vikram Deshpande’s own photograph, and its greeting is his own voice, cloned. Both are his; neither is a recording of him. Nothing else on the site — no figure, no drawing, no line of text — is generated.',
-} as const;
 
 const mail = { text: site.channels.email, href: `mailto:${site.channels.email}` };
 
@@ -109,10 +100,6 @@ export const privacy: LegalDocument = {
           ],
         ],
       },
-    },
-    {
-      heading: 'Synthetic media',
-      body: [[syntheticMedia.policy]],
     },
     {
       heading: 'Links away from here',

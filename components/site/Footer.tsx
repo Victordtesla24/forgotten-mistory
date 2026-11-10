@@ -3,13 +3,13 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { ExternalLink } from '@/components/ui/ExternalLink';
 import { contact } from '@/content/contact';
-import { copyright, syntheticMedia } from '@/content/legal';
+import { copyright } from '@/content/legal';
 import { site } from '@/content/site';
 
 const linkClass =
   'type-small inline-flex min-h-11 items-center text-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-text hover:decoration-muted';
 
-/** Legal links, the CV, the repository, the synthetic-media disclosure and the build id. */
+/** Legal links, the CV, the repository and the build id. */
 export function Footer() {
   return (
     <footer className="mt-section border-t border-line">
@@ -43,7 +43,6 @@ export function Footer() {
             </li>
           </ul>
         </nav>
-        <p className="type-meta max-w-[72ch] text-muted">{syntheticMedia.notice}</p>
         <p className="type-meta text-muted">
           {copyright} · build{' '}
           <span translate="no">{process.env.NEXT_PUBLIC_BUILD_COMMIT}</span>
