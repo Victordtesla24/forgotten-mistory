@@ -6,7 +6,7 @@
     "dev": "next dev -p 4100",
     "build": "next build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --ext .ts,.tsx,.mjs --max-warnings 0 --no-error-on-unmatched-pattern app components content lib tests",
+    "lint": "eslint --ext .ts,.tsx,.mjs --max-warnings 0 --no-error-on-unmatched-pattern app components content lib tests scripts",
     "check": "npm run typecheck && npm run lint",
     "test": "playwright test",
     "ship": "bash scripts/ship.sh"

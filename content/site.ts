@@ -72,6 +72,6 @@ export const site: Site = {
     description:
       'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
     siteDescription: 'Portfolio and AI systems showcase for Vikram Deshpande.',
-    ogImage: { url: '/assets/og-image.png', width: 2400, height: 1260 },
+    ogImage: { url: '/assets/og-image.png', width: 1200, height: 630 },
   },
 };
