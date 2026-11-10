@@ -56,7 +56,10 @@ fi
 sha="$(git rev-parse --short=8 HEAD)"
 echo "[ship] releasing $sha"
 
-begin 4 "npm run check"
+# Stale build output (generated types of a route that no longer exists, files of a page
+# that was removed) must never reach the check or the deploy, so both start from nothing.
+begin 4 "npm run check (from a clean .next and out)"
+rm -rf .next out
 npm run check
 
 begin 5 "npm run build"

@@ -119,10 +119,10 @@ test.describe('on small screens', () => {
     await open(page, '/');
 
     await page.getByRole('button', { name: 'Menu', exact: true }).click();
-    const menu = page.getByRole('dialog', { name: 'Site menu' });
+    const menu = page.getByRole('dialog', { name: 'Site menu', exact: true });
     await expect(menu).toBeVisible();
 
-    const links = menu.getByRole('navigation', { name: 'Menu' }).getByRole('link');
+    const links = menu.getByRole('navigation', { name: 'Menu', exact: true }).getByRole('link');
     await expect(links).toHaveText(NAV_ITEMS.map((item) => item.label));
     for (const [index, { id }] of NAV_ITEMS.entries()) {
       await expect(links.nth(index)).toHaveAttribute('href', `/#${id}`);
