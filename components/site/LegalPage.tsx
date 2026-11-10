@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 import { Container } from '@/components/ui/Container';
 import { Ruler } from '@/components/ui/Ruler';
-import { copyright, type Inline, type LegalDocument } from '@/content/legal';
+import type { Inline, LegalDocument } from '@/content/legal';
 
 const linkClass =
   'text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent';
@@ -40,7 +40,7 @@ function anchorFor(heading: string): string {
 
 /**
  * A long-form legal document: back link, title, date, lede, a contents list on wide
- * screens, the sections at a comfortable measure and the copyright line.
+ * screens and the sections at a comfortable measure. The footer carries the copyright line.
  */
 export function LegalPage({ legal }: { legal: LegalDocument }) {
   const sections = legal.sections.map((section) => ({ ...section, anchor: anchorFor(section.heading) }));
@@ -122,8 +122,6 @@ export function LegalPage({ legal }: { legal: LegalDocument }) {
           })}
         </div>
       </div>
-
-      <p className="type-meta mt-16 border-t border-line pt-6 text-muted">{copyright}</p>
     </Container>
   );
 }

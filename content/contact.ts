@@ -29,7 +29,6 @@ export const contact = {
   phoneHref: channels.phoneHref,
   linkedin: channels.linkedin,
   github: channels.github,
-  youtube: channels.youtube,
   /** The primary action: an email to the inbox. */
   primary: { label: channels.email, href: `mailto:${channels.email}` },
   /**

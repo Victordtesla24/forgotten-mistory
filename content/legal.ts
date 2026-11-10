@@ -34,7 +34,7 @@ export const privacy: LegalDocument = {
   title: 'Privacy Policy',
   description:
     'What this site collects, what it does not, and what happens to a message sent to its assistant.',
-  updated: 'Last updated 3 September 2026',
+  updated: 'Last updated 10 November 2026',
   lede: [
     'This is a portfolio site. It has no accounts, no sign-up, no forms and no shopping cart, and it is not trying to build a profile of you. The short version: it sets no cookies and runs no analytics, and the only thing that leaves your browser is a message you choose to type into the assistant.',
   ],
@@ -105,7 +105,7 @@ export const privacy: LegalDocument = {
       heading: 'Links away from here',
       body: [
         [
-          'The site links to GitHub, LinkedIn and YouTube. Those are other people’s services with their own privacy practices, and nothing here loads them until you click. A video is never embedded in a way that contacts a third party before you ask for it.',
+          'The site links to GitHub and LinkedIn. Those are other people’s services with their own privacy practices, and nothing here loads them until you click.',
         ],
       ],
     },
@@ -149,7 +149,7 @@ export const privacy: LegalDocument = {
 export const terms: LegalDocument = {
   title: 'Terms',
   description: 'The terms on which this portfolio site is published and may be used.',
-  updated: 'Last updated 3 September 2026',
+  updated: 'Last updated 10 November 2026',
   lede: [
     `This site is the professional portfolio of Vikram Deshpande, published by ${COMPANY} Using it means accepting the terms below. They are short because the site asks nothing of you: there is no account, no payment and no data to hand over.`,
   ],
@@ -201,7 +201,7 @@ export const terms: LegalDocument = {
       heading: '5 · Links away from here',
       body: [
         [
-          'The site links to repositories, profiles and videos hosted elsewhere. Those services are not controlled here, and linking to them is not an endorsement of anything else they carry.',
+          'The site links to repositories and profiles hosted elsewhere. Those services are not controlled here, and linking to them is not an endorsement of anything else they carry.',
         ],
       ],
     },

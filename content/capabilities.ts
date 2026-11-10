@@ -34,7 +34,6 @@ export const sources: readonly Source[] = [
   { id: 'independent', label: 'Independent consulting', kind: 'programme' },
   { id: 'aether', label: 'aether-job-career-agent', kind: 'repository' },
   { id: 'abentertainment', label: 'abentertainment', kind: 'repository' },
-  { id: 'this-site', label: 'this site', kind: 'repository' },
   { id: 'public-key-server', label: 'public-key-server', kind: 'repository' },
   { id: 'rectifier', label: 'containerised-birth-time-rectifier', kind: 'repository' },
   { id: 'timeline', label: 'relationship-timeline-feature', kind: 'repository' },
@@ -157,11 +156,11 @@ export const capabilities: readonly Capability[] = [
     caveat: 'Compose, not Kubernetes — there are no cluster manifests in that repository',
   },
   {
-    capability: 'WebGL and GLSL — three.js, React Three Fiber',
+    capability: 'WebGL and GLSL',
     short: 'WebGL & GLSL',
-    sources: ['this-site', 'abentertainment'],
-    evidence: 'bespoke shaders and scenes, one context per section, no context loss',
-    where: 'this site · abentertainment',
+    sources: ['abentertainment'],
+    evidence: 'bespoke shaders and scenes',
+    where: 'abentertainment',
     status: 'production',
   },
   {

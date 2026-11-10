@@ -9,13 +9,30 @@ export function About() {
     <Section id="about" eyebrow="About" title="How I work" accent="work" lede={about.bio}>
       <div className="grid gap-16">
         <div className="grid gap-8">
-          <div className="grid gap-4">
-            <h3 className="reveal">Ten dimensions, answered</h3>
-            {about.lede.map((paragraph) => (
-              <p key={paragraph} className="type-body reveal text-muted">
-                {paragraph}
-              </p>
-            ))}
+          <div className="grid items-center gap-8 md:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] md:gap-12">
+            <figure className="reveal overflow-hidden rounded-md border border-line bg-surface">
+              <picture>
+                <source srcSet={about.portrait.avif} type="image/avif" />
+                <source srcSet={about.portrait.webp} type="image/webp" />
+                <img
+                  src={about.portrait.png}
+                  alt={about.portrait.alt}
+                  width={about.portrait.width}
+                  height={about.portrait.height}
+                  loading="lazy"
+                  decoding="async"
+                  className="block h-auto w-full"
+                />
+              </picture>
+            </figure>
+            <div className="grid gap-4">
+              <h3 className="reveal">Ten dimensions, answered</h3>
+              {about.lede.map((paragraph) => (
+                <p key={paragraph} className="type-body reveal text-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
 
           <dl className="divide-y divide-line border-y border-line">

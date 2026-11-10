@@ -10,9 +10,10 @@ text chat about his experience. It is a static export served by Firebase Hosting
 - Next.js 15 App Router with `output: 'export'`, React 19, TypeScript (strict)
 - Tailwind CSS 4, with every colour, size and radius defined as a token in `app/globals.css`
 - `motion` for interaction, native CSS scroll-driven animation for entrances, server-rendered
-  SVG visuals drawn with `d3-scale` and `d3-shape`
-- Playwright with `@axe-core/playwright` for the tests, including a check that the pages run
-  clean under the Content-Security-Policy in `firebase.json`
+  SVG visuals drawn with `d3-scale`
+- Playwright with `@axe-core/playwright` for the tests, including checks that the pages run
+  clean under the Content-Security-Policy in `firebase.json` and that every page revalidates
+  on each load
 - Firebase Hosting for the site; the chat backend in `functions/` is a separate Cloud
   Functions deploy
 
@@ -24,7 +25,7 @@ Node 22 or newer (see `.node-version`).
 npm run dev      # dev server on http://localhost:4100
 npm run check    # typecheck and lint
 npm run build    # static export to out/
-npm test         # Playwright smoke, axe and CSP tests against out/ (build first)
+npm test         # Playwright smoke, axe, CSP and hosting-header tests against out/ (build first)
 npm run ship     # the whole release, same as scripts/ship.sh
 node scripts/brand-assets.mjs  # regenerate og-image.png, icon.png and apple-icon.png from the tokens
 ```
@@ -44,8 +45,8 @@ worktree and does these things in order, stopping at the first failure:
 6. `npm test`
 7. pushes `HEAD` to `main`
 8. deploys to Firebase Hosting
-9. polls the live site until its `build-commit` meta equals the commit, then prints
-   `SHIPPED <sha>`
+9. polls the live site until its `build-commit` meta equals the commit and every page and
+   payload it serves revalidates on each load, then prints `SHIPPED <sha>`
 
 Every build carries the short commit in `<meta name="build-commit">` (and in the footer).
 The push in step 7 also starts `.github/workflows/ship.yml`, which checks, builds and tests

@@ -177,6 +177,31 @@ test.describe('checked once, because the viewport does not matter', { tag: '@des
     }
   });
 
+  test('the numerals on a scale never touch, from 320 to 1920 px', async ({ page }) => {
+    for (const width of [320, 390, 768, 1024, 1440, 1920]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      await page.evaluate(() => document.fonts.ready);
+
+      const touching = await page.evaluate(() => {
+        const GAP = 4;
+        const found: string[] = [];
+        for (const svg of document.querySelectorAll('svg')) {
+          const numerals = Array.from(svg.querySelectorAll('text'))
+            .map((text) => ({ label: text.textContent ?? '', box: text.getBoundingClientRect() }))
+            .filter(({ box }) => box.width > 0)
+            .sort((a, b) => a.box.left - b.box.left);
+          for (let at = 1; at < numerals.length; at += 1) {
+            const [before, after] = [numerals[at - 1], numerals[at]];
+            if (after.box.left - before.box.right < GAP) found.push(`${before.label} ${after.label}`);
+          }
+        }
+        return found;
+      });
+      expect(touching, `${width}px`).toEqual([]);
+    }
+  });
+
   test('/privacy and /terms return their headings', async ({ page }) => {
     for (const { path, heading } of [
       { path: '/privacy', heading: 'Privacy Policy' },

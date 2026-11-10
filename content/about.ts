@@ -33,6 +33,15 @@ export interface Credential {
 }
 
 export const about = {
+  /** The portrait still, a 1480 × 826 photograph in three formats; the png is the fallback. */
+  portrait: {
+    avif: '/assets/my_avatar.avif',
+    webp: '/assets/my_avatar.webp',
+    png: '/assets/my_avatar.png',
+    width: 1480,
+    height: 826,
+    alt: 'Portrait of Vikram Deshpande',
+  },
   /** First-person summary, as it appears in the CV introduction. */
   bio: "I'm a technical delivery leader and AI solutions architect based in Melbourne, currently leading agile delivery as Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program. Over sixteen years across government, finance, and telecommunications I've helped teams ship complex systems — from mainframe test automation to real-time AI platforms — with a focus on measurable business value.",
   lede: [

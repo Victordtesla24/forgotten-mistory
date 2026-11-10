@@ -18,7 +18,8 @@ looks, moves and is built — read it before changing anything visible.
 - `lib/assistant/` — chat transport (Cloud Run origin, then the `/api/chat` rewrite) and
   local fallback answers. The backend lives in `functions/` and is deployed separately
   (`firebase deploy --only functions`); UI work never touches it.
-- `tests/` — a small Playwright suite (smoke, axe and CSP) that runs against the built `out/`.
+- `tests/` — a small Playwright suite (smoke, axe, CSP and hosting headers) that runs against
+  the built `out/`.
 - `scripts/` — `ship.sh` is the whole release (check, build, test, push to `main`, deploy,
   verify); `brand-assets.mjs` regenerates the social card and icons; `screenshot.mjs` takes
   contact sheets; `ops/` keeps the chat backend warm.
@@ -42,7 +43,7 @@ looks, moves and is built — read it before changing anything visible.
 npm run dev          # local dev server
 npm run check        # typecheck + lint
 npm run build        # static export to out/
-npm test             # Playwright smoke, axe and CSP tests against out/
+npm test             # Playwright smoke, axe, CSP and hosting-header tests against out/
 node scripts/brand-assets.mjs  # regenerate og-image.png, icon.png, apple-icon.png
 scripts/ship.sh      # check, build, test, push to main, deploy to Firebase, verify live
 ```

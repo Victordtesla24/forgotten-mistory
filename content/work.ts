@@ -1,13 +1,10 @@
 /**
  * Six public repositories, chosen from the full set. Every project carries what
  * it does not do next to what it does. Repository statistics were read from the
- * GitHub API on HARVESTED_AT.
+ * GitHub API on 2026-09-03.
  */
 
 export const PUBLIC_REPO_COUNT = 38;
-
-/** The date the repository statistics below were taken. */
-export const HARVESTED_AT = '2026-09-03';
 
 export type SchematicId =
   | 'pipeline-gate'
@@ -15,7 +12,7 @@ export type SchematicId =
   | 'verifier-loop'
   | 'reconstruction-bands'
   | 'diamond-chart'
-  | 'scroll-rail';
+  | 'static-export';
 
 export interface SchematicStage {
   id: string;
@@ -29,7 +26,7 @@ export interface Schematic {
   label: string;
   /** Text alternative for the drawing. It also states that the drawing is not live activity. */
   caption: string;
-  stages: readonly [SchematicStage, SchematicStage, SchematicStage];
+  stages: readonly SchematicStage[];
 }
 
 export interface RepoStats {
@@ -222,26 +219,20 @@ export const projects: readonly Project[] = [
   {
     repo: 'forgotten-mistory',
     title: 'This site',
-    description:
-      'The page you are reading: static export, one WebGL context per section, no analytics.',
+    description: 'The page you are reading: static export, no analytics.',
     limits: 'Every figure on it is quoted from a CV or a repository — none is computed live.',
     repoHref: 'https://github.com/Victordtesla24/forgotten-mistory',
     live: { label: 'forgotten-mistory.web.app', href: 'https://forgotten-mistory.web.app' },
     schematic: {
-      id: 'scroll-rail',
-      label: 'Static six-section rail',
+      id: 'static-export',
+      label: 'Static export with quoted figures',
       caption:
-        'Schematic · not live activity. A static page rail holds six sections and quoted figures; nothing is computed live for the reader.',
+        'Schematic · not live activity. The page is shipped as a static export and its figures are quoted from source records; nothing is computed live for the reader.',
       stages: [
         { id: 'static', label: 'static export', note: 'The page is shipped as a static export.' },
         {
-          id: 'six-section',
-          label: 'six sections',
-          note: 'The rail represents the six flagship sections.',
-        },
-        {
-          id: 'rail',
-          label: 'quoted rail',
+          id: 'quoted',
+          label: 'quoted figures',
           note: 'The figures are quoted from source records, not live telemetry.',
         },
       ],

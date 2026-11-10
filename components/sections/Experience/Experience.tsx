@@ -16,7 +16,7 @@ export function Experience() {
         min={TIMELINE_START}
         max={Math.floor(NOW)}
         step={1}
-        labelStep={2}
+        labelStep={4}
         label={`Career timeline, ${TIMELINE_START} to ${Math.floor(NOW)}`}
         className="mb-12"
       />

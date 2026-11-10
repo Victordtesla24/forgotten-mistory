@@ -116,19 +116,37 @@ test.describe('on small screens', { tag: '@mobile' }, () => {
   });
 });
 
+/** The production policy as a map from directive name to its sources. */
+function policyDirectives(): Map<string, readonly string[]> {
+  return new Map(
+    readProductionCsp()
+      .split(';')
+      .map((directive) => directive.trim().split(/\s+/))
+      .map(([name, ...sources]) => [name, sources] as const),
+  );
+}
+
 // The policy is the same for every viewport, so it is read once, in the desktop project.
 test.describe('the policy itself', { tag: '@desktop' }, () => {
   test('names the chat origin in connect-src and allows nothing else off-site', () => {
-    const directives = new Map(
-      readProductionCsp()
-        .split(';')
-        .map((directive) => directive.trim().split(/\s+/))
-        .map(([name, ...sources]) => [name, sources] as const),
-    );
+    const directives = policyDirectives();
     expect(directives.get('connect-src')).toEqual(["'self'", MINIVIC_CHAT_ORIGIN]);
     for (const [name, sources] of directives) {
       const offSite = sources.filter((source) => /^(https?|wss?):/.test(source));
       expect(offSite, name).toEqual(name === 'connect-src' ? [MINIVIC_CHAT_ORIGIN] : []);
     }
+  });
+
+  // The pages load no blob, no worker and no media, so the policy allows none; the one
+  // data: source is the noise texture the stylesheet draws as an SVG image.
+  test('allows data: only for images, and no blob, worker or media source', () => {
+    const directives = policyDirectives();
+    expect(directives.get('img-src')).toEqual(["'self'", 'data:']);
+    for (const [name, sources] of directives) {
+      expect(sources, name).not.toContain('blob:');
+      if (name !== 'img-src') expect(sources, name).not.toContain('data:');
+    }
+    expect(directives.has('media-src')).toBe(false);
+    expect(directives.has('worker-src')).toBe(false);
   });
 });

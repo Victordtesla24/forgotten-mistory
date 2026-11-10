@@ -17,8 +17,8 @@ his real data rather than decoration.
 ## 2. Content rules (non-negotiable)
 
 1. Every fact, figure, date, employer, repository and sentence of substance comes from
-   `content/` (migrated verbatim from the old `app/data/`). Never invent or round a figure,
-   never add a claim, employer, technology, award or testimonial.
+   `content/`. Never invent or round a figure, never add a claim, employer, technology,
+   award or testimonial.
 2. A figure always travels with its scope line (for example "≈92% · evidence effort removed ·
    ATO Payday Super, 200+ SIT scenarios"). The −38% figure keeps its qualifier "measured
    against a simulated budget, not live traffic" wherever it appears.
@@ -124,7 +124,7 @@ without it; nothing loops in the reader's face; one signature moment per section
 - **Pointer polish** (fine pointers only): spotlight follow on cards via CSS custom
   properties, a subtle magnetic pull on the primary action. No custom cursor.
 - **Theme change** uses the View Transitions API where available.
-- **Data visuals** are server-rendered SVG with `d3-scale` / `d3-shape` maths: always a
+- **Data visuals** are server-rendered SVG with `d3-scale` maths: always a
   text alternative, keyboard access for anything interactive, tokens for every colour.
 - **The shader field** (hero only) uses `@paper-design/shaders-react` (pinned exactly),
   mounted through a single `VisualStage` wrapper that: renders a CSS-gradient poster first,
@@ -133,7 +133,9 @@ without it; nothing loops in the reader's face; one signature moment per section
   survives context loss by falling back to the poster, and is `aria-hidden`. Text over it
   keeps ≥ 4.5:1 contrast through a scrim. It is never the LCP element.
 - Not used: GSAP, smooth-scroll libraries, three.js / React Three Fiber, charting suites,
-  custom cursors, autoplaying media, scroll-jacking, service workers.
+  custom cursors, autoplaying media, scroll-jacking, service workers. The one exception is
+  `public/sw.js`: a worker that deletes the caches of the old site's worker, unregisters
+  itself and reloads the open tab, so returning visitors are served the current site.
 
 ## 6. Engineering
 
@@ -158,6 +160,6 @@ without it; nothing loops in the reader's face; one signature moment per section
 
 ## 7. Definition of done for any change
 
-`npm run check` (typecheck + lint) clean · `npm run build` clean · `npm test` (smoke + axe)
-green · looked at in a browser at 390, 834, 1440 px in both themes · shipped with
-`scripts/ship.sh` · live `build-commit` equals the pushed commit.
+`npm run check` (typecheck + lint) clean · `npm run build` clean · `npm test` (smoke, axe,
+CSP and hosting headers) green · looked at in a browser at 390, 834, 1440 px in both themes ·
+shipped with `scripts/ship.sh` · live `build-commit` equals the pushed commit.

@@ -22,19 +22,52 @@ export const NAV_ITEMS = [
   { label: 'Contact', id: 'contact' },
 ] as const;
 
-interface FirebaseConfig {
-  hosting: { headers: { source: string; headers: { key: string; value: string }[] }[] };
+interface HeaderRule {
+  source: string;
+  headers: { key: string; value: string }[];
+}
+
+/** The header rules of firebase.json, in the order Firebase Hosting applies them. */
+export function readHostingHeaders(): HeaderRule[] {
+  const config: { hosting: { headers: HeaderRule[] } } = JSON.parse(readFileSync('firebase.json', 'utf8'));
+  return config.hosting.headers;
 }
 
 /** The Content-Security-Policy Firebase Hosting sends with every page. */
 export function readProductionCsp(): string {
-  const config: FirebaseConfig = JSON.parse(readFileSync('firebase.json', 'utf8'));
-  const header = config.hosting.headers
+  const header = readHostingHeaders()
     .filter((rule) => rule.source === '**')
     .flatMap((rule) => rule.headers)
     .find((entry) => entry.key === 'Content-Security-Policy');
   if (!header) throw new Error('firebase.json no longer sets a Content-Security-Policy for **');
   return header.value;
+}
+
+/**
+ * Whether a Firebase Hosting `source` glob matches a request path. Only the forms
+ * firebase.json uses are understood: `**` (any depth), `*` (within one segment) and
+ * literal text.
+ */
+function matchesSource(source: string, path: string): boolean {
+  const pattern = source
+    .split(/(\*\*\/|\*\*|\*)/)
+    .map((part) => {
+      if (part === '**/') return '(?:.*/)?';
+      if (part === '**') return '.*';
+      if (part === '*') return '[^/]*';
+      return part.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+    })
+    .join('');
+  return new RegExp(`^${pattern}$`).test(path);
+}
+
+/** The Cache-Control header Firebase Hosting sends for a path: the last matching rule wins. */
+export function cacheControlFor(path: string): string | undefined {
+  return readHostingHeaders()
+    .filter((rule) => matchesSource(rule.source, path))
+    .flatMap((rule) => rule.headers)
+    .filter((entry) => entry.key === 'Cache-Control')
+    .at(-1)?.value;
 }
 
 /**

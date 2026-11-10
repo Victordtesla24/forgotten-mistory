@@ -89,14 +89,46 @@ else
   sudo -n -H "$firebase_bin" deploy --only hosting --project "$FIREBASE_PROJECT" --non-interactive
 fi
 
+# Every page and every payload the client router fetches must revalidate on each load.
+# Firebase's own default is an hour, so a path without a rule keeps serving a stale page
+# whose scripts the release has deleted. The paths come from the build, not from a list.
+document_paths() {
+  local file path
+  while IFS= read -r file; do
+    path="/${file#out/}"
+    case "$path" in
+      /index.html) path="/" ;;
+      /404.html) continue ;;
+      *.html) path="${path%.html}" ;;
+    esac
+    printf '%s\n' "$path"
+  done < <(find out -path out/_next -prune -o -type f \( -name '*.html' -o -name '*.txt' \) -print | sort)
+}
+
+# Prints the document paths whose live Cache-Control does not revalidate.
+stale_paths() {
+  local path headers
+  headers="$(mktemp)"
+  while IFS= read -r path; do
+    if ! curl -fsS --max-time 20 -o /dev/null -D "$headers" "${LIVE_URL%/}${path}"; then
+      echo "$path (unreachable)"
+    elif ! grep -iq '^cache-control:.*max-age=0' "$headers"; then
+      echo "$path ($(tr -d '\r' <"$headers" | grep -i '^cache-control:' || echo 'no cache-control'))"
+    fi
+  done < <(document_paths)
+  rm -f "$headers"
+}
+
 # The page is downloaded to a file and read from the file; piping curl into a parser
 # that exits early makes curl fail with EPIPE.
-begin 9 "waiting for the live site to serve $sha"
+begin 9 "waiting for the live site to serve $sha and revalidate every page"
 page="$(mktemp)"
 trap 'rm -f "$page"' EXIT
 served=""
+stale=""
 for attempt in $(seq 1 "$VERIFY_ATTEMPTS"); do
   served=""
+  stale=""
   if curl -fsS --max-time 20 -H 'Cache-Control: no-cache' -o "$page" "${LIVE_URL}?ship=${sha}-${attempt}"; then
     html="$(<"$page")"
     if [[ "$html" =~ name=\"build-commit\"\ content=\"([^\"]+)\" ]]; then
@@ -104,12 +136,15 @@ for attempt in $(seq 1 "$VERIFY_ATTEMPTS"); do
     fi
   fi
   if [ "$served" = "$sha" ]; then
-    echo "SHIPPED $sha"
-    exit 0
+    stale="$(stale_paths)"
+    if [ -z "$stale" ]; then
+      echo "SHIPPED $sha"
+      exit 0
+    fi
   fi
   if [ "$attempt" -lt "$VERIFY_ATTEMPTS" ]; then
-    echo "[ship] live site serves '${served:-nothing}'; checking again in ${VERIFY_INTERVAL_SECONDS}s ($attempt/$VERIFY_ATTEMPTS)"
+    echo "[ship] live site serves '${served:-nothing}'${stale:+ and caches: $stale}; checking again in ${VERIFY_INTERVAL_SECONDS}s ($attempt/$VERIFY_ATTEMPTS)"
     sleep "$VERIFY_INTERVAL_SECONDS"
   fi
 done
-fail "after $((VERIFY_ATTEMPTS * VERIFY_INTERVAL_SECONDS))s the live site serves '${served:-nothing}' instead of $sha"
+fail "after $((VERIFY_ATTEMPTS * VERIFY_INTERVAL_SECONDS))s the live site serves '${served:-nothing}' instead of $sha${stale:+ and caches: $stale}"
