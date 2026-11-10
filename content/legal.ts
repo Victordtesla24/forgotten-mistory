@@ -10,7 +10,7 @@ import { site } from './site';
 /** A run of text inside a paragraph: plain, emphasised as a term, or a link. */
 export type Inline = string | { term: string } | { text: string; href: string };
 
-export interface LegalSection {
+interface LegalSection {
   heading: string;
   /** Paragraphs, in order. */
   body: readonly (readonly Inline[])[];
@@ -26,7 +26,7 @@ export interface LegalDocument {
   sections: readonly LegalSection[];
 }
 
-export const COMPANY = 'V² Group of Companies Pty. Ltd.';
+const COMPANY = 'V² Group of Companies Pty. Ltd.';
 
 export const copyright = `© 2026 Portfolio Website · Vikram Deshpande · A product of ${COMPANY} · All rights reserved.`;
 
@@ -37,35 +37,32 @@ const chatHost = new URL(MINIVIC_CHAT_ORIGIN).host;
 
 export const privacy: LegalDocument = {
   title: 'Privacy Policy',
-  description:
-    'What this site collects, what it does not, and what happens to a message sent to its assistant.',
+  description: 'What the portfolio collects, and how a message sent to its assistant is handled.',
   updated: 'Last updated 10 November 2026',
   lede: [
-    'This is a portfolio site. It has no accounts, no sign-up, no forms and no shopping cart, and it is not trying to build a profile of you. The short version: it sets no cookies and runs no analytics, and apart from this site’s own files the only requests your browser makes are the assistant’s — an empty wake-up call when you open its panel, and the message you choose to type.',
+    'The portfolio has no accounts, sign-up, forms or shopping cart, and builds no profile of you. It sets no cookies and runs no analytics. Apart from its own files, the only requests your browser makes are the assistant’s: an empty wake-up call when you open its panel, and the message you choose to type.',
   ],
   sections: [
     {
-      heading: 'What this site does not do',
+      heading: 'Cookies, analytics and tracking',
       body: [
         [
-          'Measured against the live site rather than claimed: a page load sets ',
+          'A page load sets ',
           { term: 'zero cookies' },
           ', writes ',
           { term: 'zero entries' },
-          ' to browser storage, and makes requests to ',
+          ' to browser storage and makes requests to ',
           { term: 'one host' },
-          ' — this site’s own — until you open the assistant, which is described below.',
+          ', the site’s own, until you open the assistant (described below).',
         ],
-        [
-          'The CV linked from this site is served directly and ungated. Downloading it tells nobody anything.',
-        ],
+        ['The CV is served directly and ungated; downloading it identifies no one.'],
       ],
       list: {
         after: 1,
         items: [
           ['No analytics of any kind, first-party or third-party.'],
           ['No advertising, no retargeting, no tracking pixels, no fingerprinting.'],
-          ['No cookies, and therefore no cookie banner to dismiss.'],
+          ['No cookies, so no cookie banner.'],
           ['No social-media embeds or share widgets loading in the background.'],
           ['No newsletter capture, no gated downloads, no contact form.'],
         ],
@@ -75,7 +72,7 @@ export const privacy: LegalDocument = {
       heading: 'Server logs',
       body: [
         [
-          'The site is hosted on Firebase Hosting, which is operated by Google. Like any web server, it records ordinary request logs — IP address, timestamp, requested URL, user agent — as part of serving and protecting the service. Those logs are Google’s, kept under their retention policy, and are not combined with anything else here or used to build a profile. The assistant’s function runs on Google Cloud as well, and Google records ordinary request logs for it in the same way. This is stated because it is true of every website, including the ones that do not mention it.',
+          'The site is hosted on Firebase Hosting, which is operated by Google. Like any web server, it records ordinary request logs — IP address, timestamp, requested URL, user agent — as part of serving and protecting the service. Those logs are Google’s, kept under their retention policy, and are not combined with anything else here or used to build a profile. The assistant’s function runs on Google Cloud as well, and Google records ordinary request logs for it in the same way.',
         ],
       ],
     },
@@ -137,7 +134,7 @@ export const privacy: LegalDocument = {
       heading: 'Your rights, and how to use them',
       body: [
         [
-          'This site holds no personal data about you to access, correct or delete, because it collects none. If you have emailed and would like that correspondence removed, say so in a reply and it will be deleted. Under the Australian Privacy Act you may also complain to the Office of the Australian Information Commissioner.',
+          'The site holds no personal data about you to access, correct or delete, because it collects none. If you have emailed and would like that correspondence removed, say so in a reply and it will be deleted. Under the Australian Privacy Act you may also complain to the Office of the Australian Information Commissioner.',
         ],
       ],
     },
@@ -153,7 +150,7 @@ export const privacy: LegalDocument = {
       heading: 'Changes',
       body: [
         [
-          'If what the site does changes, this page changes in the same release. A privacy policy that lags the code it describes is worse than none, because it is believed.',
+          'When what the site does changes, this page changes in the same release.',
         ],
       ],
     },
@@ -162,10 +159,10 @@ export const privacy: LegalDocument = {
 
 export const terms: LegalDocument = {
   title: 'Terms',
-  description: 'The terms on which this portfolio site is published and may be used.',
+  description: 'The terms on which the portfolio is published and may be used.',
   updated: 'Last updated 10 November 2026',
   lede: [
-    `This site is the professional portfolio of Vikram Deshpande, published by ${COMPANY} Using it means accepting the terms below. They are short because the site asks nothing of you: there is no account, no payment and no data to hand over.`,
+    `The portfolio is the professional site of Vikram Deshpande, published by ${COMPANY} Using it means accepting the terms below. There is no account, no payment and no data to hand over.`,
   ],
   sections: [
     {
@@ -180,10 +177,10 @@ export const terms: LegalDocument = {
       ],
     },
     {
-      heading: '2 · What the figures are',
+      heading: '2 · Figures',
       body: [
         [
-          'Every figure on the site is presented with the source it came from, and where something could not be honestly measured the site says so rather than estimating. That is a standard held to carefully — it is not a warranty. Figures describe past engagements at a point in time; they are not a prediction, a benchmark, or a commitment about future work. Nothing here is professional, financial, legal or engineering advice.',
+          'Every figure carries the scope it was measured in. Figures describe past engagements at a point in time; they are not a warranty, a prediction, a benchmark or a commitment about future work. Nothing here is professional, financial, legal or engineering advice.',
         ],
       ],
     },
