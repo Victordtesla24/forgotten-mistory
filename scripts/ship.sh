@@ -3,7 +3,13 @@
 #
 # Run it from the main clone or from any linked worktree. The commit that ships is the
 # current HEAD, rebased onto origin/main. Nothing is deployed unless every earlier
-# stage passed, and the run only reports SHIPPED once the live site serves the commit.
+# stage passed, and the run only reports SHIPPED once the live site serves the commit;
+# the commit and the time are then appended to ship.log in the repository's git directory.
+#
+# The last stage asks the assistant a real question on both of its routes. The assistant
+# is a function this deploy does not touch, so it can be down while the site is fine: the
+# release then reports SHIPPED for the site and exits 2, so a broken chat is never read
+# as a healthy release.
 set -euo pipefail
 
 LIVE_URL="https://forgotten-mistory.web.app/"
@@ -12,7 +18,7 @@ LOCK_FILE="/tmp/forgotten-mistory-ship.lock"
 LOCK_WAIT_SECONDS=1800
 VERIFY_ATTEMPTS=12
 VERIFY_INTERVAL_SECONDS=10
-STAGES=9
+STAGES=10
 
 stage=""
 begin() {
@@ -125,6 +131,7 @@ page="$(mktemp)"
 trap 'rm -f "$page"' EXIT
 served=""
 stale=""
+live=0
 for attempt in $(seq 1 "$VERIFY_ATTEMPTS"); do
   served=""
   stale=""
@@ -137,8 +144,8 @@ for attempt in $(seq 1 "$VERIFY_ATTEMPTS"); do
   if [ "$served" = "$sha" ]; then
     stale="$(stale_paths)"
     if [ -z "$stale" ]; then
-      echo "SHIPPED $sha"
-      exit 0
+      live=1
+      break
     fi
   fi
   if [ "$attempt" -lt "$VERIFY_ATTEMPTS" ]; then
@@ -146,4 +153,15 @@ for attempt in $(seq 1 "$VERIFY_ATTEMPTS"); do
     sleep "$VERIFY_INTERVAL_SECONDS"
   fi
 done
-fail "after $((VERIFY_ATTEMPTS * VERIFY_INTERVAL_SECONDS))s the live site serves '${served:-nothing}' instead of $sha${stale:+ and caches: $stale}"
+if [ "$live" -ne 1 ]; then
+  fail "after $((VERIFY_ATTEMPTS * VERIFY_INTERVAL_SECONDS))s the live site serves '${served:-nothing}' instead of $sha${stale:+ and caches: $stale}"
+fi
+shipped_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+printf '%s %s\n' "$shipped_at" "$sha" >>"$(git rev-parse --git-common-dir)/ship.log"
+echo "SHIPPED $sha at $shipped_at"
+
+begin 10 "asking the assistant a real question on both routes"
+if ! bash scripts/check-assistant.sh "$LIVE_URL"; then
+  printf '[ship] %s is live, but the assistant does not answer; the release is not healthy\n' "$sha" >&2
+  exit 2
+fi
