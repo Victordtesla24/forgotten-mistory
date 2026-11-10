@@ -50,10 +50,12 @@ export default defineConfig({
   projects: [
     {
       name: 'desktop',
+      grepInvert: /@mobile/,
       use: { ...devices['Desktop Chrome'], ...browser, viewport: { width: 1440, height: 900 } },
     },
     {
       name: 'mobile',
+      grepInvert: /@desktop/,
       use: {
         ...devices['Desktop Chrome'],
         ...browser,

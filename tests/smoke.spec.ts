@@ -110,12 +110,9 @@ test.describe('on every viewport', () => {
   });
 });
 
-test.describe('on small screens', () => {
-  test('the mobile menu opens, lists the anchors and closes with Escape', async ({
-    page,
-    isMobile,
-  }) => {
-    test.skip(!isMobile, 'the menu button only exists below 900px');
+// The menu button only exists below 900px, so this runs in the mobile project only.
+test.describe('on small screens', { tag: '@mobile' }, () => {
+  test('the mobile menu opens, lists the anchors and closes with Escape', async ({ page }) => {
     await open(page, '/');
 
     await page.getByRole('button', { name: 'Menu', exact: true }).click();
@@ -133,9 +130,8 @@ test.describe('on small screens', () => {
   });
 });
 
-test.describe('checked once, because the viewport does not matter', () => {
-  test.skip(({ isMobile }) => isMobile, 'nothing here depends on the viewport');
-
+// Nothing below depends on the viewport, so it runs once, in the desktop project.
+test.describe('checked once, because the viewport does not matter', { tag: '@desktop' }, () => {
   test('the CV link returns a PDF', async ({ page }) => {
     await page.goto('/');
     const cv = page.getByRole('contentinfo').getByRole('link', { name: /CV/ });
