@@ -32,6 +32,23 @@ const QUESTION_TOPICS =
 const REPLY_CHARS = 500;
 const QUESTION_CHARS = 200;
 
+/** The verb a question needs once "Vikram" or "he" has become "you". */
+const SECOND_PERSON_VERB: Record<string, string> = { is: 'are', does: 'do', has: 'have', was: 'were' };
+
+/**
+ * The knowledge base is keyed on questions put to Vikram ("where are you based"),
+ * while the panel invites questions about him ("Where is Vikram based?"). This
+ * puts a question about him in the second person so that both reach the same entry.
+ */
+function addressedToVikram(question: string): string {
+  return question
+    .replace(/\b(?:vikram['\u2019]s|his)\b/gi, 'your')
+    .replace(/\b(is|does|has|was)\s+(?:vikram|he)\b/gi, (_match, verb: string) =>
+      `${SECOND_PERSON_VERB[verb.toLowerCase()]} you`,
+    )
+    .replace(/\b(?:vikram|he|him)\b/gi, 'you');
+}
+
 /** Lowercase and collapse every run of non-alphanumerics to one space. */
 function normalize(text: string): string {
   return text
@@ -60,7 +77,7 @@ function conversationTopics(history: readonly ChatTurn[]): string[] {
  * a single word 1, and every keyword that overlaps a conversation topic adds a
  * boost. Ties go to the earlier entry, so the result is fully deterministic.
  */
-function bestEntry(question: string, topics: readonly string[]): KnowledgeEntry | null {
+function scoreEntry(question: string, topics: readonly string[]): KnowledgeEntry | null {
   const normalized = normalize(question);
   if (!normalized) return null;
   const padded = ` ${normalized} `;
@@ -88,6 +105,11 @@ function bestEntry(question: string, topics: readonly string[]): KnowledgeEntry 
     }
   }
   return bestScore >= MATCH_THRESHOLD ? best : null;
+}
+
+/** The entry for a question as asked, or as it reads once a question about Vikram is put to him. */
+function bestEntry(question: string, topics: readonly string[]): KnowledgeEntry | null {
+  return scoreEntry(addressedToVikram(question), topics) ?? scoreEntry(question, topics);
 }
 
 /**

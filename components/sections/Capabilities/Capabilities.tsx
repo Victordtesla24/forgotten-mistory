@@ -36,19 +36,23 @@ function CapabilityCard({ capability }: { capability: Capability }) {
   return (
     <Card as="li" className="flex h-full flex-col gap-3">
       <Tag tone={capability.status === 'production' ? 'proof' : 'neutral'} className="self-start">
-        <span aria-hidden="true" className="mr-1.5">
-          {glyphs[capability.status]}
-        </span>
-        {statusLegend[capability.status]}
+        {capability.standing ?? (
+          <>
+            <span aria-hidden="true" className="mr-1.5">
+              {glyphs[capability.status]}
+            </span>
+            {statusLegend[capability.status]}
+          </>
+        )}
       </Tag>
       <h4 className="text-[1.0625rem]">{capability.capability}</h4>
-      <p className="type-small">{capability.evidence}</p>
+      {capability.evidence ? <p className="type-small">{capability.evidence}</p> : null}
       {capability.caveat ? (
         <p className="type-small border-l-2 border-line-strong pl-3 text-muted">
           {capability.caveat}
         </p>
       ) : null}
-      <p className="type-meta mt-auto text-muted">{capability.where}</p>
+      {capability.where ? <p className="type-meta mt-auto text-muted">{capability.where}</p> : null}
     </Card>
   );
 }

@@ -51,6 +51,76 @@ test.describe('on every viewport', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   });
 
+  test('the first screen shows the three figures with their scope lines, whole and clear of the launcher', async ({
+    page,
+  }) => {
+    // Reduced motion puts every element where its entrance ends, so the geometry is exact.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/');
+    const viewport = page.viewportSize();
+    expect(viewport).not.toBeNull();
+    const fold = viewport?.height ?? 0;
+
+    const cards = await page
+      .locator('#proof ul')
+      .first()
+      .locator(':scope > li')
+      .evaluateAll((items) =>
+        items.map((item) => {
+          const box = item.getBoundingClientRect();
+          return { text: item.textContent ?? '', top: box.top, bottom: box.bottom, left: box.left, right: box.right };
+        }),
+      );
+    expect(cards).toHaveLength(3);
+
+    const launcher = await page.locator('#assistant-launcher').boundingBox();
+    expect(launcher).not.toBeNull();
+    for (const card of cards) {
+      expect(card.bottom, `${card.text} ends above the fold`).toBeLessThanOrEqual(fold);
+      const apart =
+        !launcher ||
+        launcher.x >= card.right ||
+        launcher.x + launcher.width <= card.left ||
+        launcher.y >= card.bottom ||
+        launcher.y + launcher.height <= card.top;
+      expect(apart, `${card.text} is not covered by the launcher`).toBe(true);
+    }
+  });
+
+  test('the eyebrow never breaks on a separator, from 320 px up', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const width of [320, 360, 390, 834, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      await page.evaluate(() => document.fonts.ready);
+      const lines = await page.locator('#top .type-eyebrow').evaluate((eyebrow) => {
+        const range = document.createRange();
+        const found: { top: number; text: string }[] = [];
+        const walker = document.createTreeWalker(eyebrow, NodeFilter.SHOW_TEXT);
+        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+          const text = (node as Text).data;
+          for (let index = 0; index < text.length; index += 1) {
+            range.setStart(node, index);
+            range.setEnd(node, index + 1);
+            const rects = range.getClientRects();
+            if (rects.length === 0) continue;
+            const top = Math.round(rects[0].top);
+            let line = found.find((entry) => Math.abs(entry.top - top) < 4);
+            if (!line) {
+              line = { top, text: '' };
+              found.push(line);
+            }
+            line.text += text[index];
+          }
+        }
+        return found.map((entry) => entry.text.trim());
+      });
+      for (const line of lines) {
+        expect(line, `a line of the eyebrow at ${width}px`).not.toMatch(/^·|·$/);
+      }
+    }
+  });
+
   test('the sections come in order and every header anchor points at one', async ({ page }) => {
     await page.goto('/');
 
@@ -128,6 +198,23 @@ test.describe('on small screens', { tag: '@mobile' }, () => {
     await page.keyboard.press('Escape');
     await expect(menu).toBeHidden();
   });
+
+  test('every link and button in the hero, the proof and the footer is a 44 px touch target', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/');
+    const small = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('#top a, #top button, #proof a, footer a'))
+        .map((control) => {
+          const box = control.getBoundingClientRect();
+          return { name: (control.textContent ?? '').trim(), width: box.width, height: box.height };
+        })
+        .filter((control) => control.width < 43.5 || control.height < 43.5)
+        .map((control) => `${control.name}: ${Math.round(control.width)}x${Math.round(control.height)}`),
+    );
+    expect(small).toEqual([]);
+  });
 });
 
 // Nothing below depends on the viewport, so it runs once, in the desktop project.
@@ -199,6 +286,60 @@ test.describe('checked once, because the viewport does not matter', { tag: '@des
         return found;
       });
       expect(touching, `${width}px`).toEqual([]);
+    }
+  });
+
+  test('a tall experience card is readable well before it reaches the middle of the screen', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await open(page, '/');
+    const card = page.locator('#experience ol > li').first();
+    // Put the card's top edge 54% of the way down the screen, where the review found it still half faded.
+    await card.evaluate((element) => {
+      const top = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top - window.innerHeight * 0.54, behavior: 'instant' });
+    });
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+    );
+    expect(await effectiveOpacity(card)).toBeGreaterThanOrEqual(0.9);
+  });
+
+  test('the page ships one WebGL canvas, in the hero, and the copy claims no more', async ({
+    page,
+  }) => {
+    await open(page, '/');
+    // The shader mounts once the page has loaded and gone idle.
+    await expect(page.locator('canvas')).toHaveCount(1);
+    await expect(page.locator('main > div:has(#top) canvas')).toHaveCount(1);
+    expect((await page.locator('main').textContent()) ?? '').not.toMatch(/context per section/i);
+    await expect(page.locator('#capabilities')).not.toContainText(/this site/i);
+  });
+
+  test('keyboard focus shows the accent ring on the first frame, on every navigation link', async ({
+    page,
+  }) => {
+    await open(page, '/');
+    const accent = await page.evaluate(() => {
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--accent)';
+      document.body.append(probe);
+      const colour = getComputedStyle(probe).color;
+      probe.remove();
+      return colour;
+    });
+    const links = page.locator('header nav a, footer nav a');
+    const count = await links.count();
+    expect(count).toBeGreaterThan(5);
+    for (let index = 0; index < count; index += 1) {
+      const ring = await links.nth(index).evaluate((link) => {
+        (link as HTMLElement).focus();
+        const style = getComputedStyle(link);
+        return { colour: style.outlineColor, kind: style.outlineStyle, name: link.textContent };
+      });
+      expect(ring.kind, `${ring.name} shows a ring`).toBe('solid');
+      expect(ring.colour, `${ring.name} ring colour`).toBe(accent);
     }
   });
 

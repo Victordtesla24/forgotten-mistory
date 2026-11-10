@@ -1,12 +1,23 @@
 /*
- * The hero's entrance, in CSS only and only when motion is welcome. The headline is
- * in the server HTML and fully opaque from first paint: it rises into place rather
- * than fading in, so it is also what the browser measures as the largest paint.
- * Everything else follows it in a short stagger, finished inside 900 ms.
+ * The hero's entrance, in CSS only and only when motion is welcome. The headline and
+ * the statement are in the server HTML and fully opaque from first paint: they rise
+ * into place rather than fading in, so the largest paint is never held back by an
+ * animation that waits for a busy main thread. Everything else fades in after them
+ * in a short stagger, finished inside 900 ms.
  */
 @keyframes title-rise {
   from {
     transform: translateY(0.3em);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes lift-in {
+  from {
+    transform: translateY(0.875rem);
   }
 
   to {
@@ -29,6 +40,10 @@
 @media (prefers-reduced-motion: no-preference) {
   .title {
     animation: title-rise 560ms var(--ease) both;
+  }
+
+  .lift {
+    animation: lift-in 480ms var(--ease) both;
   }
 
   .rise {

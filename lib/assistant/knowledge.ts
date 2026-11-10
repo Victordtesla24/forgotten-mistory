@@ -239,7 +239,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'websocket',
     ],
     answer:
-      "I spent nearly eight years at ANZ Banking Group (Sept 2017 – Jun 2025) as Senior Delivery Lead / AI-ML Solutions Architect. I led delivery of AI/ML solutions including real-time WebSocket telemetry sustaining P95 latency under 200 ms across 10,000+ concurrent devices for critical banking services, and guided core banking platforms onto cloud-native .NET/Azure architectures — improving delivery efficiency by more than 30% and cutting infrastructure costs by over 15%. I managed a $5M+ program portfolio across 5+ squads (40+ onsite and offshore practitioners) with 100% compliance, and owned the technical vision and product backlog for the platform modernisations.",
+      "I spent nearly eight years at ANZ Banking Group (Sept 2017 – Jun 2025) as Senior Delivery Lead / AI-ML Solutions Architect. I led delivery of AI/ML solutions including real-time WebSocket telemetry sustaining P95 latency under 200 ms across 10,000+ concurrent devices for critical banking services, and guided core banking platforms onto cloud-native .NET/Azure architectures — improving delivery efficiency by more than 30% and cutting infrastructure costs by over 15%. I managed a $5M+ program portfolio across 5+ squads (up to 40 onsite and offshore practitioners) with 100% compliance, and owned the technical vision and product backlog for the platform modernisations.",
   },
 
   // ── 10. Banking / financial services ───────────────────────────────────
@@ -670,7 +670,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'commute',
     ],
     answer:
-      "I'm based in Melbourne, VIC, Australia (AEST/AEDT), and I'm comfortable across onsite, hybrid, and remote arrangements. My current ATO engagement is Melbourne-based, and every role on my record since 2010 has been in Melbourne apart from Microsoft in Sydney (Oct 2015 – Oct 2016). Distributed delivery is something I've practised at scale — at ANZ I led 40+ onsite and offshore practitioners across 5+ squads — so cadence and quality hold up when the team isn't in one room. For the right engagement, the working model is a conversation, not a blocker.",
+      "I'm based in Melbourne, VIC, Australia (AEST/AEDT), and I'm comfortable across onsite, hybrid, and remote arrangements. My current ATO engagement is Melbourne-based, and every role on my record since 2010 has been in Melbourne apart from Microsoft in Sydney (Oct 2015 – Oct 2016). Distributed delivery is something I've practised at scale — at ANZ I led up to 40 onsite and offshore practitioners across 5+ squads — so cadence and quality hold up when the team isn't in one room. For the right engagement, the working model is a conversation, not a blocker.",
   },
 
   // ── 23. Why hire Vikram ────────────────────────────────────────────────
@@ -944,7 +944,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'profile',
     ],
     answer:
-      "Scrum Master / Project Manager and technical delivery leader, Melbourne-based, 15+ years across government, finance, and telecommunications — currently on the ATO's Payday Super reform program. The short version of my record: a $5M+ portfolio led across 5+ squads and 40+ practitioners at ANZ, ≈92% of test-evidence effort removed at the ATO, and 10,000+ concurrent devices held at P95 under 200 ms. Certified Scrum Master, Master of Computer Science (Honours) from Monash. What I'm hired for is closing the gap between what executives decide and what engineering can actually deliver.",
+      "Scrum Master / Project Manager and technical delivery leader, Melbourne-based, 15+ years across government, finance, and telecommunications — currently on the ATO's Payday Super reform program. The short version of my record: a $5M+ portfolio led across 5+ squads and up to 40 practitioners at ANZ, ≈92% of test-evidence effort removed at the ATO, and 10,000+ concurrent devices held at P95 under 200 ms. Certified Scrum Master, Master of Computer Science (Honours) from Monash. What I'm hired for is closing the gap between what executives decide and what engineering can actually deliver.",
   },
 
   // ── 35. Years of experience / career span ────────────────────────────────

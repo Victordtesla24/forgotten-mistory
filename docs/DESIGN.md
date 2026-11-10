@@ -70,7 +70,9 @@ noise texture (inline SVG `feTurbulence` data URI, ≤ 4% opacity) on the page b
 
 - **Geist** — display and text. **Instrument Serif** italic — at most one phrase per
   heading. **Geist Mono** — eyebrows, figures, dates, tags, ruler numerals.
-- Hero `clamp(2.75rem, 1.5rem + 6vw, 6rem)` / 1.0 / −0.035em / 600.
+- Hero `clamp(2.75rem, 1.5rem + 6vw, 6rem)` / 1.0 / −0.035em / 600; from 1024 px, where the
+  career scale sits beside it, `clamp(2.75rem, 0.9rem + 4.8vw, 5.25rem)` so the headline keeps
+  three lines (both live in the `type-hero` token, never in markup).
   H2 `clamp(2rem, 1.3rem + 2.6vw, 3.25rem)` / 1.08 / −0.03em / 600.
   H3 `1.25–1.5rem` / 1.25 / −0.01em / 600. Body `1.0625rem` / 1.6. Small `0.9375rem`.
   Eyebrow mono `0.8125rem`, uppercase, `+0.08em`.
@@ -88,7 +90,7 @@ is highlighted. A 2 px scroll-progress line sits under the header.
 | id | section | what it shows |
 |---|---|---|
 | `top` | Hero | eyebrow (name · Melbourne · availability), H1 "Delivery leader and *AI solutions* architect.", the one-sentence statement, primary action "View selected work", secondary "Download CV", small links (LinkedIn, GitHub, Email); beside it the **career scale** panel: the eight roles drawn to scale on a 2010–2026 ruler that draws itself on load, with the current role marked; behind everything a slow shader field |
-| `proof` | Proof strip | the three headline figures with count-up and scope lines; a row of employer names as text wordmarks |
+| `proof` | Proof strip | the three headline figures with count-up and scope lines; a row of employer names as text wordmarks. It shares the hero's grid and is whole, scope lines included, inside the first screen at 390×844, 834×1112 and 1440×900 (a compact row per figure on phones); the fold never cuts a figure |
 | `work` | Selected work | six projects as a bento grid; each card: title, one-line description, an animated schematic of how it works, "known limits", repository link and live link where one exists |
 | `experience` | Experience | the interactive to-scale timeline (select a role by pointer or keyboard), the selected role's title, employer, dates, headline figure and bullets; all roles also present as an accessible list |
 | `capabilities` | Capabilities | the seventeen capabilities grouped by where they were proven, each with its evidence line and status (in production / outside production / in progress); filterable; an evidence map visual linking capabilities to programmes and repositories |

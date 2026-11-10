@@ -46,7 +46,8 @@ export function Figure({ value, prefix = '', suffix = '', className }: FigurePro
   }, [value]);
 
   return (
-    <span ref={ref} className={cn('type-figure inline-block', className)}>
+    // NumberFlow pads its digits by a quarter em above and below for the roll; the figure's own box is the glyphs'.
+    <span ref={ref} className={cn('type-figure inline-block -my-[0.25em]', className)}>
       <VisuallyHidden>
         {prefix}
         {value}

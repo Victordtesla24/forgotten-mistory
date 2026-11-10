@@ -43,17 +43,22 @@ export const sources: readonly Source[] = [
   { id: 'unimelb', label: 'University of Melbourne', kind: 'credential' },
 ];
 
+/** A credential's own status word. */
+export type Standing = 'held' | 'conferred' | 'in progress';
+
 export interface Capability {
   capability: string;
   /** The same capability, short enough to label a node. */
   short: string;
-  /** What was actually measured. Never an adjective. */
-  evidence: string;
-  /** Where it was measured: an employer, a program, or a named repository. */
-  where: string;
+  /** What was actually measured. Never an adjective. Absent where the standing says it all. */
+  evidence?: string;
+  /** Where it was measured: an employer, a program, or a named repository. Absent where there is no source yet. */
+  where?: string;
   /** The same, as ids into `sources`. Empty only where there is no evidence yet. */
   sources: readonly string[];
   status: EvidenceStatus;
+  /** For a credential: the word printed in place of the status legend, which describes measurements. */
+  standing?: Standing;
   /** Qualifier printed with the status, for anything that needs one. */
   caveat?: string;
 }
@@ -175,33 +180,33 @@ export const capabilities: readonly Capability[] = [
     capability: 'Certified Scrum Master (CSM)',
     short: 'Certified Scrum Master',
     sources: ['scrum-alliance'],
-    evidence: 'Scrum Alliance credential, held',
     where: 'Scrum Alliance',
     status: 'production',
+    standing: 'held',
   },
   {
     capability: 'Master of Computer Science (Honours)',
     short: 'MSc Computer Science',
     sources: ['monash'],
-    evidence: 'conferred',
     where: 'Monash University',
     status: 'production',
+    standing: 'conferred',
   },
   {
     capability: 'Bachelor of Engineering, Computer Science',
     short: 'BE Computer Science',
     sources: ['unimelb'],
-    evidence: 'conferred',
     where: 'University of Melbourne',
     status: 'production',
+    standing: 'conferred',
   },
   {
     capability: 'AWS and GCP certification',
     short: 'AWS & GCP certification',
     sources: [],
     evidence: 'studying; no certificate issued',
-    where: '—',
     status: 'pending',
-    caveat: 'listed because the CV lists it — saying so is the point of the card',
+    standing: 'in progress',
+    caveat: 'Listed on the CV as in progress',
   },
 ];

@@ -7,52 +7,52 @@ import { HeroBackdrop } from '@/components/visuals/HeroBackdrop';
 import { hero } from '@/content/hero';
 import { cn } from '@/lib/cn';
 
+import { Proof } from '../Proof/Proof';
 import { CareerScale } from './CareerScale';
 import styles from './Hero.module.css';
 
 /** Entrance delays in milliseconds. The headline needs none; the last element lands before 900 ms. */
-const ENTER = { eyebrow: 60, statement: 140, actions: 220, links: 300, panel: 100 } as const;
+const ENTER = { eyebrow: 60, statement: 140, actions: 220, proof: 300, panel: 100 } as const;
 
 function after(delay: number): CSSProperties {
   return { animationDelay: `${delay}ms` };
 }
 
-/** The front door: who, what, one next action, and the career drawn to scale beside it. */
+/**
+ * The front door: who, what, one next action and the proof for it, then the career
+ * drawn to scale. The sections of the first screen share one grid. In reading order
+ * they are the introduction, the proof strip and the career scale; from 1024px the
+ * career scale moves up beside the introduction and the proof runs underneath both,
+ * so on every screen the three figures sit in the first view.
+ */
 export function Hero() {
   const { headline } = hero;
   return (
-    <section
-      id="top"
-      aria-labelledby="top-title"
-      className="relative isolate pt-[clamp(2.25rem,4.5vw,3.5rem)] pb-[clamp(1.75rem,3.5vw,2.5rem)]"
-    >
+    <div className="relative isolate pt-[clamp(1rem,2.5vw,2rem)] pb-[clamp(1.75rem,3.5vw,2.5rem)]">
       <HeroBackdrop />
-      <Container className="grid grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-14">
-        <div>
-          <p
-            className={cn(styles.rise, 'type-eyebrow max-w-none text-muted')}
-            style={after(ENTER.eyebrow)}
-          >
-            <span className="sm:whitespace-nowrap">
-              {hero.name} · {hero.location} ·
-            </span>{' '}
-            <span className="sm:whitespace-nowrap">{hero.availability}</span>
-          </p>
-          <h1
-            id="top-title"
-            className={cn(
-              styles.title,
-              'type-hero mt-6 lg:text-[clamp(2.75rem,0.9rem+4.8vw,5.25rem)]',
-            )}
-          >
+      <Container className="grid grid-cols-[minmax(0,1fr)] gap-y-4 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-x-12">
+        <section
+          id="top"
+          aria-labelledby="top-title"
+          className="lg:col-start-1 lg:row-start-1 lg:self-center"
+        >
+          <div className={styles.rise} style={after(ENTER.eyebrow)}>
+            <p className="type-eyebrow @container max-w-none text-muted">
+              <span className="@max-[21.75rem]:block">{hero.name}</span>
+              <span className="@max-[21.75rem]:hidden"> · </span>
+              <span className="@max-[21.75rem]:block">{hero.location}</span>
+            </p>
+            <p className="type-small mt-1 max-w-none text-muted">{hero.availability}</p>
+          </div>
+          <h1 id="top-title" className={cn(styles.title, 'type-hero mt-3 sm:mt-5')}>
             {headline.lead}
             <em className="type-serif-em text-accent">{headline.emphasis}</em>
             {headline.tail}
           </h1>
           <p
             className={cn(
-              styles.rise,
-              'mt-7 max-w-[52ch] text-[1.1875rem] leading-relaxed text-muted',
+              styles.lift,
+              'mt-3 max-w-[52ch] text-base leading-normal text-muted sm:mt-6 sm:text-[1.1875rem] sm:leading-relaxed',
             )}
             style={after(ENTER.statement)}
           >
@@ -60,38 +60,50 @@ export function Hero() {
           </p>
 
           <div
-            className={cn(styles.rise, 'mt-8 flex flex-wrap items-center gap-3')}
+            className={cn(styles.rise, 'mt-4 flex flex-wrap items-center gap-x-3 sm:mt-6')}
             style={after(ENTER.actions)}
           >
-            <ButtonLink href={hero.actions.primary.href} size="lg" magnetic>
+            <ButtonLink
+              href={hero.actions.primary.href}
+              size="lg"
+              magnetic
+              className="max-sm:min-h-11 max-sm:px-4 max-sm:text-[0.9375rem]"
+            >
               {hero.actions.primary.label}
             </ButtonLink>
-            <ButtonLink href={hero.actions.secondary.href} size="lg" variant="secondary" download>
+            <ButtonLink
+              href={hero.actions.secondary.href}
+              size="lg"
+              variant="secondary"
+              download
+              className="max-sm:min-h-11 max-sm:px-4 max-sm:text-[0.9375rem]"
+            >
               {hero.actions.secondary.label}
             </ButtonLink>
+            <ul className="flex flex-wrap items-center gap-x-3">
+              {hero.links.map((link) => (
+                <li key={link.label}>
+                  <ExternalLink href={link.href} className="type-small min-h-11 min-w-11">
+                    {link.label}
+                  </ExternalLink>
+                </li>
+              ))}
+            </ul>
           </div>
+        </section>
 
-          <ul
-            className={cn(styles.rise, 'mt-3 flex flex-wrap items-center gap-x-6 gap-y-1')}
-            style={after(ENTER.links)}
-          >
-            {hero.links.map((link) => (
-              <li key={link.label}>
-                <ExternalLink href={link.href} className="type-small min-h-11">
-                  {link.label}
-                </ExternalLink>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Proof
+          className={cn(styles.rise, 'lg:col-span-2 lg:row-start-2')}
+          style={after(ENTER.proof)}
+        />
 
         <div
-          className={cn(styles.rise, 'w-full')}
+          className={cn(styles.rise, 'w-full lg:col-start-2 lg:row-start-1 lg:self-center')}
           style={after(ENTER.panel)}
         >
           <CareerScale />
         </div>
       </Container>
-    </section>
+    </div>
   );
 }

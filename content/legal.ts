@@ -3,6 +3,8 @@
  * footer, /privacy and /terms.
  */
 
+import { MINIVIC_CHAT_ORIGIN } from '@/lib/assistant/origin';
+
 import { site } from './site';
 
 /** A run of text inside a paragraph: plain, emphasised as a term, or a link. */
@@ -30,13 +32,16 @@ export const copyright = `© 2026 Portfolio Website · Vikram Deshpande · A pro
 
 const mail = { text: site.channels.email, href: `mailto:${site.channels.email}` };
 
+/** The host the assistant's function answers on, from the one place the origin is written down. */
+const chatHost = new URL(MINIVIC_CHAT_ORIGIN).host;
+
 export const privacy: LegalDocument = {
   title: 'Privacy Policy',
   description:
     'What this site collects, what it does not, and what happens to a message sent to its assistant.',
   updated: 'Last updated 10 November 2026',
   lede: [
-    'This is a portfolio site. It has no accounts, no sign-up, no forms and no shopping cart, and it is not trying to build a profile of you. The short version: it sets no cookies and runs no analytics, and the only thing that leaves your browser is a message you choose to type into the assistant.',
+    'This is a portfolio site. It has no accounts, no sign-up, no forms and no shopping cart, and it is not trying to build a profile of you. The short version: it sets no cookies and runs no analytics, and apart from this site’s own files the only requests your browser makes are the assistant’s — an empty wake-up call when you open its panel, and the message you choose to type.',
   ],
   sections: [
     {
@@ -49,7 +54,7 @@ export const privacy: LegalDocument = {
           { term: 'zero entries' },
           ' to browser storage, and makes requests to ',
           { term: 'one host' },
-          ' — this site’s own.',
+          ' — this site’s own — until you open the assistant, which is described below.',
         ],
         [
           'The CV linked from this site is served directly and ungated. Downloading it tells nobody anything.',
@@ -70,7 +75,7 @@ export const privacy: LegalDocument = {
       heading: 'Server logs',
       body: [
         [
-          'The site is hosted on Firebase Hosting, which is operated by Google. Like any web server, it records ordinary request logs — IP address, timestamp, requested URL, user agent — as part of serving and protecting the service. Those logs are Google’s, kept under their retention policy, and are not combined with anything else here or used to build a profile. This is stated because it is true of every website, including the ones that do not mention it.',
+          'The site is hosted on Firebase Hosting, which is operated by Google. Like any web server, it records ordinary request logs — IP address, timestamp, requested URL, user agent — as part of serving and protecting the service. Those logs are Google’s, kept under their retention policy, and are not combined with anything else here or used to build a profile. The assistant’s function runs on Google Cloud as well, and Google records ordinary request logs for it in the same way. This is stated because it is true of every website, including the ones that do not mention it.',
         ],
       ],
     },
@@ -78,13 +83,22 @@ export const privacy: LegalDocument = {
       heading: 'The assistant',
       body: [
         [
-          'The site carries a small conversational assistant. If you open it and type a message, that message is sent to a server function on this site, which forwards the conversation to ',
+          'The site carries a small conversational assistant, served by a function hosted on Google Cloud Run at ',
+          { term: chatHost },
+          '. Opening its panel sends that host, and this site’s own ',
+          { term: '/api/chat' },
+          ' address, a request with nothing in it: it only wakes the function before you type, and it is the only thing sent before you write a message.',
+        ],
+        [
+          'If you then type a message, your browser sends the conversation to the Cloud Run host first, and to this site’s ',
+          { term: '/api/chat' },
+          ' address, which reaches the same function, if the first route is blocked or slow. The function forwards it to a language-model provider to answer: ',
           { term: 'OpenRouter' },
-          ' for a language model to answer. The reply comes back the same way.',
+          ' first, then DeepSeek, Z.ai or OpenAI if the one before it is unavailable. The reply comes back the same way.',
         ],
       ],
       list: {
-        after: 1,
+        after: 2,
         items: [
           [
             'Nothing you type is written to a database, a log or a file by this site. The response is returned with ',
@@ -92,7 +106,7 @@ export const privacy: LegalDocument = {
             ' and the conversation exists only in your browser tab until you close it.',
           ],
           [
-            'The message does reach OpenRouter and the model provider behind it, and is subject to their handling while it is there. Please do not type anything into it you would not send to a third party.',
+            'The message does reach whichever provider answers it, and is subject to that provider’s handling while it is there. Please do not type anything into it you would not send to a third party.',
           ],
           ['The API credential lives on the server and is never sent to your browser.'],
           [
@@ -105,7 +119,7 @@ export const privacy: LegalDocument = {
       heading: 'Links away from here',
       body: [
         [
-          'The site links to GitHub and LinkedIn. Those are other people’s services with their own privacy practices, and nothing here loads them until you click.',
+          'The site links to GitHub, LinkedIn and the live sites of some of the projects it shows. Those are separate services with their own privacy practices, and nothing here loads them until you click.',
         ],
       ],
     },

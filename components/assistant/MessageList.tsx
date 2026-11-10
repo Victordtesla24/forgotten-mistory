@@ -46,19 +46,34 @@ function Thinking() {
   );
 }
 
+/** A line about how an answer came to the reader. */
+interface Note {
+  text: string;
+  serious: boolean;
+  retry: boolean;
+  /** Printed above the answer, because it says what the answer is rather than what became of it. */
+  leading: boolean;
+}
+
 /** What a reader should know about how this answer came to them, and whether to try again. */
-function notice(message: AssistantMessage): { text: string; serious: boolean; retry: boolean } | null {
+function notice(message: AssistantMessage): Note | null {
   switch (message.state) {
     case 'stopped':
-      return { text: 'Stopped.', serious: false, retry: true };
+      return { text: 'Stopped.', serious: false, retry: true, leading: false };
     case 'failed':
-      return { text: 'Something went wrong, so there is no answer yet.', serious: true, retry: true };
+      return {
+        text: 'Something went wrong, so there is no answer yet.',
+        serious: true,
+        retry: true,
+        leading: false,
+      };
     case 'done':
       if (message.via === 'local') {
         return {
           text: 'The live assistant is not available right now, so this answer comes from a built-in summary of the CV.',
           serious: true,
           retry: true,
+          leading: true,
         };
       }
       return message.shortened
@@ -66,11 +81,30 @@ function notice(message: AssistantMessage): { text: string; serious: boolean; re
             text: 'Short answer: this reply came over the slower route, which keeps answers brief.',
             serious: false,
             retry: false,
+            leading: false,
           }
         : null;
     case 'streaming':
       return null;
   }
+}
+
+function NoteBox({ note, onRetry, canRetry }: { note: Note; onRetry: () => void; canRetry: boolean }) {
+  const Icon = note.serious ? TriangleAlert : Info;
+  return (
+    <div className="type-small mt-1 grid gap-2 rounded-md border border-line bg-raised px-3 py-2 text-muted">
+      <p className="flex items-start gap-2">
+        <Icon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+        <span>{note.text}</span>
+      </p>
+      {note.retry && canRetry ? (
+        <Button variant="secondary" onClick={onRetry} className="justify-self-start">
+          <RefreshCw aria-hidden="true" className="size-4" />
+          Retry
+        </Button>
+      ) : null}
+    </div>
+  );
 }
 
 function AssistantBubble({
@@ -83,32 +117,19 @@ function AssistantBubble({
   onRetry: () => void;
 }) {
   const note = notice(message);
-  const Icon = note?.serious ? TriangleAlert : Info;
   return (
     <div className="grid min-w-0 max-w-full gap-1.5">
       <p className="type-eyebrow text-muted" aria-hidden="true">
         Mini Vic
       </p>
       <VisuallyHidden>Mini Vic says:</VisuallyHidden>
+      {note?.leading ? <NoteBox note={note} onRetry={onRetry} canRetry={isLast} /> : null}
       {message.text === '' && message.state === 'streaming' ? (
         <Thinking />
       ) : (
         <AnswerText text={message.text} className="type-small text-text" />
       )}
-      {note ? (
-        <div className="type-small mt-1 grid gap-2 rounded-md border border-line bg-raised px-3 py-2 text-muted">
-          <p className="flex items-start gap-2">
-            <Icon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
-            <span>{note.text}</span>
-          </p>
-          {note.retry && isLast ? (
-            <Button variant="secondary" onClick={onRetry} className="justify-self-start">
-              <RefreshCw aria-hidden="true" className="size-4" />
-              Retry
-            </Button>
-          ) : null}
-        </div>
-      ) : null}
+      {note && !note.leading ? <NoteBox note={note} onRetry={onRetry} canRetry={isLast} /> : null}
     </div>
   );
 }

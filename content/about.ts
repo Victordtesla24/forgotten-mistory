@@ -1,12 +1,12 @@
 /**
- * About: the first-person lede, the ten dimensions answered with the evidence
- * beside each, and education and credentials.
+ * About: the first-person bio, five selected answers with the evidence beside each,
+ * and education and the certifications held.
  *
- * The ten dimensions are the ones the aether-job-career-agent product scores a
- * candidate on, in its own wording and order. No score is printed against them:
- * a number a person assigns to themselves is not evidence. Three of the ten
- * (Salary Fit, Location Match, Company Stability) are computed from the role's
- * side of the match, so they are answered as what Vikram is looking for.
+ * The answers sit under headings the aether-job-career-agent product scores a
+ * candidate on, in its own wording and order; five of its ten are shown. No score is
+ * printed against them: a number a person assigns to themselves is not evidence.
+ * Company Stability is computed from the role's side of the match, so it is answered
+ * as what Vikram is looking for.
  */
 
 export interface Dimension {
@@ -44,32 +44,9 @@ export const about = {
   },
   /** First-person summary, as it appears in the CV introduction. */
   bio: "I'm a technical delivery leader and AI solutions architect based in Melbourne, currently leading agile delivery as Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program. Over sixteen years across government, finance, and telecommunications I've helped teams ship complex systems — from mainframe test automation to real-time AI platforms — with a focus on measurable business value.",
-  lede: [
-    'I build a job-fit engine that scores a candidate against a role on ten dimensions. It is the fairest summary of a person I know how to write, so here I am on all ten of them.',
-    'There are no scores below. The engine refuses to publish a number it cannot source, and a number I assign to myself has no source at all — so these are answers, with the evidence beside them.',
-  ],
+  /** The heading over the answers. Plain language, and it counts the answers shown. */
+  heading: 'Where I fit, in five answers',
   dimensions: [
-    {
-      name: 'Technical Skills',
-      side: 'candidate',
-      answer:
-        'Python and TypeScript to production, and REXX on a mainframe when the program actually needs it. Cloud-native across Azure, GCP and AWS; Kubernetes, Terraform, Postgres.',
-      evidence: '38 public repositories · ATO evidence harness · ANZ platform migrations',
-    },
-    {
-      name: 'Experience Level',
-      side: 'candidate',
-      answer:
-        'Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project delivery from May 2010 — sixteen years and four months to September 2026.',
-      evidence: 'ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MYOB',
-    },
-    {
-      name: 'Industry Match',
-      side: 'candidate',
-      answer:
-        'Government, banking and telecommunications — three regulated industries where the delivery constraint is usually assurance, not engineering.',
-      evidence: 'Australian Taxation Office, ANZ, NAB, Telstra',
-    },
     {
       name: 'Role Alignment',
       side: 'candidate',
@@ -83,20 +60,6 @@ export const about = {
       answer:
         'Agile as practice rather than ceremony. Cadence and PI planning when the plan holds; a cross-discipline war room, inside three hours, when it does not.',
       evidence: '5+ squads, up to 40 practitioners onshore and offshore',
-    },
-    {
-      name: 'Salary Fit',
-      side: 'role',
-      answer:
-        'Melbourne market band for senior delivery leadership. I would rather agree the scope first and let the rate follow it.',
-      evidence: 'Open to permanent and contract engagements',
-    },
-    {
-      name: 'Location Match',
-      side: 'role',
-      answer:
-        'Melbourne, Victoria. Hybrid locally, or remote across Australian and New Zealand time zones.',
-      evidence: 'Currently on site with the ATO, Melbourne',
     },
     {
       name: 'Career Growth',
@@ -120,9 +83,9 @@ export const about = {
       evidence: 'aether-job-career-agent · unmeasured signals read "not measured", never zero',
     },
   ] satisfies Dimension[],
-  /** Where the ten dimensions come from, so a reader knows they are not invented for the occasion. */
+  /** Where the headings come from, so a reader knows they are not invented for the occasion. */
   provenance: {
-    label: 'Dimensions taken verbatim from',
+    label: 'These headings are taken verbatim from',
     repo: 'Victordtesla24/aether-job-career-agent',
     path: 'apps/api/app/routers/jobs.py',
     href: 'https://github.com/Victordtesla24/aether-job-career-agent/blob/main/apps/api/app/routers/jobs.py',

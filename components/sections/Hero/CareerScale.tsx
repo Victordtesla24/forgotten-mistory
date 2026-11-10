@@ -127,7 +127,7 @@ export function CareerScale() {
   return (
     <figure
       aria-labelledby="career-scale-title"
-      className="rounded-lg border border-line bg-surface/85 p-5 shadow-card supports-[backdrop-filter]:backdrop-blur-sm sm:p-6"
+      className="rounded-lg border border-line bg-surface/85 p-5 shadow-card supports-[backdrop-filter]:backdrop-blur-sm"
     >
       <figcaption
         id="career-scale-title"
@@ -139,7 +139,7 @@ export function CareerScale() {
         </span>
       </figcaption>
 
-      <div className="mt-5">
+      <div className="mt-4">
         <Ruler min={AXIS_MIN} max={AXIS_MAX} step={1} labelStep={NUMERAL_STEP} />
         <div className="relative">
           <svg
@@ -180,7 +180,7 @@ export function CareerScale() {
         </ol>
       </div>
 
-      <ul className="mt-5 grid grid-cols-[0.8fr_0.8fr_1.6fr] gap-4 border-t border-line pt-4">
+      <ul className="mt-4 grid grid-cols-[0.8fr_0.8fr_1.6fr] gap-4 border-t border-line pt-3">
         {facts.map((fact) => (
           <li key={fact.label} className="grid content-start gap-1">
             <span className="font-mono text-[1.5rem] leading-none tracking-tight text-text tabular-nums">

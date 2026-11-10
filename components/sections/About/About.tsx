@@ -6,7 +6,7 @@ import { about } from '@/content/about';
 
 export function About() {
   return (
-    <Section id="about" eyebrow="About" title="How I work" accent="work" lede={about.bio}>
+    <Section id="about" eyebrow="About" title="How I work" accent="work">
       <div className="grid gap-16">
         <div className="grid gap-8">
           <div className="grid items-center gap-8 md:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] md:gap-12">
@@ -25,15 +25,10 @@ export function About() {
                 />
               </picture>
             </figure>
-            <div className="grid gap-4">
-              <h3 className="reveal">Ten dimensions, answered</h3>
-              {about.lede.map((paragraph) => (
-                <p key={paragraph} className="type-body reveal text-muted">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <p className="reveal text-[1.1875rem] leading-relaxed text-muted">{about.bio}</p>
           </div>
+
+          <h3 className="reveal mt-4">{about.heading}</h3>
 
           <dl className="divide-y divide-line border-y border-line">
             {about.dimensions.map((dimension) => (

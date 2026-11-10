@@ -7,7 +7,7 @@ import { copyright } from '@/content/legal';
 import { site } from '@/content/site';
 
 const linkClass =
-  'type-small inline-flex min-h-11 items-center text-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-text hover:decoration-muted';
+  'type-small inline-flex min-h-11 min-w-11 items-center text-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-text hover:decoration-muted';
 
 /** Legal links, the CV, the repository and the build id. */
 export function Footer() {
