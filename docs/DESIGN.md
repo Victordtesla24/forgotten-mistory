@@ -92,11 +92,11 @@ is highlighted. A 2 px scroll-progress line sits under the header.
 | `work` | Selected work | six projects as a bento grid; each card: title, one-line description, an animated schematic of how it works, "known limits", repository link and live link where one exists |
 | `experience` | Experience | the interactive to-scale timeline (select a role by pointer or keyboard), the selected role's title, employer, dates, headline figure and bullets; all roles also present as an accessible list |
 | `capabilities` | Capabilities | the seventeen capabilities grouped by where they were proven, each with its evidence line and status (in production / outside production / in progress); filterable; an evidence map visual linking capabilities to programmes and repositories |
-| `about` | About | portrait, short first-person bio assembled from existing sentences, "how I work" (selected answers from the ten dimensions), education and credentials, and the opt-in introduction media with its disclosure |
+| `about` | About | portrait, short first-person bio assembled from existing sentences, "how I work" (selected answers from the ten dimensions), education and credentials |
 | `contact` | Contact | the availability headline, one primary action (email), "Book a 20-minute call", phone, LinkedIn, GitHub, the Melbourne coffee line |
 
-Plus the footer (privacy, terms, CV, repository link, synthetic-media disclosure, a small
-build id), `/privacy`, `/terms`, a 404 and an error page — all in the same system.
+Plus the footer (privacy, terms, CV, repository link, a small build id), `/privacy`,
+`/terms`, a 404 and an error page — all in the same system.
 
 **Ask Mini Vic** is a text chat about Vikram's experience: a launcher (bottom-right and in
 the header) opening a panel (`<dialog>`, focus-trapped, Escape closes, full-screen sheet on

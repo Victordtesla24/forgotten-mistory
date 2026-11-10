@@ -11,7 +11,8 @@ text chat about his experience. It is a static export served by Firebase Hosting
 - Tailwind CSS 4, with every colour, size and radius defined as a token in `app/globals.css`
 - `motion` for interaction, native CSS scroll-driven animation for entrances, server-rendered
   SVG visuals drawn with `d3-scale` and `d3-shape`
-- Playwright with `@axe-core/playwright` for the tests
+- Playwright with `@axe-core/playwright` for the tests, including a check that the pages run
+  clean under the Content-Security-Policy in `firebase.json`
 - Firebase Hosting for the site; the chat backend in `functions/` is a separate Cloud
   Functions deploy
 
@@ -23,8 +24,9 @@ Node 22 or newer (see `.node-version`).
 npm run dev      # dev server on http://localhost:4100
 npm run check    # typecheck and lint
 npm run build    # static export to out/
-npm test         # Playwright smoke and axe tests against out/ (build first)
+npm test         # Playwright smoke, axe and CSP tests against out/ (build first)
 npm run ship     # the whole release, same as scripts/ship.sh
+node scripts/brand-assets.mjs  # regenerate og-image.png, icon.png and apple-icon.png from the tokens
 ```
 
 `npm test` serves `out/` on port 4173; set `PORT` to use another.
@@ -55,6 +57,10 @@ again and deploys only if the live site is not already serving that commit.
   match the CV in `public/docs/`.
 - `app/` has the routes and `globals.css`; `components/` has the primitives, site chrome,
   page sections, assistant and visuals; `lib/` has the assistant's transport.
-- `tests/` is the Playwright suite; `scripts/` holds the release and screenshot helpers.
+- `tests/` is the Playwright suite; `scripts/` holds the release, screenshot and brand-image
+  helpers, and `scripts/ops/` the keep-warm ping for the chat backend.
 - `docs/DESIGN.md` is the design and engineering brief; `CLAUDE.md` is the short guide for
   working in the repository.
+
+Everything from before the November 2026 rebuild is kept only in git history, under the tag
+`pre-rebuild-2026-11-10`.

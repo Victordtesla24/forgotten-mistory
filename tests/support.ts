@@ -27,7 +27,7 @@ interface FirebaseConfig {
 }
 
 /** The Content-Security-Policy Firebase Hosting sends with every page. */
-function readProductionCsp(): string {
+export function readProductionCsp(): string {
   const config: FirebaseConfig = JSON.parse(readFileSync('firebase.json', 'utf8'));
   const header = config.hosting.headers
     .filter((rule) => rule.source === '**')

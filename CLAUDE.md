@@ -4,9 +4,7 @@ Vikram Deshpande's portfolio: a Next.js 15 static export on Firebase Hosting at
 <https://forgotten-mistory.web.app>. User instructions always take precedence over this file.
 
 The site was rebuilt in November 2026. `docs/DESIGN.md` is the source of truth for how it
-looks, moves and is built — read it before changing anything visible. Older documents under
-`docs/` (prompt.md, orchestrator prompts, adversarial and delivery evidence) describe the
-previous site and its process; they are history, not instructions.
+looks, moves and is built — read it before changing anything visible.
 
 ## Map
 
@@ -20,8 +18,10 @@ previous site and its process; they are history, not instructions.
 - `lib/assistant/` — chat transport (Cloud Run origin, then the `/api/chat` rewrite) and
   local fallback answers. The backend lives in `functions/` and is deployed separately
   (`firebase deploy --only functions`); UI work never touches it.
-- `tests/` — a small Playwright suite (smoke + axe) that runs against the built `out/`.
-- `scripts/ship.sh` — the whole release: check, build, test, push to `main`, deploy, verify.
+- `tests/` — a small Playwright suite (smoke, axe and CSP) that runs against the built `out/`.
+- `scripts/` — `ship.sh` is the whole release (check, build, test, push to `main`, deploy,
+  verify); `brand-assets.mjs` regenerates the social card and icons; `screenshot.mjs` takes
+  contact sheets; `ops/` keeps the chat backend warm.
 
 ## Rules
 
@@ -42,7 +42,8 @@ previous site and its process; they are history, not instructions.
 npm run dev          # local dev server
 npm run check        # typecheck + lint
 npm run build        # static export to out/
-npm test             # Playwright smoke + axe against out/
+npm test             # Playwright smoke, axe and CSP tests against out/
+node scripts/brand-assets.mjs  # regenerate og-image.png, icon.png, apple-icon.png
 scripts/ship.sh      # check, build, test, push to main, deploy to Firebase, verify live
 ```
 
