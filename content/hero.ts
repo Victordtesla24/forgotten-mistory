@@ -1,34 +1,38 @@
 /**
- * The front door's copy. Figures live in proof.ts; the career scale is drawn from
- * experience.ts.
+ * The front door: who, one line of positioning, two actions and three links. The
+ * headline figures live in proof.ts; the career scale is drawn from experience.ts.
  */
 
 import { site } from './site';
 
-export interface HeroAction {
+interface HeroAction {
   label: string;
   href: string;
 }
 
-export interface HeroContent {
-  name: string;
-  location: string;
-  availability: string;
+interface HeroContent {
+  eyebrow: {
+    name: string;
+    location: string;
+    availability: string;
+  };
   /** The H1 in three parts so that the middle phrase can be set in the serif italic. */
   headline: { lead: string; emphasis: string; tail: string };
-  /** One sentence. It is the whole pitch. */
-  statement: string;
+  /** Role, domain and differentiator in one line of at most 22 words. */
+  positioning: string;
   actions: { primary: HeroAction; secondary: HeroAction };
   links: readonly HeroAction[];
 }
 
 export const hero: HeroContent = {
-  name: site.name,
-  location: site.location.display,
-  availability: site.availability,
+  eyebrow: {
+    name: site.name,
+    location: site.location.display,
+    availability: site.availability,
+  },
   headline: { lead: 'Delivery leader and ', emphasis: 'AI solutions', tail: ' architect.' },
-  statement:
-    "Sixteen years leading delivery across government, banking and telecommunications, May 2010 to September 2026 — currently Scrum Master and Project Manager on the Australian Taxation Office's Payday Super program.",
+  positioning:
+    'Scrum Master and Project Manager at the Australian Taxation Office (ATO) who architects mainframe test automation and multi-agent AI systems.',
   actions: {
     primary: { label: 'View selected work', href: '#work' },
     secondary: { label: 'Download CV', href: site.cvHref },

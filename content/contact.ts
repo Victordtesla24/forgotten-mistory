@@ -1,5 +1,7 @@
 /**
- * The closing section: who to write to, and the one door for a 20-minute call.
+ * The closing section: one line, one action and the other channels. The call is
+ * arranged by email, so the action opens a message with a subject and a five-line
+ * agenda the sender edits in place.
  */
 
 import { site } from './site';
@@ -15,33 +17,21 @@ const ENGAGEMENT_AGENDA = [
   'Anything I should read first:',
 ] as const;
 
-export interface ContactChannel {
+interface ContactChannel {
   kind: 'email' | 'phone' | 'linkedin' | 'github';
   label: string;
   href: string;
 }
 
 export const contact = {
-  headline:
-    'Open to Scrum Master / Project Manager roles in Melbourne — and selected AI delivery engagements.',
-  email: channels.email,
-  phone: channels.phone,
-  phoneHref: channels.phoneHref,
-  linkedin: channels.linkedin,
-  github: channels.github,
-  /** The primary action: an email to the inbox. */
-  primary: { label: channels.email, href: `mailto:${channels.email}` },
+  line: 'Open to Scrum Master / Project Manager roles in Melbourne and selected AI delivery engagements.',
   /**
-   * There is no booking tool on this account, so the call is arranged by email:
-   * the message arrives with a subject and a five-line agenda the sender edits in
-   * place. Percent-encoded with line breaks as %0A and held under 900 characters,
-   * because older desktop mail clients truncate long mailto URLs.
+   * Percent-encoded with line breaks as %0A and held under 900 characters, because
+   * older desktop mail clients truncate long mailto URLs.
    */
-  engagement: {
+  action: {
     label: 'Book a 20-minute call',
-    hint: 'Opens an email with a five-line agenda for you to edit.',
-    subject: ENGAGEMENT_SUBJECT,
-    agenda: ENGAGEMENT_AGENDA,
+    hint: 'Opens an email with a five-line agenda.',
     href: `mailto:${channels.email}?subject=${encodeURIComponent(
       ENGAGEMENT_SUBJECT,
     )}&body=${encodeURIComponent(ENGAGEMENT_AGENDA.join('\n'))}`,
@@ -57,7 +47,4 @@ export const contact = {
     { kind: 'linkedin', label: 'linkedin.com/in/vikramd-profile', href: channels.linkedin },
     { kind: 'github', label: 'github.com/Victordtesla24', href: channels.github },
   ] satisfies ContactChannel[],
-  invitation:
-    'I have been wrong often enough to want to hear it early. Tell me what you think — I’ll listen properly.',
-  coffee: 'Coffee · Melbourne CBD · I’ll come to you',
 } as const;

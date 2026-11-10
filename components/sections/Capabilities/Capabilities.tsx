@@ -1,58 +1,58 @@
 import { Card } from '@/components/ui/Card';
+import { Disclosure } from '@/components/ui/Disclosure';
 import { Section } from '@/components/ui/Section';
+import { SnapRow } from '@/components/ui/SnapRow';
 import { Tag } from '@/components/ui/Tag';
 import {
   capabilities,
+  domains,
   sources,
-  statusLegend,
   type Capability,
-  type EvidenceStatus,
-  type SourceKind,
+  type Domain,
+  type Source,
 } from '@/content/capabilities';
 
-const glyphs: Record<EvidenceStatus, string> = {
-  production: '●',
-  'non-production': '◐',
-  pending: '○',
-};
+const sourceById = new Map<Source['id'], Source>(sources.map((source) => [source.id, source]));
 
-const statusOrder: readonly EvidenceStatus[] = ['production', 'non-production', 'pending'];
-
-const groups: readonly { kind: SourceKind; heading: string }[] = [
-  { kind: 'programme', heading: 'Proven on delivery programmes' },
-  { kind: 'repository', heading: 'Proven in repositories' },
-  { kind: 'credential', heading: 'Qualifications and credentials' },
-];
-
-const kindOfSource = new Map(sources.map((source) => [source.id, source.kind]));
-
-/** Where a capability was proven is where its first source sits; with no source it is a credential. */
-function groupOf(capability: Capability): SourceKind {
-  const first = capability.sources[0];
-  return (first && kindOfSource.get(first)) || 'credential';
+function CapabilityRow({ capability }: { capability: Capability }) {
+  return (
+    <Disclosure
+      id={`capability-${capability.id}`}
+      summaryClassName="type-small items-center py-2"
+      panelClassName="grid gap-2 pb-3"
+      summary={<span className="font-medium">{capability.label}</span>}
+    >
+      <p className="type-small text-muted">{capability.detail}</p>
+      {capability.sources.length > 0 ? (
+        <ul className="flex flex-wrap gap-1.5">
+          {capability.sources.map((id) => (
+            <li key={id}>
+              <Tag className="whitespace-normal [overflow-wrap:anywhere]">
+                {sourceById.get(id)?.label}
+              </Tag>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </Disclosure>
+  );
 }
 
-function CapabilityCard({ capability }: { capability: Capability }) {
+function DomainCard({ domain }: { domain: Domain }) {
   return (
-    <Card as="li" className="flex h-full flex-col gap-3">
-      <Tag tone={capability.status === 'production' ? 'proof' : 'neutral'} className="self-start">
-        {capability.standing ?? (
-          <>
-            <span aria-hidden="true" className="mr-1.5">
-              {glyphs[capability.status]}
-            </span>
-            {statusLegend[capability.status]}
-          </>
-        )}
-      </Tag>
-      <h4 className="text-[1.0625rem]">{capability.capability}</h4>
-      {capability.evidence ? <p className="type-small">{capability.evidence}</p> : null}
-      {capability.caveat ? (
-        <p className="type-small border-l-2 border-line-strong pl-3 text-muted">
-          {capability.caveat}
-        </p>
-      ) : null}
-      {capability.where ? <p className="type-meta mt-auto text-muted">{capability.where}</p> : null}
+    <Card as="div" role="group" aria-labelledby={`domain-${domain.id}`} className="p-4">
+      <h3 id={`domain-${domain.id}`} className="text-[1.0625rem]">
+        {domain.name}
+      </h3>
+      <ul className="mt-2 divide-y divide-line">
+        {capabilities
+          .filter((capability) => capability.domain === domain.id)
+          .map((capability) => (
+            <li key={capability.id}>
+              <CapabilityRow capability={capability} />
+            </li>
+          ))}
+      </ul>
     </Card>
   );
 }
@@ -62,34 +62,16 @@ export function Capabilities() {
     <Section
       id="capabilities"
       eyebrow="Capabilities"
-      title="Seventeen capabilities, each with its evidence"
-      accent="its evidence"
-      lede="A capability is listed only with the evidence behind it, and its status says where that evidence was taken."
+      title="Seventeen capabilities, five domains"
+      accent="five domains"
     >
-      <ul className="reveal mb-12 flex flex-wrap gap-x-8 gap-y-2" aria-label="Status legend">
-        {statusOrder.map((status) => (
-          <li key={status} className="type-meta flex items-center gap-2 text-muted">
-            <span aria-hidden="true">{glyphs[status]}</span>
-            {statusLegend[status]}
+      <SnapRow columns={5} className="reveal">
+        {domains.map((domain) => (
+          <li key={domain.id}>
+            <DomainCard domain={domain} />
           </li>
         ))}
-      </ul>
-
-      <div className="grid gap-14">
-        {groups.map((group) => {
-          const items = capabilities.filter((capability) => groupOf(capability) === group.kind);
-          return (
-            <div key={group.kind} className="grid gap-6">
-              <h3 className="reveal">{group.heading}</h3>
-              <ul className="reveal-stagger grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {items.map((capability) => (
-                  <CapabilityCard key={capability.capability} capability={capability} />
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
+      </SnapRow>
     </Section>
   );
 }

@@ -1,39 +1,48 @@
 /**
- * Seventeen capabilities, each with the evidence it rests on and where that
- * evidence was taken. A capability without evidence does not get an entry.
- *
- * The status says where the evidence was taken, never how good the work is:
- * `production` ran for real users or a real program, `non-production` was
- * measured somewhere that was not, and `pending` is a credential not yet held.
+ * Seventeen capabilities in five domains. Each has a label of at most five words and
+ * a detail line saying where it was applied and with what outcome, linked by id to the
+ * program, repository or credential behind it. A result obtained in simulation says so
+ * inside its own sentence.
  *
  * Facts trace to public/docs/Vik_Resume_Final.pdf and to the named repositories.
  */
 
-export type EvidenceStatus = 'production' | 'non-production' | 'pending';
-
 /**
- * A place evidence came from. A programme is verified by asking the employer, a
+ * A place a capability was applied. A program is verified by asking the employer, a
  * repository by opening it, a credential by its issuing body.
  */
-export type SourceKind = 'programme' | 'repository' | 'credential';
+type SourceKind = 'program' | 'repository' | 'credential';
 
 export interface Source {
   id: string;
   label: string;
   kind: SourceKind;
+  /** The role or project that tells the full story, where the site has one. */
+  link?: { type: 'role'; id: string } | { type: 'project'; id: string };
 }
 
-/**
- * The sources, in drawing order. Authored rather than parsed from the `where`
- * strings: `ATO · Payday Super` contains the same separator that joins two
- * sources elsewhere.
- */
+/** The sources, in drawing order. */
 export const sources: readonly Source[] = [
-  { id: 'ato', label: 'ATO · Payday Super', kind: 'programme' },
-  { id: 'anz', label: 'ANZ Banking Group', kind: 'programme' },
-  { id: 'independent', label: 'Independent consulting', kind: 'programme' },
-  { id: 'aether', label: 'aether-job-career-agent', kind: 'repository' },
-  { id: 'abentertainment', label: 'abentertainment', kind: 'repository' },
+  { id: 'ato', label: 'ATO Payday Super', kind: 'program', link: { type: 'role', id: 'ato' } },
+  { id: 'anz', label: 'ANZ', kind: 'program', link: { type: 'role', id: 'anz' } },
+  {
+    id: 'independent',
+    label: 'Independent consulting',
+    kind: 'program',
+    link: { type: 'role', id: 'independent' },
+  },
+  {
+    id: 'aether',
+    label: 'aether-job-career-agent',
+    kind: 'repository',
+    link: { type: 'project', id: 'aether-job-career-agent' },
+  },
+  {
+    id: 'abentertainment',
+    label: 'abentertainment',
+    kind: 'repository',
+    link: { type: 'project', id: 'abentertainment' },
+  },
   { id: 'public-key-server', label: 'public-key-server', kind: 'repository' },
   { id: 'rectifier', label: 'containerised-birth-time-rectifier', kind: 'repository' },
   { id: 'timeline', label: 'relationship-timeline-feature', kind: 'repository' },
@@ -43,170 +52,158 @@ export const sources: readonly Source[] = [
   { id: 'unimelb', label: 'University of Melbourne', kind: 'credential' },
 ];
 
-/** A credential's own status word. */
-export type Standing = 'held' | 'conferred' | 'in progress';
-
-export interface Capability {
-  capability: string;
-  /** The same capability, short enough to label a node. */
-  short: string;
-  /** What was actually measured. Never an adjective. Absent where the standing says it all. */
-  evidence?: string;
-  /** Where it was measured: an employer, a program, or a named repository. Absent where there is no source yet. */
-  where?: string;
-  /** The same, as ids into `sources`. Empty only where there is no evidence yet. */
-  sources: readonly string[];
-  status: EvidenceStatus;
-  /** For a credential: the word printed in place of the status legend, which describes measurements. */
-  standing?: Standing;
-  /** Qualifier printed with the status, for anything that needs one. */
-  caveat?: string;
+export interface Domain {
+  id: string;
+  name: string;
 }
 
-export const statusLegend: Record<EvidenceStatus, string> = {
-  production: 'measured in production',
-  'non-production': 'measured outside production',
-  pending: 'in progress, not yet held',
-};
+export const domains: readonly Domain[] = [
+  { id: 'delivery', name: 'Delivery leadership' },
+  { id: 'ai', name: 'AI systems' },
+  { id: 'platform', name: 'Cloud and platform' },
+  { id: 'product', name: 'Product engineering' },
+  { id: 'qualifications', name: 'Qualifications' },
+];
+
+export interface Capability {
+  id: string;
+  /** A noun phrase of at most five words. */
+  label: string;
+  domain: Domain['id'];
+  /** Where it was applied and the outcome. */
+  detail: string;
+  /** Ids into `sources`. */
+  sources: readonly string[];
+}
 
 export const capabilities: readonly Capability[] = [
   {
-    capability: 'Mainframe test automation — REXX, SMF, SDSF, PCOMM',
-    short: 'Mainframe test automation',
+    id: 'agile-delivery',
+    label: 'Agile delivery at scale',
+    domain: 'delivery',
+    detail:
+      'Eight squads on the ATO’s Payday Super program: PI 47–48 planning, and test capacity re-baselined from 30 to up to 90 person-days.',
     sources: ['ato'],
-    evidence: '200+ SIT/E2E scenarios · ~3 h to ~15 min per scenario',
-    where: 'ATO · Payday Super',
-    status: 'production',
   },
   {
-    capability: 'Agile delivery at programme scale',
-    short: 'Agile delivery at scale',
+    id: 'portfolio',
+    label: 'Program and portfolio management',
+    domain: 'delivery',
+    detail:
+      'At ANZ, a $5M+ portfolio across 5+ squads and up to 40 practitioners, onshore and offshore.',
+    sources: ['anz'],
+  },
+  {
+    id: 'mainframe-automation',
+    label: 'Mainframe test automation',
+    domain: 'delivery',
+    detail:
+      'At the ATO, REXX, SMF, SDSF and PCOMM automation took evidence effort from ~3 hours to ~15 minutes per scenario across 200+ SIT/E2E scenarios.',
     sources: ['ato'],
-    evidence: '8 squads · PI 47–48 · test capacity re-baselined 30 → 90 person-days',
-    where: 'ATO · Payday Super',
-    status: 'production',
   },
   {
-    capability: 'Real-time telemetry platforms',
-    short: 'Real-time telemetry',
-    sources: ['anz'],
-    evidence: '10,000+ concurrent devices held at P95 under 200 ms',
-    where: 'ANZ',
-    status: 'production',
-  },
-  {
-    capability: 'Cloud-native migration — .NET, Azure',
-    short: 'Cloud-native migration',
-    sources: ['anz'],
-    evidence: '>30% delivery efficiency · >15% infrastructure cost reduction',
-    where: 'ANZ',
-    status: 'production',
-  },
-  {
-    capability: 'Programme and portfolio management',
-    short: 'Programme & portfolio',
-    sources: ['anz'],
-    evidence: '$5M+ portfolio · 5+ squads · up to 40 practitioners onshore and offshore',
-    where: 'ANZ',
-    status: 'production',
-  },
-  {
-    capability: 'Multi-agent system design — Python, FastAPI, Postgres, Redis',
-    short: 'Multi-agent systems',
-    sources: ['aether'],
-    evidence: '20 agent engines · 22 routers · 4,272 backend tests · live on a VPS',
-    where: 'aether-job-career-agent',
-    status: 'production',
-  },
-  {
-    capability: 'LLM evaluation and guardrails — Langfuse, Phoenix',
-    short: 'LLM eval & guardrails',
-    sources: ['independent', 'aether'],
-    evidence: '−38% error-budget breaches; entailment guard reverts unsupported claims',
-    where: 'Independent · aether-job-career-agent',
-    status: 'non-production',
-    caveat: 'the −38% was measured against a simulated error budget, not live traffic',
-  },
-  {
-    capability: 'Next.js and TypeScript at production scale',
-    short: 'Next.js & TypeScript',
-    sources: ['aether'],
-    evidence: '39 page routes · 2,326 unit cases · 26 Playwright specs',
-    where: 'aether-job-career-agent',
-    status: 'production',
-  },
-  {
-    capability: 'Node.js / Express services',
-    short: 'Node.js services',
-    sources: ['public-key-server'],
-    evidence: 'PEM key-distribution service · full Mocha/Chai coverage',
-    where: 'public-key-server',
-    status: 'production',
-  },
-  {
-    capability: 'Containerised delivery — Docker, systemd, self-hosted CI',
-    short: 'Containerised delivery',
-    sources: ['aether', 'abentertainment'],
-    evidence: 'build → gate → deploy → smoke test → automatic rollback on failure',
-    where: 'aether-job-career-agent · abentertainment',
-    status: 'production',
-  },
-  {
-    capability: 'Multi-service orchestration — Docker Compose',
-    short: 'Service orchestration',
-    sources: ['rectifier'],
-    evidence: 'gateway, AI service and Redis composed across separate stacks',
-    where: 'containerised-birth-time-rectifier',
-    status: 'non-production',
-    caveat: 'Compose, not Kubernetes — there are no cluster manifests in that repository',
-  },
-  {
-    capability: 'WebGL and GLSL',
-    short: 'WebGL & GLSL',
-    sources: ['abentertainment'],
-    evidence: 'bespoke shaders and scenes',
-    where: 'abentertainment',
-    status: 'production',
-  },
-  {
-    capability: 'Data visualisation',
-    short: 'Data visualisation',
-    sources: ['timeline', 'jira-dashboard'],
-    evidence: 'customer-journey timeline in React/TypeScript; sprint-velocity dashboard in Python',
-    where: 'relationship-timeline-feature · EFDDH-Jira-Analytics-Dashboard',
-    status: 'production',
-  },
-  {
-    capability: 'Certified Scrum Master (CSM)',
-    short: 'Certified Scrum Master',
+    id: 'csm',
+    label: 'Certified Scrum Master',
+    domain: 'delivery',
+    detail: 'Certified Scrum Master (CSM), Scrum Alliance.',
     sources: ['scrum-alliance'],
-    where: 'Scrum Alliance',
-    status: 'production',
-    standing: 'held',
   },
   {
-    capability: 'Master of Computer Science (Honours)',
-    short: 'MSc Computer Science',
-    sources: ['monash'],
-    where: 'Monash University',
-    status: 'production',
-    standing: 'conferred',
+    id: 'multi-agent',
+    label: 'Multi-agent systems',
+    domain: 'ai',
+    detail:
+      'aether-job-career-agent: 20 agent engines and 22 routers on Python, FastAPI, Postgres and Redis, with 4,272 backend tests, live on a VPS.',
+    sources: ['aether'],
   },
   {
-    capability: 'Bachelor of Engineering, Computer Science',
-    short: 'BE Computer Science',
-    sources: ['unimelb'],
-    where: 'University of Melbourne',
-    status: 'production',
-    standing: 'conferred',
+    id: 'llm-evaluation',
+    label: 'LLM evaluation and guardrails',
+    domain: 'ai',
+    detail:
+      'A Langfuse and Phoenix evaluation stack delivered −38% error-budget breaches (simulated budget); in aether, an entailment guard reverts unsupported claims.',
+    sources: ['independent', 'aether'],
   },
   {
-    capability: 'AWS and GCP certification',
-    short: 'AWS & GCP certification',
+    id: 'telemetry',
+    label: 'Real-time telemetry',
+    domain: 'ai',
+    detail: 'At ANZ, WebSocket telemetry held P95 latency under 200 ms across 10,000+ concurrent devices.',
+    sources: ['anz'],
+  },
+  {
+    id: 'cloud-migration',
+    label: 'Cloud-native migration',
+    domain: 'platform',
+    detail:
+      'At ANZ, core banking platforms moved from monolith to .NET/Azure: end-to-end delivery time down by more than 30%, infrastructure cost down by more than 15%.',
+    sources: ['anz'],
+  },
+  {
+    id: 'containerised-delivery',
+    label: 'Containerised delivery',
+    domain: 'platform',
+    detail:
+      'aether-job-career-agent and abentertainment: Docker, systemd and self-hosted CI run build, gate, deploy and smoke test, with automatic rollback on failure.',
+    sources: ['aether', 'abentertainment'],
+  },
+  {
+    id: 'orchestration',
+    label: 'Service orchestration',
+    domain: 'platform',
+    detail:
+      'containerised-birth-time-rectifier: a gateway, an AI service and Redis composed with Docker Compose across separate stacks.',
+    sources: ['rectifier'],
+  },
+  {
+    id: 'node-services',
+    label: 'Node.js services',
+    domain: 'platform',
+    detail:
+      'public-key-server: a Node.js/Express service that distributes PEM keys for fleet API signing, with 100% test coverage (Mocha/Chai).',
+    sources: ['public-key-server'],
+  },
+  {
+    id: 'cloud-certification',
+    label: 'AWS and GCP certification',
+    domain: 'platform',
+    detail: 'Certification in progress.',
     sources: [],
-    evidence: 'studying; no certificate issued',
-    status: 'pending',
-    standing: 'in progress',
-    caveat: 'Listed on the CV as in progress',
+  },
+  {
+    id: 'nextjs',
+    label: 'Next.js and TypeScript',
+    domain: 'product',
+    detail: 'aether-job-career-agent: 39 page routes, 2,326 unit cases and 26 Playwright specs.',
+    sources: ['aether'],
+  },
+  {
+    id: 'webgl',
+    label: 'WebGL and GLSL',
+    domain: 'product',
+    detail: 'abentertainment: bespoke shaders and scenes.',
+    sources: ['abentertainment'],
+  },
+  {
+    id: 'data-visualisation',
+    label: 'Data visualisation',
+    domain: 'product',
+    detail:
+      'relationship-timeline-feature: a customer-journey timeline in React/TypeScript with D3 event arcs. EFDDH-Jira-Analytics-Dashboard: a sprint-velocity dashboard in Python.',
+    sources: ['timeline', 'jira-dashboard'],
+  },
+  {
+    id: 'msc',
+    label: 'Master of Computer Science (Honours)',
+    domain: 'qualifications',
+    detail: 'Monash University.',
+    sources: ['monash'],
+  },
+  {
+    id: 'be',
+    label: 'Bachelor of Engineering, Computer Science',
+    domain: 'qualifications',
+    detail: 'University of Melbourne.',
+    sources: ['unimelb'],
   },
 ];

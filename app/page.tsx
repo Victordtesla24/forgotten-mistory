@@ -6,8 +6,8 @@ import { Hero } from '@/components/sections/Hero/Hero';
 import { Work } from '@/components/sections/Work/Work';
 
 /**
- * The portfolio: one page, seven sections, in reading order. The hero renders the proof
- * strip as well, because the two share the first screen's grid.
+ * The portfolio: one page, seven sections, in reading order. The hero renders the headline
+ * figures as well, because the two share the first screen's grid.
  */
 export default function Home() {
   return (

@@ -103,8 +103,8 @@ function LaneRow({ lane, index, count }: { lane: Lane; index: number; count: num
         className={styles.tip}
         style={{ left: `min(${lane.start}%, calc(100% - ${TIP_WIDTH}))` }}
       >
-        <span className="text-muted">{lane.company}</span>
-        <span className="font-medium text-text">{lane.role}</span>
+        <span className="text-muted">{lane.employer}</span>
+        <span className="font-medium text-text">{lane.title}</span>
         <span className={cn('font-mono', lane.current ? 'text-accent' : 'text-muted')}>
           {lane.dates}
           {lane.current ? ' · current' : ''}

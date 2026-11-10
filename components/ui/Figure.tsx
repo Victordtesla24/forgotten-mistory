@@ -50,7 +50,7 @@ export function Figure({ value, prefix = '', suffix = '', className }: FigurePro
     <span ref={ref} className={cn('type-figure inline-block -my-[0.25em]', className)}>
       <VisuallyHidden>
         {prefix}
-        {value}
+        {value.toLocaleString('en-AU')}
         {suffix}
       </VisuallyHidden>
       <NumberFlow

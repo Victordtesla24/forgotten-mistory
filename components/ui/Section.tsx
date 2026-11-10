@@ -32,10 +32,14 @@ function renderTitle(title: string, accent?: string): ReactNode {
 export function Section({ id, eyebrow, title, accent, lede, className, children }: SectionProps) {
   const headingId = `${id}-title`;
   return (
-    <section id={id} aria-labelledby={headingId} className={cn('pt-section', className)}>
+    <section
+      id={id}
+      aria-labelledby={headingId}
+      className={cn('pt-[clamp(3rem,6vw,5rem)]', className)}
+    >
       <Container>
-        <Ruler min={0} max={60} step={1} className="mb-10" />
-        <header className="mb-12 grid gap-4 md:mb-16">
+        <Ruler min={0} max={60} step={1} className="mb-6" />
+        <header className="mb-6 grid gap-3 md:mb-8">
           <p className="type-eyebrow text-muted reveal">{eyebrow}</p>
           <h2 id={headingId} className="reveal max-w-[22ch]">
             {renderTitle(title, accent)}

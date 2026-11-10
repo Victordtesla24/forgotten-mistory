@@ -1,6 +1,6 @@
 /**
- * Identity, role, location, availability, public channels and SEO text.
- * Everything here is kept in parity with the CV (public/docs/Vik_Resume_Final.pdf).
+ * Identity, location, availability, public channels and the text search and social
+ * previews show. Kept in parity with the CV (public/docs/Vik_Resume_Final.pdf).
  */
 
 export const SITE_URL = 'https://forgotten-mistory.web.app';
@@ -10,8 +10,6 @@ export interface Site {
   name: string;
   /** Name of the website itself, used for Open Graph and JSON-LD. */
   siteName: string;
-  /** Short role line, used in the hero eyebrow area and the header. */
-  role: string;
   /** Current position, used for structured data. */
   jobTitle: string;
   employer: string;
@@ -39,6 +37,8 @@ export interface Site {
     title: string;
     description: string;
     siteDescription: string;
+    /** The person's description in structured data. */
+    personDescription: string;
     ogImage: { url: string; width: number; height: number };
   };
 }
@@ -46,15 +46,14 @@ export interface Site {
 export const site: Site = {
   name: 'Vikram Deshpande',
   siteName: 'Forgotten Mistory',
-  role: 'Delivery leadership · AI solutions architecture',
-  jobTitle: 'Scrum Master / Project Manager — Australian Taxation Office',
+  jobTitle: 'Scrum Master / Project Manager',
   employer: 'Australian Taxation Office',
   location: {
     display: 'Melbourne, Australia',
     locality: 'Melbourne',
     country: 'AU',
   },
-  availability: 'Open to delivery-leadership and AI engagements',
+  availability: 'Open to delivery leadership and AI engagements',
   url: SITE_URL,
   image: `${SITE_URL}/assets/my_avatar.png`,
   cvHref: '/docs/Vik_Resume_Final.pdf',
@@ -70,8 +69,11 @@ export const site: Site = {
   seo: {
     title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
     description:
-      'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
-    siteDescription: 'Portfolio and AI systems showcase for Vikram Deshpande.',
+      'Delivery leader and AI solutions architect in Melbourne. Sixteen years across government, banking and telecommunications; now at the Australian Taxation Office.',
+    siteDescription:
+      'Delivery leadership and AI systems: selected work, career and capabilities of Vikram Deshpande.',
+    personDescription:
+      'Scrum Master and Project Manager on the Australian Taxation Office’s Payday Super program, and AI solutions architect in Melbourne. Sixteen years of delivery leadership across government, banking and telecommunications.',
     ogImage: { url: '/assets/og-image.png', width: 1200, height: 630 },
   },
 };

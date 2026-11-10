@@ -27,9 +27,9 @@ export interface Lane {
   id: string;
   /** The employer as it is labelled beside the bar. */
   label: string;
-  company: string;
-  role: string;
-  /** The span exactly as the CV prints it. */
+  employer: string;
+  title: string;
+  /** The span in months and years, written out in full. */
   dates: string;
   current: boolean;
   /** Left edge and width of the bar, as percentages of the axis. */
@@ -39,11 +39,6 @@ export interface Lane {
   side: 'before' | 'after';
   /** Employer, role and dates: the link's accessible name. */
   name: string;
-}
-
-/** The abbreviation the CV gives in brackets, otherwise the employer as written. */
-function employerLabel(company: string): string {
-  return /\(([^)]+)\)\s*$/.exec(company)?.[1] ?? company;
 }
 
 /** The roles of `content/experience`, newest first, positioned on the shared axis. */
@@ -56,20 +51,20 @@ export function buildLanes(): Lane[] {
     const current = role.span.end === null;
     return {
       id: role.id,
-      label: employerLabel(role.company),
-      company: role.company,
-      role: role.role,
+      label: role.short,
+      employer: role.employer,
+      title: role.title,
       dates: role.dates,
       current,
       start,
       width: end - start,
       side: start > 100 - end ? 'before' : 'after',
-      name: `${role.company}, ${role.role}, ${role.dates}${current ? ', current role' : ''}`,
+      name: `${role.employer}, ${role.title}, ${role.dates}${current ? ', current role' : ''}`,
     };
   });
 }
 
-export interface CareerFact {
+interface CareerFact {
   value: number;
   label: string;
 }

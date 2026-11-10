@@ -19,10 +19,10 @@ function after(delay: number): CSSProperties {
 }
 
 /**
- * The front door: who, what, one next action and the proof for it, then the career
- * drawn to scale. The sections of the first screen share one grid. In reading order
- * they are the introduction, the proof strip and the career scale; from 1024px the
- * career scale moves up beside the introduction and the proof runs underneath both,
+ * The front door: who, one line of positioning, one next action and the headline figures,
+ * then the career drawn to scale. The sections of the first screen share one grid. In
+ * reading order they are the introduction, the figures and the career scale; from 1024px
+ * the career scale moves up beside the introduction and the figures run underneath both,
  * so on every screen the three figures sit in the first view.
  */
 export function Hero() {
@@ -38,11 +38,11 @@ export function Hero() {
         >
           <div className={styles.rise} style={after(ENTER.eyebrow)}>
             <p className="type-eyebrow @container max-w-none text-muted">
-              <span className="@max-[21.75rem]:block">{hero.name}</span>
+              <span className="@max-[21.75rem]:block">{hero.eyebrow.name}</span>
               <span className="@max-[21.75rem]:hidden"> · </span>
-              <span className="@max-[21.75rem]:block">{hero.location}</span>
+              <span className="@max-[21.75rem]:block">{hero.eyebrow.location}</span>
             </p>
-            <p className="type-small mt-1 max-w-none text-muted">{hero.availability}</p>
+            <p className="type-small mt-1 max-w-none text-muted">{hero.eyebrow.availability}</p>
           </div>
           <h1 id="top-title" className={cn(styles.title, 'type-hero mt-3 sm:mt-5')}>
             {headline.lead}
@@ -56,7 +56,7 @@ export function Hero() {
             )}
             style={after(ENTER.statement)}
           >
-            {hero.statement}
+            {hero.positioning}
           </p>
 
           <div

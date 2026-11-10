@@ -67,6 +67,7 @@ const structuredData = [
     '@type': 'Person',
     name: site.name,
     jobTitle: site.jobTitle,
+    description: seo.personDescription,
     worksFor: { '@type': 'Organization', name: site.employer },
     url: SITE_URL,
     image: site.image,

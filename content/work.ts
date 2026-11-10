@@ -1,12 +1,13 @@
 /**
- * Six public repositories, chosen from the full set. Every project carries what
- * it does not do next to what it does. Repository statistics were read from the
- * GitHub API on 2026-09-03.
+ * Six public repositories, chosen from the full set. Each has a one-line value
+ * statement and a detail level: what it does, how it works in three stages, its
+ * stack, the engineering decisions behind it and its links. Repository statistics
+ * were read from the GitHub API on 2026-09-03.
  */
 
 export const PUBLIC_REPO_COUNT = 38;
 
-export type SchematicId =
+type SchematicId =
   | 'pipeline-gate'
   | 'rebuild-loop'
   | 'verifier-loop'
@@ -14,19 +15,26 @@ export type SchematicId =
   | 'diamond-chart'
   | 'static-export';
 
-export interface SchematicStage {
+export interface ProjectStage {
   id: string;
+  /** A short noun phrase. */
   label: string;
+  /** One sentence. */
   note: string;
 }
 
 export interface Schematic {
   id: SchematicId;
-  /** What the drawing shows, in a few words. */
+  /** What the drawing shows, in a few words. Also its accessible name. */
   label: string;
-  /** Text alternative for the drawing. It also states that the drawing is not live activity. */
-  caption: string;
-  stages: readonly SchematicStage[];
+  /** Always three stages, in the order the work flows. */
+  stages: readonly [ProjectStage, ProjectStage, ProjectStage];
+}
+
+/** A count the repository states about itself. */
+export interface ProjectFigure {
+  value: string;
+  label: string;
 }
 
 export interface RepoStats {
@@ -35,213 +43,276 @@ export interface RepoStats {
   firstCommit: string;
   /** Last push, ISO date. */
   lastPush: string;
-  languages: readonly string[];
 }
 
 export interface Project {
   /** Repository name on GitHub. */
   repo: string;
-  title: string;
-  description: string;
-  /** What it does NOT do. Never softened, never omitted. */
-  limits: string;
+  name: string;
+  /** One line of at most 14 words: what it is, then its mechanism. */
+  value: string;
+  /** One to three words. */
+  status: string;
+  /** Two sentences. */
+  does: readonly [string, string];
+  schematic: Schematic;
+  /** Languages first, as the repository reports them, then the tools it is built with. */
+  stack: readonly string[];
+  /** Counts for a small infographic. Empty where the repository states none. */
+  figures: readonly ProjectFigure[];
+  /** Deliberate design choices, each stated as what the project does. */
+  decisions: readonly string[];
   repoHref: string;
   /** A live URL, where one exists and resolves. */
   live?: { label: string; href: string };
-  schematic: Schematic;
   stats: RepoStats;
 }
 
 export const projects: readonly Project[] = [
   {
     repo: 'aether-job-career-agent',
-    title: 'Aether',
-    description:
-      'A job-application platform whose guard reverts any claim your own résumé cannot support.',
-    limits:
-      'The public CI workflow is red on main; production deploys through a separate gated pipeline.',
-    repoHref: 'https://github.com/Victordtesla24/aether-job-career-agent',
-    live: { label: 'aether.srv1356245.hstgr.cloud', href: 'https://aether.srv1356245.hstgr.cloud' },
+    name: 'Aether',
+    value: 'Job-application platform; an entailment guard reverts unsupported claims.',
+    status: 'Live',
+    does: [
+      'A multi-agent job-application platform: 20 agent engines behind 22 routers, with a Next.js front end of 39 page routes.',
+      'An entailment guard reverts any claim the résumé cannot support.',
+    ],
     schematic: {
       id: 'pipeline-gate',
       label: 'Claim guard and revert gate',
-      caption:
-        'Schematic · not live activity. Claim text passes through a résumé support guard; unsupported output returns to a revert path.',
       stages: [
-        { id: 'claim', label: 'claim', note: 'A candidate claim enters the support check.' },
+        { id: 'claim', label: 'Claim', note: 'A candidate claim enters the support check.' },
         {
           id: 'resume-guard',
-          label: 'résumé guard',
-          note: 'The guard only allows claims supported by the résumé.',
+          label: 'Résumé guard',
+          note: 'An entailment check admits the claims the résumé supports.',
         },
         {
           id: 'revert',
-          label: 'revert',
-          note: 'Unsupported claims are returned, not published as evidence.',
+          label: 'Revert',
+          note: 'Unsupported output returns to the revert path instead of publishing.',
         },
       ],
     },
-    stats: {
-      commits: 1664,
-      firstCommit: '2026-07-01',
-      lastPush: '2026-09-02',
-      languages: ['Python', 'TypeScript', 'HTML', 'JavaScript'],
-    },
+    stack: [
+      'Python',
+      'TypeScript',
+      'JavaScript',
+      'HTML',
+      'FastAPI',
+      'Postgres',
+      'Redis',
+      'Next.js',
+      'Docker',
+      'systemd',
+      'Self-hosted CI',
+    ],
+    figures: [
+      { value: '20', label: 'agent engines' },
+      { value: '22', label: 'routers' },
+      { value: '39', label: 'page routes' },
+      { value: '4,272', label: 'backend tests' },
+      { value: '2,326', label: 'unit cases' },
+      { value: '26', label: 'Playwright specs' },
+    ],
+    decisions: [
+      'An entailment guard sits between generation and output, so a claim the résumé cannot support reverts.',
+      'An unmeasured signal reads “not measured”, never zero.',
+      'Releases run build, gate, deploy and smoke test, with automatic rollback on failure.',
+      'Production deploys through a separate gated pipeline.',
+    ],
+    repoHref: 'https://github.com/Victordtesla24/aether-job-career-agent',
+    live: { label: 'aether.srv1356245.hstgr.cloud', href: 'https://aether.srv1356245.hstgr.cloud' },
+    stats: { commits: 1664, firstCommit: '2026-07-01', lastPush: '2026-09-02' },
   },
   {
     repo: 'abentertainment',
-    title: 'AB Entertainment',
-    description:
-      'A live event company’s site and admin portal, containerised and deployed from a push.',
-    limits: 'Content persists as flat JSON files, not a database — sized for one editor, not many.',
-    repoHref: 'https://github.com/Victordtesla24/abentertainment',
-    live: { label: 'abentertainment.com.au', href: 'https://abentertainment.com.au' },
+    name: 'AB Entertainment',
+    value: 'Event-company site and admin portal, deployed on push.',
+    status: 'Live',
+    does: [
+      'The site and admin portal of a live event company, packaged as containers and rebuilt from a repository push.',
+      'The repository carries bespoke WebGL shaders and scenes.',
+    ],
     schematic: {
       id: 'rebuild-loop',
       label: 'Push to container to site rebuild',
-      caption:
-        'Schematic · not live activity. A push rebuilds the containerised site/admin path and returns to the published site.',
       stages: [
-        { id: 'push', label: 'push', note: 'A repository push begins the rebuild path.' },
+        { id: 'push', label: 'Push', note: 'A repository push starts the rebuild.' },
         {
           id: 'container',
-          label: 'container',
-          note: 'The site and admin portal are packaged as containers.',
+          label: 'Container',
+          note: 'The site and admin portal build as containers.',
         },
-        { id: 'site', label: 'site', note: 'The public event-company site is the endpoint.' },
+        { id: 'site', label: 'Site', note: 'The public event-company site is the result.' },
       ],
     },
-    stats: {
-      commits: 243,
-      firstCommit: '2026-03-13',
-      lastPush: '2026-08-06',
-      languages: ['HTML', 'TypeScript', 'JavaScript', 'Shell'],
-    },
+    stack: [
+      'HTML',
+      'TypeScript',
+      'JavaScript',
+      'Shell',
+      'WebGL',
+      'GLSL',
+      'Docker',
+      'systemd',
+      'Self-hosted CI',
+    ],
+    figures: [],
+    decisions: [
+      'Content persists as flat JSON files, sized for a single editor.',
+      'Releases run build, gate, deploy and smoke test, with automatic rollback on failure.',
+    ],
+    repoHref: 'https://github.com/Victordtesla24/abentertainment',
+    live: { label: 'abentertainment.com.au', href: 'https://abentertainment.com.au' },
+    stats: { commits: 243, firstCommit: '2026-03-13', lastPush: '2026-08-06' },
   },
   {
     repo: 'ralph-loop-infinite',
-    title: 'Ralph Loop',
-    description:
-      'An agent loop whose only exit is a signed verifier saying the work actually passed.',
-    limits:
-      'A harness for his own machine, not a product; it assumes a trusted local environment.',
-    repoHref: 'https://github.com/Victordtesla24/ralph-loop-infinite',
+    name: 'Ralph Loop',
+    value: 'Agent loop with a signed verifier exit.',
+    status: 'Local harness',
+    does: [
+      'An agent loop that repeats a work pass until a verifier confirms that the work passed.',
+      'A signed verifier result is the sole exit condition.',
+    ],
     schematic: {
       id: 'verifier-loop',
       label: 'Work loop with signed verifier exit',
-      caption:
-        'Schematic · not live activity. Work loops until the verifier signs an exit condition.',
       stages: [
-        { id: 'work', label: 'work', note: 'The local harness performs another work pass.' },
-        {
-          id: 'verifier',
-          label: 'verifier',
-          note: 'The verifier checks whether the pass actually passed.',
-        },
-        { id: 'exit', label: 'exit', note: 'Only a signed verifier result leaves the loop.' },
+        { id: 'work', label: 'Work', note: 'The local harness performs a work pass.' },
+        { id: 'verifier', label: 'Verifier', note: 'A verifier checks whether the pass passed.' },
+        { id: 'exit', label: 'Exit', note: 'A signed verifier result leaves the loop.' },
       ],
     },
-    stats: {
-      commits: 31,
-      firstCommit: '2026-05-19',
-      lastPush: '2026-05-20',
-      languages: ['Shell', 'Python', 'HTML'],
-    },
+    stack: ['Shell', 'Python', 'HTML'],
+    figures: [],
+    decisions: [
+      'A signed verifier result is the sole exit from the loop.',
+      'The harness runs in a trusted local environment.',
+    ],
+    repoHref: 'https://github.com/Victordtesla24/ralph-loop-infinite',
+    stats: { commits: 31, firstCommit: '2026-05-19', lastPush: '2026-05-20' },
   },
   {
     repo: 'prompt-reconstruction-engine',
-    title: 'Prompt Reconstruction',
-    description:
-      'Rebuilds a raw prompt into a specification, with provider failover when a model declines.',
-    limits:
-      'Reconstruction quality is judged by the operator; there is no automated benchmark yet.',
-    repoHref: 'https://github.com/Victordtesla24/prompt-reconstruction-engine',
+    name: 'Prompt Reconstruction',
+    value: 'Raw prompts rebuilt into specifications, with provider failover.',
+    status: 'Operator-judged',
+    does: [
+      'Rebuilds an operator’s raw prompt into a specification.',
+      'When a model declines, provider failover takes over.',
+    ],
     schematic: {
       id: 'reconstruction-bands',
       label: 'Prompt reconstruction bands',
-      caption:
-        'Schematic · not live activity. A raw prompt is reconstructed into a specification, with provider failover when a model declines.',
       stages: [
         {
           id: 'raw-prompt',
-          label: 'raw prompt',
+          label: 'Raw prompt',
           note: 'The operator’s original prompt starts the reconstruction.',
         },
         {
           id: 'spec',
-          label: 'specification',
+          label: 'Specification',
           note: 'The engine reshapes the prompt into a specification.',
         },
         {
           id: 'provider-failover',
-          label: 'provider failover',
-          note: 'A model decline routes to provider failover.',
+          label: 'Provider failover',
+          note: 'A model decline hands the request to failover.',
         },
       ],
     },
-    stats: {
-      commits: 34,
-      firstCommit: '2026-06-16',
-      lastPush: '2026-06-26',
-      languages: ['HTML', 'JavaScript'],
-    },
+    stack: ['HTML', 'JavaScript'],
+    figures: [],
+    decisions: [
+      'Provider failover keeps reconstruction running when a model declines.',
+      'The operator judges reconstruction quality.',
+    ],
+    repoHref: 'https://github.com/Victordtesla24/prompt-reconstruction-engine',
+    stats: { commits: 34, firstCommit: '2026-06-16', lastPush: '2026-06-26' },
   },
   {
     repo: 'jyotish-shastra',
-    title: 'Jyotish Shastra',
-    description:
-      'A Vedic astrology API with an ephemeris accuracy gate that fails the build on drift.',
-    limits:
-      'An engine, not an interpretation: it computes positions and declines to tell fortunes.',
-    repoHref: 'https://github.com/Victordtesla24/jyotish-shastra',
+    name: 'Jyotish Shastra',
+    value: 'Vedic astrology API with an ephemeris accuracy gate.',
+    status: 'Accuracy-gated',
+    does: [
+      'A Vedic astrology API that computes positions from ephemeris data.',
+      'An accuracy gate fails the build on drift.',
+    ],
     schematic: {
       id: 'diamond-chart',
       label: 'Ephemeris accuracy gate',
-      caption:
-        'Schematic · not live activity. The API computes positions and applies an ephemeris accuracy gate; this is not an astrological reading.',
       stages: [
-        { id: 'ephemeris', label: 'ephemeris', note: 'Ephemeris data is the accuracy reference.' },
-        { id: 'gate', label: 'accuracy gate', note: 'The build fails on drift beyond the gate.' },
+        { id: 'ephemeris', label: 'Ephemeris', note: 'Ephemeris data is the accuracy reference.' },
         {
-          id: 'positions',
-          label: 'positions',
-          note: 'The output is computed positions, not fortune-telling.',
+          id: 'gate',
+          label: 'Accuracy gate',
+          note: 'The build fails on drift beyond the gate.',
         },
+        { id: 'positions', label: 'Positions', note: 'The API returns computed positions.' },
       ],
     },
-    stats: {
-      commits: 214,
-      firstCommit: '2025-06-24',
-      lastPush: '2025-11-10',
-      languages: ['JavaScript', 'CSS', 'Shell', 'TypeScript'],
-    },
+    stack: ['JavaScript', 'CSS', 'Shell', 'TypeScript'],
+    figures: [],
+    decisions: [
+      'An ephemeris accuracy gate fails the build on drift.',
+      'Positions are computed; interpretation is out of scope.',
+    ],
+    repoHref: 'https://github.com/Victordtesla24/jyotish-shastra',
+    stats: { commits: 214, firstCommit: '2025-06-24', lastPush: '2025-11-10' },
   },
   {
     repo: 'forgotten-mistory',
-    title: 'This site',
-    description: 'The page you are reading: static export, no analytics.',
-    limits: 'Every figure on it is quoted from a CV or a repository — none is computed live.',
-    repoHref: 'https://github.com/Victordtesla24/forgotten-mistory',
-    live: { label: 'forgotten-mistory.web.app', href: 'https://forgotten-mistory.web.app' },
+    name: 'Forgotten Mistory',
+    value: 'Static-export portfolio with no analytics.',
+    status: 'Live',
+    does: [
+      'A portfolio built as a static export on Firebase Hosting, with no analytics.',
+      'Typed content files hold every fact, and one release script checks, builds, tests and deploys.',
+    ],
     schematic: {
       id: 'static-export',
-      label: 'Static export with quoted figures',
-      caption:
-        'Schematic · not live activity. The page is shipped as a static export and its figures are quoted from source records; nothing is computed live for the reader.',
+      label: 'Typed content to static export to gated release',
       stages: [
-        { id: 'static', label: 'static export', note: 'The page is shipped as a static export.' },
         {
-          id: 'quoted',
-          label: 'quoted figures',
-          note: 'The figures are quoted from source records, not live telemetry.',
+          id: 'content',
+          label: 'Typed content',
+          note: 'Every fact lives in a typed content file.',
+        },
+        {
+          id: 'static',
+          label: 'Static export',
+          note: 'Next.js exports the pages as static files for Firebase Hosting.',
+        },
+        {
+          id: 'release',
+          label: 'Gated release',
+          note: 'One script checks, builds, tests, pushes, deploys and verifies the live build.',
         },
       ],
     },
-    stats: {
-      commits: 205,
-      firstCommit: '2025-11-25',
-      lastPush: '2026-09-03',
-      languages: ['TypeScript', 'JavaScript', 'CSS', 'Python'],
-    },
+    stack: [
+      'TypeScript',
+      'JavaScript',
+      'CSS',
+      'Python',
+      'Next.js 15',
+      'React 19',
+      'Tailwind CSS 4',
+      'Firebase Hosting',
+    ],
+    figures: [],
+    decisions: [
+      'No analytics, no cookies and no browser storage; a page load contacts one host.',
+      'A strict Content-Security-Policy is enforced by an automated test.',
+      'Every fact lives in typed content, matched to the CV or a named repository.',
+    ],
+    repoHref: 'https://github.com/Victordtesla24/forgotten-mistory',
+    live: { label: 'forgotten-mistory.web.app', href: 'https://forgotten-mistory.web.app' },
+    stats: { commits: 205, firstCommit: '2025-11-25', lastPush: '2026-09-03' },
   },
 ];
