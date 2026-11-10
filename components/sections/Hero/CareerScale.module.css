@@ -1,0 +1,98 @@
+@keyframes bar-draw {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes label-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Bars grow from their left edge, oldest role first. Delays are set per bar. */
+.bar {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  transition: fill var(--duration-hover) var(--ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bar {
+    animation: bar-draw 560ms var(--ease) both;
+  }
+
+  .label {
+    animation: label-in 420ms var(--ease) both;
+  }
+}
+
+.lane {
+  position: relative;
+}
+
+.link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 8px;
+}
+
+.link:focus-visible {
+  outline-offset: -2px;
+}
+
+.lane:hover,
+.lane:has(.link:focus-visible) {
+  z-index: 2;
+}
+
+/* The tooltip sits just above its lane and is a visual repeat of the link's accessible name. */
+.tip {
+  position: absolute;
+  bottom: calc(100% - 6px);
+  z-index: 3;
+  display: grid;
+  gap: 0.125rem;
+  width: min(19rem, 100%);
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--raised);
+  box-shadow: var(--elevation-float);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition:
+    opacity var(--duration-hover) var(--ease),
+    transform var(--duration-hover) var(--ease);
+}
+
+.lane:has(.link:focus-visible) .tip {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: hover) {
+  .lane:hover .tip {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip {
+    transition: none;
+    transform: none;
+  }
+}

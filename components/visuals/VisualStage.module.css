@@ -1,0 +1,63 @@
+/*
+ * The stage fills its positioned parent, sits behind the content and fades into
+ * the page background at every edge. It never takes pointer events.
+ */
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, black 9%, black 52%, transparent 100%),
+    linear-gradient(to right, transparent 0, black 9%, black 91%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.poster,
+.canvas,
+.scrim {
+  position: absolute;
+  inset: 0;
+}
+
+/* The canvas appears over the poster once its first frame is drawn, and leaves again if the context is lost. */
+.canvas {
+  opacity: 0;
+  transition: opacity 900ms var(--ease);
+}
+
+.canvas[data-shown='true'] {
+  opacity: 1;
+}
+
+/*
+ * The scrim: a wash of the page background that keeps text over the field at
+ * 4.5:1 or better. Strongest where the copy sits, on the leading edge.
+ */
+.scrim {
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+}
+
+@media (min-width: 1024px) {
+  .scrim {
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--bg) 82%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 58%, transparent) 46%,
+      color-mix(in srgb, var(--bg) 12%, transparent) 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .stage {
+    display: none;
+  }
+}
