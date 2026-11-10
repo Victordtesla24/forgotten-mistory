@@ -9,7 +9,6 @@
   ],
   "hosting": {
     "public": "out",
-    "predeploy": ["npm run build:static"],
     "cleanUrls": true,
     "redirects": [
       { "source": "/assets/my-avatar.mp4", "destination": "/assets/my-hero-avatar.mp4", "type": 301 }

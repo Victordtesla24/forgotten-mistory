@@ -1,0 +1,73 @@
+import { readFileSync } from 'node:fs';
+
+import type { Page, Response } from '@playwright/test';
+
+/** The page sections, in reading order. */
+export const SECTION_IDS = [
+  'top',
+  'proof',
+  'work',
+  'experience',
+  'capabilities',
+  'about',
+  'contact',
+] as const;
+
+/** The header anchors, in order: the sections a reader can jump to. */
+export const NAV_ITEMS = [
+  { label: 'Work', id: 'work' },
+  { label: 'Experience', id: 'experience' },
+  { label: 'Capabilities', id: 'capabilities' },
+  { label: 'About', id: 'about' },
+  { label: 'Contact', id: 'contact' },
+] as const;
+
+interface FirebaseConfig {
+  hosting: { headers: { source: string; headers: { key: string; value: string }[] }[] };
+}
+
+/** The Content-Security-Policy Firebase Hosting sends with every page. */
+function readProductionCsp(): string {
+  const config: FirebaseConfig = JSON.parse(readFileSync('firebase.json', 'utf8'));
+  const header = config.hosting.headers
+    .filter((rule) => rule.source === '**')
+    .flatMap((rule) => rule.headers)
+    .find((entry) => entry.key === 'Content-Security-Policy');
+  if (!header) throw new Error('firebase.json no longer sets a Content-Security-Policy for **');
+  return header.value;
+}
+
+/**
+ * The static server sends no security headers, so the production policy from
+ * firebase.json is added to every document the page loads. Violations then show
+ * up as the browser would report them to a reader.
+ */
+export async function enforceProductionCsp(page: Page): Promise<void> {
+  const policy = readProductionCsp();
+  await page.route('**/*', async (route) => {
+    if (route.request().resourceType() !== 'document') {
+      await route.continue();
+      return;
+    }
+    const response = await route.fetch();
+    await route.fulfill({
+      response,
+      headers: { ...response.headers(), 'content-security-policy': policy },
+    });
+  });
+}
+
+/** Waits until React has attached to the header, so clicks are never lost to a page that is not interactive yet. */
+export async function hydrated(page: Page): Promise<void> {
+  await page.waitForFunction(() => {
+    const button = document.querySelector('header button');
+    return button !== null && Object.keys(button).some((key) => key.startsWith('__reactProps$'));
+  });
+}
+
+/** Opens a path and waits for the page to become interactive. */
+export async function open(page: Page, path: string): Promise<Response | null> {
+  const response = await page.goto(path);
+  await hydrated(page);
+  return response;
+}
