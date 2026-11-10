@@ -1,7 +1,7 @@
 # forgotten-mistory
 
-The portfolio of Vikram Deshpande: one page with seven sections (hero, proof, work,
-experience, capabilities, about, contact), a privacy policy, terms, and "Ask Mini Vic", a
+The portfolio of Vikram Deshpande: one page with seven sections (hero, headline figures,
+work, experience, capabilities, about, contact), a privacy policy, terms, and "Ask Mini Vic", a
 text chat about his experience. It is a static export served by Firebase Hosting at
 <https://forgotten-mistory.web.app>.
 
@@ -60,8 +60,8 @@ again and deploys only if the live site is not already serving that commit.
   page sections, assistant and visuals; `lib/` has the assistant's transport.
 - `tests/` is the Playwright suite; `scripts/` holds the release, screenshot and brand-image
   helpers, and `scripts/ops/` the keep-warm ping for the chat backend.
-- `docs/DESIGN.md` is the design and engineering brief; `CLAUDE.md` is the short guide for
-  working in the repository.
+- `docs/DESIGN.md` is the design and engineering brief; `docs/COPY-STYLE.md` is the style guide
+  for every word on the page; `CLAUDE.md` is the short guide for working in the repository.
 
 Everything from before the November 2026 rebuild is kept only in git history, under the tag
 `pre-rebuild-2026-11-10`.
