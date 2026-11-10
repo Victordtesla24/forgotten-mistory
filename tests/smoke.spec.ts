@@ -289,7 +289,7 @@ test.describe('checked once, because the viewport does not matter', { tag: '@des
     }
   });
 
-  test('a tall experience card is readable well before it reaches the middle of the screen', async ({
+  test('an experience card is readable well before it reaches the middle of the screen', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
