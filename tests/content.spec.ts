@@ -65,7 +65,7 @@ test.describe('the content keeps to its contract', { tag: '@desktop' }, () => {
       expect(project.schematic.stages, project.repo).toHaveLength(3);
       expect(project.stack.length, project.repo).toBeGreaterThan(0);
       expect(project.decisions.length, project.repo).toBeGreaterThan(0);
-      expect(project.repoHref, project.repo).toContain(project.repo);
+      if (project.repoHref) expect(project.repoHref, project.repo).toContain(project.repo);
     }
   });
 

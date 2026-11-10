@@ -1,5 +1,5 @@
 /**
- * Six public repositories, chosen from the full set. Each has a one-line value
+ * Six projects, chosen from the full set; five link to a public repository. Each has a one-line value
  * statement and a detail level: what it does, how it works in three stages, its
  * stack, the engineering decisions behind it and its links. Commit counts and first-commit
  * dates were read from each repository's default branch on the date below.
@@ -63,7 +63,8 @@ export interface Project {
   figures: readonly ProjectFigure[];
   /** Deliberate design choices, each stated as what the project does. */
   decisions: readonly string[];
-  repoHref: string;
+  /** Present only while the repository is public. */
+  repoHref?: string;
   /** A live URL, where one exists and resolves. */
   live?: { label: string; href: string };
   stats: RepoStats;
@@ -123,8 +124,6 @@ export const projects: readonly Project[] = [
       'Releases run build, gate, deploy and smoke test, with automatic rollback on failure.',
       'Production deploys through a separate gated pipeline.',
     ],
-    repoHref: 'https://github.com/Victordtesla24/aether-job-career-agent',
-    live: { label: 'aether.srv1356245.hstgr.cloud', href: 'https://aether.srv1356245.hstgr.cloud' },
     stats: { commits: 1666, firstCommit: '2026-07-01' },
   },
   {

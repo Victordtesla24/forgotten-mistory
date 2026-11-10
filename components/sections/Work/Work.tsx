@@ -109,9 +109,11 @@ function ProjectCard({ project }: { project: Project }) {
         <Activity stats={project.stats} />
 
         <div className="flex flex-wrap items-center gap-x-5">
-          <ExternalLink href={project.repoHref} className="type-small min-h-11">
-            Repository
-          </ExternalLink>
+          {project.repoHref ? (
+            <ExternalLink href={project.repoHref} className="type-small min-h-11">
+              Repository
+            </ExternalLink>
+          ) : null}
           {project.live ? (
             <ExternalLink href={project.live.href} className="type-small min-h-11">
               {project.live.label}
