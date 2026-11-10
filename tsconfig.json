@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,33 +12,19 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./*"] },
     "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "app",
+    "components",
+    "content",
+    "lib",
+    "tests",
+    ".next/types/**/*.ts",
+    ".next-*/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "node_modules_bak_old",
-    "node_modules_broken",
-    "node_modules_corrupted_2",
-    "node_modules_partial_2",
-    "node_modules_tmp_z",
-    "services/**",
-    "out",
-    ".next"
-  ]
+  "exclude": ["node_modules"]
 }

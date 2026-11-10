@@ -1,196 +1,114 @@
-import type { Metadata } from 'next';
-import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
+
+import Assistant from '@/components/assistant/Assistant';
+import { Footer } from '@/components/site/Footer';
+import { Header } from '@/components/site/Header';
+import { Providers } from '@/components/site/Providers';
+import { themeInitScript } from '@/components/site/theme';
+import { SITE_URL, site } from '@/content/site';
+
 import './globals.css';
-import { buildStamp } from '@/app/data/generated/build-stamp';
-import { MINIVIC_CHAT_ORIGIN } from '@/app/data/generated/minivic-origin';
-import dynamic from 'next/dynamic';
-import Footer from '@/components/site/Footer';
-import MotionProvider from '../components/MotionProvider';
-import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
-import { AvatarSpeakingProvider } from '@/lib/avatarContext';
 
-import MiniVicBotWrapper from '../components/site/MiniVicBotWrapper';
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
 
-// Three faces, each with one job (design direction §1.1).
-//
-// The display face is a document serif, not a grotesque. Every rival portfolio in
-// this category sets its headings in a geometric sans with a mono accent; a serif
-// at display size reads as institutional record rather than as product marketing,
-// which is the register this site is arguing in. The geometric grotesque this
-// replaced was dropped for exactly that reason — it was the trend-following tell.
-//
-// All three self-host their woff2 at build time through next/font (mandatory under
-// a static export: no runtime font request), and `adjustFontFallback` generates the
-// metric-matched fallback, so there is no layout shift when the real face lands.
-// One normal weight. Every heading, title and role line on the site is set at
-// 400; nothing uses the light. The 300 was 47 kB of preload — on the critical
-// path, ahead of the face the hero's own name is drawn in — for a weight zero
-// elements resolved to.
-const displayFont = Source_Serif_4({
+const geistMono = Geist_Mono({
   subsets: ['latin'],
-  weight: ['400'],
-  style: ['normal'],
-  variable: '--font-serif',
-  display: 'swap',
-  preload: true,
-});
-
-// The italic is loaded separately and NOT preloaded. It is used exactly once on
-// the site — the closing sentence, five screens down — and preloading it cost
-// 50 kB on the critical path for a face nobody sees until the end.
-const displayItalic = Source_Serif_4({
-  subsets: ['latin'],
-  weight: ['300'],
-  style: ['italic'],
-  variable: '--font-serif-italic',
+  variable: '--font-geist-mono',
   display: 'swap',
   preload: false,
 });
 
-const bodyFont = Inter({
+const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-inter',
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument-serif',
   display: 'swap',
-  preload: true,
+  preload: false,
 });
 
-// Every provenance line, date stamp, axis readout and repository metric. One
-// weight only: this face carries data, and data does not need emphasis.
-const dataFont = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-plex-mono',
-  display: 'swap',
-  preload: true,
-});
+const { seo } = site;
 
 export const metadata: Metadata = {
-  title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
-  description:
-    'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
-  metadataBase: new URL('https://forgotten-mistory.web.app'),
-  alternates: { canonical: '/' },
+  metadataBase: new URL(SITE_URL),
+  title: seo.title,
+  description: seo.description,
+  alternates: { canonical: SITE_URL },
   openGraph: {
-    title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
-    description:
-      'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
-    url: 'https://forgotten-mistory.web.app',
-    siteName: 'Forgotten Mistory',
+    title: seo.title,
+    description: seo.description,
+    url: SITE_URL,
+    siteName: site.siteName,
     type: 'website',
-    // Static social card, served from public/ so it works under the Firebase
-    // static export — no app/opengraph-image.tsx runtime route. 2400×1260 is
-    // the platform-standard 1.91:1 ratio at 2x, so the preview is sharp rather
-    // than upscaled; scripts/build/og_card.mjs renders it, and
-    // tests/hero_assets_monochrome.test.mjs reads the shipped bytes to hold it
-    // to the palette and to these exact dimensions (G-OG1).
-    images: [{ url: '/assets/og-image.png', width: 2400, height: 1260 }],
+    images: [seo.ogImage],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
-    description:
-      'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
-    // Same static card drives the summary_large_image Twitter preview.
-    images: ['/assets/og-image.png'],
+    title: seo.title,
+    description: seo.description,
+    images: [seo.ogImage.url],
   },
+  other: { 'build-commit': process.env.NEXT_PUBLIC_BUILD_COMMIT ?? 'dev' },
 };
 
-const webSiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Forgotten Mistory',
-  url: 'https://forgotten-mistory.web.app',
-  description: 'Portfolio and AI systems showcase for Vikram Deshpande.',
-};
+export const viewport: Viewport = { colorScheme: 'dark light' };
 
-const personSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Vikram Deshpande',
-  jobTitle: 'Scrum Master / Project Manager — Australian Taxation Office',
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Australian Taxation Office',
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.siteName,
+    url: SITE_URL,
+    description: seo.siteDescription,
   },
-  url: 'https://forgotten-mistory.web.app',
-  image: 'https://forgotten-mistory.web.app/assets/my_avatar.png',
-  sameAs: ['https://github.com/Victordtesla24', 'https://youtube.com/@vicd0ct'],
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Melbourne',
-    addressCountry: 'AU',
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: site.name,
+    jobTitle: site.jobTitle,
+    worksFor: { '@type': 'Organization', name: site.employer },
+    url: SITE_URL,
+    image: site.image,
+    sameAs: [site.channels.github, site.channels.youtube],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: site.location.locality,
+      addressCountry: site.location.country,
+    },
   },
-};
+]
+  .map((entry) => JSON.stringify(entry).replace(/</g, '\\u003c'))
+  .map((json) => ({ __html: json }));
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // Font variables live on <html> so the :root --font-body/--font-heading
-    // tokens (which reference these next/font vars) resolve at :root. Placing
-    // them on <body> would leave :root unable to see them — the tokens would
-    // compute to empty and headings would fall back to the UA sans stack.
-    <html lang="en" className={`no-js ${bodyFont.variable} ${displayFont.variable} ${displayItalic.variable} ${dataFont.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.remove('no-js');`,
-          }}
-        />
-        {/* The commit these bytes were built from. It used to render as a visible
-            line in the footer; the footer is now a single legal line, so it lives
-            here instead — invisible to a reader, still checkable by anyone who
-            looks, and still the thing `scripts/deploy.mjs` verifies after every
-            deploy. `build_stamp.mjs` writes null unless the tree matched HEAD
-            exactly, so the tag is absent rather than wrong when a build was taken
-            from uncommitted source. That is the whole point of it: INCIDENT-01
-            was production serving code that existed in no commit, under a
-            signature saying otherwise. */}
-        {buildStamp.sha ? <meta name="build-commit" content={buildStamp.sha} /> : null}
-        {/* MiniVic answers from the chat function's own Cloud Run origin, because
-            the Firebase Hosting rewrite in front of it buffers the streamed reply
-            (first byte 1836 ms through Hosting vs 665 ms direct — G-M3's
-            08-decision-first-token.md). That is a cross-origin host the browser
-            has never seen when the panel opens, so its DNS, TCP and TLS are paid
-            here, on the critical path of nothing, instead of inside the first
-            send. `crossOrigin` must be set: the send is a CORS fetch, which uses
-            an anonymous connection, and a preconnect without it opens the
-            credentialed one the fetch will not reuse. */}
-        {MINIVIC_CHAT_ORIGIN ? (
-          <link rel="preconnect" href={MINIVIC_CHAT_ORIGIN} crossOrigin="anonymous" />
-        ) : null}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {structuredData.map((html) => (
+          <script key={html.__html} type="application/ld+json" dangerouslySetInnerHTML={html} />
+        ))}
       </head>
-      <body suppressHydrationWarning>
-        {/* WCAG 2.4.1 Bypass Blocks. The styles for this have existed in
-            globals.css since the rebuild; the element itself never did, so the
-            rule styled nothing and a keyboard reader had to tab the whole
-            navigation on every visit. It is the first focusable node in the
-            document and visible only while focused. */}
-        <a className="skip-link" href="#main">
-          Skip to the evidence
+      <body className="bg-bg font-sans text-text antialiased">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-md focus:bg-accent focus:px-4 focus:py-3 focus:font-medium focus:text-bg"
+        >
+          Skip to content
         </a>
-        <AvatarSpeakingProvider>
-          <MotionProvider>
-            {/* The page's own reservation — see `.page-frame` in globals.css.
-                Without it the footer, which is shell and paints first, lands
-                under the nav until the sections stream in. */}
-            <div className="page-frame">{children}</div>
-            <Footer />
-            <MiniVicBotWrapper />
-          </MotionProvider>
-        </AvatarSpeakingProvider>
-        <ServiceWorkerRegister />
+        <Providers>
+          <Header />
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
+          <Footer />
+          <Assistant />
+        </Providers>
       </body>
     </html>
   );

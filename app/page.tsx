@@ -1,62 +1,22 @@
-'use client';
+import { About } from '@/components/sections/About/About';
+import { Capabilities } from '@/components/sections/Capabilities/Capabilities';
+import { Contact } from '@/components/sections/Contact/Contact';
+import { Experience } from '@/components/sections/Experience/Experience';
+import { Hero } from '@/components/sections/Hero/Hero';
+import { Proof } from '@/components/sections/Proof/Proof';
+import { Work } from '@/components/sections/Work/Work';
 
-import { useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import ScrollProgress from '@/components/site/ScrollProgress';
-
-const About = dynamic(() => import('@/components/sections/About/About'), { ssr: true });
-const Experience = dynamic(() => import('@/components/sections/Experience/Experience'), { ssr: true });
-const Skills = dynamic(() => import('@/components/sections/Skills/Skills'), { ssr: true });
-const Vitrine = dynamic(() => import('@/components/sections/Vitrine/Vitrine'), { ssr: true });
-const Listen = dynamic(() => import('@/components/sections/Listen/Listen'), { ssr: true });
-const Navigation = dynamic(() => import('@/components/site/Navigation'), { ssr: true });
-
-import Hero from '@/components/sections/Hero/Hero';
-
-/**
- * The page is a composition and nothing else.
- *
- * It was 783 lines: five sections written inline, thirty component imports, a
- * preloader handshake, two deferred-mount gates and a credibility band that
- * restated figures the sections below it already carried. Each section now owns
- * its own markup, styles, data and scene, so this file's only remaining jobs are
- * to order them and to raise the one signal the rest of the app still listens
- * for.
- */
+/** The portfolio: one page, seven sections, in reading order. */
 export default function Home() {
-  // `page-ready` was the preloader's handoff signal. The preloader is gone — the
-  // hero is server-rendered and reveals itself in CSS — but the class and the
-  // event are still what MiniVicBot and the test suite key on, so the page
-  // raises them itself on the frame after mount.
-  useEffect(() => {
-    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1000));
-    const handle = idle(() => {
-      document.body.classList.add('page-ready');
-      window.dispatchEvent(new Event('fm:page-ready'));
-    });
-    return () => {
-      if (window.cancelIdleCallback) window.cancelIdleCallback(handle);
-    };
-  }, []);
-
   return (
     <>
-      <ScrollProgress />
-      <Navigation />
-
-      <main id="main">
-        <Hero />
-
-        <About />
-
-        <Experience />
-
-        <Skills />
-
-        <Vitrine />
-
-        <Listen />
-      </main>
+      <Hero />
+      <Proof />
+      <Work />
+      <Experience />
+      <Capabilities />
+      <About />
+      <Contact />
     </>
   );
 }

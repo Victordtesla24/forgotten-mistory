@@ -1,65 +1,54 @@
 import Link from 'next/link';
 
-import { buildStamp } from '@/app/data/generated/build-stamp';
-import { cvFingerprint } from '@/app/data/generated/cv-fingerprint';
-import { footerContent } from '@/app/data/portfolio/footer';
-import { contact } from '@/app/data/siteContent';
+import { Container } from '@/components/ui/Container';
+import { ExternalLink } from '@/components/ui/ExternalLink';
+import { contact } from '@/content/contact';
+import { copyright, syntheticMedia } from '@/content/legal';
+import { site } from '@/content/site';
 
-import styles from './Footer.module.css';
+const linkClass =
+  'type-small inline-flex min-h-11 items-center text-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-text hover:decoration-muted';
 
-/**
- * The footer — one line, set quietly, in the site's own type.
- *
- * Three links and a copyright. It carries no argument of its own: the page above
- * it has already made every claim it intends to make, and a closing screen that
- * restates them competes with the last thing a reader actually looked at.
- *
- * *Contact support* opens the reader's own mail client addressed to the owner's
- * inbox, so the path to a conversation costs one click and no form. There is no
- * capture here and nothing gated.
- */
-
-const SUPPORT_SUBJECT = encodeURIComponent('Portfolio — support');
-
-const buildProvenance =
-  buildStamp.clean && buildStamp.sha
-    ? `${footerContent.build.label}: ${buildStamp.sha}`
-    : footerContent.build.unstampedLabel;
-
-export default function Footer() {
+/** Legal links, the CV, the repository, the synthetic-media disclosure and the build id. */
+export function Footer() {
   return (
-    <footer className={styles.footer}>
-      <p className={styles.line}>
-        <Link className={styles.link} href="/privacy">
-          Privacy Policy
-        </Link>
-        <span className={styles.sep} aria-hidden="true">
-          ·
-        </span>
-        <Link className={styles.link} href="/terms">
-          Terms
-        </Link>
-        <span className={styles.sep} aria-hidden="true">
-          ·
-        </span>
-        <a className={styles.link} href={`mailto:${contact.email}?subject=${SUPPORT_SUBJECT}`}>
-          Contact support
-        </a>
-        <span className={styles.sep} aria-hidden="true">
-          ·
-        </span>
-        <span className={styles.legal}>
-          © 2026 Portfolio Website · Vikram Deshpande · A product of V
-          <sup className={styles.sup}>2</sup> Group of Companies Pty. Ltd. · All rights reserved.
-        </span>
-      </p>
-      <p className={styles.provenance}>
-        <a className={styles.link} href={footerContent.cv.href} download target="_blank" rel="noreferrer">
-          {footerContent.cv.label}
-        </a>{' '}
-        {footerContent.cv.md5Label} <code className={styles.code}>{cvFingerprint.md5}</code> · {buildProvenance}.
-      </p>
-      <p className={styles.disclosure}>{footerContent.syntheticDisclosure}</p>
+    <footer className="mt-section border-t border-line">
+      <Container className="grid gap-6 pt-12 pb-24 md:pb-16">
+        <nav aria-label="Footer">
+          <ul className="flex flex-wrap items-center gap-x-6 gap-y-1">
+            <li>
+              <Link href="/privacy" className={linkClass}>
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className={linkClass}>
+                Terms
+              </Link>
+            </li>
+            <li>
+              <a href={site.cvHref} download className={linkClass}>
+                CV (PDF)
+              </a>
+            </li>
+            <li>
+              <ExternalLink href={site.repositoryHref} className={`${linkClass} text-muted`}>
+                Repository
+              </ExternalLink>
+            </li>
+            <li>
+              <a href={contact.support.href} className={linkClass}>
+                {contact.support.label}
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <p className="type-meta max-w-[72ch] text-muted">{syntheticMedia.notice}</p>
+        <p className="type-meta text-muted">
+          {copyright} · build{' '}
+          <span translate="no">{process.env.NEXT_PUBLIC_BUILD_COMMIT}</span>
+        </p>
+      </Container>
     </footer>
   );
 }
