@@ -21,8 +21,9 @@ looks, moves and is built — read it before changing anything visible.
 - `tests/` — a small Playwright suite (smoke, axe, CSP and hosting headers) that runs against
   the built `out/`.
 - `scripts/` — `ship.sh` is the whole release (check, build, test, push to `main`, deploy,
-  verify); `brand-assets.mjs` regenerates the social card and icons; `screenshot.mjs` takes
-  contact sheets; `ops/` keeps the chat backend warm.
+  verify, then ask the live assistant a real question through `check-assistant.sh`, which
+  exits 2 when it cannot answer); `brand-assets.mjs` regenerates the social card and icons;
+  `screenshot.mjs` takes contact sheets; `ops/` keeps the chat backend warm.
 
 ## Rules
 
