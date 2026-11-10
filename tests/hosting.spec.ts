@@ -18,7 +18,6 @@ function documentPaths(directory = 'out', prefix = ''): string[] {
       return entry.name === '_next' ? [] : documentPaths(`${directory}/${entry.name}`, path);
     }
     if (entry.name === 'index.html') return [prefix || '/'];
-    if (entry.name === '404.html') return [path];
     if (entry.name.endsWith('.html')) return [path.slice(0, -'.html'.length)];
     return entry.name.endsWith('.txt') ? [path] : [];
   });
@@ -30,7 +29,7 @@ test.describe('the hosting headers', { tag: '@desktop' }, () => {
   test('every page and every payload the client router fetches revalidates on each load', () => {
     const paths = documentPaths();
     expect(paths).toEqual(
-      expect.arrayContaining(['/', '/privacy', '/terms', '/index.txt', '/privacy.txt', '/terms.txt']),
+      expect.arrayContaining(['/', '/privacy', '/terms', '/404', '/index.txt', '/privacy.txt', '/terms.txt']),
     );
     for (const path of paths) expect(cacheControlFor(path), path).toBe(REVALIDATE);
   });

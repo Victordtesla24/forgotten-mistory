@@ -98,7 +98,6 @@ document_paths() {
     path="/${file#out/}"
     case "$path" in
       /index.html) path="/" ;;
-      /404.html) continue ;;
       *.html) path="${path%.html}" ;;
     esac
     printf '%s\n' "$path"
