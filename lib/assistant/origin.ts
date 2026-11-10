@@ -6,6 +6,6 @@
  * This URL is public — it is where the chat function is served. No credential is
  * carried here or reachable through it.
  */
-import { originUrl } from '@/config/minivic-origin.json';
+import config from '@/config/minivic-origin.json';
 
-export const MINIVIC_CHAT_ORIGIN: string = originUrl;
+export const MINIVIC_CHAT_ORIGIN: string = config.originUrl;

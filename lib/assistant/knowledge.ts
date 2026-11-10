@@ -1,59 +1,22 @@
 /**
- * knowledge.ts — static knowledge base powering "MiniVic", the synthetic stand-in
- * chatbot on this portfolio site. The site is statically hosted (no backend),
- * so MiniVic answers entirely client-side via deterministic keyword matching
- * against this curated, fact-checked knowledge base.
+ * The local knowledge base: curated, first-person answers about Vikram that the
+ * assistant gives when the live chat function cannot be reached. They are kept
+ * in parity with content/ and with the CV (public/docs/Vik_Resume_Final.pdf);
+ * do not add a claim here that those sources do not carry.
  *
- * Factual parity is maintained with:
- *   - content/ (experience, proof, work, capabilities, about, contact)
- *   - the standalone CV (public/docs/Vik_Resume_Final.pdf)
- *
- * Do not add claims here that are not present in those sources.
+ * Matching lives in ./local.ts.
  */
-
-export type PersonaMode = 'hiring' | 'engineering' | 'story';
 
 export interface KnowledgeEntry {
   id: string;
-  /** Lowercase keywords/phrases; a match on any scores the entry. Multi-word phrases score higher. */
+  /** Lowercase keywords and phrases; a match on any scores the entry. Multi-word phrases score higher. */
   keywords: string[];
-  /** Default answer, first person as Vikram ("I ..."). 2–5 sentences, concrete numbers where available. */
+  /** The answer, first person as Vikram ("I ..."), with concrete numbers where available. */
   answer: string;
-  /** Optional persona-specific overrides. */
-  personaVariants?: Partial<Record<PersonaMode, string>>;
 }
 
 export const FALLBACK_ANSWER: string =
   'That is outside my knowledge base, which is built from Vikram\'s CV and repositories. Ask him directly: sarkar.vikram@gmail.com or +61 433 224 556. On file here: the ATO Payday Super work, the 92% evidence-automation cut, ANZ telemetry, leadership style, stack, and availability.';
-
-/**
- * The introduction. Written to what recruiters and hiring managers say they
- * decide on in the first sentence (present role and location first, then one
- * checkable number, then an offer of what to ask), with the synthetic-stand-in
- * disclosure stated once as a clause and never hedged. Every fact traces to
- * content/experience.ts; the research and its sources are recorded in
- * docs/delivery/evidence/v9-20260904T2312Z/B-research/01-employer-expectations.md.
- *
- * 2026-09-06 (t_w1_r2c, adversarial review F7): the phrase "his AI clone" was
- * retired from all three variants in favour of "a synthetic stand-in for him",
- * so the introduction no longer contradicts the panel's own disclosure two
- * lines below it. `public/assets/minivic-greeting.txt` follows the text, as
- * MV-GREET-01 requires. **The shipped MP3 still SPEAKS the previous sentence**
- * — `greetingSpokenText` in app/data/generated/greeting-asset.ts is the
- * generation run's untouched record of that — because re-rendering it is a paid
- * ElevenLabs call and therefore an Owner cost gate (CLAUDE.md), not something
- * an autonomous lane may spend. Closing it is one command once approved:
- * `npx tsx scripts/generate-cloned-greeting.ts`, which rewrites the MP3, the
- * transcript and the digest together.
- */
-export const GREETING: Record<PersonaMode, string> = {
-  hiring:
-    "I'm Vikram — a synthetic stand-in for him, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across up to 40 practitioners. Ask about availability, the ATO work, or how I lead.",
-  engineering:
-    "I'm Vikram — a synthetic stand-in for him, answering from his CV and repositories. Latest build: ATO mainframe test-evidence automation, 200+ SIT scenarios cut from ~3 hours to ~15 minutes each (≈92%) with REXX, SMF and SDSF and zero new InfoSec approvals. At ANZ: WebSocket telemetry holding P95 under 200 ms across 10,000+ devices. Ask about the stack, LLM evals, or trade-offs.",
-  story:
-    "I'm Vikram — a synthetic stand-in for him, telling it the way he would. Latest chapter: a SIT window needing 75+ hours of manual evidence against 64 available, closed by a six-day harness build and a war room that produced a binding recommendation in under three hours. Sixteen years of those, MYOB in 2010 to the ATO now. Ask for one.",
-};
 
 export const knowledgeBase: KnowledgeEntry[] = [
   // ── 1. Current role ────────────────────────────────────────────────────
@@ -79,15 +42,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'about your ato',
     ],
     answer:
-      "I'm currently the Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program in Melbourne (March 2026 – present), working on the NTP and Distribution UI features. I lead the Agile Kookaburras squad — one of eight squads on the program — owning sprint cadence, PI planning across PI 47–48, capacity management, and executive status reporting. Recent highlights include steering Distribution UI feature delivery past 95% completion and unblocking stalled NTP function testing by escalating L2 environment instability and brokering targeted SME enablement.",
-    personaVariants: {
-      hiring:
-        "I'm the Scrum Master / Project Manager on the ATO's Payday Super program (March 2026 – present), leading the Agile Kookaburras squad — one of eight squads delivering NTP and Distribution UI capabilities. I own sprint cadence, PI planning (PI 47–48), capacity management, and executive reporting, and I've driven Distribution UI delivery past 95% completion while unblocking stalled NTP testing. It's a high-visibility government reform program, and I'm accountable for keeping delivery on track end to end.",
-      engineering:
-        "I run agile delivery for the Agile Kookaburras squad on the ATO's Payday Super program — NTP and Distribution UI features, one of eight squads. Beyond the Scrum Master remit, I architected the program's COBOL/mainframe test-evidence automation (REXX, SMF, SDSF, PCOMM, PowerShell, VBA) covering 200+ SIT/E2E scenarios, and I maintain full Azure DevOps traceability across the test scope. PI planning runs across PI 47–48; I also handle the L2 environment escalations when testing stalls.",
-      story:
-        "In March 2026 I joined the ATO's Payday Super program as Scrum Master / Project Manager for a squad called the Agile Kookaburras — one of eight squads rebuilding how superannuation gets delivered. Within weeks I was deep in PI planning for PI 47–48, untangling a stalled NTP test phase, and pushing Distribution UI delivery past 95%. Government reform programs move carefully, but I found the levers that move them faster.",
-    },
+      "I'm the Scrum Master / Project Manager on the ATO's Payday Super program (March 2026 – present), leading the Agile Kookaburras squad — one of eight squads delivering NTP and Distribution UI capabilities. I own sprint cadence, PI planning (PI 47–48), capacity management, and executive reporting, and I've driven Distribution UI delivery past 95% completion while unblocking stalled NTP testing. It's a high-visibility government reform program, and I'm accountable for keeping delivery on track end to end.",
   },
 
   // ── 2. Payday Super / NTP ──────────────────────────────────────────────
@@ -126,15 +81,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'e2e',
     ],
     answer:
-      "At the ATO I architected the Payday Super program's COBOL/mainframe test-evidence automation covering 200+ SIT/E2E scenarios across all eight squads, cutting evidence effort from ~3 hours to ~15 minutes per scenario — a roughly 92% reduction. The toolchain (REXX, SMF, SDSF, PCOMM, PowerShell, VBA) required zero new InfoSec approvals, which is what made it deployable inside a government security envelope. I converted a mathematically infeasible SIT window — 75+ hours of manual evidence per team against 64 available hours — into an achievable plan via a six-day tiered harness build with a formal go/no-go gate and a four-level contingency ladder. The cross-discipline war room I convened produced a binding automation recommendation in under three hours.",
-    personaVariants: {
-      hiring:
-        "My standout recent result: I turned an impossible test deadline at the ATO into a delivered outcome. The SIT phase required 75+ hours of manual test evidence per team against only 64 available hours — mathematically infeasible. I architected an automation approach that cut evidence effort by about 92% (from ~3 hours to ~15 minutes per scenario) across 200+ scenarios and eight squads, secured endorsement through a war room that reached a binding decision in under three hours, and did it all without a single new InfoSec approval — meaning no procurement or security delays.",
-      engineering:
-        "The constraint was brutal: 200+ SIT/E2E scenarios on a COBOL/mainframe estate, ~3 hours of manual evidence capture each, and a hard rule that nothing new could go through InfoSec approval. So I built the harness entirely from already-approved tooling: REXX execs driving SDSF and SMF extracts on the host, PCOMM for screen-level capture, PowerShell and VBA on the workstation side for collation and formatting. Six-day tiered build, formal go/no-go gate, four-level contingency ladder if any tier slipped. Result: ~15 minutes per scenario, ≈92% effort reduction, across all eight squads.",
-      story:
-        "The math said we'd already failed: 75+ hours of manual test evidence per team, 64 hours available. People were talking about descoping. I asked a different question — what if no human captured evidence at all? In six days we built a tiered automation harness from tools the ATO had already approved (REXX, SMF, SDSF, PCOMM, PowerShell, VBA), so InfoSec never had to say yes to anything new. I pulled the sceptics into one war room, and in under three hours we had a binding recommendation. Three hours per scenario became fifteen minutes, and the deadline that couldn't be met, was.",
-    },
+      "My standout recent result: I turned an impossible test deadline at the ATO into a delivered outcome. The SIT phase required 75+ hours of manual test evidence per team against only 64 available hours — mathematically infeasible. I architected an automation approach that cut evidence effort by about 92% (from ~3 hours to ~15 minutes per scenario) across 200+ scenarios and eight squads, secured endorsement through a war room that reached a binding decision in under three hours, and did it all without a single new InfoSec approval — meaning no procurement or security delays.",
   },
 
   // ── 4. Change request / governance ─────────────────────────────────────
@@ -215,15 +162,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'how do you lead',
     ],
     answer:
-      "At ANZ I led 5+ cross-functional squads with up to 40 onsite and offshore practitioners, managing a program portfolio valued at over $5M with 100% compliance to enterprise standards and risk frameworks. I ran executive workshops for 40+ leaders that improved strategic decision clarity by roughly 55%. Today I lead the Agile Kookaburras squad at the ATO within an eight-squad program. My style is to set a steady cadence, give people clear ownership, and personally take on the systemic blockers — escalations, environment issues, automation — so the team can focus on delivery.",
-    personaVariants: {
-      hiring:
-        "I've led at genuine scale: 5+ cross-functional squads and up to 40 onsite and offshore practitioners at ANZ, with a $5M+ program portfolio delivered at 100% compliance to enterprise risk frameworks. Executive workshops I ran for 40+ leaders improved strategic decision clarity by about 55%. Right now I lead one of eight squads on the ATO's Payday Super program. I keep teams shipping by owning the blockers myself — escalations, capacity fights, tooling — rather than delegating the hard conversations.",
-      engineering:
-        "I lead like an engineer: 5+ squads and up to 40 onsite/offshore practitioners at ANZ, but my management tooling is automation, not status meetings. I built a JIRA analytics dashboard (Next.js/Supabase) for sprint velocity and LLM-generated retro insights, and at the ATO I removed my teams' single biggest time sink by automating mainframe test evidence (≈92% effort reduction). Distributed teams work when the delivery system itself is instrumented — that's what I build.",
-      story:
-        "The thing I learned leading up to 40 people across onsite and offshore teams at ANZ is that leadership is mostly about what you remove, not what you add. Every squad has one systemic blocker eating their week — an environment that keeps falling over, evidence capture that takes three hours a pop. I make it my job to find that blocker and kill it. At the ATO that meant personally escalating L2 instability and building the automation that gave eight squads their time back.",
-    },
+      "I've led at genuine scale: 5+ cross-functional squads and up to 40 onsite and offshore practitioners at ANZ, with a $5M+ program portfolio delivered at 100% compliance to enterprise risk frameworks. Executive workshops I ran for 40+ leaders improved strategic decision clarity by about 55%. Right now I lead one of eight squads on the ATO's Payday Super program. I keep teams shipping by owning the blockers myself — escalations, capacity fights, tooling — rather than delegating the hard conversations.",
   },
 
   // ── 7. Biggest achievement ─────────────────────────────────────────────
@@ -241,15 +180,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'accomplishment',
     ],
     answer:
-      "The one I'd lead with: converting a mathematically infeasible SIT window at the ATO into a delivered outcome. The numbers said 75+ hours of manual test evidence per team against 64 available hours. I architected mainframe test-evidence automation across 200+ scenarios and eight squads that cut effort per scenario from ~3 hours to ~15 minutes (≈92%), built with zero new InfoSec approvals, and got it endorsed through a war room that reached a binding recommendation in under three hours. Close second: sustaining P95 latency under 200 ms across 10,000+ concurrent devices for real-time banking telemetry at ANZ.",
-    personaVariants: {
-      hiring:
-        "Saving a government program's test phase that was mathematically infeasible — 75+ hours of required work against 64 available — by architecting automation that cut effort by 92% across eight squads, with zero new security approvals and executive endorsement secured in under three hours. It demonstrates the three things I'm hired for: diagnosing the real constraint, engineering the fix, and driving the governance to land it.",
-      engineering:
-        "Technically, the ATO mainframe evidence harness: 200+ SIT/E2E scenarios automated using only pre-approved tools (REXX, SMF, SDSF, PCOMM, PowerShell, VBA), ~3 hours down to ~15 minutes per scenario, built in a six-day tiered plan with a go/no-go gate and four contingency levels. For pure engineering difficulty, though, the ANZ real-time telemetry platform holding P95 under 200 ms at 10,000+ concurrent devices is the one I'd nerd out about.",
-      story:
-        "There's a moment in every rescue where the room stops believing it's doomed. For me that was the ATO war room — three hours, every discipline at the table, and at the end a binding decision to automate our way out of an impossible 64-hour test window. Six days later the harness was live; three-hour evidence jobs took fifteen minutes. Eight squads got their schedule back. That's the achievement I'd tell at a dinner table.",
-    },
+      "Saving a government program's test phase that was mathematically infeasible — 75+ hours of required work against 64 available — by architecting automation that cut effort by 92% across eight squads, with zero new security approvals and executive endorsement secured in under three hours. It demonstrates the three things I'm hired for: diagnosing the real constraint, engineering the fix, and driving the governance to land it.",
   },
 
   // ── 8. Delivery metrics track record ───────────────────────────────────
@@ -378,15 +309,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'mlops',
     ],
     answer:
-      "AI/ML runs through my last decade of work. At ANZ I led delivery of AI/ML solutions including real-time telemetry at P95 under 200 ms across 10,000+ devices. From Jun 2025 to Feb 2026 I ran independent AI consulting: I built a Next.js/Supabase JIRA analytics dashboard with LLM-powered retrospective insights, an LLM evaluation stack (Langfuse + Phoenix) that reduced simulated error-budget breaches by 38%, 'AI Resume Tailor' (NLP + prompt engineering), and 'AI Gmail Manager', an autonomous TypeScript inbox-triage agent. My toolkit covers LLM pipelines (LangChain, Langfuse, Phoenix), MLOps, real-time telemetry, and data architecture — and even back at Microsoft (2015–2016) I delivered a gap analysis for Azure ML telemetry.",
-    personaVariants: {
-      hiring:
-        "I bring practical, shipped AI experience rather than slideware. I led AI/ML solution delivery at ANZ for critical banking services, then spent Jun 2025 – Feb 2026 as an independent AI consultant building production tooling: an LLM evaluation stack that cut simulated error-budget breaches by 38%, an analytics dashboard generating LLM-powered sprint retrospectives, and autonomous LLM agents for resume tailoring and inbox triage. I know how to take AI from prototype to governed, measured production — which is exactly the gap most organisations are struggling with.",
-      engineering:
-        "Hands-on across the LLM stack: LangChain pipelines, Langfuse + Phoenix for tracing and evals (38% reduction in simulated error-budget breaches), prompt engineering, and autonomous agents in TypeScript ('AI Gmail Manager' does triage, sentiment analysis, and draft generation). Infrastructure side: a Node.js/Express public-key server for API signing with full test coverage, Next.js/Supabase for the JIRA analytics dashboard, plus MLOps and real-time telemetry from the ANZ years (WebSocket, P95 < 200 ms at 10k+ concurrent devices).",
-      story:
-        "When I left ANZ in mid-2025 after eight years, I gave myself a clear objective: get genuinely hands-on with the LLM era instead of managing it from a distance. Eight months later I'd shipped an eval stack with Langfuse and Phoenix that cut simulated error-budget breaches by 38%, autonomous agents that triage inboxes and tailor resumes, and a dashboard that writes sprint retrospectives with an LLM. The lesson: AI quality is an engineering discipline, not a demo.",
-    },
+      "I bring practical, shipped AI experience rather than slideware. I led AI/ML solution delivery at ANZ for critical banking services, then spent Jun 2025 – Feb 2026 as an independent AI consultant building production tooling: an LLM evaluation stack that cut simulated error-budget breaches by 38%, an analytics dashboard generating LLM-powered sprint retrospectives, and autonomous LLM agents for resume tailoring and inbox triage. I know how to take AI from prototype to governed, measured production — which is exactly the gap most organisations are struggling with.",
   },
 
   // ── 13. LLM evaluation / quality work ──────────────────────────────────
@@ -449,15 +372,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'd3',
     ],
     answer:
-      "My core stack: Python and TypeScript, with React/Next.js on the front end and Node.js services behind it, backed by Postgres/Supabase. Infrastructure-wise I work across Kubernetes, Docker, and Terraform on GCP, AWS, and Azure, with solid CI/CD and DevOps practice. The unusual entry on the list is mainframe test automation — REXX and JCL — which I used to automate 200+ test scenarios at the ATO. On the AI side: LLM pipelines with LangChain, Langfuse, and Phoenix, plus MLOps and real-time telemetry. D3 rounds it out for data visualisation.",
-    personaVariants: {
-      hiring:
-        "I'm genuinely full-stack: Python, TypeScript, React/Next.js, and cloud-native infrastructure across AWS, GCP, and Azure (Kubernetes, Docker, Terraform), plus AI/LLM pipelines with LangChain, Langfuse, and Phoenix. What makes the profile rare is the range — I've shipped everything from mainframe REXX automation at the ATO to real-time AI telemetry at ANZ. You're hiring someone who can review the architecture and also present it to the steering committee.",
-      engineering:
-        "Languages: Python, TypeScript (plus REXX and JCL when the mainframe calls). Frontend: React/Next.js, D3 for visualisation, Framer Motion for animation. Backend: Node.js/Express, Postgres/Supabase. Infra: Kubernetes, Docker, Terraform across GCP/AWS/Azure, with CI/CD throughout. AI: LangChain pipelines, Langfuse + Phoenix for evals and observability, MLOps. Recent oddball credit: PCOMM, SDSF, and SMF scripting for ATO mainframe test-evidence capture, glued with PowerShell and VBA.",
-      story:
-        "My stack tells my career story in layers. The mainframe layer — REXX, JCL, SDSF — from automating government test evidence. The banking layer — .NET/Azure, real-time WebSocket telemetry — from eight years at ANZ. The modern layer — Python, TypeScript, Next.js, Kubernetes, Terraform across three clouds. And the newest stratum: LangChain, Langfuse, and Phoenix from my AI consulting tour. I never deleted a layer; each one keeps paying rent.",
-    },
+      "I'm genuinely full-stack: Python, TypeScript, React/Next.js, and cloud-native infrastructure across AWS, GCP, and Azure (Kubernetes, Docker, Terraform), plus AI/LLM pipelines with LangChain, Langfuse, and Phoenix. What makes the profile rare is the range — I've shipped everything from mainframe REXX automation at the ATO to real-time AI telemetry at ANZ. You're hiring someone who can review the architecture and also present it to the steering committee.",
   },
 
   // ── 15. Mainframe / COBOL ──────────────────────────────────────────────
@@ -562,13 +477,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'licenses',
     ],
     answer:
-      "The credential list is short and exact. Held: Certified Scrum Master (CSM), Scrum Alliance — my CV lists the credential without an award date, so I quote it undated rather than guess; ask and I'll send the certificate. In progress, not yet awarded: AWS and GCP cloud/data certifications. Dated academic credentials: Master of Computer Science (Honours), Monash University, 2010, and Bachelor of Engineering in Computer Science, University of Melbourne, 2007. That's the complete list — one certification held, two in progress, two degrees.",
-    personaVariants: {
-      hiring:
-        "One certification held and two in progress, plus two dated degrees. Held: Certified Scrum Master (CSM) from the Scrum Alliance — the CV carries it without an award date, so I won't invent one; I'll send the certificate on request. In progress: AWS and GCP cloud/data certifications, which formalise multi-cloud work I've been doing since the ANZ modernisation. Degrees: Master of Computer Science (Honours), Monash University, 2010; Bachelor of Engineering in Computer Science, University of Melbourne, 2007.",
-      engineering:
-        "Formal credentials: CSM (Scrum Alliance, undated on my CV), AWS and GCP cloud/data certifications in progress, MCompSci (Hons) Monash 2010, BE Computer Science University of Melbourne 2007. The multi-cloud work predates the certificates — Kubernetes, Docker and Terraform across GCP, AWS and Azure, and the .NET/Azure core-banking modernisation at ANZ that cut delivery time by more than 30%. The paper is catching up with the practice, not the other way round.",
-    },
+      "One certification held and two in progress, plus two dated degrees. Held: Certified Scrum Master (CSM) from the Scrum Alliance — the CV carries it without an award date, so I won't invent one; I'll send the certificate on request. In progress: AWS and GCP cloud/data certifications, which formalise multi-cloud work I've been doing since the ANZ modernisation. Degrees: Master of Computer Science (Honours), Monash University, 2010; Bachelor of Engineering in Computer Science, University of Melbourne, 2007.",
   },
 
   // ── 19. Availability & notice period ───────────────────────────────────
@@ -608,15 +517,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'opportunities',
     ],
     answer:
-      "I'm actively exploring Scrum Master and delivery-leadership roles in Melbourne. I'm currently leading the Australian Taxation Office's Payday Super program as Scrum Master / Project Manager, so a start is a conversation about timing rather than an immediate jump — but the right opportunities are worth planning early. The best way to explore fit is to contact me directly: sarkar.vikram@gmail.com or +61 433 224 556.",
-    personaVariants: {
-      hiring:
-        "I'm actively exploring Scrum Master / Project Manager and delivery-leadership roles in Melbourne, especially where AI delivery leadership meets complex programs. I'm currently engaged at the ATO on the Payday Super program, so timing is a conversation rather than an immediate start — but I'd genuinely welcome the discussion early. Reach out directly at sarkar.vikram@gmail.com or +61 433 224 556 and we can talk timing, scope, and fit.",
-      engineering:
-        "Status: currently committed to the ATO's Payday Super program. That said, I keep an open channel for interesting problems — particularly LLM platforms, delivery automation, and modernisation work. Email sarkar.vikram@gmail.com with what you're building and we'll see if the timelines and the problem are a match.",
-      story:
-        "Right now my days belong to the ATO and the Payday Super program — there's still a reform to land. But every chapter of my career started as a conversation that happened earlier than the calendar strictly allowed. If you think there's a story worth writing together, email sarkar.vikram@gmail.com or call +61 433 224 556.",
-    },
+      "I'm actively exploring Scrum Master / Project Manager and delivery-leadership roles in Melbourne, especially where AI delivery leadership meets complex programs. I'm currently engaged at the ATO on the Payday Super program, so timing is a conversation rather than an immediate start — but I'd genuinely welcome the discussion early. Reach out directly at sarkar.vikram@gmail.com or +61 433 224 556 and we can talk timing, scope, and fit.",
   },
 
   // ── 20. Services / engagements ──────────────────────────────────────────
@@ -648,15 +549,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'your services',
     ],
     answer:
-      "I work across three engagement models. Advisory: fractional delivery advisor or AI strategy consultant, helping organisations design LLM deployment roadmaps, evaluate vendor tools, or stand up MLOps practices — typically remote with periodic on-site. Embedded delivery lead: joining a program as Scrum Master / Project Manager or AI delivery lead, owning sprint cadence, PI planning, and cross-team coordination — currently what I do for the ATO. Build / hands-on architect: designing and building the system myself — automation harnesses, LLM eval stacks, real-time telemetry dashboards, or AI agents — scoped, priced, and delivered to a measurable outcome. The right model depends on what you're trying to ship. Email sarkar.vikram@gmail.com with a sketch of the need and I'll tell you which model fits.",
-    personaVariants: {
-      hiring:
-        "I offer three engagement models depending on what you need. Advisory: I help teams design their AI delivery roadmap, evaluate tools, or stand up MLOps — fractional, typically remote, highly flexible. Embedded delivery lead: I join your program as Scrum Master / Project Manager — what I'm doing right now at the ATO — owning sprint cadence, PI planning, and cross-squad dependency management. Build / hands-on: I architect and ship the system myself — automation, LLM evals, dashboards — scoped to a measurable outcome. For a permanent role, my experience spans sixteen years across government, banking, and AI consulting with a track record of delivering at scale.",
-      engineering:
-        "Three models, all evidence-led. Fractional advisory — AI/ML roadmap, vendor evaluation, MLOps setup; I typically run this remote with targeted on-site sessions. Embedded delivery — Scrum Master / PM role owning the full delivery cycle (current ATO engagement is this model). Hands-on build — I write the code (TypeScript/Python), architect the infrastructure (Kubernetes/Docker/Terraform), and ship a measured outcome (92% test-effort reduction is the kind of number I commit to). The model selection is about constraint fit: ask me at sarkar.vikram@gmail.com.",
-      story:
-        "When someone asks what I do, I point to three things. Sometimes I advise — helping a team see the AI roadmap clearly, picking tools, standing up the MLOps practice. Sometimes I embed — Scrum Master on a government program, owning the cadence, the PI planning, the messy cross-squad dependencies. And sometimes I build — seven days of REXX and PowerShell turning an impossible test deadline into a delivered outcome. The best engagements blend all three. If you know which one you need, email sarkar.vikram@gmail.com and we'll shape the engagement around the outcome.",
-    },
+      "I offer three engagement models depending on what you need. Advisory: I help teams design their AI delivery roadmap, evaluate tools, or stand up MLOps — fractional, typically remote, highly flexible. Embedded delivery lead: I join your program as Scrum Master / Project Manager — what I'm doing right now at the ATO — owning sprint cadence, PI planning, and cross-squad dependency management. Build / hands-on: I architect and ship the system myself — automation, LLM evals, dashboards — scoped to a measurable outcome. For a permanent role, my experience spans sixteen years across government, banking, and AI consulting with a track record of delivering at scale.",
   },
 
   // ── 21. Rates / salary ─────────────────────────────────────────────────
@@ -800,15 +693,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'strengths',
     ],
     answer:
-      "The honest answer is that it depends on the problem. What I bring is sixteen years of delivery leadership and enough engineering depth to fix the thing that is actually blocking delivery rather than report it. At the ATO I didn't just report that the test window was infeasible — I architected the automation that made it feasible, cutting effort 92% with zero new security approvals. At ANZ I led a $5M+ portfolio and 40+ practitioners while owning the technical vision for cloud modernisation. And I bring current, hands-on AI capability — LLM pipelines, evaluation stacks, autonomous agents — not just AI strategy slides. I measure what I claim, so you can check it.",
-    personaVariants: {
-      hiring:
-        "Three reasons. First, proven outcomes at scale: 92% test-effort reduction at the ATO, >30% delivery efficiency gains at ANZ, a $5M+ portfolio at 100% compliance. Second, range: I'm credible with executives, engineers, and auditors in the same week — I write the change request and the REXX script. Third, currency: while many delivery leaders watched the AI wave, I spent eight months hands-on building LLM evaluation stacks and autonomous agents. You get a leader who de-risks delivery because he can see all the way down.",
-      engineering:
-        "Because I'm the delivery lead who won't make you explain why the build is red. I've shipped real-time telemetry at P95 under 200 ms for 10k+ devices, automated a mainframe test estate with REXX/SDSF/SMF, and built LLM eval pipelines with Langfuse and Phoenix. I translate engineering reality into executive decisions without distorting it in either direction — and when something's truly stuck, I'm one of the people who can sit down and unstick it.",
-      story:
-        "Every organisation I've joined had a problem everyone had agreed was unsolvable — the infeasible test window at the ATO, the latency ceiling at ANZ. My pattern is the same each time: refuse the framing, find the constraint that actually binds, engineer around it, and bring the decision-makers along with numbers. Sixteen years in, that is the work I am best at: the problem a team has stopped arguing about because they have accepted it.",
-    },
+      "Three reasons. First, proven outcomes at scale: 92% test-effort reduction at the ATO, >30% delivery efficiency gains at ANZ, a $5M+ portfolio at 100% compliance. Second, range: I'm credible with executives, engineers, and auditors in the same week — I write the change request and the REXX script. Third, currency: while many delivery leaders watched the AI wave, I spent eight months hands-on building LLM evaluation stacks and autonomous agents. You get a leader who de-risks delivery because he can see all the way down.",
   },
 
   // ── 24. Weaknesses / growth areas ──────────────────────────────────────
@@ -896,15 +781,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'how do you work',
     ],
     answer:
-      "This site is built with Next.js 14 and React 18 in TypeScript, animated with Framer Motion, with the starfield background rendered in React Three Fiber. It's deployed as a static export on Firebase Hosting, with two Cloud Functions behind it for chat and speech. I (MiniVic) answer through a server-side model call at /api/chat — the key never reaches the browser — grounded strictly in a curated knowledge base of verified facts, and if that call is unreachable I fall back to deterministic keyword matching over the same facts, so I never go dark and never invent anything.",
-    personaVariants: {
-      hiring:
-        "The site itself is a portfolio piece: Next.js 14, React 18, TypeScript, Framer Motion animations, and a React Three Fiber starfield, shipped as a static export on Firebase. The considered bit is me — MiniVic answers through a server-side model call locked to a curated fact base, with a deterministic offline fallback, so there's no server to maintain and no invented claims. It shows how Vikram thinks: maximum effect, minimum operational surface.",
-      engineering:
-        "Stack: Next.js 14 (static export), React 18, strict TypeScript, Framer Motion for animation, React Three Fiber for the WebGL starfield, hosted on Firebase. MiniVic is a two-tier brain: tier 1 posts the grounded system prompt and history to /api/chat, a Firebase Function that keeps the model key in Secret Manager and is reached through a Hosting rewrite; tier 2 is a deterministic scorer — tokenize the query, score keyword hits (phrases 3 points, single words 1), return the best entry above threshold. No key in the bundle, no hallucination surface beyond the fact base.",
-      story:
-        "Vikram wanted a portfolio that could answer questions at 2 a.m. without running a server of his own. So he built this: Next.js 14 and React 18 statically exported to Firebase, a starfield in React Three Fiber, Framer Motion easing everything into place — and me, MiniVic, a model call that lives server-side and stays locked to a hand-written fact base, with a keyword-matching fallback for when the network is against us. It's the ATO automation philosophy applied to his own website: engineer the constraint away.",
-    },
+      "The site itself is a portfolio piece: Next.js, React and TypeScript with Motion for animation, shipped as a static export on Firebase. The considered bit is me — MiniVic answers through a server-side model call locked to a curated fact base, with a deterministic offline fallback, so there's no server to maintain and no invented claims. It shows how Vikram thinks: maximum effect, minimum operational surface.",
   },
 
   // ── 28. What makes him different ───────────────────────────────────────
@@ -922,15 +799,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'edge',
     ],
     answer:
-      "The combination of engineering depth and executive communication. Plenty of people can write REXX automation or run a war room or author an executive change request — almost nobody does all three in the same fortnight, which is literally what I did at the ATO. I can hold P95 latency budgets and person-day capacity models in the same head, then explain both to a steering committee in plain language. That dual fluency is why my escalations land, my change requests get approved, and my teams trust the plan.",
-    personaVariants: {
-      hiring:
-        "Most candidates are either delivery leaders who need engineers to tell them what's possible, or engineers who need someone else to carry the message upstairs. I'm the rare both: I authored the executive change request that re-baselined test capacity from 30 to 90 person-days, and I architected the mainframe automation it depended on. You're not hiring a translator between business and engineering — you're hiring someone fluent as a native in both.",
-      engineering:
-        "I'm the person who can defend your architecture in the steering committee without dumbing it down or hiding the trade-offs. My range is genuinely unusual — REXX on z/OS through React Three Fiber on the web, LLM evals with Langfuse/Phoenix, P95 latency engineering at banking scale — but the differentiator is that I convert that depth into decisions executives can actually make. Engineers get a leader who understands them; executives get telemetry they can trust.",
-      story:
-        "Early in my career I noticed the same tragedy in every organisation: the engineers who knew the truth couldn't get it heard, and the leaders who could be heard didn't know the truth. I decided to be the person who closes that loop. Sixteen years on, it's my signature — the war room where sceptical specialists and anxious executives reached one binding decision in under three hours happened because someone in the room spoke both languages fluently.",
-    },
+      "Most candidates are either delivery leaders who need engineers to tell them what's possible, or engineers who need someone else to carry the message upstairs. I'm the rare both: I authored the executive change request that re-baselined test capacity from 30 to 90 person-days, and I architected the mainframe automation it depended on. You're not hiring a translator between business and engineering — you're hiring someone fluent as a native in both.",
   },
 
   // ── 29. Independent consulting period ──────────────────────────────────
@@ -996,15 +865,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'as a consultant',
     ],
     answer:
-      "I offer three main service areas, all backed by sixteen years of measured delivery. First, AI/ML Solutions Architecture — I design and deliver LLM pipelines (LangChain, Langfuse, Phoenix), evaluation stacks, autonomous agents, and real-time telemetry platforms drawing on my experience shipping AI at ANZ and as an independent consultant. Second, Agile Program Delivery — I lead squads through complex government and enterprise programs, owning sprint cadence, PI planning, capacity management, and executive reporting, with a track record that includes steering a high-visibility government reform past 95% delivery completion. Third, Delivery Automation — I build the tooling that removes systemic friction from your delivery pipeline, whether that's mainframe test-evidence harnesses (92% effort reduction at the ATO), CI/CD instrumentation, or LLM-powered analytics dashboards. Every engagement is grounded in measured outcomes, not slideware.",
-    personaVariants: {
-      hiring:
-        "My services break into three pillars, all measured. AI/ML Solutions: LLM pipeline architecture, evaluation stacks (Langfuse/Phoenix), autonomous agents, and real-time telemetry. Agile Delivery: I run squads through complex programs — sprint cadence, PI planning, capacity management, and governance — having led a $5M+ portfolio at ANZ and currently delivering for the ATO. Delivery Automation: I build the tooling that removes friction permanently — the ATO evidence harness cut effort 92%, and my JIRA analytics dashboard gives execs real sprint telemetry. I measure everything I deliver, so you'll know what you're getting.",
-      engineering:
-        "Three services, each with shipped proof. AI Architecture: LLM pipelines with LangChain/Langfuse/Phoenix, real-time telemetry (WebSocket, P95 under 200 ms at 10k+ devices), MLOps, and autonomous TypeScript agents — I built the eval stack that cut simulated error-budget breaches 38%. Delivery Leadership: I run squads at scale (5+ cross-functional, 40+ practitioners, $5M+ portfolio) following SAFe/PI planning cadence with full Azure DevOps traceability. Automation Engineering: REXX/mainframe harnesses, CI/CD instrumentation, and analytics dashboards — I automate the constraints that make delivery infeasible. I'm the person who writes the change request and the script.",
-      story:
-        "Every client I work with has a problem they've accepted as unsolvable — a test window that's mathematically infeasible, a platform that can't hit its latency budget. My offering is simple: I find the real constraint, engineer around it, and bring the decision-makers along with numbers. Sometimes that looks like AI architecture (LLM pipelines, eval stacks, autonomous agents), sometimes program delivery (squads, PI planning, governance), and sometimes automation (mainframe harnesses, CI/CD tooling). The common thread: measured outcomes, not slideware.",
-    },
+      "My services break into three pillars, all measured. AI/ML Solutions: LLM pipeline architecture, evaluation stacks (Langfuse/Phoenix), autonomous agents, and real-time telemetry. Agile Delivery: I run squads through complex programs — sprint cadence, PI planning, capacity management, and governance — having led a $5M+ portfolio at ANZ and currently delivering for the ATO. Delivery Automation: I build the tooling that removes friction permanently — the ATO evidence harness cut effort 92%, and my JIRA analytics dashboard gives execs real sprint telemetry. I measure everything I deliver, so you'll know what you're getting.",
   },
 
   // ── 32. Engagement model ─────────────────────────────────────────────────
@@ -1032,15 +893,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'hire you',
     ],
     answer:
-      "My engagement model starts with a conversation — not a sales pitch. Email me at sarkar.vikram@gmail.com with a sketch of what you need (scope, timeline, the problem you're solving) and I'll respond with a straight answer about fit, approach, and timing. I'm comfortable across advisory engagements, delivery leadership roles, and hands-on builds — the scope and pricing vary accordingly. Every engagement produces measured outcomes, and I'm happy to structure around deliverables or time-and-materials depending on what gives you the most confidence. Based in Melbourne, I work onsite, hybrid, or remote depending on what the engagement needs.",
-    personaVariants: {
-      hiring:
-        "The starting point is a conversation — email me at sarkar.vikram@gmail.com with an outline of the role or engagement you have in mind. I'll respond with a candid read on fit and timing. I'm currently delivering for the ATO's Payday Super program, so my availability is a conversation rather than an immediate start, but the right opportunities are worth planning early. I work across advisory, delivery leadership, and hands-on builds; scope and structure follow from what you actually need.",
-      engineering:
-        "Start with a technical brief — email sarkar.vikram@gmail.com with the problem you're trying to solve and the constraints you're working within. I'll respond with an honest read on approach, architecture, and timeline. I structure engagements around deliverables or time-and-materials, whichever gives you the cleaner risk profile. Currently committed to the ATO but open to discussing upcoming work — the best architectures get designed before the clock is ticking.",
-      story:
-        "Every engagement I've ever taken started the same way: someone emailed me with a problem. Not a job description, not an RFP — a problem. Email sarkar.vikram@gmail.com with yours, and I'll reply with what I think. We'll figure out scope, structure, and timing from there. I'm based in Melbourne but work onsite, hybrid, or remote — the working model follows the work, not the other way around.",
-    },
+      "The starting point is a conversation — email me at sarkar.vikram@gmail.com with an outline of the role or engagement you have in mind. I'll respond with a candid read on fit and timing. I'm currently delivering for the ATO's Payday Super program, so my availability is a conversation rather than an immediate start, but the right opportunities are worth planning early. I work across advisory, delivery leadership, and hands-on builds; scope and structure follow from what you actually need.",
   },
 
   // ── 33. AI solutions architecture ────────────────────────────────────────
@@ -1063,15 +916,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'architectural approach',
     ],
     answer:
-      "My AI architecture philosophy is: measure everything, degrade gracefully, and never ship a black box. I build LLM pipelines with LangChain for orchestration, Langfuse for tracing, and Phoenix for observability — my evaluation stack reduced simulated error-budget breaches by 38%. For real-time systems I use WebSocket telemetry with defined latency budgets (I held P95 under 200 ms across 10,000+ concurrent devices at ANZ). Every AI component has a deterministic fallback — the same principle behind this chatbot, which makes its model call server-side, grounded in a curated knowledge base, with a local keyword-matching fallback so it never fabricates. On the infrastructure side I work with Kubernetes, Docker, and Terraform across GCP, AWS, and Azure, with CI/CD throughout. The architecture is always shaped by the constraint: at the ATO, the constraint was zero new InfoSec approvals, so I built the mainframe automation entirely from already-approved tools. Different constraint, different architecture — same principle.",
-    personaVariants: {
-      hiring:
-        "I architect AI systems the way I deliver programs: measured, governed, and grounded in constraints. My LLM stack is LangChain for pipelines, Langfuse for tracing, Phoenix for observability — and I validate every component against error budgets (38% breach reduction in my evaluation stack). For real-time AI I define latency budgets upfront — at ANZ that meant P95 under 200 ms across 10,000+ concurrent devices. The non-negotiable is deterministic fallback: every AI surface degrades to a known-good path, which is how this chatbot works — a server-side model call grounded in a curated fact base, with a local matcher behind it. Infrastructure is Kubernetes, Docker, Terraform across GCP/AWS/Azure, all CI/CD automated.",
-      engineering:
-        "Stack: LangChain pipelines with Langfuse tracing and Phoenix observability on the LLM side. Real-time: WebSocket telemetry with P95 latency budgets (proven at 10k+ concurrent, sub-200 ms). Deterministic fallback everywhere — server-side model call → keyword matcher with a typed KnowledgeEntry[] base, so the system never fabricates. Infra: Kubernetes, Docker, Terraform across GCP/AWS/Azure, CI/CD throughout. My eval stack (Langfuse + Phoenix) reduced simulated breaches 38%. The pattern: instrument first, ship with a safety net, measure continuously. Same approach whether it's a chatbot, a telemetry platform, or a mainframe harness built from REXX and SDSF inside a zero-new-approvals constraint.",
-      story:
-        "The lesson from sixteen years of building systems is that architecture isn't about the prettiest diagram — it's about what survives contact with reality. At ANZ that meant defining a P95 latency budget and holding it at 200 ms across 10,000+ devices. At the ATO it meant building a mainframe automation harness from tools InfoSec had already approved, because the real constraint wasn't technical — it was procurement. My AI architecture follows the same rule: LangChain for pipelines, Langfuse and Phoenix for visibility, and always, always a deterministic fallback so nothing ships as a black box. The stack changes with the constraint. The principle doesn't.",
-    },
+      "I architect AI systems the way I deliver programs: measured, governed, and grounded in constraints. My LLM stack is LangChain for pipelines, Langfuse for tracing, Phoenix for observability — and I validate every component against error budgets (38% breach reduction in my evaluation stack). For real-time AI I define latency budgets upfront — at ANZ that meant P95 under 200 ms across 10,000+ concurrent devices. The non-negotiable is deterministic fallback: every AI surface degrades to a known-good path, which is how this chatbot works — a server-side model call grounded in a curated fact base, with a local matcher behind it. Infrastructure is Kubernetes, Docker, Terraform across GCP/AWS/Azure, all CI/CD automated.",
   },
 
   // ── 34. Profile summary / "tell me about yourself" ───────────────────────
@@ -1099,15 +944,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'profile',
     ],
     answer:
-      "I'm Vikram Deshpande — Scrum Master / Project Manager and technical delivery leader based in Melbourne, VIC, currently leading agile delivery on the Australian Taxation Office's Payday Super program. Across 15+ years in government, financial services, and telecommunications I've shipped complex systems from mainframe test automation to real-time AI platforms. Four numbers summarise the record: 15+ years in the industry, a $5M+ program portfolio led at ANZ, ≈92% of test-evidence effort cut by the ATO automation harness, and 10,000+ concurrent devices held at P95 under 200 ms. I'm a Certified Scrum Master (Scrum Alliance) with a Master of Computer Science (Honours) from Monash and a BE in Computer Science from the University of Melbourne.",
-    personaVariants: {
-      hiring:
-        "Scrum Master / Project Manager and technical delivery leader, Melbourne-based, 15+ years across government, finance, and telecommunications — currently on the ATO's Payday Super reform program. The short version of my record: a $5M+ portfolio led across 5+ squads and 40+ practitioners at ANZ, ≈92% of test-evidence effort removed at the ATO, and 10,000+ concurrent devices held at P95 under 200 ms. Certified Scrum Master, Master of Computer Science (Honours) from Monash. What I'm hired for is closing the gap between what executives decide and what engineering can actually deliver.",
-      engineering:
-        "Delivery lead who still writes code. Currently Scrum Master / PM at the ATO on Payday Super (NTP and Distribution UI), where I also architected the COBOL/mainframe test-evidence harness — REXX, SMF, SDSF, PCOMM, PowerShell, VBA — across 200+ SIT/E2E scenarios. Before that, nearly eight years at ANZ on real-time WebSocket telemetry (P95 under 200 ms, 10,000+ concurrent devices) and .NET/Azure core-banking modernisation. Between them, eight months building LLM tooling: LangChain pipelines, Langfuse + Phoenix evals, autonomous TypeScript agents. Python and TypeScript primary; Kubernetes, Docker, Terraform across GCP, AWS, Azure.",
-      story:
-        "I started at MYOB in 2010 optimising financial data workflows, and every step since has been the same move at a larger scale: find the thing everyone has accepted as broken, and fix it properly. That took me through InfoCentric, Telstra, Microsoft, and NAB, then nearly eight years at ANZ leading AI/ML delivery and cloud modernisation, then eight self-funded months getting hands-on with LLM engineering, and now the ATO's Payday Super reform. Fifteen-plus years, one habit: refuse the framing, find the constraint that actually binds, and bring the numbers with you.",
-    },
+      "Scrum Master / Project Manager and technical delivery leader, Melbourne-based, 15+ years across government, finance, and telecommunications — currently on the ATO's Payday Super reform program. The short version of my record: a $5M+ portfolio led across 5+ squads and 40+ practitioners at ANZ, ≈92% of test-evidence effort removed at the ATO, and 10,000+ concurrent devices held at P95 under 200 ms. Certified Scrum Master, Master of Computer Science (Honours) from Monash. What I'm hired for is closing the gap between what executives decide and what engineering can actually deliver.",
   },
 
   // ── 35. Years of experience / career span ────────────────────────────────
@@ -1139,11 +976,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'experienced',
     ],
     answer:
-      "15+ years, from MYOB in May 2010 through to the Australian Taxation Office today, across government, financial services, and telecommunications. The full arc: MYOB (May 2010 – Aug 2011), InfoCentric (Aug 2011 – Nov 2014), Telstra (Nov 2014 – Oct 2015), Microsoft (Oct 2015 – Oct 2016), NAB (Nov 2016 – Sept 2017), ANZ Banking Group (Sept 2017 – Jun 2025), independent AI consulting (Jun 2025 – Feb 2026), and the ATO (March 2026 – present). The longest single tenure is ANZ at nearly eight years, as Senior Delivery Lead / AI-ML Solutions Architect — which is where most of the scale numbers on my CV come from.",
-    personaVariants: {
-      hiring:
-        "15+ years, and the shape matters more than the count: eight roles since May 2010, with nearly eight of those years at ANZ Banking Group (Sept 2017 – Jun 2025) — so I've done long-horizon delivery, not just short engagements. Roughly the last decade has been leadership: program and delivery management at ANZ and NAB, and now Scrum Master / Project Manager at the ATO. The sectors are government, financial services, and telecommunications, all of them regulated, which is why governance and evidence are habits rather than overhead.",
-    },
+      "15+ years, and the shape matters more than the count: eight roles since May 2010, with nearly eight of those years at ANZ Banking Group (Sept 2017 – Jun 2025) — so I've done long-horizon delivery, not just short engagements. Roughly the last decade has been leadership: program and delivery management at ANZ and NAB, and now Scrum Master / Project Manager at the ATO. The sectors are government, financial services, and telecommunications, all of them regulated, which is why governance and evidence are habits rather than overhead.",
   },
 
   // ── 36. Industries & sectors ─────────────────────────────────────────────
@@ -1229,69 +1062,3 @@ export const knowledgeBase: KnowledgeEntry[] = [
       "What's on record is that I'm based in Melbourne, VIC, Australia, and I've worked continuously for Australian employers since May 2010 — MYOB, InfoCentric, Telstra, Microsoft, NAB, ANZ, and now the Australian Taxation Office, which is a federal government engagement. Visa, citizenship, and clearance status aren't details I publish through this synthetic stand-in, and I won't guess at them on Vikram's behalf. Ask him directly at sarkar.vikram@gmail.com or +61 433 224 556 and you'll get a straight answer the same day.",
   },
 ];
-
-/** Minimum score required for matchKnowledge to return an entry. */
-const MATCH_THRESHOLD = 2;
-/** Points awarded when a multi-word keyword phrase appears in the query. */
-const PHRASE_POINTS = 3;
-/** Points awarded when a single-word keyword appears in the query. */
-const WORD_POINTS = 1;
-
-/** Lowercase a string and collapse all non-alphanumeric runs to single spaces. */
-function normalize(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-}
-
-/**
- * Deterministic, dependency-free keyword matcher.
- *
- * Scoring: the query is lowercased and tokenized; for each entry, every
- * multi-word keyword phrase found in the query scores 3 points and every
- * single-word keyword found among the query tokens scores 1 point. The
- * highest-scoring entry is returned if its score meets the threshold of 2;
- * otherwise null (callers should fall back to FALLBACK_ANSWER). Ties resolve
- * to the earlier entry in knowledgeBase, so results are fully deterministic.
- */
-export function matchKnowledge(query: string): KnowledgeEntry | null {
-  const normalized = normalize(query);
-  if (normalized.length === 0) {
-    return null;
-  }
-
-  const paddedQuery = ` ${normalized} `;
-  const tokens = new Set<string>(normalized.split(' '));
-
-  let best: KnowledgeEntry | null = null;
-  let bestScore = 0;
-
-  for (const entry of knowledgeBase) {
-    let score = 0;
-
-    for (const rawKeyword of entry.keywords) {
-      const keyword = normalize(rawKeyword);
-      if (keyword.length === 0) {
-        continue;
-      }
-
-      if (keyword.includes(' ')) {
-        // Multi-word phrase: must appear as a whole-word sequence in the query.
-        if (paddedQuery.includes(` ${keyword} `)) {
-          score += PHRASE_POINTS;
-        }
-      } else if (tokens.has(keyword)) {
-        score += WORD_POINTS;
-      }
-    }
-
-    // Strict > keeps the first (earlier) entry on ties — deterministic output.
-    if (score > bestScore) {
-      bestScore = score;
-      best = entry;
-    }
-  }
-
-  return bestScore >= MATCH_THRESHOLD ? best : null;
-}
