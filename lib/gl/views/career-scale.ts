@@ -122,8 +122,8 @@ void main() {
 
   float current = bloom(spanOf(uCurrent), uv) * 0.85;
   float hover = bloom(spanOf(uHover), uv) * uHoverAmt;
-  float front = exp(-pow((uv.x - uFront + 0.02) / 0.05, 2.0)) * uFrontAmt * 0.7;
-  front *= step(uv.x, uFront) * exp(-pow((uv.y - 0.6) / 0.6, 2.0));
+  float front = exp(-pow((uv.x - uFront + 0.01) / 0.06, 2.0)) * uFrontAmt * 0.7;
+  front *= exp(-pow((uv.y - 0.6) / 0.6, 2.0));
 
   float window = smoothstep(0.0, 0.22, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
   float alpha = (max(current, hover) * strength + front * strength * 1.6) * window;

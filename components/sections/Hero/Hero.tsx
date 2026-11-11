@@ -27,7 +27,7 @@ export function Hero() {
       style={entranceVars as unknown as CSSProperties}
       className="relative isolate flex flex-col pt-[clamp(1rem,2.5vw,2rem)] md:pb-[4.5rem] lg:min-h-[calc(100svh-var(--header-height)-1px)]"
     >
-      <StageView view="hero-field" posterClassName={styles.poster} />
+      <StageView view="hero-field" posterClassName={styles.poster} className="-z-10" />
       <Container className="grid flex-1 grid-cols-[minmax(0,1fr)] content-center gap-y-5 pb-4 md:pb-6 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center lg:gap-x-12 xl:grid-cols-[minmax(0,1fr)_30rem]">
         <section id="top" aria-labelledby="top-title">
           <p className={cn(styles.eyebrow, 'type-eyebrow @container max-w-none text-muted')}>

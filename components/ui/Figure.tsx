@@ -13,6 +13,8 @@ interface FigureProps {
   prefix?: string;
   suffix?: string;
   className?: string;
+  /** Count up from zero when the figure scrolls into view. Off where something else already counts, such as a reading's marks. */
+  countUp?: boolean;
 }
 
 /**
@@ -20,7 +22,7 @@ interface FigureProps {
  * final value; the count-up plays once, only when the figure scrolls into view
  * below the fold, and never under reduced motion.
  */
-export function Figure({ value, prefix = '', suffix = '', className }: FigureProps) {
+export function Figure({ value, prefix = '', suffix = '', className, countUp = true }: FigureProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const [shown, setShown] = useState(value);
   const [animated, setAnimated] = useState(false);
@@ -28,7 +30,7 @@ export function Figure({ value, prefix = '', suffix = '', className }: FigurePro
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof IntersectionObserver === 'undefined') return;
-    if (reducedMotion()) return;
+    if (!countUp || reducedMotion()) return;
     // Already on screen: the final value stays put rather than flashing to zero.
     if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
 
@@ -44,7 +46,7 @@ export function Figure({ value, prefix = '', suffix = '', className }: FigurePro
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [value]);
+  }, [value, countUp]);
 
   return (
     // NumberFlow pads its digits by a quarter em above and below for the roll; the figure's own box is the glyphs'.

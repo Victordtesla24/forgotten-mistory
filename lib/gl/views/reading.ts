@@ -18,7 +18,7 @@ import type { FrameInput, ViewContext } from './types';
 /** The flash is a band of light whose centre runs from -0.1 at the left edge to this much past the right edge. */
 const FLASH_END = 1.4;
 
-export interface ReadingState {
+interface ReadingState {
   uniforms: {
     uSize: Uniform<[number, number]>;
     uOrigin: Uniform<[number, number]>;

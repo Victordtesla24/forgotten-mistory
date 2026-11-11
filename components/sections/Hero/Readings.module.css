@@ -139,6 +139,7 @@
 
 /* Evidence: 40 by 5 cells; each is full, then about 92% of them empty and the evenly spread rest stay. */
 .cells {
+  inset: 6px 10px;
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: repeat(var(--columns), 1fr);

@@ -20,6 +20,9 @@ import type { LiveTier } from '../tier';
 import { createBackdrop, createCamera, createReadingState, easeOut, readingGlsl, readingMask } from './reading';
 import type { FrameInput, View, ViewContext } from './types';
 
+/** The cells sit this far in from the card's edges, in CSS pixels, so none is cut by the card's rounded corners. */
+const INSET = { x: 10, y: 6 };
+
 const vertex = /* glsl */ `
 attribute vec2 aCell;
 
@@ -34,7 +37,8 @@ ${readingGlsl}
 void main() {
   vLocal = position.xy;
   vCell = aCell;
-  vec2 uv = (aCell + position.xy) / uGrid;
+  vec2 inset = vec2(${INSET.x.toFixed(1)}, ${INSET.y.toFixed(1)}) / uSize;
+  vec2 uv = inset + (aCell + position.xy) / uGrid * (1.0 - 2.0 * inset);
   vUv = uv;
   gl_Position = vec4(uv * 2.0 - 1.0, 0.0, 1.0);
 }
@@ -60,7 +64,7 @@ ${readingMask}
 ${finish}
 
 void main() {
-  vec2 cellPx = uSize / uGrid;
+  vec2 cellPx = (uSize - 2.0 * vec2(${INSET.x.toFixed(1)}, ${INSET.y.toFixed(1)})) / uGrid;
   vec2 px = vLocal * cellPx;
   float gap = 0.9;
 

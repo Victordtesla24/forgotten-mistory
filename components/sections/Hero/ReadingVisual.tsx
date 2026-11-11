@@ -20,10 +20,10 @@ function Telemetry() {
         >
           <defs>
             <pattern id="reading-lattice" width="1" height="1" patternUnits="userSpaceOnUse">
-              <circle cx="0.5" cy="0.5" r="0.36" className="fill-proof" />
+              <rect x="0.1" y="0.1" width="0.62" height="0.62" shapeRendering="crispEdges" className="fill-proof" />
             </pattern>
           </defs>
-          <rect width={columns} height={rows} fill="url(#reading-lattice)" opacity="0.85" />
+          <rect width={columns} height={rows} fill="url(#reading-lattice)" opacity="0.7" />
         </svg>
       </div>
       <span className={styles.sweep} />

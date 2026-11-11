@@ -185,6 +185,7 @@
 /* Without script the panels are part of the page: every one is shown in place, in order. */
 @media (scripting: none) {
   .dialog {
+    position: static;
     display: block;
     width: auto;
     max-height: none;

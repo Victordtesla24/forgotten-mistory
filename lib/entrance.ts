@@ -75,5 +75,4 @@ export const entranceVars = {
   '--e-scale-for': `${entrance.scale.for}ms`,
   '--e-step': `${stagger.max}ms`,
   '--e-action-step': `${ACTION_STEP}ms`,
-  '--e-lead': `${READING_LEAD}ms`,
 } as const;

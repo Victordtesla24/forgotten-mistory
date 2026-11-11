@@ -69,6 +69,7 @@ export function Readings({ className }: { className?: string }) {
                     value={figure.value}
                     prefix={figure.prefix}
                     suffix={figure.suffix}
+                    countUp={false}
                     className="text-[1.75rem]! text-proof"
                   />
                   <span className="pr-7 text-[0.9375rem] leading-snug font-medium">{figure.label}</span>

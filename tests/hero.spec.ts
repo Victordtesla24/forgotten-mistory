@@ -5,7 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { roles } from '@/content/experience';
 import { headlineFigures } from '@/content/proof';
 import { ENTRANCE_END } from '@/lib/entrance';
-import { careerBars } from '@/lib/timeline';
+import { careerBars, timeline } from '@/lib/timeline';
 
 import { hydrated, open, visibleWordCounts, watchConsole } from './support';
 
@@ -45,6 +45,13 @@ async function boxes(page: Page, selector: string): Promise<Box[]> {
 }
 
 test.describe('the career scale', { tag: '@desktop' }, () => {
+  test('is drawn on the one UTC time scale, January 2010 to the current month', () => {
+    expect(timeline.domain().map((date) => date.toISOString().slice(0, 7))).toEqual(['2010-01', '2026-09']);
+    expect(timeline.range()).toEqual([0, 1]);
+    expect(careerBars[0]?.start, 'MYOB starts in May 2010, four months in').toBeCloseTo(4 / 200, 6);
+    expect(careerBars.at(-1)?.end, 'the current role runs to now').toBe(1);
+  });
+
   for (const width of WIDTHS) {
     test(`runs edge to edge at ${width} px, with no horizontal scroll`, async ({ page }) => {
       await page.emulateMedia({ reducedMotion: 'reduce' });
