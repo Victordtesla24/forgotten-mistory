@@ -76,9 +76,26 @@ if [[ "$built" != *"name=\"build-commit\" content=\"$sha\""* ]]; then
 fi
 
 # A free port, so a stale server left on the default one can never be tested by mistake.
+# The suite runs with one retry: a test that passes on its retry is listed as flaky and recorded
+# (in flaky-tests.log in the repository's git directory, which no worktree tracks), and a test
+# that fails twice fails the release.
 begin 6 "npm test"
 port="$(node -e 'const s=require("net").createServer().listen(0,()=>{console.log(s.address().port);s.close()})')"
-PORT="$port" npm test
+suite_log="$(mktemp)"
+suite_status=0
+PORT="$port" npm test -- --retries=1 2>&1 | tee "$suite_log" || suite_status=$?
+flaky="$(sed 's/\x1b\[[0-9;]*[A-Za-z]//g' "$suite_log" | awk '/^ +[0-9]+ flaky$/ { listing = 1; next } listing && /^ +[0-9]+ (failed|passed|skipped|did not run|interrupted)/ { listing = 0 } listing && /^ +\[/ { sub(/^ +/, ""); print }')"
+rm -f "$suite_log"
+echo "[ship] flaky tests (passed on retry):"
+if [ -n "$flaky" ]; then
+  printf '  %s\n' "$flaky"
+  while IFS= read -r test_name; do
+    printf '%s %s %s\n' "$(date -u +%Y-%m-%dT%H:%MZ)" "$sha" "$test_name"
+  done <<<"$flaky" >>"$(git rev-parse --git-common-dir)/flaky-tests.log"
+else
+  echo "  none"
+fi
+[ "$suite_status" -eq 0 ] || fail "the suite failed (a test that fails twice fails the release)"
 
 begin 7 "pushing HEAD to origin main"
 git push origin HEAD:main

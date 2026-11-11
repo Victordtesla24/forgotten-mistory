@@ -43,7 +43,8 @@ worktree and does these things in order, stopping at the first failure:
 3. rebases onto `origin/main` (and aborts with a message if that conflicts)
 4. `npm run check`
 5. `npm run build`
-6. `npm test`
+6. `npm test` with one retry: a test that passes on its retry is listed as flaky and recorded in
+   `flaky-tests.log` in the git directory, and a test that fails twice stops the release
 7. pushes `HEAD` to `main`
 8. deploys to Firebase Hosting
 9. polls the live site until its `build-commit` meta equals the commit and every page and

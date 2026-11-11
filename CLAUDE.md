@@ -30,8 +30,8 @@ looks, moves and is built — read it before changing anything visible.
   (`firebase deploy --only functions`); UI work never touches it.
 - `tests/` — the Playwright suite (smoke, axe, CSP, hosting headers, content, stage and panels)
   that runs against the built `out/`.
-- `scripts/` — `ship.sh` is the whole release (check, build, test, push to `main`, deploy,
-  verify, then ask the live assistant a real question through `check-assistant.sh`, which
+- `scripts/` — `ship.sh` is the whole release (check, build, test with one retry and a list of the
+  tests that needed it, push to `main`, deploy, verify, then ask the live assistant a real question through `check-assistant.sh`, which
   exits 2 when it cannot answer); `brand-assets.mjs` regenerates the social card and icons;
   `screenshot.mjs` takes contact sheets; `ops/` keeps the chat backend warm.
 
@@ -56,7 +56,7 @@ npm run check        # typecheck + lint
 npm run build        # static export to out/
 npm test             # Playwright suite against out/ (build first)
 node scripts/brand-assets.mjs  # regenerate og-image.png, icon.png, apple-icon.png
-scripts/ship.sh      # check, build, test, push to main, deploy to Firebase, verify live
+scripts/ship.sh      # check, build, test (one retry), push to main, deploy to Firebase, verify live
 ```
 
 Pushing to `main` also runs `.github/workflows/ship.yml`, which builds, tests and deploys
