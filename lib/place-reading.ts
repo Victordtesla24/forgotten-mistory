@@ -47,7 +47,6 @@ function properties(layout: ReadingLayout): Record<string, string | number> {
     ...placed,
     '--pitch': css(layout.pitch, ratio),
     '--mark': css(layout.mark, ratio),
-    '--gp': css(layout.groupPitch, ratio),
     '--over': css(Math.round(layout.pitch * 0.2), ratio),
     '--below': css(layout.baseline.y - layout.frame.y - layout.frame.height, ratio),
   };
@@ -64,11 +63,8 @@ export function placeReading(tile: HTMLElement, id: ReadingId, place: ReadingPla
     const layout = readingLayout(id, { width, height, ratio: window.devicePixelRatio }, place);
     for (const [name, value] of Object.entries(properties(layout))) tile.style.setProperty(name, String(value));
     tile.dataset.laid = '';
-    if (layout.id === 'telemetry') {
-      tile.dataset.mode = layout.mode;
-      // A panel's tile is as tall as its blocks need; a card's is what the hero's grid says.
-      if (place === 'panel') tile.style.setProperty('--visual', `${layout.height}px`);
-    }
+    // A panel's tile is as tall as its points and its key need; a card's is what the hero's grid says.
+    if (layout.id === 'telemetry' && place === 'panel') tile.style.setProperty('--visual', `${layout.height}px`);
   };
   apply();
   const observer = new ResizeObserver(apply);

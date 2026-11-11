@@ -48,29 +48,14 @@ function Evidence() {
   );
 }
 
-/** 40 marks, one for each practitioner, in five groups on one baseline. */
+/** 40 marks, one for each practitioner: one run of two rows of 20 on one baseline, no squad drawn. */
 function Portfolio() {
-  const { count, groups, across, down, perGroup, countMs } = cohort;
+  const { count, across, down, countMs } = cohort;
   return (
-    <div
-      className={styles.cohort}
-      style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--groups': groups, '--across': across, '--down': down })}
-    >
-      {Array.from({ length: count }, (_, mark) => {
-        const inGroup = mark % perGroup;
-        return (
-          <span
-            key={mark}
-            className={styles.mark}
-            style={vars({
-              '--n': mark,
-              '--g': Math.floor(mark / perGroup),
-              '--c': Math.floor(inGroup / down),
-              '--r': inGroup % down,
-            })}
-          />
-        );
-      })}
+    <div className={styles.cohort} style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--across': across, '--down': down })}>
+      {Array.from({ length: count }, (_, mark) => (
+        <span key={mark} className={styles.mark} style={vars({ '--n': mark, '--c': Math.floor(mark / down), '--r': mark % down })} />
+      ))}
     </div>
   );
 }

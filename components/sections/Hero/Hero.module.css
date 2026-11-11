@@ -9,12 +9,23 @@
  * the line rises as it fades and the actions settle from a little smaller, a step apart.
  */
 /*
- * The first screen. Below 1024 px, and on any touch screen, the hero is a column that is as
- * tall as its content: the headline block, the readings (a row to move along sideways, or
- * three side by side from 700 px) and the career scale, with the corner at the bottom right
- * left free for the round Ask Mini Vic button.
+ * The first screen. Four layouts, each stated in CSS alone (from the height of the screen, `svh`),
+ * so the first paint is the settled layout and no row moves when the one after it is parsed:
+ *
+ * - From 1024 px, with a mouse or a finger, the hero is one grid exactly one screen under the
+ *   header: rows for the headline block, the readings and the career scale, so the scale stands on
+ *   the bottom edge and nothing is cut by the fold. It is the same without script.
+ * - From 640 to 1023 px the hero is a column as tall as its content: the headline block, the
+ *   readings (three side by side) and the scale.
+ * - On a phone that is tall enough (830 px) the same column is stretched to the screen: the
+ *   scale's bars and numerals end above the corner of the round Ask Mini Vic button (3rem square,
+ *   1rem from each edge), its caption stands beside the button, and the readings take the
+ *   height that is left, up to a limit.
+ * - On a shorter phone the headline block and the readings fill the screen and the scale begins
+ *   where it ends; the readings are held back from the corner, so no card is under the button.
  */
 .root {
+  --fold: calc(100svh - var(--header-height) - 1px);
   padding-top: clamp(1rem, 2.5vw, 2rem);
 }
 
@@ -39,101 +50,90 @@
 }
 
 /*
- * On a phone, and on any touch screen shorter than 1000px, the headline block and the readings
- * make the first screen and the career scale begins where it ends. The corner at the bottom
- * right belongs to the round Ask Mini Vic button (3rem square, 1rem from each edge), so the
- * readings are followed by 5rem of nothing and the scale stands below the fold: at scrollY 0
- * no text and no control is under the button. A tall tablet has room for the whole hero above
- * the corner, so there the scale follows the readings at once.
+ * Phones. The scale is a flex column of its own (CareerTrack.module.css): the chips, the axis, then
+ * the caption, which stands in the band beside the corner. The hero's first block is as tall as the
+ * screen allows (`min-block-size`, from the screen's height and the scale's stated height alone); the
+ * readings take what the headline block leaves, their tiles growing to 8.5rem.
  */
 @media (max-width: 639px) {
-  /* The headline takes a share of the screen's height, so the readings still end above the corner on a short phone. */
-  .headline {
-    font-size: clamp(2.25rem, min(calc(7.6svh - 1.075rem), calc(1.5rem + 6vw)), 6rem);
+  .root {
+    --scale-height: 10.5rem;
+    --reading-text: 9rem;
+    --max-visual: 8.5rem;
+    --fold-first: calc(var(--fold) - 1.25rem);
+    row-gap: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
   }
-}
 
-@media (max-width: 639px), (max-height: 999px) {
-  .first {
-    min-block-size: calc(100svh - var(--header-height) - 1px);
-  }
-
-  .proof {
-    flex: 1 1 auto;
-    padding-bottom: 5rem;
-  }
-}
-
-/*
- * On a short phone the readings do not fit above the corner: they begin at the fold, and the first
- * screen is the headline block alone. It is composed to fill that screen: the headline takes the
- * width's own size (no longer held down by the height), and the height the screen has beyond a
- * compact phone's goes into the spaces between the eyebrow, the headline, the line and the actions,
- * a third to each, so no band above the fold is empty for more than a few lines of text. The
- * spaces are stated from the screen's height alone, not shared out by the block's content, so
- * nothing moves when a later part of the block is parsed; the corner at the right stays free.
- */
-@media (max-width: 639px) and (max-height: 719px) {
   .top {
-    --spread: clamp(0rem, calc((100svh - 36rem) / 2.6), 4rem);
-    min-block-size: calc(100svh - var(--header-height) - 1px);
+    padding-bottom: 0;
   }
 
-  .headline {
-    margin-top: calc(0.75rem + var(--spread));
-    font-size: clamp(2.25rem, calc(1.5rem + 6vw), 6rem);
-  }
-
-  .line {
-    margin-top: calc(0.75rem + var(--spread));
-  }
-
-  .buttons {
-    margin-top: calc(1rem + var(--spread));
+  .first {
+    min-block-size: var(--fold-first);
   }
 
   .proof {
-    flex: none;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
     margin-top: 0;
     padding-bottom: 0;
   }
+
+  .proof > section {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+  }
 }
 
-/* From 340 px the headline block sets in fewer lines, so there is more height to share. */
-@media (max-width: 639px) and (max-height: 719px) and (min-width: 340px) {
-  .top {
-    --spread: calc(clamp(0rem, calc((100svh - 36rem) / 2.6), 4rem) + 1.25rem);
+/* A narrow phone sets the readings' text on more lines. */
+@media (max-width: 359px) {
+  .root {
+    --reading-text: 11.5rem;
+  }
+}
+
+/* Tall enough for the whole hero: the scale stands on the bottom of the screen, its caption beside the corner. */
+@media (max-width: 639px) and (min-height: 830px) {
+  .root {
+    --fold-first: calc(var(--fold) - var(--scale-height) - 2.25rem);
   }
 }
 
 /*
- * From 1024 px with a fine pointer the hero is one grid and exactly one screen under the header:
- * rows for the headline block (what is left), the readings and the career scale, so the scale
- * stands on the bottom edge and nothing is cut by the fold. Every size that decides a row is
- * written here in CSS, from the height of the screen (`svh`), so the first paint is the settled
- * layout and no row moves when the one after it is parsed or when a number starts to count. The
+ * From 1024 px the hero is one grid and exactly one screen under the header. Every size that decides
+ * a row is written here in CSS, from the height of the screen (`svh`): the headline row is at least
+ * what is left, so the scale stands on the bottom edge, and it grows with its content where the
+ * screen is too short for it (a window shorter than 40rem scrolls instead of squeezing the type).
+ * With script off the panels follow in rows of their own, so the first screen is the same. The
  * headline block stands about in the middle of its row: the space between the actions and the
  * readings is as deliberate as the space above the eyebrow, and never more than half as much again
- * (`tests/hero-craft.spec.ts`). Its place is stated from the height of the screen alone, never
- * from the block's own height, so it is the same whichever part of the block is parsed. Taller
- * than 1080 px the extra height goes to the headline row; a window shorter than 40rem scrolls
- * instead of squeezing the type.
+ * (`tests/hero-craft.spec.ts`). Its place is stated from the height of the screen alone, never from
+ * the block's own height, so it is the same whichever part of the block is parsed.
  *
- * The scale is its lanes of names above the bars (`--lane-count` of 1.375rem and 0.5rem), the
- * 2.75rem bars and the 2.75rem ruler (CareerTrack.module.css). A reading is its visual, which
- * takes about a tenth of the height and never less than 3.5rem, and 6rem of text.
+ * The scale is its lanes of names above the bars (`--lane-count` of 1.375rem and 0.5rem), the 2.75rem
+ * bars and the 2.75rem ruler (CareerTrack.module.css). A finger has no lanes: the names are in
+ * the chips, and the scale is the caption, the bars, the ruler and the chips. A reading is its
+ * visual, which takes about a tenth of the height and never less than 3.5rem, and 6.25rem of text.
  */
-@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (scripting: enabled) {
+@media (min-width: 1024px) {
   .root {
-    --hero-visual: clamp(3.5rem, calc(12svh - 1.75rem), 7rem);
-    --reading-text: 6rem;
+    --fold: max(calc(100svh - var(--header-height) - 1px), 40rem);
+    --hero-visual: clamp(3.5rem, calc(12svh - 1.5rem), 7rem);
+    --reading-text: 6.25rem;
     --readings-height: calc(var(--hero-visual) + var(--reading-text) + 2px);
     --scale-height: calc(var(--lane-count) * 1.375rem + 6rem);
+    --gap: clamp(0.75rem, calc(2.2svh - 0.25rem), 1.5rem);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr) var(--readings-height) var(--scale-height);
-    row-gap: clamp(0.75rem, calc(2.2svh - 0.25rem), 1.5rem);
-    block-size: max(calc(100svh - var(--header-height) - 1px), 40rem);
+    grid-template-rows:
+      minmax(calc(var(--fold) - var(--readings-height) - var(--scale-height) - 2 * var(--gap)), auto)
+      var(--readings-height)
+      var(--scale-height);
+    row-gap: var(--gap);
     padding: 0;
   }
 
@@ -142,7 +142,7 @@
   }
 
   .top {
-    padding-top: clamp(0.75rem, calc((100svh - 45rem) * 0.35 + 1.875rem), 12rem);
+    padding-top: clamp(0.75rem, calc((100svh - 45rem) * 0.35 + 1.25rem), 12rem);
     padding-bottom: 0;
   }
 
@@ -161,6 +161,23 @@
 
   .buttons {
     margin-top: clamp(0.75rem, calc(2.4svh - 0.25rem), 1.5rem);
+  }
+}
+
+@media (min-width: 1024px) and (hover: none), (min-width: 1024px) and (pointer: coarse) {
+  .root {
+    --scale-height: 10.75rem;
+  }
+}
+
+/* The cards are under 330px wide, so a scope line takes two: the text is taller and every figure stands at the same height from the top. */
+@media (min-width: 1024px) and (max-width: 1099px) {
+  .root {
+    --reading-text: 8.25rem;
+  }
+
+  .top {
+    padding-top: 0.75rem;
   }
 }
 

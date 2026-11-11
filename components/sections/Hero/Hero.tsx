@@ -49,7 +49,7 @@ export function Hero() {
               <p
                 className={cn(
                   styles.line,
-                  'mt-3 max-w-[52ch] text-base leading-normal text-muted sm:mt-6 sm:text-[1.1875rem] sm:leading-relaxed',
+                  'mt-3 max-w-[64ch] text-base leading-normal text-muted sm:mt-6 sm:text-[1.1875rem] sm:leading-relaxed',
                 )}
               >
                 {hero.positioning}

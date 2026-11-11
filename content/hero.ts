@@ -17,7 +17,7 @@ interface HeroContent {
   };
   /** The H1 in three parts so that the middle phrase can be set in the serif italic. */
   headline: { lead: string; emphasis: string; tail: string };
-  /** Tenure, sectors and the current employer in one short line of at most 12 words. */
+  /** One outcome with its scope, then tenure, sectors and the current employer: one line of at most 20 words. */
   positioning: string;
   actions: { primary: HeroAction; secondary: HeroAction };
   links: readonly HeroAction[];
@@ -30,7 +30,7 @@ export const hero: HeroContent = {
   },
   headline: { lead: 'Delivery leader and ', emphasis: 'AI solutions', tail: ' architect.' },
   positioning:
-    '15+ years delivering in banking, telecoms and government; now at the ATO.',
+    'Cut core-banking delivery time 30%+ at ANZ. 15+ years delivering in banking, telecoms and government; now at the ATO.',
   actions: {
     primary: { label: 'View selected work', href: '#work' },
     secondary: { label: 'Download CV', href: site.cvHref },

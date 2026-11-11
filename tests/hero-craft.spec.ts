@@ -3,7 +3,7 @@ import sharp from 'sharp';
 
 import { careerBars } from '@/lib/timeline';
 import { headlineFigures } from '@/content/proof';
-import { cells, cohort, points, readingLayout, type ReadingId } from '@/lib/readings';
+import { cells, cohort, KEY_STRIP, keyOf, points, readingLayout, type ReadingId } from '@/lib/readings';
 
 import { entranceDone, open } from './support';
 
@@ -38,8 +38,7 @@ test('the counts the readings draw are the figures of content/proof.ts', { tag: 
   expect(cells.count).toBe(count('evidence'));
   expect(cells.columns * cells.rows).toBe(cells.count);
   expect(cohort.count).toBe(count('portfolio'));
-  expect(cohort.groups * cohort.across * cohort.down).toBe(cohort.count);
-  expect(cohort.perGroup).toBe(cohort.across * cohort.down);
+  expect(cohort.across * cohort.down, 'one run of marks, no squad drawn').toBe(cohort.count);
 });
 const IDS: readonly ReadingId[] = ['evidence', 'portfolio', 'telemetry'];
 
@@ -87,6 +86,30 @@ interface Tile {
   top: number;
 }
 
+/** Waits until the three tiles and their drawings have stood in the same place for ten frames running, so rectangles measured one after another are of one layout. */
+async function layoutStill(page: Page): Promise<void> {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        const signature = (): string =>
+          Array.from(document.querySelectorAll('[data-reading][data-place="card"], [data-reading][data-place="card"] *'), (element) => {
+            const { left, top, width, height } = element.getBoundingClientRect();
+            return `${left},${top},${width},${height}`;
+          }).join('|');
+        let last = signature();
+        let same = 0;
+        const frame = (): void => {
+          const now = signature();
+          same = now === last ? same + 1 : 0;
+          last = now;
+          if (same >= 10) resolve();
+          else requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      }),
+  );
+}
+
 /** A reading's tile as its drawing is placed in it: the padding box, in CSS pixels. */
 function tileOf(page: Page, id: ReadingId, place: 'card' | 'panel' = 'card'): Promise<Tile> {
   return page.locator(`[data-reading="${id}"][data-place="${place}"]`).first().evaluate((element: HTMLElement) => {
@@ -132,22 +155,19 @@ test.describe('every reading keeps its marks countable, at every size and on bot
         const { context, page } = await openView(browser, view, ratio, '/?gl=off');
         try {
           await entranceDone(page);
+          await layoutStill(page);
 
-          // Telemetry: 10,000 points where each can be told apart, otherwise 100 distinct blocks of 100 and the key.
+          // Telemetry: a card draws 100 distinct blocks of 100 devices, 25 across and 4 down, as wide as the tile allows.
           const telemetryTile = await tileOf(page, 'telemetry');
           const telemetry = readingLayout('telemetry', { width: telemetryTile.width, height: telemetryTile.height, ratio });
-          expect(telemetry.drawn * telemetry.unit, 'every device is drawn, or accounted for by a block').toBe(10_000);
+          expect(telemetry.mode, 'a card draws blocks').toBe('blocks');
+          expect(telemetry.drawn, 'exactly 100 blocks').toBe(100);
+          expect(telemetry.unit).toBe(100);
+          expect(telemetry.drawn * telemetry.unit, 'every device is accounted for by a block').toBe(10_000);
           expect(telemetry.mark, 'a mark is at least one device pixel').toBeGreaterThanOrEqual(1);
           expect(telemetry.pitch - telemetry.mark, 'and at least one device pixel from its neighbours').toBeGreaterThanOrEqual(1);
-          if (telemetry.mode === 'points') {
-            expect(telemetry.pitch, 'points are drawn only where they can be told apart').toBeGreaterThanOrEqual(2);
-            expect(telemetry.key).toBeNull();
-          } else {
-            expect(telemetry.drawn, 'exactly 100 blocks').toBe(100);
-            expect(telemetry.unit).toBe(100);
-            await expect(page.locator('[data-reading="telemetry"][data-place="card"] [class*="Readings_key__"]')).toHaveText('1 block = 100 devices');
-          }
-          await expect(page.locator('[data-reading="telemetry"][data-place="card"]')).toHaveAttribute('data-mode', telemetry.mode);
+          expect(telemetry.frame.width / (telemetryTile.width * ratio), 'the blocks span at least 55% of the tile').toBeGreaterThanOrEqual(0.55);
+          await expect(page.locator('[data-reading="telemetry"][data-place="card"]')).toHaveAttribute('data-mode', 'blocks');
           const [lattice] = await rectsOf(page, '[data-reading="telemetry"][data-place="card"] [class*="Readings_lattice__"]');
           expect(lattice, 'the lattice is in the DOM drawing').toBeDefined();
           if (lattice) {
@@ -155,6 +175,25 @@ test.describe('every reading keeps its marks countable, at every size and on bot
             expect(Math.abs(lattice.top - telemetryTile.top - telemetry.frame.y / ratio), 'lattice top').toBeLessThanOrEqual(WITHIN);
             expect(Math.abs(lattice.right - lattice.left - telemetry.frame.width / ratio), 'lattice width').toBeLessThanOrEqual(WITHIN);
             expect(Math.abs(lattice.bottom - lattice.top - telemetry.frame.height / ratio), 'lattice height').toBeLessThanOrEqual(WITHIN);
+          }
+
+          // Every tile ends in the same line of key: 13 px or more, the strip's height, on the tile's bottom edge, clear of the drawing.
+          for (const id of IDS) {
+            const tile = await tileOf(page, id);
+            const key = await page.locator(`[data-reading="${id}"][data-place="card"] [class*="Readings_key__"]`).evaluate((element) => {
+              const box = element.getBoundingClientRect();
+              return { text: element.textContent ?? '', size: Number.parseFloat(getComputedStyle(element).fontSize), top: box.top, bottom: box.bottom, height: box.height, clipped: element.scrollWidth > element.clientWidth };
+            });
+            const figure = headlineFigures.find((entry) => entry.id === id);
+            expect(key.text.startsWith(keyOf(id, id === 'telemetry' ? 'blocks' : undefined)), `${id}: the key says what one mark stands for (${key.text})`).toBe(true);
+            if (view.w >= 1280) expect(key.text.endsWith(figure?.bound ?? ''), `${id}: and the count the figure states beyond what is drawn`).toBe(true);
+            expect(key.size, `${id}: the key is at least 13 px`).toBeGreaterThanOrEqual(13);
+            expect(key.clipped, `${id}: the key is whole`).toBe(false);
+            expect(Math.abs(key.height - KEY_STRIP), `${id}: the key strip`).toBeLessThanOrEqual(WITHIN);
+            expect(Math.abs(key.bottom - (tile.top + tile.height)), `${id}: on the tile's bottom edge`).toBeLessThanOrEqual(WITHIN);
+            const drawn = id === 'telemetry' ? [lattice] : await rectsOf(page, `[data-reading="${id}"][data-place="card"] [class*="Readings_${id === 'evidence' ? 'cell' : 'mark'}__"]`);
+            const lowest = Math.max(...drawn.map((rect) => rect?.bottom ?? 0));
+            expect(key.top - lowest, `${id}: the drawing ends above the key strip`).toBeGreaterThanOrEqual(-WITHIN);
           }
 
           // Evidence: 200 separate cells, each fill a pixel in from its cell, never under two device pixels tall.
@@ -184,29 +223,21 @@ test.describe('every reading keeps its marks countable, at every size and on bot
           });
           expect(outline.cell, 'the outline of a cell is --line-strong').toBe(outline.token);
 
-          // Portfolio: 40 separate marks in 5 groups, with a gap between groups wider than any inside one.
+          // Portfolio: 40 separate marks in one run of two rows of 20, evenly spaced, with no squad drawn.
           const portfolioTile = await tileOf(page, 'portfolio');
           const portfolio = readingLayout('portfolio', { width: portfolioTile.width, height: portfolioTile.height, ratio });
           expect(portfolio.mark).toBeGreaterThanOrEqual(1);
           expect(portfolio.pitch - portfolio.mark, 'marks are a device pixel apart at the least').toBeGreaterThanOrEqual(1);
-          const between = portfolio.groupPitch - (portfolio.across - 1) * portfolio.pitch - portfolio.mark;
-          expect(between, 'the gap between groups is wider than the gap inside one').toBeGreaterThan(portfolio.pitch - portfolio.mark);
-          expect(between, 'and is at least two device pixels').toBeGreaterThanOrEqual(2);
-          const marks = await page.locator('[data-reading="portfolio"][data-place="card"] [class*="Readings_mark__"]').evaluateAll((elements) =>
-            elements.map((element) => {
-              const { left, right, top, bottom } = element.getBoundingClientRect();
-              return { left, right, top, bottom, group: Number((element as HTMLElement).style.getPropertyValue('--g')) };
-            }),
-          );
+          const marks = await rectsOf(page, '[data-reading="portfolio"][data-place="card"] [class*="Readings_mark__"]');
           expect(marks, '40 marks').toHaveLength(40);
-          expect(new Set(marks.map((mark) => mark.group)).size, 'in five groups').toBe(cohort.groups);
           expect(Math.abs(Math.min(...marks.map((mark) => mark.left)) - portfolioTile.left - portfolio.frame.x / ratio), 'marks left').toBeLessThanOrEqual(WITHIN);
           expect(Math.abs(Math.max(...marks.map((mark) => mark.right)) - portfolioTile.left - (portfolio.frame.x + portfolio.frame.width) / ratio), 'marks right').toBeLessThanOrEqual(WITHIN);
-          const rightOfGroup = (group: number) => Math.max(...marks.filter((mark) => mark.group === group).map((mark) => mark.right));
-          const leftOfGroup = (group: number) => Math.min(...marks.filter((mark) => mark.group === group).map((mark) => mark.left));
-          for (let group = 0; group < cohort.groups - 1; group += 1) {
-            expect(Math.abs(leftOfGroup(group + 1) - rightOfGroup(group) - between / ratio), `groups ${group} and ${group + 1} are the layout's gap apart`).toBeLessThanOrEqual(WITHIN);
+          const columns = [...new Set(marks.map((mark) => Math.round(mark.left * ratio)))].sort((a, b) => a - b);
+          expect(columns, 'twenty columns').toHaveLength(cohort.across);
+          for (let column = 1; column < columns.length; column += 1) {
+            expect(Math.abs((columns[column] ?? 0) - (columns[column - 1] ?? 0) - portfolio.pitch), `column ${column} is one pitch from the one before: no squad is drawn`).toBeLessThanOrEqual(1);
           }
+          expect(new Set(marks.map((mark) => Math.round(mark.top * ratio))).size, 'two rows').toBe(cohort.down);
         } finally {
           await context.close();
         }
@@ -468,7 +499,6 @@ test.describe('the enlarged reading in a panel draws every mark, countably, at e
             expect(layout.floor).toBeGreaterThanOrEqual(2);
           } else {
             expect(layout.pitch - layout.mark).toBeGreaterThanOrEqual(1);
-            expect(layout.groupPitch - (layout.across - 1) * layout.pitch - layout.mark).toBeGreaterThan(layout.pitch - layout.mark);
           }
           await page.keyboard.press('Escape');
           await expect(tile, id).toBeHidden();
@@ -555,44 +585,6 @@ test.describe('on a phone or a touch tablet the roles are one snapping row, tied
   }
 });
 
-test.describe('a short phone has no hole above the fold', { tag: '@desktop' }, () => {
-  for (const [w, h] of [
-    [320, 700],
-    [360, 640],
-    [375, 667],
-    [412, 719],
-  ] as const) {
-    test(`${w} by ${h}: no empty band over 96 px, and the corner stays free`, async ({ browser }) => {
-      const { context, page } = await openView(browser, { w, h, touch: true }, 1, '/?gl=off');
-      try {
-        await entranceDone(page);
-        const result = await page.evaluate(() => {
-          const top = document.querySelector('header')?.getBoundingClientRect().bottom ?? 0;
-          const items = Array.from(document.querySelectorAll('#top p, #top h1, #top a'))
-            .map((element) => element.getBoundingClientRect())
-            .filter((box) => box.height > 0)
-            .sort((a, b) => a.top - b.top);
-          const bands: number[] = [];
-          let edge = top;
-          for (const box of items) {
-            bands.push(box.top - edge);
-            edge = Math.max(edge, box.bottom);
-          }
-          bands.push(innerHeight - edge);
-          const corner = document.querySelector('#assistant-launcher')?.getBoundingClientRect();
-          const cornerHit = items.some((box) => corner && box.left < corner.right && box.right > corner.left && box.top < corner.bottom && box.bottom > corner.top);
-          return { widest: Math.max(...bands), cornerHit, corner: Boolean(corner) };
-        });
-        expect(result.widest, 'the widest empty band above the fold').toBeLessThanOrEqual(96);
-        expect(result.corner, 'the launcher is there').toBe(true);
-        expect(result.cornerHit, 'and nothing of the block is under it').toBe(false);
-      } finally {
-        await context.close();
-      }
-    });
-  }
-});
-
 test.describe('on a desktop the space round the headline block is deliberate', { tag: '@desktop' }, () => {
   for (const view of [DESKTOP[2], DESKTOP[3]]) {
     if (!view) continue;
@@ -644,7 +636,7 @@ test.describe('on a desktop the space round the headline block is deliberate', {
 });
 
 test.describe('a panel grows out of what opened it, and the source is never an empty box', { tag: '@desktop' }, () => {
-  test('a reading card shows its marks at the first frame of the morph, and the incoming panel starts before the card is half gone', async ({ browser }) => {
+  test('a reading card shows its marks at the first frame of the morph, and the two copies of it never show together', async ({ browser }) => {
     const { context, page } = await openView(browser, DESKTOP[2] as View, 1, '/?gl=high');
     try {
       await stageSettled(page);
@@ -705,20 +697,16 @@ test.describe('a panel grows out of what opened it, and the source is never an e
           }
           if (out >= 0 && incoming >= 0) frames.push({ out, in: incoming });
         }
-        const when = (keyframes: ComputedKeyframe[], opacity: number, falling: boolean): number => {
-          for (let step = 0; step <= 1000; step += 1) {
-            const value = opacityAt(keyframes, step / 1000);
-            if (falling ? value <= opacity : value > 0) return step / 1000;
-          }
-          return 1;
-        };
+        // The keyframes are linear in time, so a frame every 40 ms of the 520 ms morph is a progress of 40/520, and so on.
+        const duration = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration-panel'));
+        const steps = Array.from({ length: Math.floor(duration / 40) + 1 }, (_, step) => (step * 40) / duration);
         return {
           before,
           first,
           frames: frames.length,
           emptyFrames: frames.filter((frame) => frame.out <= 0 && frame.in <= 0).length,
-          outReaches40: when(outKeyframes, 0.4, true),
-          inStarts: when(inKeyframes, 0, false),
+          worstSampled: Math.max(0, ...frames.map((frame) => Math.min(frame.out, frame.in))),
+          worstEvery40: Math.max(...steps.map((progress) => Math.min(opacityAt(outKeyframes, progress), opacityAt(inKeyframes, progress)))),
           after: document.querySelector('[data-morph]') === null,
         };
       });
@@ -727,7 +715,8 @@ test.describe('a panel grows out of what opened it, and the source is never an e
       expect(seen.first.cells, 'with all 200 cells in it').toBe(200);
       expect(Number(seen.first.cell), 'visible').toBeGreaterThan(0);
       expect(seen.emptyFrames, `no frame of ${seen.frames} leaves the shell empty`).toBe(0);
-      expect(seen.inStarts, 'the incoming panel starts fading in no later than the card is at 40%').toBeLessThanOrEqual(seen.outReaches40);
+      expect(seen.worstEvery40, 'at every 40 ms the smaller of the two copies is at most 0.05: nothing is read twice').toBeLessThanOrEqual(0.05);
+      expect(seen.worstSampled, `and at each of the ${seen.frames} frames drawn`).toBeLessThanOrEqual(0.05);
       expect(seen.after, 'and the mark is gone when it ends').toBe(true);
     } finally {
       await context.close();

@@ -25,7 +25,7 @@ async function rect(page: Page, selector: string): Promise<Rect> {
   });
 }
 
-/** Every text line and control of the hero's three roots that lies over `area`, named. */
+/** Every text line and control of the hero's three roots that lies over `area` and is not clipped away by a scroller or box round it, named. */
 async function coveredBy(page: Page, area: Rect): Promise<string[]> {
   return page.evaluate((box) => {
     const covered: string[] = [];
@@ -41,10 +41,24 @@ async function coveredBy(page: Page, area: Rect): Promise<string[]> {
           range.selectNodeContents(element);
           return Array.from(range.getClientRects());
         })();
-        for (const r of rects) {
-          const across = Math.min(box.right, r.right) - Math.max(box.left, r.left);
-          const down = Math.min(box.bottom, r.bottom) - Math.max(box.top, r.top);
-          if (r.width > 0 && r.height > 0 && across > 1 && down > 1) {
+        for (const whole of rects) {
+          // What a scroller or an overflow-hidden box round the element cuts off is not on the screen.
+          let { left, right, top, bottom } = whole;
+          for (let ancestor = element.parentElement; ancestor && ancestor !== document.body; ancestor = ancestor.parentElement) {
+            const around = getComputedStyle(ancestor);
+            const frame = ancestor.getBoundingClientRect();
+            if (around.overflowX !== 'visible') {
+              left = Math.max(left, frame.left);
+              right = Math.min(right, frame.right);
+            }
+            if (around.overflowY !== 'visible') {
+              top = Math.max(top, frame.top);
+              bottom = Math.min(bottom, frame.bottom);
+            }
+          }
+          const across = Math.min(box.right, right) - Math.max(box.left, left);
+          const down = Math.min(box.bottom, bottom) - Math.max(box.top, top);
+          if (whole.width > 0 && whole.height > 0 && across > 1 && down > 1) {
             covered.push(`${control ? 'control' : 'text'} ${element.tagName.toLowerCase()} ${element.textContent?.trim().slice(0, 30) ?? ''}`);
           }
         }

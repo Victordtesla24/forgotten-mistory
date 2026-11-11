@@ -2,9 +2,11 @@
  * The light of the career scale. The DOM draws the axis and the eight bars; this adds what
  * only light can: a front that runs along the axis as it draws in, ticks that catch it, a
  * soft bloom beneath the current role, and the same bloom, with the ticks of its span lit,
- * under whichever role a reader hovers or focuses. Every position comes from `lib/timeline`,
- * the same module that placed the bars, so the light is on the bar to the pixel. Remove this
- * layer and nothing but light is lost.
+ * under whichever role a reader hovers or focuses. Nothing is lit ahead of the front: the
+ * current role's bloom arrives as the front passes it and settles as the scale ends, and the
+ * front itself is a short light on the tick row, clear of the numerals. Every position comes
+ * from `lib/timeline`, the same module that placed the bars, so the light is on the bar to the
+ * pixel. Remove this layer and nothing but light is lost.
  */
 
 import {
@@ -34,6 +36,9 @@ import type { FrameInput, View, ViewContext } from './types';
 const FRONT_MS = entrance.scale.for * 0.75;
 const AFTERGLOW_MS = entrance.scale.for - FRONT_MS;
 
+/** The current role's bloom begins to rise just before the front reaches the end of the axis and is whole when the scale's time ends. */
+const SETTLE_FROM = FRONT_MS * 0.9;
+
 const BAR_COUNT = careerBars.length;
 const CURRENT = Math.max(
   careerBars.findIndex((bar) => bar.current),
@@ -52,6 +57,8 @@ uniform vec2 uSpan[${BAR_COUNT}];
 uniform float uCurrent;
 uniform float uHover;
 uniform float uHoverAmt;
+uniform float uSettle;
+uniform float uTickY;
 
 vec2 spanOf(float index) {
   vec2 span = vec2(0.0);
@@ -121,13 +128,19 @@ void main() {
   vec2 uv = (gl_FragCoord.xy - uOrigin) / (uSize * uPixel);
   float strength = mix(0.3, 0.4, uDark);
 
-  float current = bloom(spanOf(uCurrent), uv);
+  // Nothing is lit to the right of the front: the light only ever follows the axis.
+  float behind = 1.0 - smoothstep(uFront, uFront + 0.012, uv.x);
+  float current = bloom(spanOf(uCurrent), uv) * uSettle;
   float hover = bloom(spanOf(uHover), uv) * uHoverAmt;
-  float front = exp(-pow((uv.x - uFront + 0.01) / 0.06, 2.0)) * uFrontAmt * 0.7;
-  front *= exp(-pow((uv.y - 0.6) / 0.6, 2.0));
+
+  // The front is a short light on the tick row, about 14 px across and 14 px tall, and half the strength
+  // of a bloom: it stays above the numerals and out of the hairlines' way.
+  float across = exp(-pow((uv.x - uFront + 0.006) / (14.0 / uSize.x), 2.0));
+  float down = exp(-pow((uv.y - uTickY) / (7.0 / uSize.y), 2.0));
+  float front = across * down * uFrontAmt * 0.5;
 
   float window = smoothstep(0.0, 0.22, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
-  float alpha = (max(current, hover) * strength + front * strength * 1.6) * window;
+  float alpha = (max(current, hover) * strength + front * strength) * window * behind;
   gl_FragColor = writePixel(uAccent, min(alpha, 1.0));
 }
 `;
@@ -150,6 +163,8 @@ export function createCareerScale(context: ViewContext): View {
     uCurrent: { value: CURRENT },
     uHover: { value: CURRENT },
     uHoverAmt: { value: 0 },
+    uSettle: { value: 0 },
+    uTickY: { value: 0.5 },
   };
   const flags = { transparent: true, premultipliedAlpha: true, depthTest: false, depthWrite: false } as const;
 
@@ -199,6 +214,8 @@ export function createCareerScale(context: ViewContext): View {
       uniforms.uSize.value = [viewport.width, viewport.height];
       uniforms.uPixel.value = pixelRatio;
       uniforms.uRuler.value = ruler?.clientHeight ?? uniforms.uRuler.value;
+      uniforms.uTickY.value = uniforms.uRuler.value / viewport.height;
+      uniforms.uSettle.value = unit((t - SETTLE_FROM) / (entrance.scale.for - SETTLE_FROM));
       uniforms.uFront.value = front;
       uniforms.uFrontAmt.value = t < 0 ? 0 : 1 - unit((t - FRONT_MS) / AFTERGLOW_MS);
       uniforms.uHover.value = hovered;

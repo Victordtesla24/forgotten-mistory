@@ -10,7 +10,7 @@
  * first screen of a tablet. The row is a scroller of its own, so the page never scrolls sideways.
  */
 .row {
-  --row-visual: 3.5rem;
+  --row-visual: var(--hero-visual, 3.5rem);
   display: flex;
   gap: 0.75rem;
   margin: 0 calc(var(--gutter) * -1);
@@ -36,7 +36,7 @@
 
 @media (min-width: 640px) {
   .row {
-    --row-visual: 4rem;
+    --row-visual: var(--hero-visual, 4rem);
   }
 
   .reading {
@@ -60,19 +60,66 @@
 }
 
 /*
- * From 1024px with a mouse the three readings are one row of cards under the headline, in a
- * row of the hero's grid whose height is stated in CSS (Hero.module.css): the visual takes what
- * `--hero-visual` says, and the text under it is a fixed `--reading-text` tall, so a number that
- * is still counting, or a card that is still being parsed, moves nothing.
+ * On a phone the row is as tall as the hero leaves it (Hero.module.css), up to a limit: a card is
+ * its text, a fixed height so that no card's number or scope moves when another is parsed, and a
+ * visual that takes the rest. Where the scale does not stand on the screen (a phone under 830 px
+ * tall) the row ends 4.5rem short of the right edge, so that the card is never under the round
+ * Ask Mini Vic button; the first card is as wide as that leaves and the next waits beyond it.
  */
-@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (scripting: enabled) {
+@media (max-width: 639px) {
   .row {
-    --row-visual: var(--hero-visual);
+    flex: 1 1 auto;
+    max-block-size: calc(var(--max-visual) + 1px + var(--reading-text));
+  }
+
+  .reading {
+    display: flex;
+  }
+
+  .reading > a {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .row .visual {
+    height: auto;
+    flex: 1 1 var(--row-visual);
+    min-block-size: var(--row-visual);
+    max-block-size: var(--max-visual);
   }
 
   .row .text {
+    flex: none;
+    block-size: var(--reading-text);
+  }
+}
+
+@media (max-width: 639px) and (max-height: 829px) {
+  .row {
+    margin-inline-end: calc(4.5rem - var(--gutter));
+  }
+
+  .reading {
+    width: min(19rem, calc(100% + 0.5rem));
+  }
+}
+
+/*
+ * From 1024px the three readings are one row of cards under the headline, in a row of the hero's
+ * grid whose height is stated in CSS (Hero.module.css): the visual takes what `--hero-visual` says,
+ * and the text under it is a fixed `--reading-text` tall, so a number that is still counting, or a
+ * card that is still being parsed, moves nothing.
+ */
+@media (min-width: 1024px) {
+  .row .text {
     block-size: var(--reading-text);
     align-content: center;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1099px) {
+  .row .text {
+    align-content: start;
   }
 }
 
@@ -132,7 +179,7 @@ a:active > .text {
 
 /* With script, a drawing is shown once its layout is set, so it is never seen to move; without script it stands as the defaults draw it. */
 @media (scripting: enabled) {
-  .visual:not([data-laid]) :is(.points, .cells, .cohort, .key),
+  .visual:not([data-laid]) :is(.points, .cells, .cohort),
   .panelTile:not([data-laid]) :is(.points, .cells, .cohort) {
     visibility: hidden;
   }
@@ -156,8 +203,8 @@ a:active > .text {
   --p: var(--pitch, 6px);
   --m: var(--mark, 4px);
   --s: var(--side, 1000);
-  --sx: 19;
-  --sy: 4;
+  --sx: 24;
+  --sy: 3;
   position: absolute;
   left: var(--fx, 50%);
   top: var(--fy, 6px);
@@ -183,36 +230,48 @@ a:active > .text {
   -webkit-mask-composite: source-in;
 }
 
-@media (min-resolution: 1.5dppx) {
-  .lattice {
-    --p: var(--pitch, 1px);
-    --m: var(--mark, 0.5px);
-    --s: var(--side, 10);
-    --sx: 208;
-    --sy: 53;
-    top: var(--fy, 50%);
-    translate: var(--tx, -50%) var(--ty, -50%);
-  }
-}
-
-/* What one block stands for, under the blocks, where blocks are what is drawn. */
-.visual .key {
+/*
+ * The key: what one mark stands for, the last line of every tile, and after it, where there is
+ * room, the count the figure states beyond what is drawn. A tile's key strip is the 22 px
+ * `KEY_STRIP` of lib/readings.ts: 13 px text with 6 clear above and below it.
+ */
+.visual .key,
+.panelTile .key {
   position: absolute;
   inset: auto 0 0;
   display: block;
-  padding-bottom: 1px;
+  padding-inline: 4px;
+  overflow: hidden;
   text-align: center;
-  line-height: 1.125rem;
+  line-height: 22px;
   white-space: nowrap;
 }
 
-.visual[data-mode='points'] .key {
+.bound {
   display: none;
 }
 
-@media (min-resolution: 1.5dppx) {
-  .visual:not([data-mode]) .key {
-    display: none;
+@container (min-width: 14rem) {
+  [data-reading='evidence'] .bound {
+    display: inline;
+  }
+}
+
+@container (min-width: 18rem) {
+  [data-reading='portfolio'] .bound {
+    display: inline;
+  }
+}
+
+@container (min-width: 16rem) {
+  [data-reading='telemetry'][data-mode='blocks'] .bound {
+    display: inline;
+  }
+}
+
+@container (min-width: 15rem) {
+  [data-reading='telemetry'][data-mode='points'] .bound {
+    display: inline;
   }
 }
 
@@ -344,18 +403,17 @@ a:active > .text {
 }
 
 /*
- * Portfolio: forty marks, one for each practitioner, in five groups of eight (two rows of four),
- * each group a mark's width and a gap apart from the next, on one baseline.
+ * Portfolio: forty marks, one for each practitioner, in one run of two rows of twenty on one
+ * baseline. The CV gives no squad sizes, so no squad is drawn.
  */
 .cohort {
-  --p: var(--pitch, clamp(4px, calc((100cqw - 20px) / 24), 22px));
-  --m: var(--mark, calc(var(--p) * 0.62));
-  --group: var(--gp, calc((var(--across) + 1) * var(--p)));
+  --p: var(--pitch, clamp(4px, calc((100cqw - 20px) / var(--across)), 13px));
+  --m: var(--mark, calc(var(--p) * 0.55));
   position: absolute;
   left: var(--fx, 50%);
-  top: var(--fy, 50%);
-  translate: var(--tx, -50%) var(--ty, -50%);
-  width: var(--fw, calc((var(--groups) - 1) * var(--group) + (var(--across) - 1) * var(--p) + var(--m)));
+  top: var(--fy, 6px);
+  translate: var(--tx, -50%) var(--ty, 0px);
+  width: var(--fw, calc((var(--across) - 1) * var(--p) + var(--m)));
   height: var(--fh, calc((var(--down) - 1) * var(--p) + var(--m)));
 }
 
@@ -370,7 +428,7 @@ a:active > .text {
 
 .mark {
   position: absolute;
-  left: calc(var(--g) * var(--group) + var(--c) * var(--p));
+  left: calc(var(--c) * var(--p));
   top: calc(var(--r) * var(--p));
   width: var(--m);
   height: var(--m);

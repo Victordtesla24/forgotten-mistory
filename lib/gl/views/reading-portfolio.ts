@@ -1,9 +1,9 @@
 /**
  * The portfolio reading: one mark for each of up to 40 practitioners across 5+ squads, drawn
- * as five groups of eight, two rows of four, on a single baseline, with a gap between groups
- * wider than any inside one. The marks arrive column by column and each grows into place. A
- * hover or focus sends a band of light across them. Their layout is `readingLayout`'s, in
- * whole device pixels, the same the DOM drawing takes.
+ * as one run of two rows of twenty on a single baseline; the CV gives no squad sizes, so no
+ * squad is drawn. The marks arrive column by column and each grows into place. A hover or
+ * focus sends a band of light across them. Their layout is `readingLayout`'s, in whole device
+ * pixels, the same the DOM drawing takes.
  */
 
 import {
@@ -28,20 +28,21 @@ const float COUNT_MS = ${cohort.countMs.toFixed(1)};
 
 uniform vec2 uFrame;
 uniform float uPitch;
-uniform float uGroupPitch;
 uniform float uMark;
 
-/** Where a mark's centre sits, in device pixels from the tile's top left: mark.z is its group, mark.x its column in the group, mark.y its row. */
-vec2 markCentre(vec3 mark) {
-  return uFrame + vec2(mark.z * uGroupPitch + mark.x * uPitch, mark.y * uPitch) + 0.5 * uMark;
+/** Where a mark's centre sits, in device pixels from the tile's top left: mark.x is its column, mark.y its row. */
+vec2 markCentre(vec2 mark) {
+  return uFrame + mark * uPitch + 0.5 * uMark;
 }
 
-float bornAt(vec3 mark) {
-  return (mark.z * ${(cohort.across * cohort.down).toFixed(1)} + mark.x * ${cohort.down.toFixed(1)} + mark.y) / COUNT * COUNT_MS;
+float bornAt(vec2 mark) {
+  return (mark.x * ${cohort.down.toFixed(1)} + mark.y) / COUNT * COUNT_MS;
 }
 `;
 
 const markVertex = /* glsl */ `
+attribute vec2 aMark;
+
 varying float vPop;
 varying float vAcross;
 
@@ -50,8 +51,8 @@ ${COHORT_SHAPE}
 
 void main() {
   vec2 device = floor(uSize * uPixel + 0.5);
-  vec2 centre = markCentre(position);
-  vPop = easeOut((uT - bornAt(position)) / 200.0);
+  vec2 centre = markCentre(aMark);
+  vPop = easeOut((uT - bornAt(aMark)) / 200.0);
   vAcross = centre.x / device.x;
   gl_Position = vec4(vec2(centre.x, device.y - centre.y) / device * 2.0 - 1.0, 0.0, 1.0);
   gl_PointSize = uMark * vPop;
@@ -116,20 +117,19 @@ void main() {
 
 /** Creates the portfolio reading. */
 export function createReadingPortfolio(context: ViewContext): View {
-  const { count, groups, across, down, countMs } = cohort;
+  const { count, across, down, countMs } = cohort;
   const state = createReadingState('portfolio', context);
 
-  // Group by group, column by column: the order they arrive in.
-  const marks = new Float32Array(count * 3);
-  for (let group = 0; group < groups; group += 1) {
-    for (let column = 0; column < across; column += 1) {
-      for (let row = 0; row < down; row += 1) marks.set([column, row, group], ((group * across + column) * down + row) * 3);
-    }
+  // Column by column: the order they arrive in.
+  const marks = new Float32Array(count * 2);
+  for (let column = 0; column < across; column += 1) {
+    for (let row = 0; row < down; row += 1) marks.set([column, row], (column * down + row) * 2);
   }
   const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new BufferAttribute(marks, 3));
+  geometry.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
+  geometry.setAttribute('aMark', new BufferAttribute(marks, 2));
 
-  const frame = { uFrame: { value: [0, 0] }, uPitch: { value: 1 }, uGroupPitch: { value: 1 }, uMark: { value: 1 } };
+  const frame = { uFrame: { value: [0, 0] }, uPitch: { value: 1 }, uMark: { value: 1 } };
   const flags = { transparent: true, premultipliedAlpha: true, depthTest: false, depthWrite: false } as const;
   const markMaterial = new ShaderMaterial({
     vertexShader: markVertex,
@@ -169,7 +169,6 @@ export function createReadingPortfolio(context: ViewContext): View {
       const layout = readingLayout('portfolio', tileOf(input));
       frame.uFrame.value = [layout.frame.x, layout.frame.y];
       frame.uPitch.value = layout.pitch;
-      frame.uGroupPitch.value = layout.groupPitch;
       frame.uMark.value = layout.mark;
       baseMaterial.uniforms.uBaseline.value = [layout.baseline.x, layout.baseline.y, layout.baseline.width];
       geometry.setDrawRange(0, Math.ceil(count * unit(t / countMs)));

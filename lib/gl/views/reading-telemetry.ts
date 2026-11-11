@@ -1,12 +1,11 @@
 /**
- * The telemetry reading: exactly 10,000 points, one for each concurrent device, in 100 blocks
- * of 100, filling the lattice from left to right, then a line that crosses it in 200 ms, the
- * P95 latency of the figure's scope, and fades out as it arrives. Points the line has reached
- * stay lit. A hover or focus sends the line across again. Where the points cannot be told
- * apart (a pitch under two device pixels) it draws 100 blocks of 100 instead, one point sprite
- * for each. Either way the layout is `readingLayout`'s, in whole device pixels, the same the DOM
- * drawing takes, so every mark sits on a device pixel with no jitter and nothing moires. Every
- * mark is a real GL point, so the stage's own counters report them.
+ * The telemetry reading: one mark for each block of 100 of the 10,000 concurrent devices, 100
+ * blocks in all, 25 across and 4 down, filling left to right, then a line that crosses them in
+ * 200 ms, the P95 latency of the figure's scope, and fades out as it arrives. Blocks the line
+ * has reached stay lit. A hover or focus sends the line across again. The layout is
+ * `readingLayout`'s, in whole device pixels, the same the DOM drawing takes, so every block sits
+ * on a device pixel with no jitter. The enlarged reading in a panel draws all 10,000 points in
+ * the DOM. Every block is a real GL point, so the stage's own counters report them.
  */
 
 import {
@@ -104,30 +103,10 @@ const LINE_ALPHA = 0.95;
 
 /** Creates the telemetry reading. */
 export function createReadingTelemetry(context: ViewContext): View {
-  const { count, countMs, sweepMs } = points;
+  const { countMs, sweepMs } = points;
   const state = createReadingState('telemetry', context);
 
-  // Left to right, so the fill wipes across like the DOM's: a point exists wherever neither its
-  // column nor its row is one of the gutters between blocks.
-  const lattice = new Float32Array(count * 3);
-  const gutter = points.side;
-  const stride = points.side + 1;
-  const columns = points.blockColumns * stride - 1;
-  const rows = points.blockRows * stride - 1;
-  let at = 0;
-  for (let column = 0; column < columns; column += 1) {
-    if (column % stride === gutter) continue;
-    for (let row = 0; row < rows; row += 1) {
-      if (row % stride === gutter) continue;
-      lattice[at] = column;
-      lattice[at + 1] = row;
-      at += 3;
-    }
-  }
-  const dots = new BufferGeometry();
-  dots.setAttribute('position', new BufferAttribute(lattice, 3));
-
-  // Where the points cannot be told apart: one mark for each block of a hundred, in a grid of 20 by 5.
+  // One mark for each block of a hundred, in a grid of 25 by 4.
   const wholeBlocks = points.blockColumns * points.blockRows;
   const blockGrid = new Float32Array(wholeBlocks * 3);
   for (let column = 0; column < points.blockColumns; column += 1) {
@@ -150,7 +129,7 @@ export function createReadingTelemetry(context: ViewContext): View {
     },
     ...flags,
   });
-  const cloud = new Points(dots, dotMaterial);
+  const cloud = new Points(blocks, dotMaterial);
   cloud.frustumCulled = false;
   cloud.renderOrder = 1;
 
@@ -178,7 +157,6 @@ export function createReadingTelemetry(context: ViewContext): View {
     update(input: FrameInput): boolean {
       const { t, flash, busy } = state.step(input);
       const layout = readingLayout('telemetry', tileOf(input));
-      cloud.geometry = layout.mode === 'points' ? dots : blocks;
       context.element.dataset.drawn = String(layout.drawn);
       context.element.dataset.unit = String(layout.unit);
       dotMaterial.uniforms.uFrame.value = [layout.frame.x, layout.frame.y];
@@ -210,7 +188,6 @@ export function createReadingTelemetry(context: ViewContext): View {
       delete context.element.dataset.drawn;
       delete context.element.dataset.unit;
       backdrop.dispose();
-      dots.dispose();
       blocks.dispose();
       lineGeometry.dispose();
       dotMaterial.dispose();

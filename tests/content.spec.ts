@@ -28,8 +28,8 @@ async function pageText(page: Page): Promise<string> {
 
 // The shape of the content: counts, and the limits the copy style guide sets.
 test.describe('the content keeps to its contract', { tag: '@desktop' }, () => {
-  test('the hero is one short positioning line of at most 12 words', () => {
-    expect(words(hero.positioning)).toBeLessThanOrEqual(12);
+  test('the hero is one short positioning line of at most 20 words', () => {
+    expect(words(hero.positioning)).toBeLessThanOrEqual(20);
     expect(hero.headline.lead + hero.headline.emphasis + hero.headline.tail).toBe(
       'Delivery leader and AI solutions architect.',
     );

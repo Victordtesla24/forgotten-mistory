@@ -120,7 +120,7 @@ export function CareerTrack() {
             <path d={tickPaths.major} className={styles.year} />
           </svg>
           {numerals.map((tick) => (
-            <span key={tick.year} className={styles.numeral} style={{ left: `clamp(1rem, ${percent(tick.at)}, calc(100% - 1rem))` }}>
+            <span key={tick.year} className={styles.numeral} style={{ left: `clamp(1.55rem, ${percent(tick.at)}, calc(100% - 1.55rem))` }}>
               {tick.year}
             </span>
           ))}
@@ -138,6 +138,7 @@ export function CareerTrack() {
                 panel={`career-${bar.id}`}
                 aria-label={bar.name}
                 data-role={bar.id}
+                data-mark={bar.id}
                 data-current={bar.current ? 'true' : undefined}
                 className={styles.chip}
               >

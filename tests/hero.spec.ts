@@ -497,7 +497,7 @@ test.describe('the entrance', { tag: '@desktop' }, () => {
         if (!(target instanceof Element)) continue;
         if (target.closest('[data-stage-view="hero-field"]')) add('field', animation);
         else if (target.tagName === 'H1') add('headline', animation);
-        else if (target.closest('#top') && target.tagName === 'P' && target.textContent?.startsWith('15+')) add('line', animation);
+        else if (target.closest('#top') && target.tagName === 'P' && target.textContent?.includes('15+ years')) add('line', animation);
         else if (target.closest('#top') && ['A', 'UL'].includes(target.tagName)) add('actions', animation);
         else if (target.closest('#proof') && target.tagName === 'LI') add('readings', animation);
         else if (target.closest('[data-career-scale]')) add('scale', animation);
@@ -825,10 +825,17 @@ test.describe('the detail panels lead with a visual and open with focus inside',
         const item = element.querySelector('[data-detail-item][data-active="true"]');
         const visual = item?.querySelector('figure');
         const heading = item?.querySelector('h3');
-        return { visual: visual?.getBoundingClientRect().top ?? -1, heading: heading?.getBoundingClientRect().top ?? -1, key: visual?.querySelector('figcaption')?.textContent ?? '' };
+        const tile = visual?.querySelector('[data-reading]');
+        return {
+          visual: visual?.getBoundingClientRect().top ?? -1,
+          heading: heading?.getBoundingClientRect().top ?? -1,
+          note: visual?.querySelector('figcaption')?.textContent ?? '',
+          key: tile?.querySelector('[class*="Readings_key__"]')?.textContent ?? '',
+        };
       });
       expect(order.visual, `${figure.id}: the reading is above the title`).toBeLessThan(order.heading);
-      expect(order.key).toBe(figure.key);
+      expect(order.note, 'the encoding is the caption').toBe(figure.note);
+      expect(order.key, 'the key under the enlarged reading starts as the card\'s does').toContain(figure.id === 'telemetry' ? '1 point = 1 device' : figure.key);
       await page.keyboard.press('Escape');
     }
     await page.locator(`${BARS}[data-role="ato"]`).click();

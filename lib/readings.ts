@@ -33,22 +33,31 @@ export const VISUAL_MS = READING_VISUAL;
 
 /**
  * Telemetry: one point for each of the 10,000 concurrent devices, in 100 blocks of 100 so the
- * count can be read: 20 blocks across, 5 down, each block 10 points square, one pitch of space
- * between blocks. A line crosses it in 200 ms, the P95 latency the figure's scope states.
+ * count can be read, each block 10 points square. A card draws the 100 blocks themselves, 25
+ * across and 4 down, one mark for each block, at every screen; the enlarged reading in a panel
+ * draws all 10,000 points, with one pitch of space between blocks. A line crosses it in 200 ms,
+ * the P95 latency the figure's scope states.
  */
 export const points = {
   count: 10_000,
   side: 10,
-  blockColumns: 20,
-  blockRows: 5,
+  blockColumns: 25,
+  blockRows: 4,
   /** Devices one block stands for: 10 by 10 points. */
   perBlock: 100,
   sweepMs: 200,
   countMs: duration.hover,
 } as const;
 
-/** What a block stands for, in the card's scope-line style, shown where 100 blocks are drawn in place of the 10,000 points. */
+/** What a block stands for, where 100 blocks are drawn in place of the 10,000 points. */
 export const blockKey = `1 block = ${points.perBlock} devices`;
+
+/** The key under a reading's drawing: what one mark stands for. Telemetry's depends on whether blocks or points are drawn. */
+export function keyOf(id: ReadingId, mode: 'points' | 'blocks' = 'blocks'): string {
+  const figure = headlineFigures.find((entry) => entry.id === id);
+  if (id === 'telemetry' && mode === 'blocks') return blockKey;
+  return figure?.key ?? '';
+}
 
 /**
  * Evidence: one cell for each of the 200 SIT scenarios, and all 200 stay. Each cell is filled
@@ -69,15 +78,13 @@ export const cells = {
 } as const;
 
 /**
- * Portfolio: one mark for each of up to 40 practitioners across 5+ squads, drawn as five groups
- * of eight, two rows of four, with a gap between groups that is wider than any gap inside one.
+ * Portfolio: one mark for each of up to 40 practitioners across 5+ squads, in one run of two
+ * rows of 20 on a single baseline. The CV states no squad sizes, so no squad is drawn.
  */
 export const cohort = {
   count: 40,
-  groups: 5,
-  across: 4,
+  across: 20,
   down: 2,
-  perGroup: 8,
   countMs: duration.hover,
 } as const;
 
@@ -115,12 +122,15 @@ export type ReadingPlace = 'card' | 'panel';
 /** The room a card's tile keeps free at its sides and top, in CSS pixels, so no mark meets the card's rounded corners. */
 const CARD_PAD = { x: 10, y: 6 };
 
-/** The line of key under 100 blocks, in CSS pixels. */
-const KEY_STRIP = 18;
+/**
+ * The line of key under every drawing, in CSS pixels: the 13 px text of a key has 6 clear above
+ * it and 6 below, so it never touches the drawing or the divider under it.
+ */
+export const KEY_STRIP = 22;
 
 /**
  * The enlarged telemetry reading in a panel: the room round it, and the ways its 100 blocks can be set
- * out, widest first, each with the tallest the reading may grow to, in CSS pixels. A narrow screen takes
+ * out, widest first, each with the tallest the drawing may grow to, in CSS pixels. A narrow screen takes
  * the first that gives a pitch of two device pixels, so all 10,000 points are drawn at every width.
  */
 const PANEL_PAD = 8;
@@ -133,7 +143,7 @@ const PANEL_ARRANGEMENTS = [
 
 interface TelemetryLayout {
   id: 'telemetry';
-  /** Every one of the 10,000 points, or, where they cannot be told apart, 100 blocks of 100. */
+  /** Every one of the 10,000 points (the enlarged reading), or 100 blocks of 100 (a card). */
   mode: 'points' | 'blocks';
   /** The device ratio the numbers below are measured in. */
   ratio: number;
@@ -152,8 +162,8 @@ interface TelemetryLayout {
   frame: Frame;
   /** The height of the tile the layout needs: a panel's tile grows to it; a card's is what its CSS gives. */
   height: number;
-  /** What a block stands for, shown only when blocks are drawn. */
-  key: string | null;
+  /** What one mark stands for, drawn under the lattice. */
+  key: string;
 }
 
 interface EvidenceLayout {
@@ -176,22 +186,22 @@ interface EvidenceLayout {
   room: number;
   frame: Frame;
   height: number;
+  key: string;
 }
 
 interface PortfolioLayout {
   id: 'portfolio';
   ratio: number;
-  groups: number;
   across: number;
   down: number;
-  /** Device pixels between neighbouring marks, from one group's first column to the next group's first, and the edge of a mark. */
+  /** Device pixels between neighbouring marks, and the edge of a mark. */
   pitch: number;
-  groupPitch: number;
   mark: number;
   /** The marks' extent, and the baseline under them: a row of device pixels from `baseline.x` for `baseline.width`. */
   frame: Frame;
   baseline: { x: number; y: number; width: number };
   height: number;
+  key: string;
 }
 
 export type ReadingLayout = TelemetryLayout | EvidenceLayout | PortfolioLayout;
@@ -208,22 +218,50 @@ const centred = (space: number, size: number): number => Math.max(0, Math.floor(
 /** The lattice's marks in a row of `blocks` blocks of `side` points, a gutter of one pitch between blocks. */
 const marksAcross = (blocks: number, side: number): number => blocks * (side + 1) - 1;
 
-function telemetryLayout(tile: Tile, place: ReadingPlace): TelemetryLayout {
-  const ratio = ratioOf(tile);
+/** The room a card's drawing has, in device pixels from the tile's top left: inside the pad, above the key. */
+function drawingArea(tile: Tile, ratio: number): Frame {
   const width = Math.floor(tile.width * ratio);
   const tall = Math.floor(tile.height * ratio);
-  const { side, perBlock } = points;
-  const arrangements = place === 'panel' ? PANEL_ARRANGEMENTS : [{ across: points.blockColumns, down: points.blockRows, tallest: tile.height }];
-  const pad = place === 'panel' ? PANEL_PAD * ratio : 0;
+  const x = Math.round(CARD_PAD.x * ratio);
+  const y = Math.round(CARD_PAD.y * ratio);
+  return { x, y, width: Math.max(width - 2 * x, 1), height: Math.max(tall - y - Math.round(KEY_STRIP * ratio), 1) };
+}
 
-  for (const { across, down, tallest } of arrangements) {
-    const columns = marksAcross(across, side);
-    const rows = marksAcross(down, side);
-    const pitch = Math.floor(Math.min((width - 2 * pad) / columns, (Math.floor(tallest * ratio) - 2 * pad) / rows));
-    if (pitch < 2) continue;
+/** `frame` of the given size, centred in `area`. */
+const centredIn = (area: Frame, size: { width: number; height: number }): Frame => ({
+  x: area.x + centred(area.width, size.width),
+  y: area.y + centred(area.height, size.height),
+  ...size,
+});
+
+/** A block: a mark a little smaller than its pitch, a few device pixels apart from the next. */
+const blockOf = (pitch: number): number => pitch - Math.max(1, Math.round(pitch * 0.3));
+
+function telemetryLayout(tile: Tile, place: ReadingPlace): TelemetryLayout {
+  const ratio = ratioOf(tile);
+  const { side, perBlock } = points;
+
+  if (place === 'panel') {
+    const width = Math.floor(tile.width * ratio);
+    const pad = PANEL_PAD * ratio;
+    const strip = KEY_STRIP * ratio;
+    const [widest] = PANEL_ARRANGEMENTS;
+    let chosen: (typeof PANEL_ARRANGEMENTS)[number] = widest;
+    let pitch = 2;
+    for (const arrangement of PANEL_ARRANGEMENTS) {
+      const columns = marksAcross(arrangement.across, side);
+      const rows = marksAcross(arrangement.down, side);
+      const fitted = Math.floor(Math.min((width - 2 * pad) / columns, (Math.floor(arrangement.tallest * ratio) - 2 * pad) / rows));
+      chosen = arrangement;
+      pitch = Math.max(fitted, 2);
+      if (fitted >= 2) break;
+    }
+    const columns = marksAcross(chosen.across, side);
+    const rows = marksAcross(chosen.down, side);
     const mark = markOf(pitch);
     const size = { width: (columns - 1) * pitch + mark, height: (rows - 1) * pitch + mark };
-    const height = place === 'panel' ? Math.max(size.height + 2 * pad, PANEL_MIN_HEIGHT * ratio) : tall;
+    const height = Math.max(size.height + 2 * pad + strip, PANEL_MIN_HEIGHT * ratio);
+    const area: Frame = { x: 0, y: 0, width, height: height - strip };
     return {
       id: 'telemetry',
       mode: 'points',
@@ -235,24 +273,19 @@ function telemetryLayout(tile: Tile, place: ReadingPlace): TelemetryLayout {
       unit: 1,
       pitch,
       mark,
-      frame: { x: centred(width, size.width), y: centred(height, size.height), ...size },
+      frame: centredIn(area, size),
       height: height / ratio,
-      key: null,
+      key: keyOf('telemetry', 'points'),
     };
   }
 
-  // The points cannot be told apart at this size: one block for each hundred devices.
+  // The points cannot be told apart at a card's size: one block for each hundred devices.
+  const area = drawingArea(tile, ratio);
   const across = points.blockColumns;
   const down = points.blockRows;
-  const room = { x: width - 2 * CARD_PAD.x * ratio, y: tall - (CARD_PAD.y + KEY_STRIP) * ratio };
-  const pitch = Math.max(2, Math.floor(Math.min(room.x / across, room.y / down)));
-  const mark = Math.max(1, pitch - Math.max(1, Math.round(pitch * 0.3)));
-  const frame: Frame = {
-    x: centred(width, (across - 1) * pitch + mark),
-    y: Math.round(CARD_PAD.y * ratio),
-    width: (across - 1) * pitch + mark,
-    height: (down - 1) * pitch + mark,
-  };
+  let pitch = Math.max(2, Math.floor(Math.min(area.width / (across - 1), area.height / (down - 1))));
+  while (pitch > 2 && ((across - 1) * pitch + blockOf(pitch) > area.width || (down - 1) * pitch + blockOf(pitch) > area.height)) pitch -= 1;
+  const mark = blockOf(pitch);
   return {
     id: 'telemetry',
     mode: 'blocks',
@@ -264,30 +297,23 @@ function telemetryLayout(tile: Tile, place: ReadingPlace): TelemetryLayout {
     unit: perBlock,
     pitch,
     mark,
-    frame,
+    frame: centredIn(area, { width: (across - 1) * pitch + mark, height: (down - 1) * pitch + mark }),
     height: tile.height,
-    key: blockKey,
+    key: keyOf('telemetry', 'blocks'),
   };
 }
 
 function evidenceLayout(tile: Tile): EvidenceLayout {
   const ratio = ratioOf(tile);
-  const width = Math.floor(tile.width * ratio);
-  const tall = Math.floor(tile.height * ratio);
+  const area = drawingArea(tile, ratio);
   const { columns, rows } = cells;
   const outline = 1;
   const inset = 1;
-  const pitchX = Math.max(2 * (outline + inset) + 1, Math.floor((width - 2 * CARD_PAD.x * ratio) / columns));
-  const pitchY = Math.max(2 * outline + 1, Math.floor((tall - 2 * CARD_PAD.y * ratio) / rows));
+  const pitchX = Math.max(2 * (outline + inset) + 1, Math.floor(area.width / columns));
+  const pitchY = Math.max(2 * outline + 1, Math.floor(area.height / rows));
   // Neighbouring cells touch while a cell is narrow; from eight device pixels there is a pixel between their outlines.
   const boxX = pitchX - (pitchX >= 8 ? 1 : 0);
   const boxY = pitchY - (pitchY >= 8 ? 1 : 0);
-  const frame: Frame = {
-    x: centred(width, (columns - 1) * pitchX + boxX),
-    y: centred(tall, (rows - 1) * pitchY + boxY),
-    width: (columns - 1) * pitchX + boxX,
-    height: (rows - 1) * pitchY + boxY,
-  };
   return {
     id: 'evidence',
     ratio,
@@ -302,44 +328,37 @@ function evidenceLayout(tile: Tile): EvidenceLayout {
     floor: 2,
     fillWidth: Math.max(1, boxX - 2 * (outline + inset)),
     room: boxY - 2 * outline,
-    frame,
+    frame: centredIn(area, { width: (columns - 1) * pitchX + boxX, height: (rows - 1) * pitchY + boxY }),
     height: tile.height,
+    key: keyOf('evidence'),
   };
 }
 
 function portfolioLayout(tile: Tile): PortfolioLayout {
   const ratio = ratioOf(tile);
-  const width = Math.floor(tile.width * ratio);
-  const tall = Math.floor(tile.height * ratio);
-  const { groups, across, down } = cohort;
-  // Five groups of four columns, a column's gap between groups: 24 pitches less the last gap.
-  const wide = groups * across + (groups - 1);
-  const pitch = Math.max(2, Math.floor(Math.min((width - 2 * CARD_PAD.x * ratio) / wide, (tall - 2 * CARD_PAD.y * ratio) / (down + 1), 22 * ratio)));
+  const area = drawingArea(tile, ratio);
+  const { across, down } = cohort;
+  // The widest pitch at which the run, the space under it and its baseline all fit.
+  const below = (pitch: number, mark: number): number => pitch - mark + Math.round(pitch * 0.3);
+  const total = (pitch: number, mark: number): number => (down - 1) * pitch + mark + below(pitch, mark) + 1;
+  let pitch = Math.max(2, Math.min(Math.floor(area.width / across), Math.floor(22 * ratio)));
+  while (pitch > 2 && ((across - 1) * pitch + markOf(pitch) > area.width || total(pitch, markOf(pitch)) > area.height)) pitch -= 1;
   const mark = markOf(pitch);
-  const groupPitch = (across + 1) * pitch;
-  const frame: Frame = {
-    x: 0,
-    y: 0,
-    width: (groups - 1) * groupPitch + (across - 1) * pitch + mark,
-    height: (down - 1) * pitch + mark,
-  };
-  const below = pitch - mark + Math.round(pitch * 0.3);
-  const total = frame.height + below + 1;
-  frame.x = centred(width, frame.width);
-  frame.y = centred(tall, total);
+  const size = { width: (across - 1) * pitch + mark, height: (down - 1) * pitch + mark };
+  const frame = centredIn(area, { width: size.width, height: total(pitch, mark) });
+  const marks: Frame = { ...frame, height: size.height };
   const overhang = Math.round(pitch * 0.2);
   return {
     id: 'portfolio',
     ratio,
-    groups,
     across,
     down,
     pitch,
-    groupPitch,
     mark,
-    frame,
-    baseline: { x: frame.x - overhang, y: frame.y + frame.height + below, width: frame.width + 2 * overhang },
+    frame: marks,
+    baseline: { x: marks.x - overhang, y: marks.y + marks.height + below(pitch, mark), width: marks.width + 2 * overhang },
     height: tile.height,
+    key: keyOf('portfolio'),
   };
 }
 

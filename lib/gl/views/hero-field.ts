@@ -1,14 +1,17 @@
 /**
- * The hero field: receding lanes of fine ruler ticks behind the type. On load the lanes
+ * The hero field: receding lanes of fine ruler ticks beside the type. On load the lanes
  * unfurl from the nearest to the farthest, a band of light crosses them once, and the
  * drift eases to a stop; after that the field is still and the page draws nothing. A fine
  * pointer leans the camera, and carries a bloom, about 200 px across, that lights the ticks it
  * passes over; both settle again when it stops. A touch on the hero answers once, in the same
- * way, and eases back to rest. The field never shows behind the headline block (the eyebrow,
- * the headline, the line and the actions) or a reading card: it is masked to nothing inside
- * their rectangles, with a falloff of 24 px outside them, so lanes end before them rather than
- * being cut off. Everything is a function of the view's clock, so a frame at any moment can be
- * reproduced.
+ * way, and eases back to rest. The field is one plane, to the right of the headline block and
+ * above the readings: its left edge is a long eased ramp that is nothing at the block's right edge
+ * and full strength 224 px on, and it fades out over the 120 px above the readings, so lanes come
+ * out of the dark and go back into it rather than being cut off, and no scrap of the field is
+ * left in a gutter or between blocks. Where the block leaves less than 200 px beside it (a
+ * phone, a tablet) there are no lanes, only the soft light, which still answers a touch. Lanes are exactly horizontal and
+ * ticks exactly vertical on the screen, on whole device pixels. Everything is a function of the
+ * view's clock, so a frame at any moment can be reproduced.
  */
 
 import {
@@ -52,14 +55,17 @@ const LOOK_AT = new Vector3(-2, -3.4, -34);
 /** The wider-than-this aspect the field is composed for; narrower views crop it from the right. */
 const MIN_ASPECT = 1.5;
 
-/** How far beyond the headline block and the reading cards the field takes to come back to full, in CSS px. */
-const MASK_FALLOFF = 24;
-
-/** The most rectangles the field is held back from: the headline block and the three readings. */
-const MASK_RECTS = 4;
-
-/** Where a rectangle that is not in use stands: nowhere near the view. */
-const NOWHERE = -1e6;
+/**
+ * The plane the field lives in, in CSS px. Its left edge stands this far right of the headline block's
+ * widest line and takes `PLANE_RAMP` to come to full strength; its lower edge stands this far above the
+ * readings and the field fades out over `PLANE_FADE` above it. The slope never passes 6% of full
+ * strength in 8 px. A plane with less than `PLANE_LEAST` of width is not drawn.
+ */
+const PLANE_GAP = 24;
+const PLANE_RAMP = 224;
+const PLANE_ABOVE = 24;
+const PLANE_FADE = 120;
+const PLANE_LEAST = 200;
 
 /** The pointer's bloom: its spread (a standard deviation) in CSS px; the glow reaches about twice that. */
 const BLOOM_SPREAD = 95;
@@ -103,17 +109,16 @@ function createLanes(tier: LiveTier): RulerLane[] {
   });
 }
 
-/** GLSL both fragment shaders share: the mask round the type and the cards, and the pointer's bloom, in device pixels from the view's bottom left. */
-const typeMask = /* glsl */ `
-float typeMask(vec2 frag) {
-  float held = 1.0;
-  for (int i = 0; i < ${MASK_RECTS}; i += 1) {
-    vec2 centre = 0.5 * (uMask[i].xy + uMask[i].zw);
-    vec2 half_ = 0.5 * (uMask[i].zw - uMask[i].xy);
-    vec2 beyond = max(abs(frag - centre) - half_, 0.0);
-    held = min(held, smoothstep(0.0, ${MASK_FALLOFF.toFixed(1)}, length(beyond) / uPixel));
-  }
-  return held;
+/**
+ * GLSL both fragment shaders share: how much of the field shows at a fragment (device pixels from the view's
+ * bottom left). `uPlane` is the plane's left edge, the width of its ramp, its lower edge measured up from
+ * the view's bottom, and the height of the fade above it.
+ */
+const planeMask = /* glsl */ `
+float planeMask(vec2 frag) {
+  float across = smoothstep(uPlane.x, uPlane.x + uPlane.y, frag.x);
+  float above = smoothstep(uPlane.z, uPlane.z + uPlane.w, frag.y);
+  return across * above;
 }
 `;
 
@@ -132,12 +137,17 @@ attribute float aSpan;
 uniform float uTime;
 uniform float uDrift;
 uniform float uTickHeight;
+uniform vec2 uSize;
 
 varying float vKind;
 varying float vVisible;
 
 float easeOut(float x) {
   return 1.0 - pow(1.0 - clamp(x, 0.0, 1.0), 3.0);
+}
+
+vec4 project(vec3 world) {
+  return projectionMatrix * modelViewMatrix * vec4(world, 1.0);
 }
 
 void main() {
@@ -150,10 +160,22 @@ void main() {
   float delay = floor(aLane * ${LANE_STEPS.toFixed(1)} + 0.5) * ${STAGGER_S.toFixed(3)};
   float grow = easeOut((uTime - delay) / ${ENTRANCE_S.toFixed(3)});
 
-  vec4 view = modelViewMatrix * vec4(x, position.y * uTickHeight * scale * grow, position.z, 1.0);
+  // Perspective gives the lane its place and a tick its length. What is drawn is exact: every point of a lane
+  // stands on the one device-pixel row of the lane's centre, and a tick is a vertical of whole device pixels
+  // from that row, so no lane steps and no tick leans.
+  vec2 half_ = 0.5 * uSize;
+  vec4 centre = project(vec3(0.0, 0.0, position.z));
+  vec4 foot = project(vec3(x, 0.0, position.z));
+  vec4 tip = project(vec3(x, position.y * uTickHeight * scale * grow, position.z));
+  float row = floor(centre.y / centre.w * half_.y + half_.y) + 0.5;
+  float column = mix(foot.x / foot.w * half_.x + half_.x, floor(foot.x / foot.w * half_.x + half_.x) + 0.5, isTick);
+  float rise = floor((tip.y / tip.w - foot.y / foot.w) * half_.y + 0.5);
+  vec2 device = vec2(column, row + rise);
+  gl_Position = vec4((device - half_) / half_, foot.z / foot.w, 1.0);
+
+  vec4 view = modelViewMatrix * vec4(x, 0.0, position.z, 1.0);
   vKind = aKind;
   vVisible = grow * (0.2 + 0.8 * smoothstep(14.0, 34.0, -view.z)) * (1.0 - 0.8 * smoothstep(40.0, 105.0, -view.z));
-  gl_Position = projectionMatrix * view;
 }
 `;
 
@@ -167,7 +189,7 @@ uniform float uQuiet;
 uniform vec2 uOrigin;
 uniform vec2 uSize;
 uniform float uPixel;
-uniform vec4 uMask[${MASK_RECTS}];
+uniform vec4 uPlane;
 uniform vec3 uPointer;
 
 varying float vKind;
@@ -175,7 +197,7 @@ varying float vVisible;
 
 ${finish}
 
-${typeMask}
+${planeMask}
 ${bloom}
 
 float easeInOut(float x) {
@@ -205,7 +227,7 @@ void main() {
   float edge = smoothstep(0.0, 0.16, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
   edge *= smoothstep(0.0, 0.05, uv.x) * (1.0 - smoothstep(0.95, 1.0, uv.x));
   float quiet = mix(1.0, mix(0.3, 1.0, smoothstep(0.3, 0.74, uv.x)), uQuiet);
-  float held = typeMask(gl_FragCoord.xy - uOrigin);
+  float held = planeMask(gl_FragCoord.xy - uOrigin);
 
   float alpha = strength * vVisible * edge * quiet;
   alpha = min(alpha + (0.55 * sweep + 0.9 * glow) * vVisible * edge * mix(0.5, 1.0, quiet), 1.0) * held;
@@ -228,14 +250,14 @@ uniform float uTime;
 uniform vec2 uOrigin;
 uniform vec2 uSize;
 uniform float uPixel;
-uniform vec4 uMask[${MASK_RECTS}];
+uniform vec4 uPlane;
 uniform vec3 uPointer;
 uniform vec2 uHorizon;
 
 ${hairline}
 ${finish}
 
-${typeMask}
+${planeMask}
 ${bloom}
 
 void main() {
@@ -244,14 +266,16 @@ void main() {
 
   float band = exp(-pow((uv.y - uHorizon.y) / 0.13, 2.0)) * smoothstep(0.05, 0.95, uv.x);
   float bloom = exp(-dot((uv - uHorizon) * vec2(1.1, 2.4), (uv - uHorizon) * vec2(1.1, 2.4)) / 0.22);
-  float line = hairline((uv.y - uHorizon.y) * uSize.y, 1.0) * smoothstep(0.2, 0.9, uv.x);
+  float held = planeMask(gl_FragCoord.xy - uOrigin);
+  float line = hairline((uv.y - uHorizon.y) * uSize.y, 1.0) * smoothstep(0.2, 0.9, uv.x) * held;
 
   float edge = smoothstep(0.0, 0.16, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
   edge *= smoothstep(0.0, 0.05, uv.x) * (1.0 - smoothstep(0.95, 1.0, uv.x));
 
-  float alpha = (mix(0.07, 0.15, uDark) * (0.55 * band + 0.7 * bloom) + 0.22 * line * typeMask(gl_FragCoord.xy - uOrigin)) * enter * edge;
-  // The pointer's own light, soft and wide, held back behind the type like the ticks.
-  alpha += mix(0.13, 0.17, uDark) * pointerBloom(gl_FragCoord.xy - uOrigin) * typeMask(gl_FragCoord.xy - uOrigin);
+  // The sky's soft light and the pointer's keep part of their strength outside the plane, so a screen with no
+  // room for the lanes (a phone) still answers a touch; the horizon line does not.
+  float alpha = (mix(0.07, 0.15, uDark) * (0.55 * band + 0.7 * bloom) * mix(0.4, 1.0, held) + 0.22 * line) * enter * edge;
+  alpha += mix(0.13, 0.17, uDark) * pointerBloom(gl_FragCoord.xy - uOrigin) * mix(0.35, 1.0, held);
   alpha *= 1.0 + grain(gl_FragCoord.xy) * 0.2;
 
   gl_FragColor = writePixel(uAccent, max(alpha, 0.0));
@@ -294,7 +318,7 @@ export function createHeroField(context: ViewContext): View {
     uOrigin: { value: [0, 0] as [number, number] },
     uSize: { value: [1, 1] as [number, number] },
     uPixel: { value: 1 },
-    uMask: { value: Array.from({ length: MASK_RECTS }, () => new Vector4(NOWHERE, NOWHERE, NOWHERE, NOWHERE)) },
+    uPlane: { value: new Vector4(0, 1, 0, 1) },
     uPointer: { value: new Vector3(0.5, 0.5, 0) },
     uDark: palette.dark,
   };
@@ -359,22 +383,20 @@ export function createHeroField(context: ViewContext): View {
     lineMaterial.uniforms.uQuiet.value = width / height > 1.3 ? 1 : 0.55;
   }
 
-  /** Tells the shaders where the headline block and the reading cards are, so the field can stand back from them. */
+  /**
+   * Tells the shaders where the plane is: to the right of the headline block and above the readings. Without a
+   * block, or with less than `PLANE_LEAST` beside it, the plane is nowhere.
+   */
   function holdBack(client: FrameInput['client'], height: number, pixelRatio: number): void {
-    const rects = [headlineBlock(), ...Array.from(document.querySelectorAll('#proof li'), (card) => card.getBoundingClientRect())];
-    shared.uMask.value.forEach((mask, index) => {
-      const rect = rects[index];
-      if (!rect) {
-        mask.set(NOWHERE, NOWHERE, NOWHERE, NOWHERE);
-        return;
-      }
-      mask.set(
-        (rect.left - client.left) * pixelRatio,
-        (height - (rect.bottom - client.top)) * pixelRatio,
-        (rect.right - client.left) * pixelRatio,
-        (height - (rect.top - client.top)) * pixelRatio,
-      );
-    });
+    const block = headlineBlock();
+    const cards = Array.from(document.querySelectorAll('#proof li'), (card) => card.getBoundingClientRect());
+    const left = block ? block.right + PLANE_GAP - client.left : Number.POSITIVE_INFINITY;
+    if (!block || cards.length === 0 || client.width - left < PLANE_LEAST) {
+      shared.uPlane.value.set(client.width * pixelRatio * 2, 1, 0, 1);
+      return;
+    }
+    const lower = Math.min(...cards.map((card) => card.top)) - PLANE_ABOVE;
+    shared.uPlane.value.set(left * pixelRatio, PLANE_RAMP * pixelRatio, (height - (lower - client.top)) * pixelRatio, PLANE_FADE * pixelRatio);
   }
 
   function aim(): void {

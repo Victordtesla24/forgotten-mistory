@@ -517,9 +517,17 @@
 }
 
 .chip:hover,
-.chip:focus-visible {
+.chip:focus-visible,
+.chip:active,
+.chip[data-on] {
   border-color: var(--accent);
   color: var(--text);
+}
+
+/* A chip a finger is on, or one the keyboard is on, is selected: the accent border and the accent fill, as the current role's chip is. */
+.chip:active,
+.chip[data-on] {
+  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
 }
 
 .chip:focus-visible {
@@ -528,6 +536,39 @@
 
 .chip:active {
   scale: 0.96;
+}
+
+/*
+ * On a phone the scale reads from the top: the chips (the controls), the axis they light, and under
+ * it the caption of the role that is lit. The caption stands beside the corner the round Ask Mini
+ * Vic button keeps, so its words stop short of the button; the axis above it ends above the button.
+ */
+@media (max-width: 639px) {
+  .scale {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chips {
+    order: 0;
+    margin: 0 0 0.5rem;
+  }
+
+  .track {
+    order: 1;
+  }
+
+  .caption {
+    order: 2;
+    margin: 0.5rem 0 0;
+  }
+}
+
+/* Where the scale stands on the screen its caption is beside the button's corner, so its words stop short of it. */
+@media (max-width: 639px) and (min-height: 830px) {
+  .caption {
+    padding-inline-end: 5.25rem;
+  }
 }
 
 /*
@@ -577,6 +618,24 @@
   /* A name in a lane arrives with its bar. */
   .out {
     animation: appear calc(var(--e-scale-for) * 0.25) var(--ease) calc(var(--e-scale) + var(--at) * var(--e-scale-for) * 0.75) both;
+  }
+}
+
+/*
+ * A finger on a wide screen (a tablet held sideways) has no lanes of names above the bars: the
+ * chips name every role, and the screen has no height to spare for lanes as well.
+ */
+@media (min-width: 1024px) and (hover: none), (min-width: 1024px) and (pointer: coarse) {
+  .scale {
+    --lanes-height: 0rem;
+  }
+
+  .scale .out[data-fit] {
+    display: none;
+  }
+
+  .scale .caption {
+    margin-bottom: 0;
   }
 }
 

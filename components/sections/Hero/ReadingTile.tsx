@@ -8,6 +8,8 @@ interface ReadingTileProps {
   id: ReadingId;
   /** A card's tile, or the enlarged reading that leads its panel. */
   place: ReadingPlace;
+  /** Telemetry only: 100 blocks (a card) or all 10,000 points (the panel), as the key under it says. */
+  mode?: 'points' | 'blocks';
   className?: string;
   children: ReactNode;
 }
@@ -18,10 +20,11 @@ interface ReadingTileProps {
  * (`readingLayout` in lib/readings.ts), so the two coincide to the pixel. Until then, and
  * without script, the stylesheet's own defaults draw a smaller, countable version. Where script
  * runs the drawing waits, hidden (`data-laid` not yet set), for its layout, so it appears where
- * it stays and no mark is ever seen to move. Where telemetry's points cannot be told apart the
- * tile says so (`data-mode="blocks"`) and its key is shown.
+ * it stays and no mark is ever seen to move. Every tile ends in the same line of key (`ReadingKey`,
+ * written by the page that has the figures, so that this component carries none of them); telemetry's
+ * tile says whether it draws 100 blocks or all 10,000 points (`data-mode`).
  */
-export function ReadingTile({ id, place, className, children }: ReadingTileProps) {
+export function ReadingTile({ id, place, mode, className, children }: ReadingTileProps) {
   const tile = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export function ReadingTile({ id, place, className, children }: ReadingTileProps
   }, [id, place]);
 
   return (
-    <span ref={tile} className={className} data-reading={id} data-place={place}>
+    <span ref={tile} className={className} data-reading={id} data-place={place} data-mode={mode}>
       {children}
     </span>
   );
