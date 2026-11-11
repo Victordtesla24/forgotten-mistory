@@ -1,7 +1,8 @@
 import type { ExperienceRole } from '@/content/experience';
 import { careerBars, FIRST_YEAR, LAST_YEAR } from '@/lib/timeline';
 
-import { numerals, percent, tickPaths, UNITS } from './axis';
+import { numerals, tickPaths, UNITS } from './axis';
+import { percent } from './percent';
 import { RoleFigure } from './RoleFigure';
 import styles from './RoleLead.module.css';
 

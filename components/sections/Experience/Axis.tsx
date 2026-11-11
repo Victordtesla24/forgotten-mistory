@@ -3,8 +3,9 @@ import type { CSSProperties } from 'react';
 import { careerBars, fitStep } from '@/lib/timeline';
 import { laneLayouts } from '@/lib/timeline-lanes';
 
-import { gridPaths, numerals, percent, tickPaths, UNITS } from './axis';
+import { gridPaths, numerals, tickPaths, UNITS } from './axis';
 import styles from './Experience.module.css';
+import { percent } from './percent';
 
 /** The custom properties that say, for each class of width, which lane a name stands in and how it sits against its bar. */
 function laneStyle(id: string): CSSProperties {

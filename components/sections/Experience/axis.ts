@@ -44,6 +44,3 @@ export const gridPaths = {
     .map((numeral) => `M${x(numeral.at)} 0v100`)
     .join(''),
 };
-
-/** A position on the track, 0 to 1, as a CSS percentage. */
-export const percent = (at: number): string => `${(at * 100).toFixed(4)}%`;

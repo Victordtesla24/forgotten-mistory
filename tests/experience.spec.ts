@@ -499,6 +499,8 @@ test.describe('the Experience timeline on a phone', { tag: '@mobile' }, () => {
     for (let step = 1; step <= 8; step += 1) {
       await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: (from?.x ?? 0) + (((to?.x ?? 0) - (from?.x ?? 0)) * step) / 8, y: from?.y ?? 0 }] });
     }
+    // The finger rests on the last bar before it lifts, and the page has the move before the lift.
+    await page.waitForTimeout(100);
     await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await expect.poll(() => selectedRole(page)).toBe('nab');
     expect(await page.evaluate(() => ({ x: window.scrollX, y: window.scrollY }))).toEqual(before);

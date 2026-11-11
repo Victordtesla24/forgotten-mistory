@@ -21,8 +21,8 @@ import { EXPERIENCE_VIEW } from '@/lib/gl/ids';
 import { poke } from '@/lib/gl/signal';
 import { reducedMotion } from '@/lib/motion';
 
-import { percent } from './axis';
 import styles from './Experience.module.css';
+import { percent } from './percent';
 import { RoleFigure } from './RoleFigure';
 import type { RoleView } from './roles';
 
@@ -140,22 +140,49 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
     }
   }, []);
 
-  /** Scrolls the row, when it is the row of cards, so a role's card is the first one in it. */
-  const rowTo = useCallback((id: string) => {
+  /** Selects the role whose card the row has snapped to, where the row is the row of cards. */
+  const syncFromRow = useCallback(() => {
     const row = rowRef.current;
-    if (!row || window.matchMedia(WIDE).matches || row.scrollWidth <= row.clientWidth) return;
-    const tab = row.querySelector<HTMLElement>(`[data-role="${CSS.escape(id)}"]`);
-    if (!tab) return;
-    const left = Math.max(Math.min(tab.offsetLeft - Number.parseFloat(getComputedStyle(row).paddingLeft), row.scrollWidth - row.clientWidth), 0);
-    if (Math.abs(row.scrollLeft - left) < 1) return;
-    rowBusy.current = true;
-    const release = () => {
-      rowBusy.current = false;
-    };
-    row.addEventListener('scrollend', release, { once: true });
-    window.setTimeout(release, ROW_SETTLE_MS);
-    row.scrollTo({ left, behavior: reducedMotion() ? 'instant' : 'smooth' });
-  }, []);
+    if (!row || window.matchMedia(WIDE).matches) return;
+    const tabs = Array.from(row.querySelectorAll<HTMLElement>('[role="tab"]'));
+    const pad = Number.parseFloat(getComputedStyle(row).paddingLeft);
+    const atEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 2;
+    let snapped = atEnd ? tabs.length - 1 : 0;
+    if (!atEnd) {
+      let gap = Number.POSITIVE_INFINITY;
+      tabs.forEach((tab, at) => {
+        const away = Math.abs(tab.offsetLeft - pad - row.scrollLeft);
+        if (away < gap) {
+          gap = away;
+          snapped = at;
+        }
+      });
+    }
+    const next = roles[snapped];
+    if (next) select(next.id, 'row');
+  }, [roles, select]);
+
+  /** Scrolls the row, when it is the row of cards, so a role's card is the first one in it. */
+  const rowTo = useCallback(
+    (id: string) => {
+      const row = rowRef.current;
+      if (!row || window.matchMedia(WIDE).matches || row.scrollWidth <= row.clientWidth) return;
+      const tab = row.querySelector<HTMLElement>(`[data-role="${CSS.escape(id)}"]`);
+      if (!tab) return;
+      const left = Math.max(Math.min(tab.offsetLeft - Number.parseFloat(getComputedStyle(row).paddingLeft), row.scrollWidth - row.clientWidth), 0);
+      if (Math.abs(row.scrollLeft - left) < 1) return;
+      rowBusy.current = true;
+      // When the move ends the row is let go. A row that is not where the move put it was moved by something else while it ran, and the selection follows it.
+      const release = () => {
+        rowBusy.current = false;
+        if (Math.abs(row.scrollLeft - left) > 2) syncFromRow();
+      };
+      row.addEventListener('scrollend', release, { once: true });
+      window.setTimeout(release, ROW_SETTLE_MS);
+      row.scrollTo({ left, behavior: reducedMotion() ? 'instant' : 'smooth' });
+    },
+    [syncFromRow],
+  );
 
   // The bars, the playhead, the row and the light follow the selection. The card and the connector follow it through the render.
   useEffect(() => {
@@ -282,28 +309,14 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
     const held = drag.current;
     if (!held || held.pointer !== event.pointerId) return;
     drag.current = null;
-    if (held.dragging) rest(selectedRef.current);
+    if (!held.dragging) return;
+    const found = nearest(roles, fractionAt(event.clientX));
+    if (found) select(found.id, 'other');
+    rest(found?.id ?? selectedRef.current);
   };
 
   const onRowScroll = () => {
-    const row = rowRef.current;
-    if (!row || window.matchMedia(WIDE).matches || rowBusy.current) return;
-    const tabs = Array.from(row.querySelectorAll<HTMLElement>('[role="tab"]'));
-    const pad = Number.parseFloat(getComputedStyle(row).paddingLeft);
-    const atEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 2;
-    let snapped = atEnd ? tabs.length - 1 : 0;
-    if (!atEnd) {
-      let gap = Number.POSITIVE_INFINITY;
-      tabs.forEach((tab, at) => {
-        const away = Math.abs(tab.offsetLeft - pad - row.scrollLeft);
-        if (away < gap) {
-          gap = away;
-          snapped = at;
-        }
-      });
-    }
-    const next = roles[snapped];
-    if (next) select(next.id, 'row');
+    if (!rowBusy.current) syncFromRow();
   };
 
   if (!role) return null;
