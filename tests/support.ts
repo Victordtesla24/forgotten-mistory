@@ -110,6 +110,18 @@ export async function hydrated(page: Page): Promise<void> {
   });
 }
 
+/**
+ * Waits until React has taken over one element: its handlers are attached, so a tap on it does
+ * what a reader's tap does. The header hydrates first; the hero's controls can follow later on a
+ * busy machine, and a tap in between is a plain link.
+ */
+export async function hydratedAt(page: Page, selector: string): Promise<void> {
+  await page.waitForFunction((target) => {
+    const element = document.querySelector(target);
+    return element !== null && Object.keys(element).some((key) => key.startsWith('__reactProps$'));
+  }, selector);
+}
+
 /** Opens a path and waits for the page to become interactive. */
 export async function open(page: Page, path: string): Promise<Response | null> {
   const response = await page.goto(path);
