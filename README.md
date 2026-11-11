@@ -1,7 +1,7 @@
 # forgotten-mistory
 
 The portfolio of Vikram Deshpande: one page with seven sections (hero, headline figures,
-work, experience, capabilities, about, contact), a privacy policy, terms, and "Ask Mini Vic", a
+experience, work, capabilities, about, contact), a privacy policy, terms, and "Ask Mini Vic", a
 text chat about his experience. It is a static export served by Firebase Hosting at
 <https://forgotten-mistory.web.app>.
 

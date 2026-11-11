@@ -111,7 +111,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     >
       <head>
         {/* The first paint waits until the header and the whole hero are parsed, up to where the next section starts: a slow device never paints them half built, moves them, or starts their entrance in two parts. */}
-        <link rel="expect" href="#work" blocking="render" />
+        <link rel="expect" href="#experience" blocking="render" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script dangerouslySetInnerHTML={{ __html: motionInitScript }} />
         {structuredData.map((html) => (

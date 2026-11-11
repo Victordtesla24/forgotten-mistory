@@ -142,7 +142,8 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
   /** Selects the role whose card the row has snapped to, where the row is the row of cards. */
   const syncFromRow = useCallback(() => {
     const row = rowRef.current;
-    if (!row || window.matchMedia(WIDE).matches) return;
+    // A role's panel that is open names the role (the scroll the first layout set can arrive after a link opened it), and the row is behind it.
+    if (!row || window.matchMedia(WIDE).matches || document.querySelector('[data-role-item][data-active]')) return;
     const tabs = Array.from(row.querySelectorAll<HTMLElement>('[role="tab"]'));
     const pad = Number.parseFloat(getComputedStyle(row).paddingLeft);
     const atEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 2;

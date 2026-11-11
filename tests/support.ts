@@ -6,8 +6,8 @@ import type { Page, Response } from '@playwright/test';
 export const SECTION_IDS = [
   'top',
   'proof',
-  'work',
   'experience',
+  'work',
   'capabilities',
   'about',
   'contact',
@@ -15,8 +15,8 @@ export const SECTION_IDS = [
 
 /** The header anchors, in order: the sections a reader can jump to. */
 export const NAV_ITEMS = [
-  { label: 'Work', id: 'work' },
   { label: 'Experience', id: 'experience' },
+  { label: 'Work', id: 'work' },
   { label: 'Capabilities', id: 'capabilities' },
   { label: 'About', id: 'about' },
   { label: 'Contact', id: 'contact' },

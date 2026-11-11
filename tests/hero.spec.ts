@@ -651,14 +651,14 @@ test.describe('nothing on the first screen shifts', { tag: '@desktop' }, () => {
       const link = document.querySelector('head link[rel="expect"]');
       return { href: link?.getAttribute('href'), blocking: link?.getAttribute('blocking') };
     });
-    expect(expectation).toEqual({ href: '#work', blocking: 'render' });
+    expect(expectation).toEqual({ href: '#experience', blocking: 'render' });
     // The element it waits for starts the next section, so the whole hero comes before it.
     const order = await page.evaluate(() => {
       const hero = document.querySelector('main > div:first-child');
-      const next = document.getElementById('work');
+      const next = document.getElementById('experience');
       return Boolean(hero && next && hero.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_FOLLOWING);
     });
-    expect(order, '#work follows the hero').toBe(true);
+    expect(order, '#experience follows the hero').toBe(true);
   });
 
   test('layout shift while the hero loads and the page is scrolled through under CPU throttling stays under 0.05, with the node named if it does not', async ({ page }) => {

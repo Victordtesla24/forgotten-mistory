@@ -206,9 +206,9 @@ test.describe('the home page is two levels deep', () => {
 
 // What is on screen before anything opens: the words a reader meets in each section.
 test.describe('the always-visible copy keeps to its word budgets', { tag: '@desktop' }, () => {
-  const BUDGETS = { top: 45, work: 70, experience: 40, about: 90, contact: 35 } as const;
+  const BUDGETS = { top: 45, experience: 40, work: 70, about: 90, contact: 35 } as const;
 
-  test('hero, work, experience, about and contact', async ({ page }) => {
+  test('hero, experience, work, about and contact', async ({ page }) => {
     await open(page, '/');
     const counts = await visibleWordCounts(page, Object.keys(BUDGETS));
 
