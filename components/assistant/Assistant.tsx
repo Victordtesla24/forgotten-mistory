@@ -34,7 +34,7 @@ const FOCUSABLE =
 /**
  * Whether the launcher may show on a wide screen. Over the hero the header already carries the
  * words "Ask Mini Vic", so from 1024 px the floating button waits until the hero's readings,
- * the last thing in it, have scrolled out of the top of the screen. The stylesheet hides it until
+ * the last thing in it, have scrolled out from under the sticky header. The stylesheet hides it until
  * then (`lg:hidden`), so the first paint never shows it and nothing moves when it arrives. Below
  * 1024 px it is a small round button in the corner at every moment, and the hero leaves that
  * corner free. A page without a hero has the button from the start.
@@ -49,9 +49,14 @@ function usePastHero(): boolean {
       setScrolledPast(true);
       return;
     }
-    const watch = new IntersectionObserver(([entry]) => {
-      if (entry) setScrolledPast(!entry.isIntersecting && entry.boundingClientRect.top < 0);
-    });
+    // The sticky header covers the top of the screen, so the readings are past once none of them shows below it, as when Experience, right under the hero, is brought in.
+    const covered = Math.max(Math.ceil(document.querySelector('header')?.getBoundingClientRect().height ?? 0), 1);
+    const watch = new IntersectionObserver(
+      ([entry]) => {
+        if (entry) setScrolledPast(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+      },
+      { rootMargin: `-${covered}px 0px 0px 0px` },
+    );
     watch.observe(readings);
     return () => watch.disconnect();
   }, [onHome]);
