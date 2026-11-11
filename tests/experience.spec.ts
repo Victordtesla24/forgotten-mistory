@@ -394,7 +394,14 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     const track = await box(TRACK);
     const drawn = await box('[data-stage-view="experience-timeline"]');
     expect(drawn).toEqual(track);
-    await page.waitForTimeout(1500);
+    // Frames are drawn while the page settles (an entrance, a late layout, the last of the hero's field above the section): the count to compare with is taken once it has stood still for 500 ms.
+    await expect
+      .poll(async () => {
+        const first = await page.evaluate(() => window.__stage?.info().frames);
+        await page.waitForTimeout(500);
+        return (await page.evaluate(() => window.__stage?.info().frames)) === first;
+      }, { timeout: 15_000 })
+      .toBe(true);
     const before = await page.evaluate(() => window.__stage?.info());
     await page.waitForTimeout(1500);
     const after = await page.evaluate(() => window.__stage?.info());
