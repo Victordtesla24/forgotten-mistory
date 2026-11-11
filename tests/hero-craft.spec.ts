@@ -585,6 +585,40 @@ test.describe('on a phone or a touch tablet the roles are one snapping row, tied
   }
 });
 
+test.describe('a chip held by a finger is selected', { tag: '@desktop' }, () => {
+  for (const view of [TOUCH[1], TOUCH[2]]) {
+    if (!view) continue;
+    test(`${view.w} by ${view.h}: a held touch on a chip draws its border in the accent`, async ({ browser }) => {
+      const { context, page } = await openView(browser, view, 1, '/?gl=off');
+      try {
+        await entranceDone(page);
+        const chip = page.locator('[data-chips] li:nth-child(2) a');
+        const accent = await page.evaluate(() => {
+          const probe = document.createElement('i');
+          probe.style.border = '1px solid var(--accent)';
+          document.body.append(probe);
+          const colour = getComputedStyle(probe).borderTopColor;
+          probe.remove();
+          return colour;
+        });
+        const before = await chip.evaluate((element) => getComputedStyle(element).borderTopColor);
+        expect(before, 'a chip at rest is not in the accent').not.toBe(accent);
+        const box = await chip.boundingBox();
+        expect(box, 'the chip is on the screen').not.toBeNull();
+        const client = await context.newCDPSession(page);
+        const at = { x: (box?.x ?? 0) + (box?.width ?? 0) / 2, y: (box?.y ?? 0) + (box?.height ?? 0) / 2 };
+        await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [at] });
+        await expect.poll(() => chip.evaluate((element) => getComputedStyle(element).borderTopColor), { message: 'held, the chip is selected' }).toBe(accent);
+        const filled = await chip.evaluate((element) => getComputedStyle(element).backgroundColor);
+        expect(filled, 'and filled').not.toBe('rgba(0, 0, 0, 0)');
+        await client.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
+      } finally {
+        await context.close();
+      }
+    });
+  }
+});
+
 test.describe('on a desktop the space round the headline block is deliberate', { tag: '@desktop' }, () => {
   for (const view of [DESKTOP[2], DESKTOP[3]]) {
     if (!view) continue;

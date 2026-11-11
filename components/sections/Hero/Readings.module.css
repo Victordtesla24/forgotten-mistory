@@ -196,12 +196,12 @@ a:active > .text {
  * apart (a pitch under two device pixels: `readingLayout` in lib/readings.ts says so) each
  * mark is a block of a hundred and there are no gutters: `--side` is then larger than the
  * lattice, so the block mask covers all of it. The element is exactly the lattice's extent.
- * Before the script has run a screen of two or more device pixels to a CSS pixel draws the points
- * at a pitch of two device pixels and any other screen draws the 100 blocks.
+ * Before the script has run, and without it, a card draws the 100 blocks at a pitch that fills the room
+ * above the key; the script then sets the very layout the stage draws, on whole device pixels.
  */
 .lattice {
-  --p: var(--pitch, 6px);
-  --m: var(--mark, 4px);
+  --p: var(--pitch, min(calc((100cqw - 20px) / 24.7), calc((100cqh - 28px) / 3.75)));
+  --m: var(--mark, calc(var(--p) * 0.72));
   --s: var(--side, 1000);
   --sx: 24;
   --sy: 3;
@@ -336,7 +336,7 @@ a:active > .text {
   left: var(--fx, 10px);
   top: var(--fy, 6px);
   width: var(--fw, calc(100cqw - 20px));
-  height: var(--fh, calc(100cqh - 12px));
+  height: var(--fh, calc(100cqh - 28px));
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: repeat(var(--columns), var(--px, 1fr));
