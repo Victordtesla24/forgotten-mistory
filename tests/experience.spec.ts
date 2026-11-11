@@ -330,6 +330,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
         new Promise<{ starts: { id: string; start: number }[]; end: number; phases: string[] }>((resolve) => {
           const root = document.querySelector('[data-experience]') as HTMLElement;
           const phases = [root.dataset.phase ?? ''];
+          let seen: { starts: { id: string; start: number }[]; end: number } | null = null;
           const observer = new MutationObserver(() => {
             const phase = root.dataset.phase ?? '';
             if (phases.at(-1) !== phase) phases.push(phase);
@@ -342,8 +343,10 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
                   start: Number(animation.effect?.getComputedTiming().delay),
                 }));
               const end = Math.max(...animations.map((animation) => Number(animation.effect?.getComputedTiming().endTime)));
-              window.setTimeout(() => resolve({ starts, end, phases }), 1200);
+              seen = { starts, end };
             }
+            // The page's own timer ends the entrance; the test waits for it and does not guess how long it takes under load.
+            if (phase === 'done' && seen) resolve({ ...seen, phases });
           });
           observer.observe(root, { attributes: true, attributeFilter: ['data-phase'] });
         }),
