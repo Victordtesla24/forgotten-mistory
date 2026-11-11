@@ -35,7 +35,7 @@ interface DetailContextValue {
 
 const DetailContext = createContext<DetailContextValue | null>(null);
 
-type Transition = { finished: Promise<unknown> };
+type Transition = { ready: Promise<unknown>; finished: Promise<unknown>; updateCallbackDone: Promise<unknown> };
 type TransitionDocument = Document & { startViewTransition?: (update: () => void) => Transition };
 
 const MORPH = 'detail-morph';
@@ -117,8 +117,9 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
     const target = id === null ? triggerFor(previous ?? '') : origin;
     const start = (document as TransitionDocument).startViewTransition;
     const switching = id !== null && previous !== null;
-    const calm = reducedMotion();
-    dialog.dataset.transition = calm || switching ? 'none' : start && target ? 'morph' : 'fade';
+    // A morph still running is left to finish; a second one would skip it.
+    const busy = document.documentElement.dataset.vt === 'detail';
+    dialog.dataset.transition = reducedMotion() || switching || busy ? 'none' : start && target ? 'morph' : 'fade';
 
     if (dialog.dataset.transition === 'morph' && start && target) {
       const from = id === null ? frame : target;
@@ -131,7 +132,11 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
         apply();
         if (id === null) target.focus({ preventScroll: true });
       });
-      void transition.finished.finally(() => {
+      // A transition the browser skips rejects its promises; the panel is in its final state either way.
+      const settle = () => undefined;
+      void transition.ready.catch(settle);
+      void transition.updateCallbackDone.catch(settle);
+      void transition.finished.catch(settle).then(() => {
         morphName(to, false);
         delete document.documentElement.dataset.vt;
       });

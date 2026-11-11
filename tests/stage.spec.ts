@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
 
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import sharp from 'sharp';
 
@@ -362,6 +363,24 @@ test.describe('the detail panel', () => {
     await expect(page.locator('#figure-evidence')).toContainText('COBOL/mainframe test-evidence automation');
     await expect(page.locator('#proof dialog [aria-label="Close"]')).toBeHidden();
     await context.close();
+  });
+
+  test('opens with no serious accessibility violation and no console error', { tag: '@desktop' }, async ({ page }) => {
+    const problems = await watchConsole(page);
+    await open(page, '/?gl=off');
+    await page.locator(trigger).click();
+    const dialog = page.locator('#proof dialog[data-detail]');
+    await expect(dialog).toBeVisible();
+    await expect(page.locator('html')).not.toHaveAttribute('data-vt', 'detail');
+    const { violations } = await new AxeBuilder({ page }).analyze();
+    const blocking = violations.filter((entry) => entry.impact === 'serious' || entry.impact === 'critical');
+    expect(blocking.map((entry) => entry.id)).toEqual([]);
+    // Opening and closing in quick succession must not leave a rejected view transition behind.
+    await page.keyboard.press('Escape');
+    await page.locator(trigger).click();
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    expect(problems).toEqual([]);
   });
 
   test('is a bottom sheet on a phone', { tag: '@mobile' }, async ({ page }) => {
