@@ -1004,7 +1004,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       "Three sectors, with dates. Government: the Australian Taxation Office since March 2026, on the Payday Super reform program. Financial services: ANZ (Sept 2017 – Jun 2025), NAB (Nov 2016 – Sept 2017), and MYOB (May 2010 – Aug 2011) on financial data processing. Telecommunications: Telstra (Nov 2014 – Oct 2015). Add Microsoft in Sydney (Oct 2015 – Oct 2016) for enterprise technology, InfoCentric (Aug 2011 – Nov 2014) for analytics and BI consulting, and Jun 2025 – Feb 2026 as an independent AI consultant. Every one of those is a regulated or governance-heavy environment, which is the common thread.",
   },
 
-  // ── 37. CV / dossier download ────────────────────────────────────────────
+  // ── 37. CV download ──────────────────────────────────────────────────────
   {
     id: 'resume-cv',
     keywords: [
@@ -1029,7 +1029,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'cv',
     ],
     answer:
-      "The full CV is on this site as a PDF — the 'Download the CV dossier (PDF)' link, served from /docs/Vikram_Deshpande_CV.pdf. It is the full record: every role from MYOB (2010) through to the ATO, the Certified Scrum Master credential, both degrees, the quantified outcomes and the projects I have built. If you'd rather have it by email with a covering note against a specific role, ask at sarkar.vikram@gmail.com — LinkedIn at linkedin.com/in/vikram-publicprofile works too.",
+      "The full CV is on this site as a PDF — the 'Download CV' button at the top of the page (also 'CV (PDF)' in the footer), served from /docs/Vikram_Deshpande_CV.pdf. It is the full record: every role from MYOB (2010) through to the ATO, the Certified Scrum Master credential, both degrees, the quantified outcomes and the projects I have built. If you'd rather have it by email with a covering note against a specific role, ask at sarkar.vikram@gmail.com — LinkedIn at linkedin.com/in/vikram-publicprofile works too.",
   },
 
   // ── 38. Work rights / citizenship (honest non-answer) ────────────────────
