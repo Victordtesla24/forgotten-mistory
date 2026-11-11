@@ -688,6 +688,7 @@ async function lightSettled(page: Page): Promise<void> {
   await expect(page.locator(SECTION)).not.toHaveAttribute('data-entrance', /^(armed|play)$/);
   await page.waitForFunction(
     (selector) => {
+      if (document.querySelector('[data-moving]')) return false;
       const near = [...document.querySelectorAll<HTMLElement>(selector)].filter((element) => {
         const box = element.getBoundingClientRect();
         return box.width > 1 && box.height > 1 && box.right > 0 && box.left < document.documentElement.clientWidth && box.bottom > -200 && box.top < innerHeight + 200;
@@ -777,13 +778,14 @@ for (const [width, height, ratio] of LIGHT_SIZES) {
         await page.addStyleTag({ content: '[data-project] svg { visibility: hidden !important; }' });
         await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
         const light = await sharp(await page.screenshot()).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-        // Across the back edges of the first object's top: one pixel inside the edge and one outside it differ, so the edge is where the drawing's is.
+        // Across the two back edges of the top of the last object drawn (nothing covers it): the ridge of the rim of light, which is
+        // brightest on the edge itself, lies within a pixel of the edge the drawing has there.
         const svgMatrix = fit.matrix;
         const sceneOrigin = await owner.locator('[data-stage-view]').boundingBox();
         if (!svgMatrix || !sceneOrigin) throw new Error('the drawing has no matrix');
-        const first = layout.nodes.find((node) => node.kind !== 'gate') ?? layout.nodes[0];
-        const top = first.prisms[0]?.top;
-        if (!top) throw new Error('the first object has no top');
+        const last = [...layout.nodes].reverse().find((node) => node.kind !== 'gate') ?? layout.nodes[0];
+        const top = last.prisms[0]?.top;
+        if (!top) throw new Error('the object has no top');
         const toPage = (point: { x: number; y: number }) => ({ x: sceneOrigin.x + svgMatrix.x + point.x * svgMatrix.scale, y: sceneOrigin.y + svgMatrix.y + point.y * svgMatrix.scale });
         const [a, b, , d] = top.map(toPage);
         const centre = top.map(toPage).reduce((sum, point) => ({ x: sum.x + point.x / 4, y: sum.y + point.y / 4 }), { x: 0, y: 0 });
@@ -793,10 +795,14 @@ for (const [width, height, ratio] of LIGHT_SIZES) {
           const length = Math.hypot(to.x - from.x, to.y - from.y);
           let normal = { x: -(to.y - from.y) / length, y: (to.x - from.x) / length };
           if ((mid.x - centre.x) * normal.x + (mid.y - centre.y) * normal.y < 0) normal = { x: -normal.x, y: -normal.y };
-          const inside = pixelAt(light, ratio, mid.x - normal.x, mid.y - normal.y);
-          const outside = pixelAt(light, ratio, mid.x + normal.x, mid.y + normal.y);
-          const step = Math.max(...inside.map((value, channel) => Math.abs(value - (outside[channel] ?? 0))));
-          expect(step, `${project.name}: the plate's edge lies within a pixel of the drawing's (${inside.join(',')} inside, ${outside.join(',')} outside)`).toBeGreaterThanOrEqual(4);
+          // How much of the accent each pixel holds: the light is the accent, over a page that has little of it.
+          const profile = [-3, -2, -1, 0, 1, 2, 3].map((offset) => {
+            const [red = 0, , blue = 0] = pixelAt(light, ratio, mid.x + normal.x * offset, mid.y + normal.y * offset);
+            return blue - red;
+          });
+          const ridge = profile.indexOf(Math.max(...profile)) - 3;
+          expect(Math.abs(ridge), `${project.name}: the rim of light peaks ${ridge} px from the drawing's edge (${profile.join(' ')})`).toBeLessThanOrEqual(1);
+          expect(Math.max(...profile) - Math.min(profile[0] ?? 0, profile[6] ?? 0), `${project.name}: the rim of light is a ridge on the edge (${profile.join(' ')})`).toBeGreaterThanOrEqual(10);
         }
         await page.evaluate(() => document.querySelectorAll('style').forEach((style) => style.textContent?.includes('[data-project] svg') && style.remove()));
       }
