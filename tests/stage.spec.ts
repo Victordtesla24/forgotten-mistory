@@ -286,7 +286,7 @@ test.describe('the detail panel', () => {
     await page.keyboard.press('Enter');
     await expect(dialog).toBeVisible();
     await expect(page).toHaveURL(/#figure-evidence$/);
-    await expect(dialog).toHaveAccessibleName('less evidence effort per scenario');
+    await expect(dialog).toHaveAccessibleName('≈92% less evidence effort per scenario');
 
     for (let press = 0; press < 8; press += 1) {
       await page.keyboard.press('Tab');

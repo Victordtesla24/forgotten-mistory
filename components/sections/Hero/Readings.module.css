@@ -432,6 +432,11 @@ a:active > .text {
   border: var(--ol, 1px) solid var(--line-strong);
   border-radius: 1px;
   background-color: color-mix(in srgb, var(--proof) 5%, transparent);
+  /* What the fill has yet to fall from: nothing once it has fallen. It is painted, never laid out, so a falling fill moves no layout. */
+  background-image: linear-gradient(var(--proof), var(--proof));
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100% 0;
 }
 
 /*
@@ -467,13 +472,14 @@ a:active > .text {
   }
 }
 
+/* The fill falls from the full cell to what is left of it; the box that stays (`::after`) is that part, so it is never moved. */
 @keyframes cell-fall {
   from {
-    height: 100%;
+    background-size: 100% 100%;
   }
 
   to {
-    height: var(--rf, calc(var(--rest) * 100%));
+    background-size: 100% var(--rf, calc(var(--rest) * 100%));
   }
 }
 
@@ -489,11 +495,9 @@ a:active > .text {
 
 @media (prefers-reduced-motion: no-preference) {
   .cell {
-    animation: cell-in 90ms var(--ease) calc(var(--vs) + var(--i) / var(--count) * var(--appear)) both;
-  }
-
-  .cell::after {
-    animation: cell-fall var(--fall) var(--ease-in-out) calc(var(--vs) + var(--appear) + var(--i) / var(--count) * var(--spread)) both;
+    animation:
+      cell-in 90ms var(--ease) calc(var(--vs) + var(--i) / var(--count) * var(--appear)) both,
+      cell-fall var(--fall) var(--ease-in-out) calc(var(--vs) + var(--appear) + var(--i) / var(--count) * var(--spread)) backwards;
   }
 
   .cell::before {
