@@ -1,140 +1,58 @@
-import { Card } from '@/components/ui/Card';
-import { Disclosure } from '@/components/ui/Disclosure';
-import { ExternalLink } from '@/components/ui/ExternalLink';
-import { Section } from '@/components/ui/Section';
+import { DetailSet, type DetailItem } from '@/components/ui/DetailPanel';
+import { Container } from '@/components/ui/Container';
 import { SnapRow } from '@/components/ui/SnapRow';
-import { Tag } from '@/components/ui/Tag';
-import {
-  STATS_AS_OF,
-  projects,
-  type Project,
-  type ProjectFigure,
-  type ProjectStage,
-  type RepoStats,
-} from '@/content/work';
+import { StageView } from '@/components/visuals/StageView';
+import { projects } from '@/content/work';
+import { schematicView } from '@/lib/schematic';
 
-const count = new Intl.NumberFormat('en-AU');
-const day = new Intl.DateTimeFormat('en-AU', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-  timeZone: 'UTC',
-});
+import { PanelBody } from './PanelBody';
+import { PanelLead } from './PanelLead';
+import { projectPanel } from './panels';
+import { ProjectCard } from './ProjectCard';
 
-function Stage({ stage }: { stage: ProjectStage }) {
-  return (
-    <li className="grid gap-0.5">
-      <span className="font-medium">{stage.label}</span>
-      <span className="type-small text-muted">{stage.note}</span>
-    </li>
-  );
-}
+/** One panel for each project, in the order of the rail, so Previous and Next walk the six. */
+const items: readonly DetailItem[] = projects.map((project) => ({
+  id: projectPanel(project),
+  eyebrow: project.status,
+  title: project.name,
+  lead: (
+    <PanelLead schematic={project.schematic}>
+      <StageView view={schematicView(project.schematic.id, 'panel')} />
+    </PanelLead>
+  ),
+  children: <PanelBody project={project} />,
+}));
 
-function Count({ figure }: { figure: ProjectFigure }) {
-  return (
-    <div className="flex flex-col-reverse gap-0.5">
-      <dt className="type-meta text-muted">{figure.label}</dt>
-      <dd className="type-figure text-[1.375rem] text-proof">{figure.value}</dd>
-    </div>
-  );
-}
-
-function Activity({ stats }: { stats: RepoStats }) {
-  return (
-    <p className="type-meta text-muted">
-      First commit {day.format(new Date(stats.firstCommit))} · {count.format(stats.commits)} commits
-      as of {day.format(new Date(STATS_AS_OF))}
-    </p>
-  );
-}
-
-function ProjectCard({ project }: { project: Project }) {
-  const { schematic } = project;
-  const headingId = `project-${project.repo}`;
-  return (
-    <Card as="article" aria-labelledby={headingId} className="p-0">
-      <Disclosure
-        id={`project-${project.repo}-detail`}
-        summaryClassName="p-5"
-        panelClassName="grid gap-5 border-t border-line p-5"
-        summary={
-          <div className="grid gap-2">
-            <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
-              <h3 id={headingId}>{project.name}</h3>
-              <Tag tone="accent">{project.status}</Tag>
-            </div>
-            <p className="type-small text-muted">{project.value}</p>
-          </div>
-        }
-      >
-        <p className="type-small max-w-none">{project.does.join(' ')}</p>
-
-        {project.figures.length > 0 ? (
-          <dl className="grid grid-cols-3 gap-3">
-            {project.figures.map((figure) => (
-              <Count key={figure.label} figure={figure} />
-            ))}
-          </dl>
-        ) : null}
-
-        <div className="grid gap-2">
-          <h4 className="type-eyebrow text-muted">How it works</h4>
-          <ol aria-label={schematic.label} className="grid gap-3 border-l border-line-strong pl-4">
-            {schematic.stages.map((stage) => (
-              <Stage key={stage.id} stage={stage} />
-            ))}
-          </ol>
-        </div>
-
-        <div className="grid gap-2">
-          <h4 className="type-eyebrow text-muted">Engineering decisions</h4>
-          <ul className="type-small grid list-disc gap-1.5 pl-5 marker:text-muted">
-            {project.decisions.map((decision) => (
-              <li key={decision}>{decision}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="grid gap-2">
-          <h4 className="type-eyebrow text-muted">Stack</h4>
-          <ul className="flex flex-wrap gap-1.5">
-            {project.stack.map((item) => (
-              <li key={item}>
-                <Tag>{item}</Tag>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <Activity stats={project.stats} />
-
-        <div className="flex flex-wrap items-center gap-x-5">
-          {project.repoHref ? (
-            <ExternalLink href={project.repoHref} className="type-small min-h-11">
-              Repository
-            </ExternalLink>
-          ) : null}
-          {project.live ? (
-            <ExternalLink href={project.live.href} className="type-small min-h-11">
-              {project.live.label}
-            </ExternalLink>
-          ) : null}
-        </div>
-      </Disclosure>
-    </Card>
-  );
-}
-
+/**
+ * Six projects as one rail of equal cards. From 1280 px all six stand side by side across the
+ * browser; below that the rail is a row that snaps, with the next card showing at its edge. Each card
+ * is a schematic of the project's three stages; its panel, shared by the six, opens from the card.
+ * The heading is one row, as in Experience; the section has no timeline of its own, for the page's
+ * one career axis is the one in Experience.
+ */
 export function Work() {
   return (
-    <Section id="work" eyebrow="Work" title="Selected work" accent="work">
-      <SnapRow columns={3} className="reveal">
-        {projects.map((project) => (
-          <li key={project.repo}>
-            <ProjectCard project={project} />
-          </li>
-        ))}
-      </SnapRow>
-    </Section>
+    <section id="work" aria-labelledby="work-title" className="pt-[clamp(3rem,5vw,4rem)]">
+      <Container>
+        <header className="mb-4 flex flex-wrap items-baseline gap-x-5 gap-y-1 md:mb-5">
+          <p className="type-eyebrow text-muted">Work</p>
+          <h2 id="work-title">
+            Selected <em className="type-serif-em">work</em>
+          </h2>
+        </header>
+      </Container>
+      <DetailSet label="Selected work" items={items}>
+        <SnapRow
+          columns={6}
+          className="mx-0 grid grid-flow-col auto-cols-[min(84%,21rem)] grid-rows-[1fr_auto_auto_auto_auto] items-stretch gap-x-3 gap-y-0 sm:auto-cols-[clamp(15rem,36%,20rem)] xl:grid-flow-row xl:auto-cols-auto xl:px-[clamp(1rem,1.5vw,1.5rem)]"
+        >
+          {projects.map((project) => (
+            <li key={project.repo} className="row-span-5 grid grid-rows-subgrid">
+              <ProjectCard project={project} />
+            </li>
+          ))}
+        </SnapRow>
+      </DetailSet>
+    </section>
   );
 }

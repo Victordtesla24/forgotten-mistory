@@ -1,0 +1,415 @@
+/*
+ * The Work section: a rail of six project cards, each with its schematic, and the panel's lead.
+ * Every colour comes from the tokens in globals.css; the light theme re-mixes the three faces
+ * of an object so that its top stays the lightest in both themes.
+ */
+
+/* ---------------------------------------------------------------- the scene */
+
+.scene {
+  --edge: color-mix(in srgb, var(--muted) 80%, transparent);
+  --path: color-mix(in srgb, var(--muted) 90%, transparent);
+  --fine: color-mix(in srgb, var(--muted) 38%, transparent);
+  --top: var(--raised);
+  --left: var(--surface);
+  --right: color-mix(in srgb, var(--bg) 55%, var(--surface));
+  --ground: color-mix(in srgb, var(--text) 4%, var(--bg));
+
+  position: relative;
+  background-color: var(--bg);
+}
+
+:global(:root[data-theme='light']) .scene {
+  --top: var(--surface);
+  --left: var(--raised);
+  --right: color-mix(in srgb, var(--text) 9%, var(--bg));
+  --ground: color-mix(in srgb, var(--text) 4%, var(--bg));
+}
+
+@media (prefers-color-scheme: light) {
+  :global(:root:not([data-theme])) .scene {
+    --top: var(--surface);
+    --left: var(--raised);
+    --right: color-mix(in srgb, var(--text) 9%, var(--bg));
+    --ground: color-mix(in srgb, var(--text) 4%, var(--bg));
+  }
+}
+
+.drawing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.face,
+.fine,
+.ground,
+.line {
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.face {
+  stroke: var(--edge);
+  stroke-width: 1;
+  transition:
+    fill var(--duration-state) var(--ease),
+    stroke var(--duration-state) var(--ease);
+}
+
+/* A lit object sets --face-top, --face-left and --face-right; an unlit one takes the scene's. */
+.top {
+  fill: var(--face-top, var(--top));
+}
+
+.left {
+  fill: var(--face-left, var(--left));
+}
+
+.right {
+  fill: var(--face-right, var(--right));
+}
+
+.fine {
+  fill: none;
+  stroke: var(--fine);
+  stroke-width: 1;
+}
+
+.ground {
+  fill: var(--ground);
+  stroke: var(--fine);
+  stroke-width: 1;
+}
+
+.line {
+  fill: none;
+  stroke: var(--path);
+  stroke-width: 1.5;
+  transition: stroke var(--duration-state) var(--ease);
+}
+
+.route[data-kind='return'] .line {
+  stroke-dasharray: 3 4;
+}
+
+.arrow {
+  fill: var(--path);
+  transition: fill var(--duration-state) var(--ease);
+}
+
+/* The stage that is lit, and the way that leads to it. */
+.node[data-active='true'] {
+  --edge: var(--accent);
+  --face-top: color-mix(in srgb, var(--accent) 42%, var(--top));
+  --face-left: color-mix(in srgb, var(--accent) 26%, var(--left));
+  --face-right: color-mix(in srgb, var(--accent) 16%, var(--right));
+}
+
+.route[data-active='true'] {
+  --path: var(--accent);
+}
+
+.route[data-active='true'] .line {
+  stroke-width: 2;
+}
+
+@media (forced-colors: active) {
+  .face,
+  .line {
+    stroke: CanvasText;
+  }
+
+  .arrow {
+    fill: CanvasText;
+  }
+}
+
+/* ---------------------------------------------------------------- the card */
+
+.card {
+  display: grid;
+  grid-row: 1 / span 5;
+  grid-template-rows: subgrid;
+  grid-template-columns: 0.75rem minmax(0, 1fr) 1.5rem 0.75rem;
+  overflow: hidden;
+  padding: 0;
+}
+
+.visual {
+  grid-column: 1 / -1;
+  min-height: var(--visual-min, 15rem);
+  border-bottom: 1px solid var(--line);
+}
+
+/* The drawing keeps a little room from the card's edge. */
+.visual .drawing {
+  inset: 0.25rem;
+  width: calc(100% - 0.5rem);
+  height: calc(100% - 0.5rem);
+}
+
+.step {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  outline-offset: -3px;
+}
+
+.step:disabled {
+  cursor: default;
+}
+
+/* A line under the drawing that names the stage that is lit. Its space is always kept. */
+.caption {
+  grid-column: 1 / -1;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.75rem 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Name, status and value share rows across the six cards, so each stands at the same height in all of them. */
+.name {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: start;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.status {
+  grid-column: 2 / 4;
+  grid-row: 4;
+  justify-self: start;
+  margin-top: 0.375rem;
+}
+
+.value {
+  grid-column: 2 / 4;
+  grid-row: 5;
+  margin: 0.5rem 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+/*
+ * The control that opens the project: a plus in a 44 px square at the end of the name's first line,
+ * its box reaching past the line so the name keeps its space. It stretches over the whole card.
+ */
+.open {
+  grid-column: 3;
+  grid-row: 3;
+  align-self: start;
+  justify-self: end;
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  margin: -0.75rem -0.625rem -1.75rem 0;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  transition:
+    color var(--duration-hover) var(--ease),
+    background-color var(--duration-hover) var(--ease);
+}
+
+.open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.card:hover .open,
+.open:focus-visible {
+  color: var(--accent);
+}
+
+.card:hover .open svg {
+  rotate: 90deg;
+}
+
+.open svg {
+  transition: rotate var(--duration-state) var(--ease);
+}
+
+.open:active {
+  background-color: var(--accent-soft);
+  transition-duration: var(--duration-press);
+}
+
+/* The card's size follows the rail it is in. From 1280 px six cards share the browser's width. */
+@media (min-width: 1280px) {
+  .visual {
+    --visual-min: 17rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1279px) {
+  .visual {
+    --visual-min: 17rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .face,
+  .line,
+  .arrow,
+  .open,
+  .open svg {
+    transition: none;
+  }
+}
+
+:global(:root[data-motion='off']) :is(.face, .line, .arrow, .open, .open svg) {
+  transition: none;
+}
+
+/* ---------------------------------------------------------------- the panel's lead */
+
+.lead {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* The enlarged schematic: the card's drawing in a wider space, as wide as the panel's column lets it be. */
+.plate {
+  width: 100%;
+  max-width: 28rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.stages {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.pick {
+  display: flex;
+  width: 100%;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  text-align: left;
+  transition:
+    border-color var(--duration-hover) var(--ease),
+    background-color var(--duration-hover) var(--ease);
+}
+
+.pick:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  background-color: var(--raised);
+}
+
+.pick[aria-pressed='true'] {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+.pick:active {
+  transition-duration: var(--duration-press);
+}
+
+.pick:disabled {
+  cursor: default;
+}
+
+.number {
+  display: inline-flex;
+  width: 1.5rem;
+  flex: none;
+  justify-content: center;
+  color: var(--muted);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pick[aria-pressed='true'] .number {
+  color: var(--accent);
+}
+
+.note {
+  margin: 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.blocks {
+  display: grid;
+  gap: 1rem;
+}
+
+.block {
+  display: grid;
+  gap: 0.5rem;
+}
+
+@media (min-width: 900px) {
+  .lead {
+    grid-template-columns: 25rem minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .stages {
+    min-height: 18.75rem;
+    align-content: start;
+  }
+}
+
+@media (scripting: none) {
+  .lead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .plate {
+    width: min(100%, 25rem);
+  }
+
+  .stages {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pick {
+    transition: none;
+  }
+}
+
+:global(:root[data-motion='off']) .pick {
+  transition: none;
+}

@@ -2,13 +2,14 @@ import type { HTMLAttributes } from 'react';
 
 import { cn } from '@/lib/cn';
 
-type Columns = 3 | 4 | 5;
+type Columns = 3 | 4 | 5 | 6;
 
 /** Written out in full so Tailwind finds each class. */
 const grid: Record<Columns, string> = {
   3: 'xl:grid-cols-3',
   4: 'xl:grid-cols-4',
   5: 'xl:grid-cols-5',
+  6: 'xl:grid-cols-6',
 };
 
 type SnapRowProps = HTMLAttributes<HTMLOListElement | HTMLUListElement> & {
