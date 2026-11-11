@@ -9,6 +9,7 @@ import { PanelBody } from './PanelBody';
 import { PanelLead } from './PanelLead';
 import { projectPanel } from './panels';
 import { ProjectCard } from './ProjectCard';
+import { WorkBehaviour } from './WorkBehaviour';
 
 /** One panel for each project, in the order of the rail, so Previous and Next walk the six. */
 const items: readonly DetailItem[] = projects.map((project) => ({
@@ -41,6 +42,7 @@ export function Work() {
           </h2>
         </header>
       </Container>
+      <WorkBehaviour />
       <DetailSet label="Selected work" items={items}>
         <SnapRow
           columns={6}

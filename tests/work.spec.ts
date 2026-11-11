@@ -6,6 +6,12 @@ import { schematicLayout } from '@/lib/schematic';
 import { open, visibleWordCounts, watchConsole } from './support';
 
 const SECTION = '#work';
+
+/** Opens a path and waits until the section's behaviour (loaded after the page) has set the cards and panels up. */
+async function openWork(page: Page, path: string): Promise<void> {
+  await open(page, path);
+  await expect(page.locator(`${SECTION}[data-interactive="true"]`)).toBeAttached();
+}
 const card = (page: Page, repo: string) => page.locator(`${SECTION} article[data-project="${repo}"]`);
 const panelId = (repo: string) => `project-${repo}-detail`;
 
@@ -24,7 +30,7 @@ test.describe('the rail on a wide screen', { tag: '@desktop' }, () => {
   for (const [width, height] of WIDE) {
     test(`six equal cards stand in one row within one screen at ${width}x${height}`, async ({ page }) => {
       await page.setViewportSize({ width, height });
-      await open(page, '/');
+      await openWork(page, '/');
       await page.evaluate(() => document.fonts.ready);
       const measured = await page.evaluate((selector) => {
         const section = document.querySelector(selector) as HTMLElement;
@@ -60,7 +66,7 @@ test.describe('the rail on a wide screen', { tag: '@desktop' }, () => {
 test.describe('the cards and their schematics', () => {
   test('each card draws its three stages from content/work.ts, in a composition of its own', async ({ page }) => {
     const problems = watchConsole(page);
-    await open(page, '/');
+    await openWork(page, '/');
     const drawings = new Set<string>();
     for (const project of projects) {
       const owner = card(page, project.repo);
@@ -86,12 +92,12 @@ test.describe('the cards and their schematics', () => {
   });
 
   test('the Aether card names no repository and no live address', async ({ page }) => {
-    await open(page, '/');
+    await openWork(page, '/');
     await expect(card(page, aether.repo).locator('a[href^="http"]')).toHaveCount(0);
   });
 
   test('pointing at a schematic lights its stages in order and names each, and nothing moves', async ({ page }) => {
-    await open(page, '/');
+    await openWork(page, '/');
     const owner = card(page, aether.repo);
     const caption = owner.locator('p[aria-live]');
     const size = async () => owner.boundingBox().then((box) => ({ width: box?.width, height: box?.height }));
@@ -126,7 +132,7 @@ test.describe('the cards and their schematics', () => {
   });
 
   test('keyboard focus runs the stages once, and a press after it runs them again', async ({ page }) => {
-    await open(page, '/');
+    await openWork(page, '/');
     const owner = card(page, ralph.repo);
     const caption = owner.locator('p[aria-live]');
     const [first, , last] = ralph.schematic.stages;
@@ -143,7 +149,7 @@ test.describe('the cards and their schematics', () => {
   });
 
   test('a tap runs the stages of a schematic once and names each', { tag: '@mobile' }, async ({ page }) => {
-    await open(page, '/');
+    await openWork(page, '/');
     const owner = card(page, jyotish.repo);
     await owner.scrollIntoViewIfNeeded();
     const caption = owner.locator('p[aria-live]');
@@ -153,14 +159,14 @@ test.describe('the cards and their schematics', () => {
   });
 
   test('the visible words of the section keep to the budget of 70', { tag: '@desktop' }, async ({ page }) => {
-    await open(page, '/');
+    await openWork(page, '/');
     expect((await visibleWordCounts(page, ['work'])).work).toBeLessThanOrEqual(70);
   });
 });
 
 test.describe('the project panel', () => {
   test('Open project opens the panel on its own address; Escape and Back close it and focus returns to the card', async ({ page }) => {
-    await open(page, '/');
+    await openWork(page, '/');
     const link = card(page, ralph.repo).locator('[data-detail-trigger]');
     await link.scrollIntoViewIfNeeded();
     await link.click();
@@ -183,7 +189,7 @@ test.describe('the project panel', () => {
   });
 
   test('a link to a project opens its panel, and the controls move between the six', async ({ page }) => {
-    await open(page, `/#${panelId(jyotish.repo)}`);
+    await openWork(page, `/#${panelId(jyotish.repo)}`);
     const dialog = page.getByRole('dialog', { name: jyotish.name });
     await expect(dialog).toBeVisible();
     await dialog.getByRole('button', { name: 'Next' }).click();
@@ -193,7 +199,7 @@ test.describe('the project panel', () => {
   });
 
   test('three stage controls and the arrow keys step the stages and show each note', async ({ page }) => {
-    await open(page, `/#${panelId(aether.repo)}`);
+    await openWork(page, `/#${panelId(aether.repo)}`);
     const dialog = page.getByRole('dialog', { name: aether.name });
     await expect(dialog).toBeVisible();
     const item = dialog.locator('section[data-active="true"]');
@@ -218,7 +224,7 @@ test.describe('the project panel', () => {
   });
 
   test('every project shows what it does, its stack, its decisions, its dates and exactly its links', async ({ page }) => {
-    await open(page, '/');
+    await openWork(page, '/');
     for (const project of projects) {
       await page.evaluate((id) => {
         window.location.hash = `#${id}`;
@@ -242,7 +248,7 @@ test.describe('the project panel', () => {
 
 test.describe('without the light layer or script', () => {
   test('?gl=off draws the same cards and opens the same panel', async ({ page }) => {
-    await open(page, '/?gl=off');
+    await openWork(page, '/?gl=off');
     await expect(page.locator(`${SECTION} article[data-project]`)).toHaveCount(projects.length);
     await card(page, aether.repo).locator('[data-detail-trigger]').click();
     await expect(page.getByRole('dialog', { name: aether.name })).toBeVisible();

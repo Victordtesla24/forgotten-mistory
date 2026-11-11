@@ -10,8 +10,6 @@
 
 import type { Schematic } from '@/content/work';
 
-import { duration } from './motion';
-
 export type SchematicId = Schematic['id'];
 
 export interface Point {
@@ -78,9 +76,6 @@ const SPACES: Readonly<Record<Place, { width: number; height: number }>> = {
   card: { width: 180, height: 224 },
   panel: { width: 240, height: 180 },
 };
-
-/** How long a running schematic lights one stage before it goes on to the next, in milliseconds. */
-export const STAGE_STEP = duration.entrance;
 
 /** Room kept clear around the drawing, so a line at its edge is never cut. */
 const MARGIN = 6;
