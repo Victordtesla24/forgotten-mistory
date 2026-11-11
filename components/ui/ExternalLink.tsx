@@ -20,7 +20,7 @@ export function ExternalLink({
     <a
       href={href}
       className={cn(
-        'inline-flex items-center gap-1 text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent',
+        'inline-flex items-center gap-1 text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent active:opacity-70',
         className,
       )}
       {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}

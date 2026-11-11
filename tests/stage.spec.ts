@@ -8,7 +8,7 @@ import sharp from 'sharp';
 
 import { duration, ease } from '@/lib/motion';
 
-import { open } from './support';
+import { open, watchConsole } from './support';
 
 /** Initial JavaScript of the home route before the stage, in bytes gzipped (origin/main, 2026-11-10). */
 const PRE_STAGE_INITIAL_GZIP = 237_013;
@@ -44,15 +44,6 @@ function bundle() {
     .map((path) => path.replace(/^out/, ''))
     .filter((path) => /WebGLRenderer|uTickHeight/.test(readFileSync(`out${path}`, 'utf8')));
   return { html, initial, engine };
-}
-
-async function watchConsole(page: Page): Promise<string[]> {
-  const problems: string[] = [];
-  page.on('console', (message) => {
-    if (message.type() === 'error' || message.type() === 'warning') problems.push(message.text());
-  });
-  page.on('pageerror', (error) => problems.push(String(error)));
-  return problems;
 }
 
 /** Waits for the review hook and for its `ready` promise. */
@@ -114,7 +105,7 @@ async function sampleField(page: Page): Promise<Sample> {
 test.describe('the stage', { tag: '@desktop' }, () => {
   for (const tier of ['high', 'low'] as const) {
     test(`draws the hero field on one canvas at ?gl=${tier}, inside the budgets`, async ({ page }) => {
-      const problems = await watchConsole(page);
+      const problems = watchConsole(page);
       await open(page, `/?gl=${tier}`);
       await stageReady(page);
       await expect(page.locator('canvas')).toHaveCount(1);
@@ -191,12 +182,13 @@ test.describe('without the stage', { tag: '@desktop' }, () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Delivery leader');
     await expect(page.getByRole('link', { name: 'View selected work' })).toBeVisible();
     await expect(page.locator('#proof li')).toHaveCount(3);
-    await expect(page.locator('[data-stage-view]')).toHaveCount(1);
-    await expect(page.locator('[data-stage-view]')).not.toHaveAttribute('data-ready', 'true');
+    await expect(page.locator('[data-career-scale] a[data-role]')).toHaveCount(8);
+    await expect(page.locator('[data-stage-view]')).toHaveCount(5);
+    await expect(page.locator('[data-stage-view][data-ready="true"]')).toHaveCount(0);
   }
 
   test('?gl=off shows the whole hero, draws nothing and loads no engine', async ({ page }) => {
-    const problems = await watchConsole(page);
+    const problems = watchConsole(page);
     await open(page, '/?gl=off');
     await stageReady(page);
     await page.waitForTimeout(2500);
@@ -212,7 +204,7 @@ test.describe('without the stage', { tag: '@desktop' }, () => {
   });
 
   test('?motion=off draws at most one still and the page stays complete', async ({ page }) => {
-    const problems = await watchConsole(page);
+    const problems = watchConsole(page);
     await open(page, '/?gl=high&motion=off');
     await stageReady(page);
     await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
@@ -224,7 +216,7 @@ test.describe('without the stage', { tag: '@desktop' }, () => {
   });
 
   test('reduced motion draws a single still, settled', async ({ page }) => {
-    const problems = await watchConsole(page);
+    const problems = watchConsole(page);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await open(page, '/?gl=high');
     await stageReady(page);
@@ -366,7 +358,7 @@ test.describe('the detail panel', () => {
   });
 
   test('opens with no serious accessibility violation and no console error', { tag: '@desktop' }, async ({ page }) => {
-    const problems = await watchConsole(page);
+    const problems = watchConsole(page);
     await open(page, '/?gl=off');
     await page.locator(trigger).click();
     const dialog = page.locator('#proof dialog[data-detail]');

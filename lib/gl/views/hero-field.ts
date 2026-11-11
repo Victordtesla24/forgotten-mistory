@@ -19,7 +19,8 @@ import {
   type WebGLRenderer,
 } from 'three';
 
-import { duration, spring, stagger, stepSpring, type SpringState } from '../../motion';
+import { entrance } from '../../entrance';
+import { spring, stagger, stepSpring, type SpringState } from '../../motion';
 import { hairline } from '../glsl/aa';
 import { finish } from '../glsl/finish';
 import { palette } from '../palette';
@@ -31,13 +32,13 @@ import type { FrameInput, View, ViewContext } from './types';
 const SETTLE_S = 3.2;
 
 /** Seconds the entrance takes: lanes start a stagger step apart and each grows for `entrance`. */
-const ENTRANCE_S = duration.entrance / 1000;
+const ENTRANCE_S = entrance.field.for / 1000;
 const STAGGER_S = stagger.max / 1000;
 const LANE_STEPS = stagger.steps - 1;
 
 /** Seconds the band of light takes to cross the field, starting just after the first lane. */
 const SWEEP_START_S = 0.15;
-const SWEEP_S = 1.5;
+const SWEEP_S = 1.3;
 
 const FOV = 30;
 const CAMERA_HEIGHT = 5.4;
@@ -300,6 +301,7 @@ export function createHeroField(context: ViewContext): View {
 
   return {
     pointer: true,
+    syncToLoad: true,
 
     update(input: FrameInput): boolean {
       const { time, dt, viewport, pixelRatio, pointer, client } = input;

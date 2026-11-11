@@ -51,7 +51,7 @@ test.describe('on every viewport', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   });
 
-  test('the first screen shows the three figures with their scope lines, whole and clear of the launcher', async ({
+  test('the first screen shows the readings with their scope lines, whole and clear of the launcher', async ({
     page,
   }) => {
     // Reduced motion puts every element where its entrance ends, so the geometry is exact.
@@ -73,9 +73,12 @@ test.describe('on every viewport', () => {
       );
     expect(cards).toHaveLength(3);
 
+    // Beside the headline all three are on the first screen; on a phone they are one row to
+    // move along, and the first is whole with the next showing at the edge.
+    const onFirstScreen = (viewport?.width ?? 0) >= 1024 ? cards : cards.slice(0, 1);
     const launcher = await page.locator('#assistant-launcher').boundingBox();
     expect(launcher).not.toBeNull();
-    for (const card of cards) {
+    for (const card of onFirstScreen) {
       expect(card.bottom, `${card.text} ends above the fold`).toBeLessThanOrEqual(fold);
       const apart =
         !launcher ||

@@ -1,0 +1,249 @@
+/*
+ * The three readings: a card each, with the visual on top and the number below. The visual
+ * is drawn by the stage; what is in the DOM here is the same drawing, animated by CSS on the
+ * same clock and from the same table (`lib/entrance.ts`), so the two layers agree at every
+ * instant and the hand-over between them is not seen. `--vs` is when a reading's visual starts.
+ */
+/*
+ * Below 1024px the readings are one row to move along sideways, each card a fixed width so the
+ * next one shows at the edge; from 1024px they are a column beside the headline. The row is
+ * a scroller of its own, so the page never scrolls sideways.
+ */
+.row {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 0 var(--gutter) 0.25rem;
+  overflow: auto hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.row::-webkit-scrollbar {
+  display: none;
+}
+
+.reading {
+  --visual: 3.5rem;
+  flex: none;
+  width: min(19rem, 78%);
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .reading {
+    --visual: 4rem;
+    width: 20rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .row {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .reading {
+    --visual: 4.5rem;
+    width: auto;
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reading {
+    animation: card-in var(--e-readings-for) var(--ease) calc(var(--e-readings) + var(--i) * var(--e-step)) both;
+  }
+}
+
+.visual {
+  position: relative;
+  display: block;
+  height: var(--visual);
+  container-type: inline-size;
+}
+
+/* Telemetry: the lattice is wiped in column by column, then the line crosses it. */
+.points,
+.cells,
+.squads {
+  position: absolute;
+  inset: 0;
+}
+
+.points {
+  overflow: hidden;
+}
+
+.wipe {
+  position: absolute;
+  inset: 0;
+}
+
+@keyframes fill-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+/* The line is the right edge of a box as wide as the visual, so it crosses by a transform and moves no layout. */
+@keyframes cross {
+  from {
+    opacity: 0.95;
+    transform: translateX(-100%);
+  }
+
+  to {
+    opacity: 0.95;
+    transform: none;
+  }
+}
+
+.sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent calc(100% - 1px), var(--accent) calc(100% - 1px));
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wipe {
+    animation: fill-in var(--count-ms) var(--ease) var(--vs) both;
+  }
+
+  .sweep {
+    animation: cross var(--sweep-ms) linear calc(var(--vs) + var(--count-ms)) both;
+  }
+}
+
+/* Evidence: 40 by 5 cells; each is full, then about 92% of them empty and the evenly spread rest stay. */
+.cells {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+}
+
+.cell {
+  position: relative;
+  margin: 0.5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 1px;
+  background-color: color-mix(in srgb, var(--proof) 5%, transparent);
+}
+
+.cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--proof);
+  opacity: 0.86;
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.cell[data-keep]::after {
+  transform: none;
+}
+
+@keyframes cell-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cell-fall {
+  from {
+    transform: scaleY(1);
+  }
+
+  to {
+    transform: scaleY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cell {
+    animation: cell-in 90ms var(--ease) calc(var(--vs) + var(--i) / var(--count) * var(--appear)) both;
+  }
+
+  .cell:not([data-keep])::after {
+    animation: cell-fall var(--fall) var(--ease-in-out)
+      calc(var(--vs) + var(--appear) + var(--c) / var(--last) * var(--spread)) both;
+  }
+}
+
+/* Portfolio: five squads of eight marks, two wide and four tall, each on a baseline. */
+.squads {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  --pitch: clamp(11px, calc(100cqw / 28), 18px);
+}
+
+.squad {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), var(--pitch));
+  grid-auto-rows: var(--pitch);
+  place-items: center;
+  padding-bottom: calc(var(--pitch) * 0.45);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.mark {
+  width: calc(var(--pitch) * 0.62);
+  height: calc(var(--pitch) * 0.62);
+  border-radius: 2px;
+  background-color: var(--proof);
+  opacity: 0.86;
+}
+
+@keyframes mark-in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 0.86;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mark {
+    animation: mark-in 200ms var(--ease) calc(var(--vs) + var(--n) / var(--count) * var(--count-ms)) both;
+  }
+}
+
+@media (forced-colors: active) {
+  .cell,
+  .mark {
+    forced-color-adjust: none;
+  }
+}

@@ -22,7 +22,7 @@ interface Shared {
 }
 
 const base =
-  'relative inline-flex select-none items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-[background-color,border-color,color,translate] disabled:pointer-events-none disabled:opacity-50';
+  'relative inline-flex select-none items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-[background-color,border-color,color,translate,scale] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50';
 
 const sizes: Record<ButtonSize, string> = {
   md: 'min-h-11 px-4 text-[0.9375rem]',

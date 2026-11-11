@@ -13,7 +13,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  transition: opacity var(--duration-enter) var(--ease);
+  transition: opacity var(--stage-fade, var(--duration-enter)) var(--ease);
 }
 
 .view[data-ready='true'] .fallback {

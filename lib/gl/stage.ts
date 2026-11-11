@@ -12,6 +12,7 @@ import { reducedMotion, subscribeToMotion } from '../motion';
 import type { StageEngine, StageInfo } from './hook';
 import { syncPalette, watchTheme } from './palette';
 import { createPointerBus } from './pointer';
+import { subscribeSignals } from './signal';
 import { forcedTier, resolveTier, STEP_DOWN, type GpuProbe, type LiveTier } from './tier';
 import { viewLoaders } from './views';
 import type { View } from './views/types';
@@ -39,6 +40,11 @@ const GOVERNOR_FRAMES = 45;
 
 /** Median frame time above which the governor lowers the tier, in milliseconds. */
 const SLOW_FRAME = 24;
+
+/** The page's entrance began at first paint, which is when the CSS animations of the hero start. */
+function entranceOrigin(): number {
+  return performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? 0;
+}
 
 /** The canvas data attributes are refreshed at most this often, in milliseconds. */
 const PUBLISH_EVERY = 1000;
@@ -251,7 +257,12 @@ export function createStage(options: StageOptions): Stage | null {
         width: rect.width,
         height: rect.height,
       };
-      const time = tier === 'still' && !frozen ? SETTLED_MS : clock - entry.started;
+      const time =
+        tier === 'still' && !frozen
+          ? SETTLED_MS
+          : view.syncToLoad && !frozen
+            ? performance.now() - entranceOrigin()
+            : clock - entry.started;
       const needsMore = view.update({
         time,
         dt: frozen || tier === 'still' ? 0 : dt,
@@ -345,6 +356,7 @@ export function createStage(options: StageOptions): Stage | null {
   const stopTheme = watchTheme(() => {
     if (syncPalette()) wake();
   });
+  const stopSignals = subscribeSignals(wake);
   const stopMotion = subscribeToMotion(() => {
     setTier(reducedMotion() ? 'still' : resolveLiveTier());
   });
@@ -361,6 +373,7 @@ export function createStage(options: StageOptions): Stage | null {
     canvas.removeEventListener('webglcontextlost', onLost);
     canvas.removeEventListener('webglcontextrestored', onRestored);
     stopTheme();
+    stopSignals();
     stopMotion();
     pointer.dispose();
     intersection.disconnect();

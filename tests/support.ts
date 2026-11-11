@@ -104,3 +104,48 @@ export async function open(page: Page, path: string): Promise<Response | null> {
   await hydrated(page);
   return response;
 }
+
+/**
+ * The words a reader meets in each element before anything opens: the text that is not
+ * hidden, not inside a closed disclosure (its summary excepted) and not zero-sized. A word is
+ * a token with a letter or a digit in it.
+ */
+export async function visibleWordCounts(page: Page, ids: readonly string[]): Promise<Record<string, number>> {
+  return page.evaluate((elementIds) => {
+    const visibleWords = (root: Element): number => {
+      let total = 0;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const parent = node.parentElement;
+        const text = (node as Text).data.trim();
+        if (!parent || !text) continue;
+        let hidden = false;
+        for (let el: Element | null = parent; el && el !== root.parentElement; el = el.parentElement) {
+          const style = getComputedStyle(el);
+          if (style.display === 'none' || style.visibility === 'hidden') hidden = true;
+          if (el instanceof HTMLDetailsElement && !el.open) {
+            const summary = Array.from(el.children).find((child) => child.tagName === 'SUMMARY');
+            if (!summary?.contains(node)) hidden = true;
+          }
+        }
+        const box = parent.getBoundingClientRect();
+        if (hidden || (box.width <= 1 && box.height <= 1)) continue;
+        total += text.split(/\s+/).filter((token) => /[\p{L}\p{N}]/u.test(token)).length;
+      }
+      return total;
+    };
+    return Object.fromEntries(
+      elementIds.map((id) => [id, visibleWords(document.getElementById(id) as Element)]),
+    );
+  }, ids);
+}
+
+/** Collects every console error and warning and every uncaught page error, to be asserted empty at the end of a test. */
+export function watchConsole(page: Page): string[] {
+  const problems: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error' || message.type() === 'warning') problems.push(message.text());
+  });
+  page.on('pageerror', (error) => problems.push(String(error)));
+  return problems;
+}

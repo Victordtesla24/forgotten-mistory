@@ -10,6 +10,8 @@ interface StageViewProps {
   /** Draws the CSS poster: what first paint, no-WebGL and lost-context readers see. */
   posterClassName?: string;
   className?: string;
+  /** For a reading: how many marks it draws and in how many groups, as the figure's content states. */
+  marks?: { count: number; groups: number };
   /** The semantic fallback: a drawing or text of the same data, shown until the stage has drawn. */
   children?: ReactNode;
 }
@@ -19,9 +21,15 @@ interface StageViewProps {
  * contains is the layer beneath the light, which fades once the stage has drawn the view
  * and returns if the stage gives up. It is decorative and hidden from assistive technology.
  */
-export function StageView({ view, posterClassName, className, children }: StageViewProps) {
+export function StageView({ view, posterClassName, className, marks, children }: StageViewProps) {
   return (
-    <div data-stage-view={view} aria-hidden="true" className={cn(styles.view, className)}>
+    <div
+      data-stage-view={view}
+      data-marks={marks?.count}
+      data-groups={marks?.groups}
+      aria-hidden="true"
+      className={cn(styles.view, className)}
+    >
       <div className={styles.fallback}>
         <div className={cn(styles.poster, posterClassName)} />
         {children}

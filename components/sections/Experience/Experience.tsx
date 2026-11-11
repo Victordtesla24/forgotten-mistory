@@ -3,23 +3,9 @@ import { Disclosure } from '@/components/ui/Disclosure';
 import { Ruler } from '@/components/ui/Ruler';
 import { Section } from '@/components/ui/Section';
 import { SnapRow } from '@/components/ui/SnapRow';
-import {
-  NOW,
-  TIMELINE_START,
-  roles,
-  yearsOf,
-  type ExperienceRole,
-  type RoleHeadline,
-} from '@/content/experience';
+import { NOW, TIMELINE_START, roles, yearsOf, type ExperienceRole } from '@/content/experience';
 
-function Headline({ headline }: { headline: RoleHeadline }) {
-  return (
-    <p className="flex items-baseline gap-3">
-      <span className="type-figure text-[1.75rem] text-proof">{headline.value}</span>
-      <span className="type-small text-muted">{headline.label}</span>
-    </p>
-  );
-}
+import { RoleBody } from './RoleBody';
 
 function RoleCard({ role }: { role: ExperienceRole }) {
   return (
@@ -48,15 +34,7 @@ function RoleCard({ role }: { role: ExperienceRole }) {
           </p>
           <p className="type-meta text-muted">{role.dates}</p>
         </div>
-        <p className="type-small max-w-none">{role.summary}</p>
-        {role.headline ? <Headline headline={role.headline} /> : null}
-        <ul className="type-small grid list-disc gap-3 pl-5 marker:text-muted">
-          {role.achievements.map((achievement) => (
-            <li key={achievement} className="pl-1">
-              {achievement}
-            </li>
-          ))}
-        </ul>
+        <RoleBody role={role} />
       </Disclosure>
     </Card>
   );

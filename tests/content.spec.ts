@@ -8,7 +8,7 @@ import { hero } from '@/content/hero';
 import { headlineFigures } from '@/content/proof';
 import { projects } from '@/content/work';
 
-import { open } from './support';
+import { open, visibleWordCounts } from './support';
 
 const words = (text: string): number =>
   text.split(/\s+/).filter((token) => /[\p{L}\p{N}]/u.test(token)).length;
@@ -164,11 +164,12 @@ test.describe('the home page is two levels deep', () => {
     for (const { summary, detail } of cases) {
       expect(detail, summary).toBeTruthy();
       const row = page.locator(summary).first();
+      const section = page.locator(summary.split(' ')[0] ?? '');
       await row.scrollIntoViewIfNeeded();
       await row.click();
-      await expect(page.getByText(detail ?? '', { exact: false }).first(), summary).toBeVisible();
+      await expect(section.getByText(detail ?? '', { exact: false }).first(), summary).toBeVisible();
       await row.click();
-      await expect(page.getByText(detail ?? '', { exact: false }).first(), summary).toBeHidden();
+      await expect(section.getByText(detail ?? '', { exact: false }).first(), summary).toBeHidden();
     }
   });
 
@@ -198,33 +199,7 @@ test.describe('the always-visible copy keeps to its word budgets', { tag: '@desk
 
   test('hero, work, experience, about and contact', async ({ page }) => {
     await open(page, '/');
-    const counts = await page.evaluate((ids) => {
-      const visibleWords = (root: Element): number => {
-        let total = 0;
-        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-          const parent = node.parentElement;
-          const text = (node as Text).data.trim();
-          if (!parent || !text) continue;
-          let hidden = false;
-          for (let el: Element | null = parent; el && el !== root.parentElement; el = el.parentElement) {
-            const style = getComputedStyle(el);
-            if (style.display === 'none' || style.visibility === 'hidden') hidden = true;
-            if (el instanceof HTMLDetailsElement && !el.open) {
-              const summary = Array.from(el.children).find((child) => child.tagName === 'SUMMARY');
-              if (!summary?.contains(node)) hidden = true;
-            }
-          }
-          const box = parent.getBoundingClientRect();
-          if (hidden || (box.width <= 1 && box.height <= 1)) continue;
-          total += text.split(/\s+/).filter((token) => /[\p{L}\p{N}]/u.test(token)).length;
-        }
-        return total;
-      };
-      return Object.fromEntries(
-        ids.map((id) => [id, visibleWords(document.getElementById(id) as Element)]),
-      );
-    }, Object.keys(BUDGETS));
+    const counts = await visibleWordCounts(page, Object.keys(BUDGETS));
 
     for (const [id, limit] of Object.entries(BUDGETS)) {
       expect(counts[id], `#${id} shows ${counts[id]} words against a budget of ${limit}`).toBeLessThanOrEqual(limit);
@@ -237,7 +212,9 @@ test.describe('every detail can be linked to, and is open without script', () =>
     await open(page, '/#role-anz-detail');
     await expect(page.locator('#role-anz-detail')).toHaveAttribute('open', '');
     await expect(
-      page.getByText(roles.find((role) => role.id === 'anz')?.achievements[0] ?? '', { exact: false }),
+      page
+        .locator('#experience')
+        .getByText(roles.find((role) => role.id === 'anz')?.achievements[0] ?? '', { exact: false }),
     ).toBeVisible();
 
     await page.evaluate(() => {

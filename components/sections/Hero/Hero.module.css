@@ -1,53 +1,52 @@
 /*
- * The hero's entrance, in CSS only and only when motion is welcome. The headline and
- * the statement are in the server HTML and fully opaque from first paint: they rise
- * into place rather than fading in, so the largest paint is never held back by an
- * animation that waits for a busy main thread. Everything else fades in after them
- * in a short stagger, finished inside 900 ms.
+ * The hero's entrance, in CSS only and only when motion is welcome. Each element takes its
+ * start and its length from the table in lib/entrance.ts, which reaches this file as custom
+ * properties on the hero's root: the headline, the line, the actions, then the readings and
+ * the career scale in their own modules. Every animation holds its end state (`both`), so
+ * the page can be seeked to any instant of its entrance. Nothing moves layout: elements
+ * only rise by a few pixels and fade.
  */
-@keyframes title-rise {
-  from {
-    transform: translateY(0.3em);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes lift-in {
-  from {
-    transform: translateY(0.875rem);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes rise-in {
+@keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(0.875rem);
+    transform: translateY(0.75rem);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+  }
+}
+
+@keyframes poster-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .title {
-    animation: title-rise 560ms var(--ease) both;
+  .eyebrow {
+    animation: rise var(--e-line-for) var(--ease) var(--e-headline) both;
   }
 
-  .lift {
-    animation: lift-in 480ms var(--ease) both;
+  .headline {
+    animation: rise var(--e-headline-for) var(--ease) var(--e-headline) both;
   }
 
-  .rise {
-    animation: rise-in 480ms var(--ease) both;
+  .line {
+    animation: rise var(--e-line-for) var(--ease) var(--e-line) both;
+  }
+
+  .action {
+    animation: rise var(--e-actions-for) var(--ease) calc(var(--e-actions) + var(--i) * var(--e-action-step)) both;
+  }
+
+  .poster {
+    animation: poster-in var(--e-field-for) var(--ease) both;
   }
 }
 

@@ -18,6 +18,8 @@ export interface HeadlineFigure {
   story: string;
   /** The role in `experience.ts` the figure was earned in. */
   roleId: string;
+  /** What the live reading draws: one mark for each of `count`, in `groups` groups. */
+  marks: { count: number; groups: number };
 }
 
 export const headlineFigures: readonly HeadlineFigure[] = [
@@ -31,6 +33,7 @@ export const headlineFigures: readonly HeadlineFigure[] = [
     story:
       'Architected COBOL/mainframe test-evidence automation for 200+ SIT/E2E scenarios across all eight Payday Super squads: ~3 hours to ~15 minutes per scenario. The REXX, SMF, SDSF, PCOMM, PowerShell and VBA toolchain needed no new approvals. Convened a cross-discipline war room that produced a binding automation recommendation in under three hours.',
     roleId: 'ato',
+    marks: { count: 200, groups: 1 },
   },
   {
     id: 'portfolio',
@@ -42,6 +45,7 @@ export const headlineFigures: readonly HeadlineFigure[] = [
     story:
       'Directed a program portfolio valued at over $5M at ANZ: 5+ cross-functional squads, up to 40 practitioners, onshore and offshore, delivering on-time, high-quality releases. Defined the technical vision and owned the product backlog for major platform modernisations, at 100% compliance with enterprise architectural standards and risk models.',
     roleId: 'anz',
+    marks: { count: 40, groups: 5 },
   },
   {
     id: 'telemetry',
@@ -53,5 +57,6 @@ export const headlineFigures: readonly HeadlineFigure[] = [
     story:
       'Led AI/ML delivery for critical banking services at ANZ, including real-time WebSocket telemetry servers for 10,000+ concurrent devices. The telemetry cut P95 latency to under 200 ms, improving user response time.',
     roleId: 'anz',
+    marks: { count: 10000, groups: 1 },
   },
 ];
