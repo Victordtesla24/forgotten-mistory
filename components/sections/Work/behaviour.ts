@@ -9,12 +9,18 @@
  * panel while its project shows, select a stage: the enlarged drawing lights it and its note shows.
  * A stage is lit by `data-active` on its mark (`[data-stage]`) and on the way that leads to it or back
  * from it (`[data-lit]`, the number of the stage that lights it).
+ *
+ * The first time the rail comes into view its cards arrive in order (`arrive`). A rail that is already in
+ * view when this has loaded, and any page that asks for less motion, keeps its cards as they are.
  */
 
 import { duration, reducedMotion } from '@/lib/motion';
 
 /** How long a running schematic lights one stage before it goes on to the next, in milliseconds. */
 const STAGE_STEP = duration.entrance;
+
+/** The rail counts as coming into view when its top edge is this far above the bottom of the screen, so the first card is just entering. */
+const ARRIVE_MARGIN = '0px 0px -12% 0px';
 
 /** Lights stage `stage` (1 to 3, or 0 for none) in the drawing inside `scope`. */
 function light(scope: ParentNode, stage: number): void {
@@ -123,6 +129,47 @@ function attachLead(item: HTMLElement, signal: AbortSignal): Lead | null {
   return { item, controls, select, current: () => current };
 }
 
+/**
+ * The entrance, once. `data-entrance` on the section is `armed` while the rail waits out of sight (its cards
+ * wait at their start, off the screen), `play` from the moment it comes into view (each card runs its own
+ * delay, in order) and `done` when the last card has landed. The observer is let go as soon as it has played,
+ * so scrolling away and back changes nothing, and the cards are never held back from a rail that is already
+ * on screen.
+ */
+function arrive(section: HTMLElement, signal: AbortSignal): void {
+  const rail = section.querySelector('article[data-project]')?.closest('ul');
+  const last = rail?.lastElementChild;
+  if (!rail || !last || reducedMotion()) return;
+  let armed = false;
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries.at(-1)?.isIntersecting ?? false;
+      if (!armed && visible) {
+        observer.disconnect();
+      } else if (!armed) {
+        armed = true;
+        section.dataset.entrance = 'armed';
+      } else if (visible) {
+        observer.disconnect();
+        section.dataset.entrance = 'play';
+      }
+    },
+    { rootMargin: ARRIVE_MARGIN },
+  );
+  observer.observe(rail);
+  section.addEventListener(
+    'animationend',
+    (event) => {
+      if (event.target === last && section.dataset.entrance === 'play') section.dataset.entrance = 'done';
+    },
+    { signal },
+  );
+  signal.addEventListener('abort', () => {
+    observer.disconnect();
+    delete section.dataset.entrance;
+  });
+}
+
 /** Sets the section up and returns what takes it down again. */
 export function attach(section: HTMLElement): () => void {
   const abort = new AbortController();
@@ -152,6 +199,7 @@ export function attach(section: HTMLElement): () => void {
     { capture: true, signal },
   );
 
+  arrive(section, signal);
   section.dataset.interactive = 'true';
   return () => {
     abort.abort();

@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { projects } from '@/content/work';
 import { schematicLayout } from '@/lib/schematic';
 
-import { open, visibleWordCounts, watchConsole } from './support';
+import { entranceDone, open, visibleWordCounts, watchConsole } from './support';
 
 const SECTION = '#work';
 
@@ -272,5 +272,160 @@ test.describe('without the light layer or script', () => {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(0);
     await context.close();
+  });
+});
+
+/** What the page did when the rail came into view, written down by the page itself as it happened. */
+interface Arrival {
+  /** Each card's delay and duration in milliseconds, in the order of the rail, read the moment the entrance began. */
+  timings: { delay: number; duration: number }[];
+  /** The index of each card, in the order the cards began to run. */
+  started: number[];
+  /** How many times the section was set to play. */
+  plays: number;
+  /** Layout shift of anything inside the section, scored from the moment the rail came into view. */
+  shift: number;
+}
+
+/** Watches the section from now on, then lets the rail come into view by scrolling it to the middle of the screen. */
+async function scrollRailIn(page: Page): Promise<void> {
+  await page.evaluate((selector) => {
+    const section = document.querySelector<HTMLElement>(selector);
+    const rail = section?.querySelector('article[data-project]')?.closest('ul');
+    if (!section || !rail) throw new Error('the rail is missing');
+    const cards = [...rail.children];
+    const record: Arrival = { timings: [], started: [], plays: 0, shift: 0 };
+    new MutationObserver(() => {
+      if (section.dataset.entrance !== 'play') return;
+      record.plays += 1;
+      // Asking for the animations makes the browser create them now, before it has drawn a frame of them.
+      record.timings = cards.map((card) => {
+        const run = card.getAnimations().find((animation) => animation instanceof CSSAnimation && /arrive/.test(animation.animationName));
+        const timing = run?.effect?.getComputedTiming();
+        return { delay: Number(timing?.delay ?? -1), duration: Number(timing?.duration ?? -1) };
+      });
+    }).observe(section, { attributes: true, attributeFilter: ['data-entrance'] });
+    section.addEventListener('animationstart', (event) => {
+      const at = cards.indexOf(event.target as Element);
+      if (at >= 0) record.started.push(at);
+    });
+    // Only what moved inside this section counts: the timeline above it has its own way of arriving.
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries() as (PerformanceEntry & { value: number; sources: { node: Node | null }[] })[]) {
+        if (entry.sources.some((source) => source.node && section.contains(source.node))) record.shift += entry.value;
+      }
+    }).observe({ type: 'layout-shift' });
+    Object.assign(window, { arrival: record });
+    const top = rail.getBoundingClientRect().top + window.scrollY - window.innerHeight / 3;
+    window.scrollTo({ top, behavior: 'instant' });
+  }, SECTION);
+}
+
+const arrival = (page: Page) => page.evaluate(() => (window as unknown as { arrival: Arrival }).arrival);
+
+test.describe('the entrance of the rail', () => {
+  test('the six cards arrive in order, a stagger apart, inside 1200 ms, and no card moves the page', async ({ page }) => {
+    await openWork(page, '/');
+    const section = page.locator(SECTION);
+    await expect(section).toHaveAttribute('data-entrance', 'armed');
+    const places = () => page.evaluate((selector) => [...document.querySelectorAll(`${selector} article[data-project]`)].map((element) => {
+      const box = element.getBoundingClientRect();
+      return { left: box.left + window.scrollX, top: box.top + window.scrollY, width: box.width, height: box.height };
+    }), SECTION);
+    const before = await places();
+    // Waiting out of sight, the cards take their places but are not drawn.
+    const waiting = await page.evaluate((selector) => [...document.querySelectorAll(`${selector} article[data-project]`)].map((element) => getComputedStyle(element.parentElement as Element).opacity), SECTION);
+    expect(waiting).toEqual(projects.map(() => '0'));
+
+    await scrollRailIn(page);
+    await expect(section).toHaveAttribute('data-entrance', 'done');
+    const seen = await arrival(page);
+    expect(seen.plays).toBe(1);
+    expect(seen.timings).toHaveLength(projects.length);
+    const [first, ...rest] = seen.timings;
+    expect(first?.delay).toBe(0);
+    let previous = first?.delay ?? 0;
+    for (const timing of rest) {
+      const step = timing.delay - previous;
+      expect(step, `a card starts ${step} ms after the one before it`).toBeGreaterThanOrEqual(40);
+      expect(step).toBeLessThanOrEqual(70);
+      previous = timing.delay;
+    }
+    for (const timing of seen.timings) expect(timing.delay + timing.duration).toBeLessThanOrEqual(1200);
+    expect(seen.started).toEqual(projects.map((_, at) => at));
+    expect(seen.shift).toBe(0);
+
+    // Settled: nothing is left half-faded or off its place, and every card stands exactly where it stood.
+    await entranceDone(page);
+    const settled = await page.evaluate((selector) => [...document.querySelectorAll(`${selector} article[data-project]`)].map((element) => {
+      const slot = getComputedStyle(element.parentElement as Element);
+      return { opacity: slot.opacity, translate: slot.translate, animations: (element.parentElement as Element).getAnimations().length };
+    }), SECTION);
+    expect(settled).toEqual(projects.map(() => ({ opacity: '1', translate: 'none', animations: 0 })));
+    const after = await places();
+    for (const [at, box] of after.entries()) {
+      expect(Math.abs(box.left - (before[at]?.left ?? 0))).toBeLessThan(0.5);
+      expect(Math.abs(box.top - (before[at]?.top ?? 0))).toBeLessThan(0.5);
+      expect(Math.abs(box.width - (before[at]?.width ?? 0))).toBeLessThan(0.5);
+      expect(Math.abs(box.height - (before[at]?.height ?? 0))).toBeLessThan(0.5);
+    }
+  });
+
+  test('scrolling away and back does not play it again', async ({ page }) => {
+    await openWork(page, '/');
+    const section = page.locator(SECTION);
+    await expect(section).toHaveAttribute('data-entrance', 'armed');
+    await scrollRailIn(page);
+    await expect(section).toHaveAttribute('data-entrance', 'done');
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await expect(page.locator(`${SECTION} article[data-project]`).first()).not.toBeInViewport();
+    await page.evaluate(() => {
+      const rail = document.querySelector('#work article[data-project]')?.closest('ul');
+      if (rail) window.scrollTo({ top: rail.getBoundingClientRect().top + window.scrollY - window.innerHeight / 3, behavior: 'instant' });
+    });
+    await expect(page.locator(`${SECTION} article[data-project]`).first()).toBeInViewport();
+    // The first frame of the second visit is the settled one: every card drawn, none running.
+    const frame = await page.evaluate((selector) => ({
+      running: document.getAnimations().filter((animation) => animation instanceof CSSAnimation && /arrive/.test(animation.animationName)).length,
+      opacity: [...document.querySelectorAll(`${selector} article[data-project]`)].map((element) => getComputedStyle(element.parentElement as Element).opacity),
+    }), SECTION);
+    expect(frame.running).toBe(0);
+    expect(frame.opacity).toEqual(projects.map(() => '1'));
+    expect((await arrival(page)).plays).toBe(1);
+  });
+
+  test('a rail that is already on screen is not held back', async ({ page }) => {
+    // A screen as tall as the page's first three: the rail is in view the moment the page loads.
+    await page.setViewportSize({ width: 1440, height: 3200 });
+    await openWork(page, '/');
+    await expect(page.locator(`${SECTION} article[data-project]`).first()).toBeInViewport();
+    await expect(page.locator(SECTION)).not.toHaveAttribute('data-entrance', /.+/);
+    const opacity = await page.evaluate((selector) => [...document.querySelectorAll(`${selector} article[data-project]`)].map((element) => getComputedStyle(element.parentElement as Element).opacity), SECTION);
+    expect(opacity).toEqual(projects.map(() => '1'));
+  });
+});
+
+/** With a preference or the site's own control asking for less motion the rail is never held back, so the first frame is the settled one. */
+async function restsAtOnce(page: Page, path: string): Promise<void> {
+  await openWork(page, path);
+  await scrollRailIn(page);
+  const frame = await page.evaluate((selector) => ({
+    state: document.querySelector(selector)?.getAttribute('data-entrance') ?? null,
+    running: document.getAnimations().filter((animation) => animation instanceof CSSAnimation && /arrive/.test(animation.animationName)).length,
+    opacity: [...document.querySelectorAll(`${selector} article[data-project]`)].map((element) => getComputedStyle(element.parentElement as Element).opacity),
+  }), SECTION);
+  expect(frame).toEqual({ state: null, running: 0, opacity: projects.map(() => '1') });
+}
+
+test.describe('the entrance with reduced motion', () => {
+  test('there is none: the first frame is the settled state', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await restsAtOnce(page, '/');
+  });
+});
+
+test.describe('the entrance with Motion off', () => {
+  test('there is none: the first frame is the settled state', async ({ page }) => {
+    await restsAtOnce(page, '/?motion=off');
   });
 });
