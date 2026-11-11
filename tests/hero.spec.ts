@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Browser, type BrowserContext, type Page } from '@playwright/test';
 
 import { roles } from '@/content/experience';
 import { headlineFigures } from '@/content/proof';
@@ -693,4 +693,179 @@ test.describe('nothing on the first screen shifts', { tag: '@desktop' }, () => {
     const cls = await page.evaluate(() => (window as unknown as { __cls: { value: number; nodes: string[] } }).__cls);
     expect(cls.value, `shifted nodes: ${cls.nodes.join(' | ')}`).toBeLessThan(0.05);
   });
+});
+
+interface PhoneView {
+  w: number;
+  h: number;
+  touch: boolean;
+}
+
+/** A page of its own at a size, for the checks that need a pixel ratio, touch, a colour scheme or no script of their own. */
+async function viewOf(
+  browser: Browser,
+  view: PhoneView,
+  path: string,
+  options: { javaScript?: boolean; scheme?: 'dark' | 'light' } = {},
+): Promise<{ context: BrowserContext; page: Page }> {
+  const scheme = options.scheme ?? 'dark';
+  const context = await browser.newContext({
+    viewport: { width: view.w, height: view.h },
+    hasTouch: view.touch,
+    isMobile: view.touch,
+    colorScheme: scheme,
+    javaScriptEnabled: options.javaScript ?? true,
+  });
+  await context.addInitScript((theme) => {
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      /* storage can be refused; the colour scheme of the context still applies */
+    }
+  }, scheme);
+  const page = await context.newPage();
+  if (options.javaScript === false) await page.goto(path);
+  else await open(page, path);
+  await page.evaluate(() => document.fonts.ready);
+  return { context, page };
+}
+
+const NO_SCRIPT_VIEWS: readonly PhoneView[] = [
+  { w: 320, h: 700, touch: true },
+  { w: 390, h: 844, touch: true },
+  { w: 834, h: 1112, touch: true },
+  { w: 1280, h: 720, touch: false },
+  { w: 1440, h: 900, touch: false },
+];
+
+test.describe('without JavaScript the portfolio card draws as it does with it: centred above its key', { tag: '@desktop' }, () => {
+  for (const view of NO_SCRIPT_VIEWS) {
+    test(`${view.w} by ${view.h}: the marks' centre is within 2 px of the centre of the room above the key, with the baseline clear of the key`, async ({ browser }) => {
+      const { context, page } = await viewOf(browser, view, '/', { javaScript: false });
+      try {
+        // The marks scale in from nothing: measure them once they have.
+        await page.evaluate(() => document.getAnimations().forEach((animation) => animation.finish()));
+        const measured = await page.locator('[data-reading="portfolio"][data-place="card"]').evaluate((tile) => {
+          const box = tile.getBoundingClientRect();
+          const key = (tile.querySelector('[class*="Readings_key__"]') as HTMLElement).getBoundingClientRect();
+          const run = tile.querySelector<HTMLElement>('[class*="Readings_cohort__"]');
+          const marks = [...tile.querySelectorAll('[class*="Readings_mark__"]')].map((mark) => mark.getBoundingClientRect());
+          const baseline = run ? run.getBoundingClientRect().top + Number.parseFloat(getComputedStyle(run, '::after').top) + 1 : Number.NaN;
+          return {
+            count: marks.length,
+            top: Math.min(...marks.map((mark) => mark.top)),
+            bottom: Math.max(...marks.map((mark) => mark.bottom)),
+            baseline,
+            room: (box.top + key.top) / 2,
+            key: key.top,
+          };
+        });
+        expect(measured.count, 'forty marks').toBe(40);
+        expect(Math.abs((measured.top + measured.bottom) / 2 - measured.room), `marks ${measured.top.toFixed(1)} to ${measured.bottom.toFixed(1)} in a room centred at ${measured.room.toFixed(1)}`).toBeLessThanOrEqual(2);
+        expect(measured.key - measured.baseline, 'the baseline stands clear of the key').toBeGreaterThanOrEqual(3);
+      } finally {
+        await context.close();
+      }
+    });
+  }
+});
+
+test.describe('a card the keyboard reaches is whole in the row of cards', { tag: '@desktop' }, () => {
+  for (const view of [{ w: 320, h: 700, touch: true }, { w: 390, h: 844, touch: true }]) {
+    for (const scheme of ['dark', 'light'] as const) {
+      test(`${view.w} px, ${scheme}: tabbing to each of the three cards leaves it inside the viewport with its ring on all four sides`, async ({ browser }) => {
+        const { context, page } = await viewOf(browser, view, '/?gl=off', { scheme });
+        try {
+          await page.waitForFunction(() => document.querySelectorAll('[data-reading][data-place="card"]:not([data-laid])').length === 0);
+          await entranceDone(page);
+          // Where the row and the headline stand on the page, whatever the page has scrolled to reach a card.
+          const placed = () =>
+            page.evaluate(() => {
+              const box = (selector: string) => document.querySelector(selector)?.getBoundingClientRect();
+              return { row: (box('#proof ul')?.top ?? -1) + window.scrollY, height: box('#proof ul')?.height ?? -1, h1: (box('#top h1')?.top ?? -1) + window.scrollY };
+            });
+          const before = await placed();
+          await page.locator('#top a[href^="mailto:"]').focus();
+          await page.keyboard.press('Tab');
+          for (const figure of headlineFigures) {
+            await expect.poll(() => page.evaluate(() => document.activeElement?.getAttribute('data-detail-trigger') ?? ''), `${figure.id} has the focus`).toBe(`figure-${figure.id}`);
+            // The row is moved by the browser's own scroll and by the card's: wait for it to rest.
+            await page.waitForTimeout(400);
+            const seen = await page.evaluate(() => {
+              const card = document.activeElement as HTMLElement;
+              const box = card.getBoundingClientRect();
+              const ring = getComputedStyle(card, '::after');
+              return { left: box.left, right: box.right, width: window.innerWidth, ring: ring.boxShadow, page: document.documentElement.scrollWidth - document.documentElement.clientWidth, snap: getComputedStyle(card.closest('ul') as HTMLElement).scrollSnapType };
+            });
+            expect(seen.left, `${figure.id}: the card starts inside the viewport`).toBeGreaterThanOrEqual(0);
+            expect(seen.right, `${figure.id}: the card ends inside the viewport`).toBeLessThanOrEqual(seen.width);
+            expect(seen.ring, `${figure.id}: its ring is drawn`).not.toBe('none');
+            expect(seen.page, 'the page itself never scrolls sideways').toBeLessThanOrEqual(0);
+            expect(seen.snap, 'the row still snaps to a card').toContain('x');
+            if (figure !== headlineFigures.at(-1)) await page.keyboard.press('Tab');
+          }
+          expect(await placed(), 'nothing in the hero moved while the cards were reached').toEqual(before);
+        } finally {
+          await context.close();
+        }
+      });
+    }
+  }
+});
+
+/** The lines of every text in `selector` that end on a number whose unit begins the next line. */
+async function numbersLeftFromTheirUnits(page: Page, selector: string): Promise<string[]> {
+  return page.evaluate((root) => {
+    const found: string[] = [];
+    const scope = document.querySelector(root);
+    if (!scope) return ['nothing to measure'];
+    const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.textContent ?? '';
+      const words: { word: string; top: number; height: number }[] = [];
+      for (const match of text.matchAll(/\S+/g)) {
+        const at = match.index ?? 0;
+        const range = document.createRange();
+        range.setStart(node, at);
+        range.setEnd(node, at + match[0].length);
+        const [rect] = range.getClientRects();
+        if (rect) words.push({ word: match[0], top: rect.top, height: rect.height });
+      }
+      for (let index = 1; index < words.length; index += 1) {
+        const [before, after] = [words[index - 1], words[index]];
+        if (after.top > before.top + before.height / 2 && /(^|[^A-Za-z\d])\d(?:[\d,.]*\d)?\+?%?$/.test(before.word) && /^[A-Za-z]/.test(after.word)) found.push(`${before.word} / ${after.word}`);
+      }
+    }
+    return found;
+  }, selector);
+}
+
+test.describe('no number in the hero is left at the end of a line, away from its unit', { tag: '@desktop' }, () => {
+  for (const view of [{ w: 390, h: 844, touch: true }, { w: 834, h: 1112, touch: true }, { w: 1440, h: 900, touch: false }]) {
+    test(`${view.w} px with script: the first screen and each opened panel`, async ({ browser }) => {
+      const { context, page } = await viewOf(browser, view, '/?gl=off');
+      try {
+        expect(await numbersLeftFromTheirUnits(page, '#top'), 'the first screen').toEqual([]);
+        for (const figure of headlineFigures) {
+          await page.locator(`[data-detail-trigger="figure-${figure.id}"]`).click();
+          await expect(page.getByRole('dialog', { name: figure.label })).toBeVisible();
+          expect(await numbersLeftFromTheirUnits(page, 'dialog[open]'), `the ${figure.id} panel`).toEqual([]);
+          await page.keyboard.press('Escape');
+          await expect(page.locator('dialog[open]')).toHaveCount(0);
+        }
+      } finally {
+        await context.close();
+      }
+    });
+
+    test(`${view.w} px without script: the first screen and every panel`, async ({ browser }) => {
+      const { context, page } = await viewOf(browser, view, '/', { javaScript: false });
+      try {
+        expect(await numbersLeftFromTheirUnits(page, '#top')).toEqual([]);
+        expect(headlineFigures.find((figure) => figure.id === 'portfolio')?.note, 'the portfolio note keeps its count with its unit').toContain('5+\u00a0squads');
+      } finally {
+        await context.close();
+      }
+    });
+  }
 });

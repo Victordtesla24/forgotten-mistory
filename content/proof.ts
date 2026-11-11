@@ -54,7 +54,7 @@ export const headlineFigures: readonly HeadlineFigure[] = [
     story:
       'Directed a program portfolio valued at over $5M at ANZ: 5+ cross-functional squads, up to 40 practitioners, onshore and offshore, delivering on-time, high-quality releases. Defined the technical vision and owned the product backlog for major platform modernisations, at 100% compliance with enterprise architectural standards and risk models.',
     key: '1 mark = 1 practitioner',
-    note: 'One mark for each practitioner, up to 40, across 5+ squads.',
+    note: 'One mark for each practitioner, up to 40, across 5+\u00a0squads.',
     roleId: 'anz',
     marks: { count: 40 },
   },

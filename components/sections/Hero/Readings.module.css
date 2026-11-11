@@ -508,16 +508,19 @@ a:active > .text {
 /*
  * Portfolio: forty marks, one for each practitioner, in one run of two rows of twenty on one
  * baseline. The CV gives no squad sizes, so no squad is drawn. Before the script has run, and without
- * it, a card's run is centred in its tile on whole pixels; a panel's is enlarged to most of its width.
+ * it, a card's run is the one `readingLayout` (lib/readings.ts) draws, from the same rule: the widest
+ * whole-pixel pitch the tile's width allows, no more than 22 px and no more than a third of the room
+ * above the key less its margins, marks at 55% of it and the baseline under them, centred in that room on whole
+ * pixels. A panel's is enlarged to most of its width.
  */
 .cohort {
-  --p: var(--pitch, round(down, clamp(4px, calc((100cqw - 20px) / var(--across)), 13px), 1px));
+  --p: var(--pitch, max(4px, round(down, min(calc((100cqw - 20px) / var(--across)), 22px, calc((100cqh - 30px) / 3)), 1px)));
   --m: var(--mark, round(calc(var(--p) * 0.55), 1px));
   --w: var(--fw, calc((var(--across) - 1) * var(--p) + var(--m)));
   --h: var(--fh, calc((var(--down) - 1) * var(--p) + var(--m)));
   position: absolute;
   left: var(--fx, round(down, calc((100cqw - var(--w)) / 2), 1px));
-  top: var(--fy, 6px);
+  top: var(--fy, round(down, calc((100cqh - 22px - var(--h)) / 2), 1px));
   width: var(--w);
   height: var(--h);
 }
@@ -525,8 +528,8 @@ a:active > .text {
 .cohort::after {
   content: '';
   position: absolute;
-  inset-inline: calc(var(--over, calc(var(--p) * 0.2)) * -1);
-  top: calc(100% + var(--below, calc(var(--p) * 0.6)));
+  inset-inline: calc(var(--over, round(calc(var(--p) * 0.2), 1px)) * -1);
+  top: calc(100% + var(--below, calc(var(--p) - var(--m) + round(calc(var(--p) * 0.3), 1px))));
   height: 1px;
   background-color: var(--line-strong);
 }
@@ -610,6 +613,19 @@ a:active > .text {
 
 .panelTile .cohort::after {
   top: calc(100% + var(--below, calc(var(--p) * 0.7)));
+}
+
+/*
+ * Before the script has run, and without it, the enlarged evidence cells stand at least 9px clear of the key and of the tile's
+ * top, centred in the room above the key on whole pixels, so the last row of cells never meets the key.
+ */
+.panelTile .cells {
+  --fb: round(
+    down,
+    min(calc(100cqh - 40px), calc(var(--rows) * ((100cqw - 20px - var(--columns) * 2px) / var(--columns) * 2.5 + 2px))),
+    1px
+  );
+  top: var(--fy, round(down, calc((100cqh - 22px - var(--fb)) / 2), 1px));
 }
 
 @media (forced-colors: active) {

@@ -32,6 +32,12 @@ export function ReadingTile({ id, place, mode, className, children }: ReadingTil
     if (!element) return undefined;
     let current = true;
     let stop = (): void => undefined;
+    // On a phone the cards are a row to move along and the browser leaves a card it is tabbed to part out of view: bring it in whole.
+    const card = place === 'card' ? element.closest('a') : null;
+    const reveal = (): void => {
+      if (card?.matches(':focus-visible')) card.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    };
+    card?.addEventListener('focus', reveal);
     void import('@/lib/place-reading').then(
       ({ placeReading }) => {
         if (current) stop = placeReading(element, id, place);
@@ -44,6 +50,7 @@ export function ReadingTile({ id, place, mode, className, children }: ReadingTil
     return () => {
       current = false;
       stop();
+      card?.removeEventListener('focus', reveal);
     };
   }, [id, place]);
 

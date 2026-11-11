@@ -222,14 +222,16 @@ test.describe('the evidence reading draws the share that is left, exactly, and i
 test.describe('without JavaScript the panel drawings stand clear of their keys, centred on whole pixels', { tag: '@desktop' }, () => {
   for (const view of [{ w: 320, h: 700, touch: true }, { w: 390, h: 844, touch: true }, { w: 834, h: 1112, touch: true }, { w: 1280, h: 720 }, { w: 1440, h: 900 }]) {
     for (const ratio of [1, 2]) {
-      test(`${view.w} by ${view.h} at ${ratio}x: each drawing ends 6 px or more above its key and is centred in the room above it`, async ({ browser }) => {
+      test(`${view.w} by ${view.h} at ${ratio}x: each drawing ends 6 px or more above its key (the evidence cells 8 px) and is centred in the room above it`, async ({ browser }) => {
         const { context, page } = await openView(browser, view, '/', { ratio, javaScript: false });
         try {
+          // The marks scale in from nothing: measure them once they have.
+          await page.evaluate(() => document.getAnimations().forEach((animation) => animation.finish()));
           const tiles = await page.evaluate(() =>
             [...document.querySelectorAll<HTMLElement>('[data-reading][data-place="panel"]')].map((tile) => {
               const box = tile.getBoundingClientRect();
               const key = (tile.querySelector('[class*="Readings_key__"]') as HTMLElement).getBoundingClientRect();
-              const drawing = tile.querySelector<HTMLElement>('[class*="Readings_lattice__"]') ?? tile.querySelector<HTMLElement>('[class*="Readings_cohort__"]');
+              const drawing = tile.querySelector<HTMLElement>('[class*="Readings_lattice__"]') ?? tile.querySelector<HTMLElement>('[class*="Readings_cohort__"]') ?? tile.querySelector<HTMLElement>('[class*="Readings_cells__"]');
               const marks = [...tile.querySelectorAll<HTMLElement>('[class*="Readings_mark__"]')].map((mark) => mark.getBoundingClientRect());
               const drawn = drawing?.getBoundingClientRect();
               const top = marks.length > 0 ? Math.min(...marks.map((mark) => mark.top)) : (drawn?.top ?? 0);
@@ -238,8 +240,8 @@ test.describe('without JavaScript the panel drawings stand clear of their keys, 
             }),
           );
           expect(tiles, 'three panels').toHaveLength(3);
-          for (const tile of tiles.filter((entry) => entry.id !== 'evidence')) {
-            expect(tile.key - tile.drawingBottom, `${tile.id}: clear of the key`).toBeGreaterThanOrEqual(6);
+          for (const tile of tiles) {
+            expect(tile.key - tile.drawingBottom, `${tile.id}: clear of the key`).toBeGreaterThanOrEqual(tile.id === 'evidence' ? 8 : 6);
             const room = (tile.top + tile.key) / 2;
             expect(Math.abs((tile.drawingTop + tile.drawingBottom) / 2 - room), `${tile.id}: centred above the key`).toBeLessThanOrEqual(2);
             expect(tile.whole, `${tile.id}: on a whole pixel`).toBe(true);
