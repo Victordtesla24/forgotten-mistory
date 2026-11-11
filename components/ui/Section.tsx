@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 import { Container } from './Container';
-import { Ruler } from './Ruler';
 
 interface SectionProps {
   id: string;
@@ -28,7 +27,7 @@ function renderTitle(title: string, accent?: string): ReactNode {
   );
 }
 
-/** A page section: a ruler divider, an eyebrow, a heading and an optional lede, then the content. */
+/** A page section: an eyebrow, a heading and an optional lede, then the content. */
 export function Section({ id, eyebrow, title, accent, lede, className, children }: SectionProps) {
   const headingId = `${id}-title`;
   return (
@@ -38,7 +37,6 @@ export function Section({ id, eyebrow, title, accent, lede, className, children 
       className={cn('pt-[clamp(3rem,6vw,5rem)]', className)}
     >
       <Container>
-        <Ruler min={0} max={60} step={1} className="mb-6" />
         <header className="mb-6 grid gap-3 md:mb-8">
           <p className="type-eyebrow text-muted reveal">{eyebrow}</p>
           <h2 id={headingId} className="reveal max-w-[22ch]">
