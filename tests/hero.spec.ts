@@ -883,6 +883,22 @@ test.describe('the detail panels lead with a visual and open with focus inside',
 });
 
 test.describe('nothing on the first screen shifts', { tag: '@desktop' }, () => {
+  test('the first paint waits until the whole hero is parsed, so a page that arrives in pieces never paints it half built or starts its entrance in two parts', async ({ page }) => {
+    await page.goto('/?gl=off');
+    const expectation = await page.evaluate(() => {
+      const link = document.querySelector('head link[rel="expect"]');
+      return { href: link?.getAttribute('href'), blocking: link?.getAttribute('blocking') };
+    });
+    expect(expectation).toEqual({ href: '#work', blocking: 'render' });
+    // The element it waits for starts the next section, so the whole hero comes before it.
+    const order = await page.evaluate(() => {
+      const hero = document.querySelector('main > div:first-child');
+      const next = document.getElementById('work');
+      return Boolean(hero && next && hero.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_FOLLOWING);
+    });
+    expect(order, '#work follows the hero').toBe(true);
+  });
+
   test('layout shift while the hero loads and the page is scrolled through under CPU throttling stays under 0.05, with the node named if it does not', async ({ page }) => {
     await page.addInitScript(() => {
       const record = { value: 0, nodes: [] as string[] };
