@@ -2,10 +2,11 @@
  * The telemetry reading: exactly 10,000 points, one for each concurrent device, in 100 blocks
  * of 100, filling the lattice from left to right, then a line that crosses it in 200 ms, the
  * P95 latency of the figure's scope, and fades out as it arrives. Points the line has reached
- * stay lit. A hover or focus sends the line across again. The pitch is a whole number of CSS
- * pixels (the rule the stylesheet states too), so at a whole screen ratio every point sits on
- * a device pixel, with no jitter, and the lattice is crisp and never moires. Every point is a
- * real GL point, so the stage's own counters report them.
+ * stay lit. A hover or focus sends the line across again. Where the points cannot be told
+ * apart (a pitch under two device pixels) it draws 100 blocks of 100 instead, one point sprite
+ * for each. Either way the layout is `readingLayout`'s, in whole device pixels, the same the DOM
+ * drawing takes, so every mark sits on a device pixel with no jitter and nothing moires. Every
+ * mark is a real GL point, so the stage's own counters report them.
  */
 
 import {
@@ -19,14 +20,14 @@ import {
 } from 'three';
 
 import { READING_TRAIL } from '../../entrance';
-import { points, pointPitch, pointSize } from '../../readings';
+import { points, readingLayout } from '../../readings';
 import { finish } from '../glsl/finish';
 import type { LiveTier } from '../tier';
-import { createBackdrop, createCamera, createReadingState, easeOut, readingGlsl, readingMask, unit } from './reading';
+import { createBackdrop, createCamera, createReadingState, easeOut, readingGlsl, readingMask, tileOf, unit } from './reading';
 import type { FrameInput, View, ViewContext } from './types';
 
 const pointVertex = /* glsl */ `
-uniform vec2 uLattice;
+uniform vec2 uFrame;
 uniform float uPitch;
 uniform float uDot;
 uniform float uReveal;
@@ -38,13 +39,11 @@ varying float vGlow;
 ${readingGlsl}
 
 void main() {
-  // The lattice is centred in the tile on whole device pixels; each dot sits in the middle of
-  // its own pitch cell (the pitch is in device pixels), so every point lands on a pixel and
-  // nothing is resampled.
+  // The lattice stands where the layout puts it, on whole device pixels (uFrame is its top
+  // left, from the tile's top left); each mark is uDot square at its own pitch, so every
+  // point lands on a pixel and nothing is resampled.
   vec2 device = floor(uSize * uPixel + 0.5);
-  vec2 origin = floor((device - uLattice * uPitch) * 0.5);
-  float inset = floor((uPitch - uDot) * 0.5);
-  vec2 corner = origin + floor(position.xy * uPitch + 0.5) + inset;
+  vec2 corner = uFrame + floor(position.xy * uPitch + 0.5);
   vec2 centre = vec2(corner.x, device.y - corner.y) + vec2(uDot * 0.5, -uDot * 0.5);
   float across = centre.x / device.x;
   float passed = uReveal - across;
@@ -113,10 +112,12 @@ export function createReadingTelemetry(context: ViewContext): View {
   const lattice = new Float32Array(count * 3);
   const gutter = points.side;
   const stride = points.side + 1;
+  const columns = points.blockColumns * stride - 1;
+  const rows = points.blockRows * stride - 1;
   let at = 0;
-  for (let column = 0; column < points.columns; column += 1) {
+  for (let column = 0; column < columns; column += 1) {
     if (column % stride === gutter) continue;
-    for (let row = 0; row < points.rows; row += 1) {
+    for (let row = 0; row < rows; row += 1) {
       if (row % stride === gutter) continue;
       lattice[at] = column;
       lattice[at + 1] = row;
@@ -126,13 +127,22 @@ export function createReadingTelemetry(context: ViewContext): View {
   const dots = new BufferGeometry();
   dots.setAttribute('position', new BufferAttribute(lattice, 3));
 
+  // Where the points cannot be told apart: one mark for each block of a hundred, in a grid of 20 by 5.
+  const wholeBlocks = points.blockColumns * points.blockRows;
+  const blockGrid = new Float32Array(wholeBlocks * 3);
+  for (let column = 0; column < points.blockColumns; column += 1) {
+    for (let row = 0; row < points.blockRows; row += 1) blockGrid.set([column, row, 0], (column * points.blockRows + row) * 3);
+  }
+  const blocks = new BufferGeometry();
+  blocks.setAttribute('position', new BufferAttribute(blockGrid, 3));
+
   const flags = { transparent: true, premultipliedAlpha: true, depthTest: false, depthWrite: false } as const;
   const dotMaterial = new ShaderMaterial({
     vertexShader: pointVertex,
     fragmentShader: pointFragment,
     uniforms: {
       ...state.uniforms,
-      uLattice: { value: [points.columns, points.rows] },
+      uFrame: { value: [0, 0] },
       uPitch: { value: 1 },
       uDot: { value: 1 },
       uReveal: { value: 0 },
@@ -160,7 +170,6 @@ export function createReadingTelemetry(context: ViewContext): View {
   const scene = new Scene();
   scene.add(backdrop.mesh, cloud, line);
   const camera = createCamera();
-  context.element.dataset.drawn = String(count);
 
   return {
     pointer: false,
@@ -168,10 +177,14 @@ export function createReadingTelemetry(context: ViewContext): View {
 
     update(input: FrameInput): boolean {
       const { t, flash, busy } = state.step(input);
-      const pitch = pointPitch(input.viewport.width, input.viewport.height) * input.pixelRatio;
-      dotMaterial.uniforms.uPitch.value = pitch;
-      dotMaterial.uniforms.uDot.value = pointSize(pitch);
-      dots.setDrawRange(0, Math.round(count * easeOut(t / countMs)));
+      const layout = readingLayout('telemetry', tileOf(input));
+      cloud.geometry = layout.mode === 'points' ? dots : blocks;
+      context.element.dataset.drawn = String(layout.drawn);
+      context.element.dataset.unit = String(layout.unit);
+      dotMaterial.uniforms.uFrame.value = [layout.frame.x, layout.frame.y];
+      dotMaterial.uniforms.uPitch.value = layout.pitch;
+      dotMaterial.uniforms.uDot.value = layout.mark;
+      cloud.geometry.setDrawRange(0, Math.round(layout.drawn * easeOut(t / countMs)));
 
       const reveal = unit((t - countMs) / sweepMs);
       const crossing = flash < 1;
@@ -195,8 +208,10 @@ export function createReadingTelemetry(context: ViewContext): View {
 
     dispose(): void {
       delete context.element.dataset.drawn;
+      delete context.element.dataset.unit;
       backdrop.dispose();
       dots.dispose();
+      blocks.dispose();
       lineGeometry.dispose();
       dotMaterial.dispose();
       lineMaterial.dispose();

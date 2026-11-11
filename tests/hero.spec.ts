@@ -5,6 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { NOW, roles, ym } from '@/content/experience';
 import { headlineFigures } from '@/content/proof';
 import { ENTRANCE_END } from '@/lib/entrance';
+import { readingLayout } from '@/lib/readings';
 import { careerBars, LABEL_CONFLICTS, timeline } from '@/lib/timeline';
 
 import { entranceDone, hydrated, open, visibleWordCounts, watchConsole } from './support';
@@ -32,6 +33,13 @@ const WIDTHS = [320, 390, 834, 1440, 1920] as const;
 async function stageReady(page: Page): Promise<void> {
   await page.waitForFunction(() => window.__stage !== undefined);
   await page.evaluate(() => window.__stage?.ready);
+}
+
+/** What the stage draws for telemetry: 10,000 points where they can be told apart, otherwise 100 blocks of 100 (`readingLayout`). */
+async function telemetryDrawn(page: Page): Promise<{ drawn: number; unit: number }> {
+  const view = page.locator('[data-stage-view="reading-telemetry"]');
+  await expect(view).toHaveAttribute('data-drawn', /\d+/);
+  return { drawn: Number(await view.getAttribute('data-drawn')), unit: Number(await view.getAttribute('data-unit')) };
 }
 
 async function openAt(page: Page, path: string, width: number, height = 900): Promise<void> {
@@ -253,7 +261,9 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     await page.evaluate(() => window.__stage?.seek(10_000));
     const info = await page.evaluate(() => window.__stage?.info());
     expect(info?.tier).toBe('high');
-    expect(info?.points, 'points: 10,000 devices and 40 marks').toBe(10_040);
+    const telemetry = await telemetryDrawn(page);
+    expect(telemetry.drawn * telemetry.unit, 'telemetry draws every one of 10,000 devices, as points or as blocks of 100').toBe(10_000);
+    expect(info?.points, 'the marks of telemetry and the 40 of the portfolio').toBe(telemetry.drawn + 40);
     expect(info?.calls).toBeLessThanOrEqual(40);
     expect(info?.points).toBeLessThanOrEqual(12_000);
     expect(info?.lines).toBeLessThanOrEqual(10_000);
@@ -262,7 +272,7 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     for (const figure of headlineFigures) {
       const view = page.locator(`[data-stage-view="reading-${figure.id}"]`);
       await expect(view, figure.id).toHaveAttribute('data-ready', 'true');
-      await expect(view, figure.id).toHaveAttribute('data-drawn', String(counts[figure.id]));
+      if (figure.id !== 'telemetry') await expect(view, figure.id).toHaveAttribute('data-drawn', String(counts[figure.id]));
       await expect(view, figure.id).toHaveAttribute('data-marks', String(figure.marks.count));
     }
     expect(problems).toEqual([]);
@@ -272,17 +282,19 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     await openAt(page, '/?gl=high', 1440);
     await stageReady(page);
     await expect(page.locator('[data-stage-view][data-ready="true"]')).toHaveCount(5);
+    const { drawn } = await telemetryDrawn(page);
+    const final = drawn + 40;
     const points: number[] = [];
-    for (const ms of [0, 300, 600, 900, 1200, 1500]) {
+    for (const ms of [0, 300, 600, 800, 1200, 1500]) {
       points.push((await page.evaluate((at) => {
         window.__stage?.seek(at);
         return window.__stage?.info().points;
       }, ms)) ?? -1);
     }
     expect(points[0], 'nothing is drawn at 0 ms').toBe(0);
-    expect(points[3], 'the count is part way at 900 ms').toBeGreaterThan(0);
-    expect(points[3]).toBeLessThan(10_040);
-    expect(points.at(-1), 'every mark is drawn by 1500 ms').toBe(10_040);
+    expect(points[3], 'the count is part way at 800 ms').toBeGreaterThan(0);
+    expect(points[3]).toBeLessThan(final);
+    expect(points.at(-1), 'every mark is drawn by 1500 ms').toBe(final);
     expect([...points].sort((a, b) => a - b)).toEqual(points);
   });
 
@@ -291,28 +303,23 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     await page.evaluate(() => window.__stage?.ready);
     await expect(page.locator('canvas')).toHaveCount(0);
 
-    // 10,000 points in 100 blocks of 100: one lattice element, laid out in whole CSS pixels.
-    const lattice = page.locator('[data-stage-view="reading-telemetry"] [style*="--side"]');
+    // Telemetry: one lattice element, laid out by `readingLayout` in whole device pixels, and 10,000 devices in all.
+    const lattice = page.locator('[data-reading="telemetry"][data-place="card"] [class*="Readings_lattice__"]');
     await expect(lattice).toHaveCount(1);
-    const grid = await lattice.evaluate((element) => {
-      const style = getComputedStyle(element);
+    const tile = page.locator('[data-reading="telemetry"][data-place="card"]');
+    const layout = await tile.evaluate((element: HTMLElement) => {
       const box = element.getBoundingClientRect();
-      const columns = Number(style.getPropertyValue('--columns'));
-      return {
-        columns,
-        rows: Number(style.getPropertyValue('--rows')),
-        side: Number(style.getPropertyValue('--side')),
-        pitch: box.width / columns,
-        width: box.width,
-        height: box.height,
-      };
+      return { width: box.width - (element.offsetWidth - element.clientWidth), height: box.height - (element.offsetHeight - element.clientHeight), mode: element.dataset.mode };
     });
-    const blocks = (grid.columns + 1) / (grid.side + 1);
-    const blockRows = (grid.rows + 1) / (grid.side + 1);
-    expect(blocks * blockRows * grid.side * grid.side, '100 blocks of 100 points').toBe(10_000);
-    expect(Number.isInteger(grid.pitch) && grid.pitch >= 1, 'a whole number of CSS pixels').toBe(true);
-    expect(grid.width, 'the lattice is its pitch wide').toBe(grid.columns * grid.pitch);
-    expect(grid.height).toBe(grid.rows * grid.pitch);
+    const expected = readingLayout('telemetry', { width: layout.width, height: layout.height, ratio: 1 });
+    expect(layout.mode, 'the tile says what it draws').toBe(expected.mode);
+    expect(expected.drawn * expected.unit, '100 blocks of 100, or 10,000 points').toBe(10_000);
+    const drawn = await lattice.evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      return { width: box.width, height: box.height };
+    });
+    expect(Math.abs(drawn.width - expected.frame.width), 'the lattice is the width the layout gives').toBeLessThanOrEqual(1);
+    expect(Math.abs(drawn.height - expected.frame.height)).toBeLessThanOrEqual(1);
 
     // Every one of the 200 cells stays, and the fill of each falls to about 15 of 180 minutes.
     const cells = page.locator('[data-stage-view="reading-evidence"] > div > div > span');
@@ -591,6 +598,7 @@ test.describe('reduced motion and the Motion off control', { tag: '@desktop' }, 
         reading: opacity('#proof ul > li:last-child'),
         ruler: getComputedStyle(document.querySelector('[data-career-scale] [data-ruler]') as Element).clipPath,
         info: window.__stage?.info(),
+        drawn: Number(document.querySelector('[data-stage-view="reading-telemetry"]')?.getAttribute('data-drawn')),
       };
     });
     expect(state.running, 'nothing animates').toBe(0);
@@ -598,7 +606,7 @@ test.describe('reduced motion and the Motion off control', { tag: '@desktop' }, 
     expect(state.reading).toBe(1);
     expect(state.ruler).not.toMatch(/[1-9]\d*%/);
     expect(state.info?.tier).toBe('still');
-    expect(state.info?.points, 'the stage shows the finished readings at once').toBe(10_040);
+    expect(state.info?.points, 'the stage shows the finished readings at once').toBe(state.drawn + 40);
   }
 
   test('show the final state at once under prefers-reduced-motion', async ({ page }) => {

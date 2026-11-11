@@ -7,8 +7,9 @@ import { StageView } from '@/components/visuals/StageView';
 import { ViewTrigger } from '@/components/visuals/ViewTrigger';
 import { headlineFigures, type HeadlineFigure } from '@/content/proof';
 import { cn } from '@/lib/cn';
-import { readingView, visualStart } from '@/lib/readings';
+import { blockKey, readingView, visualStart } from '@/lib/readings';
 
+import { ReadingTile } from './ReadingTile';
 import { ReadingVisual } from './ReadingVisual';
 import styles from './Readings.module.css';
 
@@ -21,9 +22,9 @@ export const figureItems: readonly DetailItem[] = headlineFigures.map((figure) =
   title: figure.label,
   lead: (
     <figure className="grid gap-3">
-      <div className={styles.panelTile}>
+      <ReadingTile id={figure.id} place="panel" className={styles.panelTile}>
         <ReadingVisual id={figure.id} />
-      </div>
+      </ReadingTile>
       <figcaption className="type-meta max-w-none text-muted">{figure.key}</figcaption>
     </figure>
   ),
@@ -65,11 +66,11 @@ export function Readings({ className }: { className?: string }) {
               value={figure.id}
               panel={panelId(figure)}
               className={cn(
-                '@container group relative block h-full overflow-hidden rounded-lg border border-line shadow-card',
+                '@container group relative flex h-full flex-col overflow-hidden rounded-lg border border-line shadow-card',
                 'transition-[border-color] hover:border-accent/50 focus-visible:outline-offset-[-3px]',
               )}
             >
-              <span className={cn(styles.visual, 'border-b border-line')}>
+              <ReadingTile id={figure.id} place="card" className={cn(styles.visual, 'border-b border-line')}>
                 <StageView
                   view={readingView(figure.id)}
                   marks={figure.marks}
@@ -78,7 +79,8 @@ export function Readings({ className }: { className?: string }) {
                 >
                   <ReadingVisual id={figure.id} />
                 </StageView>
-              </span>
+                {figure.id === 'telemetry' ? <span className={cn(styles.key, 'type-meta text-muted')}>{blockKey}</span> : null}
+              </ReadingTile>
               <span className={styles.text}>
                 <Figure
                   value={figure.value}

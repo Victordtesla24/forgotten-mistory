@@ -23,7 +23,7 @@ looks, moves and is built — read it before changing anything visible.
   never reaches the initial JavaScript. `lib/motion.ts` holds the motion tokens (mirrored as CSS
   custom properties) and the Motion on/off switch. `lib/timeline.ts` is the one UTC time scale every
   timeline takes its positions from; `lib/entrance.ts` is the hero's entrance, written once for the CSS
-  and the stage; `lib/readings.ts` is what the three headline readings draw. Review hooks: `?gl=off|still|low|high`,
+  and the stage; `lib/readings.ts` is what the three headline readings draw, and `readingLayout` there is the one layout both the stage's views and the DOM drawing (`lib/place-reading.ts`) take, so the two coincide to the pixel. Review hooks: `?gl=off|still|low|high`,
   `?motion=off`, `data-*` on the canvas, `window.__stage`.
 - `lib/assistant/` — chat transport (Cloud Run origin, then the `/api/chat` rewrite) and
   local fallback answers. The backend lives in `functions/` and is deployed separately

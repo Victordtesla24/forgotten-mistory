@@ -3,9 +3,11 @@
  * unfurl from the nearest to the farthest, a band of light crosses them once, and the
  * drift eases to a stop; after that the field is still and the page draws nothing. A fine
  * pointer leans the camera, and carries a bloom, about 200 px across, that lights the ticks it
- * passes over; both settle again when it stops. The field is held back behind the headline
- * and the line under it, to 15% with a soft falloff of 48 px, so a tick never strikes through
- * a word. Everything is a function of the view's clock, so a frame at any moment can be
+ * passes over; both settle again when it stops. A touch on the hero answers once, in the same
+ * way, and eases back to rest. The field never shows behind the headline block (the eyebrow,
+ * the headline, the line and the actions) or a reading card: it is masked to nothing inside
+ * their rectangles, with a falloff of 24 px outside them, so lanes end before them rather than
+ * being cut off. Everything is a function of the view's clock, so a frame at any moment can be
  * reproduced.
  */
 
@@ -50,9 +52,14 @@ const LOOK_AT = new Vector3(-2, -3.4, -34);
 /** The wider-than-this aspect the field is composed for; narrower views crop it from the right. */
 const MIN_ASPECT = 1.5;
 
-/** What is left of the field under the type, and how far beyond the type it takes to come back, in CSS px. */
-const TYPE_FLOOR = 0.15;
-const TYPE_FALLOFF = 48;
+/** How far beyond the headline block and the reading cards the field takes to come back to full, in CSS px. */
+const MASK_FALLOFF = 24;
+
+/** The most rectangles the field is held back from: the headline block and the three readings. */
+const MASK_RECTS = 4;
+
+/** Where a rectangle that is not in use stands: nowhere near the view. */
+const NOWHERE = -1e6;
 
 /** The pointer's bloom: its spread (a standard deviation) in CSS px; the glow reaches about twice that. */
 const BLOOM_SPREAD = 95;
@@ -96,13 +103,17 @@ function createLanes(tier: LiveTier): RulerLane[] {
   });
 }
 
-/** GLSL both fragment shaders share: the type's mask and the pointer's bloom, in CSS pixels from the view's bottom left. */
+/** GLSL both fragment shaders share: the mask round the type and the cards, and the pointer's bloom, in device pixels from the view's bottom left. */
 const typeMask = /* glsl */ `
 float typeMask(vec2 frag) {
-  vec2 centre = 0.5 * (uMask.xy + uMask.zw);
-  vec2 half_ = 0.5 * (uMask.zw - uMask.xy);
-  vec2 beyond = max(abs(frag - centre) - half_, 0.0);
-  return mix(${TYPE_FLOOR.toFixed(2)}, 1.0, smoothstep(0.0, ${TYPE_FALLOFF.toFixed(1)}, length(beyond) / uPixel));
+  float held = 1.0;
+  for (int i = 0; i < ${MASK_RECTS}; i += 1) {
+    vec2 centre = 0.5 * (uMask[i].xy + uMask[i].zw);
+    vec2 half_ = 0.5 * (uMask[i].zw - uMask[i].xy);
+    vec2 beyond = max(abs(frag - centre) - half_, 0.0);
+    held = min(held, smoothstep(0.0, ${MASK_FALLOFF.toFixed(1)}, length(beyond) / uPixel));
+  }
+  return held;
 }
 `;
 
@@ -156,7 +167,7 @@ uniform float uQuiet;
 uniform vec2 uOrigin;
 uniform vec2 uSize;
 uniform float uPixel;
-uniform vec4 uMask;
+uniform vec4 uMask[${MASK_RECTS}];
 uniform vec3 uPointer;
 
 varying float vKind;
@@ -217,7 +228,7 @@ uniform float uTime;
 uniform vec2 uOrigin;
 uniform vec2 uSize;
 uniform float uPixel;
-uniform vec4 uMask;
+uniform vec4 uMask[${MASK_RECTS}];
 uniform vec3 uPointer;
 uniform vec2 uHorizon;
 
@@ -238,7 +249,7 @@ void main() {
   float edge = smoothstep(0.0, 0.16, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
   edge *= smoothstep(0.0, 0.05, uv.x) * (1.0 - smoothstep(0.95, 1.0, uv.x));
 
-  float alpha = (mix(0.07, 0.15, uDark) * (0.55 * band + 0.7 * bloom) + 0.22 * line) * enter * edge;
+  float alpha = (mix(0.07, 0.15, uDark) * (0.55 * band + 0.7 * bloom) + 0.22 * line * typeMask(gl_FragCoord.xy - uOrigin)) * enter * edge;
   // The pointer's own light, soft and wide, held back behind the type like the ticks.
   alpha += mix(0.13, 0.17, uDark) * pointerBloom(gl_FragCoord.xy - uOrigin) * typeMask(gl_FragCoord.xy - uOrigin);
   alpha *= 1.0 + grain(gl_FragCoord.xy) * 0.2;
@@ -249,6 +260,25 @@ void main() {
 
 function spot(): SpringState {
   return { value: 0, velocity: 0 };
+}
+
+/**
+ * The headline block as a reader sees it: the eyebrow, the headline and the line as far as their
+ * words reach, and the actions and links, as one rectangle. Null before the page has them.
+ */
+function headlineBlock(): DOMRect | null {
+  const section = document.getElementById('top');
+  if (!section) return null;
+  const parts: DOMRect[] = [];
+  for (const text of section.querySelectorAll('p, h1')) {
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    parts.push(range.getBoundingClientRect());
+  }
+  for (const control of section.querySelectorAll('a')) parts.push(control.getBoundingClientRect());
+  const left = Math.min(...parts.map((part) => part.left));
+  const top = Math.min(...parts.map((part) => part.top));
+  return new DOMRect(left, top, Math.max(...parts.map((part) => part.right)) - left, Math.max(...parts.map((part) => part.bottom)) - top);
 }
 
 /** Creates the hero field for `context.tier`. */
@@ -264,7 +294,7 @@ export function createHeroField(context: ViewContext): View {
     uOrigin: { value: [0, 0] as [number, number] },
     uSize: { value: [1, 1] as [number, number] },
     uPixel: { value: 1 },
-    uMask: { value: new Vector4(0, 0, 0, 0) },
+    uMask: { value: Array.from({ length: MASK_RECTS }, () => new Vector4(NOWHERE, NOWHERE, NOWHERE, NOWHERE)) },
     uPointer: { value: new Vector3(0.5, 0.5, 0) },
     uDark: palette.dark,
   };
@@ -329,19 +359,22 @@ export function createHeroField(context: ViewContext): View {
     lineMaterial.uniforms.uQuiet.value = width / height > 1.3 ? 1 : 0.55;
   }
 
-  /** Tells the shaders where the type is, so the field can stand back behind it. */
-  function holdBackType(client: FrameInput['client'], height: number, pixelRatio: number): void {
-    const type = document.getElementById('top')?.getBoundingClientRect();
-    if (!type) {
-      shared.uMask.value.set(0, 0, 0, 0);
-      return;
-    }
-    shared.uMask.value.set(
-      (type.left - client.left) * pixelRatio,
-      (height - (type.bottom - client.top)) * pixelRatio,
-      (type.right - client.left) * pixelRatio,
-      (height - (type.top - client.top)) * pixelRatio,
-    );
+  /** Tells the shaders where the headline block and the reading cards are, so the field can stand back from them. */
+  function holdBack(client: FrameInput['client'], height: number, pixelRatio: number): void {
+    const rects = [headlineBlock(), ...Array.from(document.querySelectorAll('#proof li'), (card) => card.getBoundingClientRect())];
+    shared.uMask.value.forEach((mask, index) => {
+      const rect = rects[index];
+      if (!rect) {
+        mask.set(NOWHERE, NOWHERE, NOWHERE, NOWHERE);
+        return;
+      }
+      mask.set(
+        (rect.left - client.left) * pixelRatio,
+        (height - (rect.bottom - client.top)) * pixelRatio,
+        (rect.right - client.left) * pixelRatio,
+        (height - (rect.top - client.top)) * pixelRatio,
+      );
+    });
   }
 
   function aim(): void {
@@ -372,12 +405,16 @@ export function createHeroField(context: ViewContext): View {
         const inside = u >= 0 && u <= 1 && v >= 0 && v <= 1;
         target = { x: (u - 0.5) * 2, y: (v - 0.5) * 2, inside, u, v };
       }
+      // A mouse drifts after the pointer; a touch is answered briskly and let go as briskly, so the
+      // field is back at rest, and drawing nothing again, well inside a second.
+      const follow = pointer.touch ? spring.snappy : spring.drift;
+      const fade = pointer.touch ? spring.snappy : spring.settle;
       const moving = [
-        stepSpring(lean.x, target.inside ? target.x : 0, spring.drift, seconds),
-        stepSpring(lean.y, target.inside ? target.y : 0, spring.drift, seconds),
-        stepSpring(light.x, target.inside ? target.u : light.x.value, spring.drift, seconds),
-        stepSpring(light.y, target.inside ? target.v : light.y.value, spring.drift, seconds),
-        stepSpring(light.strength, target.inside ? 1 : 0, spring.settle, seconds),
+        stepSpring(lean.x, target.inside ? target.x : 0, follow, seconds),
+        stepSpring(lean.y, target.inside ? target.y : 0, follow, seconds),
+        stepSpring(light.x, target.inside ? target.u : light.x.value, follow, seconds),
+        stepSpring(light.y, target.inside ? target.v : light.y.value, follow, seconds),
+        stepSpring(light.strength, target.inside ? 1 : 0, fade, seconds),
       ].some(Boolean);
 
       const clock = Math.min(time / 1000, SETTLE_S + 1);
@@ -386,7 +423,7 @@ export function createHeroField(context: ViewContext): View {
       shared.uSize.value = [viewport.width * pixelRatio, viewport.height * pixelRatio];
       shared.uPixel.value = pixelRatio;
       shared.uPointer.value.set(light.x.value, light.y.value, light.strength.value);
-      holdBackType(client, viewport.height, pixelRatio);
+      holdBack(client, viewport.height, pixelRatio);
       aim();
 
       return clock < SETTLE_S || moving;

@@ -8,25 +8,25 @@
 import {
   BufferAttribute,
   BufferGeometry,
+  DoubleSide,
   Mesh,
   Scene,
   ShaderMaterial,
   type WebGLRenderer,
 } from 'three';
 
-import { cells } from '../../readings';
+import { cells, readingLayout } from '../../readings';
 import { finish } from '../glsl/finish';
 import type { LiveTier } from '../tier';
-import { createBackdrop, createCamera, createReadingState, easeOut, readingGlsl, readingMask } from './reading';
+import { createBackdrop, createCamera, createReadingState, easeOut, readingGlsl, readingMask, tileOf } from './reading';
 import type { FrameInput, View, ViewContext } from './types';
-
-/** The cells sit this far in from the card's edges, in CSS pixels, so none is cut by the card's rounded corners. */
-const INSET = { x: 10, y: 6 };
 
 const vertex = /* glsl */ `
 attribute vec2 aCell;
 
-uniform vec2 uGrid;
+uniform vec2 uFrame;
+uniform vec2 uPitch;
+uniform vec2 uBox;
 
 varying vec2 vLocal;
 varying vec2 vUv;
@@ -35,17 +35,23 @@ varying vec2 vCell;
 ${readingGlsl}
 
 void main() {
+  // A cell's box, in whole device pixels from the tile's top left: where the layout puts it.
+  vec2 device = floor(uSize * uPixel + 0.5);
+  vec2 corner = uFrame + aCell * uPitch + position.xy * uBox;
   vLocal = position.xy;
   vCell = aCell;
-  vec2 inset = vec2(${INSET.x.toFixed(1)}, ${INSET.y.toFixed(1)}) / uSize;
-  vec2 uv = inset + (aCell + position.xy) / uGrid * (1.0 - 2.0 * inset);
-  vUv = uv;
-  gl_Position = vec4(uv * 2.0 - 1.0, 0.0, 1.0);
+  vUv = vec2(corner.x, device.y - corner.y) / device;
+  gl_Position = vec4(vUv * 2.0 - 1.0, 0.0, 1.0);
 }
 `;
 
 const fragment = /* glsl */ `
 uniform vec2 uGrid;
+uniform vec2 uBox;
+uniform float uOutline;
+uniform float uInset;
+uniform float uFloor;
+uniform float uRoom;
 uniform vec3 uProof;
 uniform vec3 uAccent;
 uniform vec3 uLineStrong;
@@ -63,24 +69,18 @@ ${readingGlsl}
 ${readingMask}
 ${finish}
 
-const float GAP = ${cells.gap.toFixed(2)};
-const float OUTLINE = ${cells.outline.toFixed(2)};
-const float PAD = ${cells.inset.toFixed(2)};
-const float FLOOR_PX = ${cells.floorPx.toFixed(1)};
-
-// Coverage of a shape whose edge is this many CSS pixels away (positive inside), one device pixel wide.
+// Coverage of a shape whose edge is this many device pixels away (positive inside), one device pixel wide.
 float cover(float distance) {
-  return clamp(distance * uPixel + 0.5, 0.0, 1.0);
+  return clamp(distance + 0.5, 0.0, 1.0);
 }
 
 void main() {
-  vec2 cellPx = (uSize - 2.0 * vec2(${INSET.x.toFixed(1)}, ${INSET.y.toFixed(1)})) / uGrid;
-  vec2 px = vLocal * cellPx;
-
-  // The cell's box, its 1 px outline and the box inside the outline, as the DOM layer draws them.
-  vec2 inside = min(px, cellPx - px) - GAP;
-  float box = cover(min(inside.x, inside.y));
-  float room = cover(min(inside.x, inside.y) - OUTLINE);
+  // Everything below is in device pixels from the cell's top left, as the DOM layer draws it.
+  vec2 px = vLocal * uBox;
+  vec2 inside = min(px, uBox - px);
+  float nearest = min(inside.x, inside.y);
+  float box = cover(nearest);
+  float room = cover(nearest - uOutline);
   float ring = box - room;
 
   float born = (vCell.x * uGrid.y + vCell.y) / uCount * uAppear;
@@ -92,10 +92,9 @@ void main() {
 
   // The fill stands on the floor of the box inside the outline, a pixel in from each side so the
   // fills of neighbouring cells never touch, and is never under two device pixels tall.
-  float floorAt = GAP + OUTLINE;
-  float roomHeight = cellPx.y - 2.0 * floorAt;
-  float fillHeight = min(max(level * roomHeight, FLOOR_PX / uPixel), roomHeight);
-  float fill = cover(inside.x - OUTLINE - PAD) * cover(px.y - floorAt) * cover(floorAt + fillHeight - px.y);
+  float fromBottom = uBox.y - px.y;
+  float fillHeight = min(max(level * uRoom, uFloor), uRoom);
+  float fill = cover(inside.x - uOutline - uInset) * cover(fromBottom - uOutline) * cover(uOutline + fillHeight - fromBottom);
 
   float flash = flashBand(vUv.x);
   float lit = fill * (0.86 + 0.1 * uLift);
@@ -145,6 +144,13 @@ export function createReadingEvidence(context: ViewContext): View {
     uniforms: {
       ...state.uniforms,
       uGrid: { value: [columns, rows] },
+      uFrame: { value: [0, 0] },
+      uPitch: { value: [1, 1] },
+      uBox: { value: [1, 1] },
+      uOutline: { value: 1 },
+      uInset: { value: 1 },
+      uFloor: { value: 2 },
+      uRoom: { value: 1 },
       uCount: { value: count },
       uRest: { value: rest },
       uAppear: { value: appearMs },
@@ -155,6 +161,8 @@ export function createReadingEvidence(context: ViewContext): View {
     premultipliedAlpha: true,
     depthTest: false,
     depthWrite: false,
+    // The cells are laid out from the tile's top left, so their quads wind the other way round.
+    side: DoubleSide,
   });
   const mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;
@@ -164,6 +172,7 @@ export function createReadingEvidence(context: ViewContext): View {
   scene.add(backdrop.mesh, mesh);
   const camera = createCamera();
   context.element.dataset.drawn = String(count);
+  const { uniforms } = material;
 
   return {
     pointer: false,
@@ -171,6 +180,14 @@ export function createReadingEvidence(context: ViewContext): View {
 
     update(input: FrameInput): boolean {
       const { t, busy } = state.step(input);
+      const layout = readingLayout('evidence', tileOf(input));
+      uniforms.uFrame.value = [layout.frame.x, layout.frame.y];
+      uniforms.uPitch.value = [layout.pitchX, layout.pitchY];
+      uniforms.uBox.value = [layout.boxX, layout.boxY];
+      uniforms.uOutline.value = layout.outline;
+      uniforms.uInset.value = layout.inset;
+      uniforms.uFloor.value = layout.floor;
+      uniforms.uRoom.value = layout.room;
       geometry.setDrawRange(0, Math.round(count * easeOut(t / appearMs)) * 6);
       return busy;
     },

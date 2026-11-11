@@ -70,7 +70,7 @@
     --row-visual: var(--hero-visual);
   }
 
-  .text {
+  .row .text {
     block-size: var(--reading-text);
     align-content: center;
   }
@@ -97,6 +97,8 @@
 .text {
   position: relative;
   display: grid;
+  flex: 1 1 auto;
+  align-content: start;
   row-gap: 0.25rem;
   padding: 0.75rem 1rem;
   background-color: var(--surface);
@@ -112,19 +114,28 @@ a:active > .text {
   position: relative;
   display: block;
   height: var(--visual);
-  container-type: inline-size;
+  container-type: size;
 }
 
-/* Telemetry: the lattice is wiped in from the left, then the line crosses it. */
-.points,
-.cells,
-.cohort {
+/*
+ * What a tile's DOM drawing is made of. `ReadingTile` measures the tile and sets the layout the
+ * stage's view draws as custom properties in CSS pixels (every one a whole number of device
+ * pixels), so the two layers coincide to the pixel. Each rule below reads them with a fallback:
+ * the fallbacks are what draws before the script has run and without it, small enough for any
+ * tile and countable at any screen.
+ */
+.points {
   position: absolute;
   inset: 0;
+  overflow: hidden;
 }
 
-.points {
-  overflow: hidden;
+/* With script, a drawing is shown once its layout is set, so it is never seen to move; without script it stands as the defaults draw it. */
+@media (scripting: enabled) {
+  .visual:not([data-laid]) :is(.points, .cells, .cohort, .key),
+  .panelTile:not([data-laid]) :is(.points, .cells, .cohort) {
+    visibility: hidden;
+  }
 }
 
 .wipe {
@@ -133,60 +144,75 @@ a:active > .text {
 }
 
 /*
- * 10,000 points in 100 blocks of 100: one element, masked into dots (a dot is half the pitch,
- * the pitch a whole number of CSS pixels that grows with the room) and into blocks (ten points,
- * then one pitch of gutter). The lattice is `--columns` by `--rows` pitches, centred, so nothing
- * is resampled and nothing moires. The pitch is the stage's own rule (`pointPitch` in
- * lib/readings.ts): as many whole pixels as fit the tile across (209 points a pitch each) and
- * down (54), so the two layers draw the same lattice. A dot is half a pitch in device pixels,
- * rounded down and never under one: at a whole screen ratio it lands on device pixels.
+ * Telemetry: one element, masked into marks a pitch apart and, in points mode, into blocks of
+ * ten points a side with a gutter of one pitch between them. Where the points cannot be told
+ * apart (a pitch under two device pixels: `readingLayout` in lib/readings.ts says so) each
+ * mark is a block of a hundred and there are no gutters: `--side` is then larger than the
+ * lattice, so the block mask covers all of it. The element is exactly the lattice's extent.
+ * Before the script has run a screen of two or more device pixels to a CSS pixel draws the points
+ * at a pitch of two device pixels and any other screen draws the 100 blocks.
  */
 .lattice {
-  --by-width: 1px;
-  --by-height: max(1px, round(down, calc(var(--visual) / var(--rows)), 1px));
-  --pitch: min(var(--by-width), var(--by-height));
-  --dot: max(1px, round(down, calc(var(--pitch) / 2), 1px));
+  --p: var(--pitch, 6px);
+  --m: var(--mark, 4px);
+  --s: var(--side, 1000);
+  --sx: 19;
+  --sy: 4;
   position: absolute;
-  inset: 0;
-  width: calc(var(--columns) * var(--pitch));
-  height: calc(var(--rows) * var(--pitch));
-  margin: auto;
+  left: var(--fx, 50%);
+  top: var(--fy, 6px);
+  translate: var(--tx, -50%) var(--ty, 0px);
+  width: var(--fw, calc(var(--sx) * var(--p) + var(--m)));
+  height: var(--fh, calc(var(--sy) * var(--p) + var(--m)));
   background-color: var(--proof);
   opacity: 0.86;
   mask-image:
-    repeating-linear-gradient(to right, #000 0 var(--dot), transparent var(--dot) var(--pitch)),
-    repeating-linear-gradient(to bottom, #000 0 var(--dot), transparent var(--dot) var(--pitch)),
+    repeating-linear-gradient(to right, #000 0 var(--m), transparent var(--m) var(--p)),
+    repeating-linear-gradient(to bottom, #000 0 var(--m), transparent var(--m) var(--p)),
     repeating-linear-gradient(
       to right,
-      #000 0 calc(var(--side) * var(--pitch)),
-      transparent calc(var(--side) * var(--pitch)) calc((var(--side) + 1) * var(--pitch))
+      #000 0 calc(var(--s) * var(--p)),
+      transparent calc(var(--s) * var(--p)) calc((var(--s) + 1) * var(--p))
     ),
     repeating-linear-gradient(
       to bottom,
-      #000 0 calc(var(--side) * var(--pitch)),
-      transparent calc(var(--side) * var(--pitch)) calc((var(--side) + 1) * var(--pitch))
+      #000 0 calc(var(--s) * var(--p)),
+      transparent calc(var(--s) * var(--p)) calc((var(--s) + 1) * var(--p))
     );
   mask-composite: intersect;
   -webkit-mask-composite: source-in;
 }
 
-/* A screen with two or more device pixels to a CSS pixel draws the dot as half a pitch exactly. */
 @media (min-resolution: 1.5dppx) {
   .lattice {
-    --dot: calc(var(--pitch) / 2);
+    --p: var(--pitch, 1px);
+    --m: var(--mark, 0.5px);
+    --s: var(--side, 10);
+    --sx: 208;
+    --sy: 53;
+    top: var(--fy, 50%);
+    translate: var(--tx, -50%) var(--ty, -50%);
   }
 }
 
-/* 209 points across at a pitch of 2 and 3 CSS pixels. */
-@container (min-width: 418px) {
-  .lattice {
-    --by-width: 2px;
-  }
+/* What one block stands for, under the blocks, where blocks are what is drawn. */
+.visual .key {
+  position: absolute;
+  inset: auto 0 0;
+  display: block;
+  padding-bottom: 1px;
+  text-align: center;
+  line-height: 1.125rem;
+  white-space: nowrap;
 }
 
-@container (min-width: 627px) {
-  .lattice {
-    --by-width: 3px;
+.visual[data-mode='points'] .key {
+  display: none;
+}
+
+@media (min-resolution: 1.5dppx) {
+  .visual:not([data-mode]) .key {
+    display: none;
   }
 }
 
@@ -240,18 +266,22 @@ a:active > .text {
 
 /*
  * Evidence: 40 by 5 cells, all 200 staying; each is full at first, then its fill falls to about 15
- * minutes' worth. A cell is a half pixel apart from its neighbours, drawn in a 1 px outline, and
- * its fill stands a pixel in from the outline at each side, so 200 separate fills read and never
- * run together into a line. The fill is never under two device pixels tall. The stage draws the
- * same cells from the same numbers (`cells` in lib/readings.ts).
+ * minutes' worth. A cell is drawn in a 1 device pixel outline, neighbouring cells touching until
+ * they are eight device pixels wide, and its fill stands a pixel in from the outline at each side,
+ * so 200 separate fills read and never run together into a line. The fill is never under two device
+ * pixels tall. The stage draws the same cells from the same layout (`readingLayout` in lib/readings.ts).
  */
 .cells {
   --floor: 2px;
-  inset: 6px 10px;
+  position: absolute;
+  left: var(--fx, 10px);
+  top: var(--fy, 6px);
+  width: var(--fw, calc(100cqw - 20px));
+  height: var(--fh, calc(100cqh - 12px));
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: repeat(var(--columns), 1fr);
-  grid-template-rows: repeat(var(--rows), 1fr);
+  grid-template-columns: repeat(var(--columns), var(--px, 1fr));
+  grid-template-rows: repeat(var(--rows), var(--py, 1fr));
 }
 
 @media (min-resolution: 1.5dppx) {
@@ -261,10 +291,13 @@ a:active > .text {
 }
 
 .cell {
-  --rested: max(calc(var(--rest) * 100%), var(--floor));
+  --rested: max(calc(var(--rest) * 100%), var(--fl, var(--floor)));
   position: relative;
-  margin: 0.5px;
-  border: 1px solid var(--line-strong);
+  box-sizing: border-box;
+  width: var(--bx, auto);
+  height: var(--by, auto);
+  margin: var(--cm, 0.5px);
+  border: var(--ol, 1px) solid var(--line-strong);
   border-radius: 1px;
   background-color: color-mix(in srgb, var(--proof) 5%, transparent);
 }
@@ -273,7 +306,7 @@ a:active > .text {
 .cell::after {
   content: '';
   position: absolute;
-  inset: 0 1px;
+  inset: 0 var(--in, 1px);
   background-color: var(--proof);
   clip-path: inset(calc(100% - var(--rested)) 0 0);
   opacity: 0.86;
@@ -310,33 +343,38 @@ a:active > .text {
   }
 }
 
-/* Portfolio: forty marks, one for each practitioner, two rows of twenty on one baseline. No squad is drawn. */
+/*
+ * Portfolio: forty marks, one for each practitioner, in five groups of eight (two rows of four),
+ * each group a mark's width and a gap apart from the next, on one baseline.
+ */
 .cohort {
-  --pitch: clamp(9px, calc(100cqw / 24), 22px);
-  inset: 0;
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(var(--columns), var(--pitch));
-  grid-template-rows: repeat(var(--rows), var(--pitch));
-  width: calc(var(--columns) * var(--pitch));
-  height: calc(var(--rows) * var(--pitch));
-  margin: auto;
-  place-items: center;
+  --p: var(--pitch, clamp(4px, calc((100cqw - 20px) / 24), 22px));
+  --m: var(--mark, calc(var(--p) * 0.62));
+  --group: var(--gp, calc((var(--across) + 1) * var(--p)));
+  position: absolute;
+  left: var(--fx, 50%);
+  top: var(--fy, 50%);
+  translate: var(--tx, -50%) var(--ty, -50%);
+  width: var(--fw, calc((var(--groups) - 1) * var(--group) + (var(--across) - 1) * var(--p) + var(--m)));
+  height: var(--fh, calc((var(--down) - 1) * var(--p) + var(--m)));
 }
 
 .cohort::after {
   content: '';
   position: absolute;
-  inset-inline: calc(var(--pitch) * -0.2);
-  top: calc(100% + var(--pitch) * 0.45);
+  inset-inline: calc(var(--over, calc(var(--p) * 0.2)) * -1);
+  top: calc(100% + var(--below, calc(var(--p) * 0.6)));
   height: 1px;
   background-color: var(--line-strong);
 }
 
 .mark {
-  width: calc(var(--pitch) * 0.62);
-  height: calc(var(--pitch) * 0.62);
-  border-radius: 2px;
+  position: absolute;
+  left: calc(var(--g) * var(--group) + var(--c) * var(--p));
+  top: calc(var(--r) * var(--p));
+  width: var(--m);
+  height: var(--m);
+  border-radius: min(2px, calc(var(--m) * 0.18));
   background-color: var(--proof);
   opacity: 0.86;
 }
@@ -368,11 +406,45 @@ a:active > .text {
   --vs: 120ms;
   --visual: 11rem;
   position: relative;
+  display: block;
   height: var(--visual);
-  container-type: inline-size;
+  container-type: size;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background-color: var(--bg);
+}
+
+/*
+ * Before the script has run, and without it, the enlarged telemetry is all 10,000 points at a
+ * pitch of two or three CSS pixels, and on a narrow screen it takes the tall arrangement, ten
+ * blocks across and ten down, so that it is countable at every width.
+ */
+.panelTile .lattice {
+  --p: var(--pitch, 2px);
+  --m: var(--mark, 1px);
+  --s: var(--side, 10);
+  --sx: 208;
+  --sy: 53;
+  top: var(--fy, 50%);
+  translate: var(--tx, -50%) var(--ty, -50%);
+}
+
+@container (min-width: 627px) {
+  .panelTile .lattice {
+    --p: var(--pitch, 3px);
+    --m: var(--mark, 2px);
+  }
+}
+
+@media (max-width: 639px) {
+  .panelTile {
+    --visual: 15rem;
+  }
+
+  .panelTile .lattice {
+    --sx: 108;
+    --sy: 108;
+  }
 }
 
 @media (forced-colors: active) {

@@ -7,16 +7,17 @@ import styles from './Readings.module.css';
 const vars = (values: Record<string, string | number>): CSSProperties => values as CSSProperties;
 
 /**
- * 10,000 points in 100 blocks of 100, wiped in as the stage fills it, and the 200 ms line that
- * crosses it. One element draws the lattice: a mask of dots and gutters laid on a whole number
- * of CSS pixels, so it is crisp and never moires.
+ * Telemetry, wiped in as the stage fills it, and the 200 ms line that crosses it. One element
+ * draws the lattice: a mask of marks laid on whole device pixels (and, in points mode, of the
+ * gutters between blocks of 100), so it is crisp and never moires. `ReadingTile` hands it the
+ * layout the stage draws; its defaults stand until then and without script.
  */
 function Telemetry() {
-  const { columns, rows, side, countMs, sweepMs } = points;
+  const { countMs, sweepMs } = points;
   return (
     <div className={styles.points} style={vars({ '--count-ms': `${countMs}ms`, '--sweep-ms': `${sweepMs}ms` })}>
       <div className={styles.wipe}>
-        <div className={styles.lattice} style={vars({ '--columns': columns, '--rows': rows, '--side': side })} />
+        <div className={styles.lattice} />
       </div>
       <span className={styles.sweep} />
     </div>
@@ -47,17 +48,29 @@ function Evidence() {
   );
 }
 
-/** 40 marks, one for each practitioner, as one cohort on one baseline. */
+/** 40 marks, one for each practitioner, in five groups on one baseline. */
 function Portfolio() {
-  const { count, columns, rows, countMs } = cohort;
+  const { count, groups, across, down, perGroup, countMs } = cohort;
   return (
     <div
       className={styles.cohort}
-      style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--columns': columns, '--rows': rows })}
+      style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--groups': groups, '--across': across, '--down': down })}
     >
-      {Array.from({ length: count }, (_, mark) => (
-        <span key={mark} className={styles.mark} style={vars({ '--n': mark })} />
-      ))}
+      {Array.from({ length: count }, (_, mark) => {
+        const inGroup = mark % perGroup;
+        return (
+          <span
+            key={mark}
+            className={styles.mark}
+            style={vars({
+              '--n': mark,
+              '--g': Math.floor(mark / perGroup),
+              '--c': Math.floor(inGroup / down),
+              '--r': inGroup % down,
+            })}
+          />
+        );
+      })}
     </div>
   );
 }

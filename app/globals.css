@@ -450,8 +450,9 @@
  * A detail panel grows out of the element that opened it. The page behind it cross-fades over
  * the panel's own duration, which is also what dims it, so it never drops to black. The shell is
  * the group itself: it carries the surface and the shadow and grows from the card to the dialog.
- * The card's snapshot is gone within the first 35% of the morph and the panel's comes in from
- * 35%, so the two never overlap, no text is ever seen twice and the shell is never left empty.
+ * The card's snapshot fades out over the first 24% of the morph and reaches 40% opacity at 14.4%;
+ * the panel's starts to come in at 14%, so the shell is never left empty, and the two overlap for
+ * only a tenth of the morph, long enough to cross and too short for anything to be read twice.
  */
 :root[data-vt='detail']::view-transition-old(root),
 :root[data-vt='detail']::view-transition-new(root) {
@@ -463,7 +464,7 @@
     opacity: 1;
   }
 
-  35%,
+  24%,
   to {
     opacity: 0;
   }
@@ -471,10 +472,11 @@
 
 @keyframes morph-in {
   from,
-  35% {
+  14% {
     opacity: 0;
   }
 
+  50%,
   to {
     opacity: 1;
   }

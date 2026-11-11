@@ -86,6 +86,35 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/*
+ * The link has no drawing of its own, so while it is the source of a panel's morph (`data-morph`,
+ * set by the panel just before the transition) it shows its bar: the fill and its name, lit as the
+ * current bar is. The snapshot the morph starts from is then the bar and never an empty box.
+ */
+.bar[data-morph]::before {
+  content: '';
+  position: absolute;
+  inset: var(--fill-inset);
+  border: 1px solid var(--accent);
+  border-radius: var(--fill-radius);
+  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+
+.bar[data-morph]::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0 0.375rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-inline: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text);
+}
+
 .fill {
   position: absolute;
   inset: var(--fill-inset);
@@ -103,19 +132,16 @@
     scale var(--duration-press) var(--ease);
 }
 
-.sliver[data-current='true'] .fill {
-  border-color: var(--accent);
-  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
-  color: var(--text);
-}
-
 /*
  * A bar answers its control wherever the control is: the link over it, or a chip below the scale.
- * ViewTrigger marks it `data-on` while the reader is on the control, and `key` for a keyboard focus.
+ * ViewTrigger sets `data-active` on the scale and marks the bar `data-on` ("key" for a keyboard
+ * focus): the bar then takes the current bar's style, so the control and what it stands for are
+ * one thing, with ?gl=off as much as with the stage.
  */
+.sliver[data-current='true'] .fill,
 .sliver[data-on] .fill {
   border-color: var(--accent);
-  background-color: color-mix(in srgb, var(--accent) 14%, var(--raised));
+  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
   color: var(--text);
 }
 
@@ -403,9 +429,10 @@
 }
 
 /*
- * Phones and touch screens: the role the reader is on in words, above the bars. It is the
- * current role until a chip is focused or pressed, then that chip's role. One line is
- * reserved from 640px, two below it, so the scale holds its height whichever role it names.
+ * Phones and touch screens: the role the reader is on in words, above the bars, on two lines
+ * that stay two whichever role it names: the employer and the title, then the dates. It is the
+ * current role until a chip is focused or pressed, then that chip's role. A title never breaks
+ * inside itself.
  */
 .caption {
   display: none;
@@ -424,38 +451,30 @@
 }
 
 .caption > span[data-current='true'] {
-  display: inline;
+  display: block;
 }
 
-.caption:has([data-on]) > span[data-current='true']:not([data-on]) {
+.scale[data-active] .caption > span[data-current='true']:not([data-on]) {
   display: none;
 }
 
 .caption > span[data-on] {
-  display: inline;
+  display: block;
 }
 
-/* One 44px chip for each role, all in one row to move along sideways, in the axis's order. */
+.role {
+  white-space: nowrap;
+}
+
+.dates {
+  display: block;
+}
+
+/* One 44px chip for each role, all in one row to move along sideways, in the axis's order (SnapRow). */
 .chips {
   display: none;
-  gap: 0.5rem;
   margin: 0.25rem 0 0;
-  padding: 0 var(--gutter);
-  overflow: auto hidden;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline: var(--gutter);
-  scrollbar-width: none;
   list-style: none;
-}
-
-.chips::-webkit-scrollbar {
-  display: none;
-}
-
-.chips > li {
-  flex: none;
-  scroll-snap-align: start;
 }
 
 @media (max-width: 639px), (pointer: coarse), (hover: none) {
@@ -465,12 +484,6 @@
 
   .chips {
     display: flex;
-  }
-}
-
-@media (min-width: 640px) {
-  .caption {
-    min-block-size: 1.125rem;
   }
 }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps, SyntheticEvent } from 'react';
 
 import { DetailTrigger } from '@/components/ui/DetailPanel';
 import { setActive } from '@/lib/gl/signal';
@@ -13,14 +13,17 @@ type ViewTriggerProps = ComponentProps<typeof DetailTrigger> & {
 };
 
 /**
- * Lights the DOM that stands for `value`: every `[data-mark]` of that value inside the control's
- * nearest `[data-marks]` scope gets `data-on` ("key" for a keyboard focus, "point" otherwise), so
- * a stylesheet can answer a control that is somewhere else in the layout (a chip lights its bar
- * and its caption) without the stage and without a render. The attribute is gone with the reader.
+ * Lights the DOM that stands for `value`: the control's nearest `[data-marks]` scope gets
+ * `data-active` (the value), and every `[data-mark]` of that value inside it gets `data-on`
+ * ("key" for a keyboard focus, "point" otherwise), so a stylesheet can answer a control that is
+ * somewhere else in the layout (a chip lights its bar and its caption) without the stage and
+ * without a render. Both are gone with the reader.
  */
 function mark(control: HTMLElement, value: string, on: 'key' | 'point' | null): void {
-  const scope = control.closest('[data-marks]');
+  const scope = control.closest<HTMLElement>('[data-marks]');
   if (!scope) return;
+  if (on === null) delete scope.dataset.active;
+  else scope.dataset.active = value;
   for (const element of scope.querySelectorAll<HTMLElement>(`[data-mark="${CSS.escape(value)}"]`)) {
     if (on === null) delete element.dataset.on;
     else element.dataset.on = on;
@@ -38,13 +41,16 @@ function resting(control: HTMLElement): 'key' | null {
  * element; the view only reads the signal, and the DOM it stands for is marked as above.
  */
 export function ViewTrigger({ view, value, ...rest }: ViewTriggerProps) {
+  // A press answers before the panel opens, on touch as much as with a mouse.
+  const on = (event: SyntheticEvent<HTMLElement>) => {
+    setActive(view, value);
+    mark(event.currentTarget, value, 'point');
+  };
   return (
     <DetailTrigger
       {...rest}
-      onPointerEnter={(event) => {
-        setActive(view, value);
-        mark(event.currentTarget, value, 'point');
-      }}
+      onPointerEnter={on}
+      onPointerDown={on}
       onPointerLeave={(event) => {
         setActive(view, null);
         mark(event.currentTarget, value, resting(event.currentTarget));

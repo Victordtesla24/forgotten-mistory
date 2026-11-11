@@ -9,7 +9,7 @@ import { Mesh, OrthographicCamera, PlaneGeometry, ShaderMaterial, type Color } f
 
 import { spring, stepSpring, type SpringState } from '../../motion';
 import { entrance } from '../../entrance';
-import { cardStart, flashMs, readingView, visualStart, VISUAL_MS, type ReadingId } from '../../readings';
+import { cardStart, flashMs, readingView, visualStart, VISUAL_MS, type ReadingId, type Tile } from '../../readings';
 import { finish } from '../glsl/finish';
 import { palette, type Uniform } from '../palette';
 import { readSignal } from '../signal';
@@ -36,6 +36,13 @@ interface ReadingState {
   /** Advances to this frame. `t` is milliseconds since the reading's visual began; `busy` is true while it needs another frame. */
   step(input: FrameInput): { t: number; flash: number; busy: boolean };
 }
+
+/** The tile a view is drawn into this frame, as the layout function takes it. */
+export const tileOf = (input: FrameInput): Tile => ({
+  width: input.viewport.width,
+  height: input.viewport.height,
+  ratio: input.pixelRatio,
+});
 
 /** Clamps to 0..1. */
 export const unit = (value: number): number => Math.min(Math.max(value, 0), 1);

@@ -2,11 +2,14 @@ import type { CSSProperties } from 'react';
 
 import { StageView } from '@/components/visuals/StageView';
 import { ViewTrigger } from '@/components/visuals/ViewTrigger';
+import { cn } from '@/lib/cn';
 import { CAREER_VIEW } from '@/lib/gl/ids';
 import { careerBars, fitStep, FIRST_YEAR, LAST_YEAR, outsideLabels } from '@/lib/timeline';
 
 import { numerals, percent, tickPaths, UNITS } from './axis';
-import { BarList } from './BarList';
+import { SnapRow } from '@/components/ui/SnapRow';
+
+import { BarKeys } from './BarKeys';
 import styles from './CareerTrack.module.css';
 
 /**
@@ -34,8 +37,9 @@ export function CareerTrack() {
         {careerBars.map((bar) => (
           <span key={bar.id} data-mark={bar.id} data-current={bar.current ? 'true' : undefined}>
             <span className="text-text">{bar.label}</span>
-            <span> · {bar.shortTitle} · </span>
-            <span className={bar.current ? 'text-accent' : undefined}>{bar.dates}</span>
+            <span> · </span>
+            <span className={styles.role}>{bar.shortTitle}</span>
+            <span className={cn(styles.dates, bar.current ? 'text-accent' : undefined)}>{bar.dates}</span>
           </span>
         ))}
       </p>
@@ -73,37 +77,40 @@ export function CareerTrack() {
             );
           })}
         </ol>
-        <BarList
-          aria-label={`Career, ${FIRST_YEAR} to ${LAST_YEAR}, oldest role first`}
-          className={styles.bars}
-          data-bars=""
-        >
-          {careerBars.map((bar) => (
-            <li
-              key={bar.id}
-              className={styles.item}
-              data-bar={bar.id}
-              data-side={bar.start > 0.5 ? 'end' : 'start'}
-              style={{ left: percent(bar.start), width: percent(bar.width) } as CSSProperties}
-            >
-              <ViewTrigger
-                view={CAREER_VIEW}
-                value={bar.id}
-                panel={`career-${bar.id}`}
-                aria-label={bar.name}
-                data-role={bar.id}
-                data-months={bar.months}
-                data-current={bar.current ? 'true' : undefined}
-                className={styles.bar}
-              />
-              <span aria-hidden="true" className={styles.tip}>
-                <span className="text-muted">{bar.employer}</span>
-                <span className="font-medium text-text">{bar.shortTitle}</span>
-                <span className={bar.current ? 'text-accent' : 'text-muted'}>{bar.dates}</span>
-              </span>
-            </li>
-          ))}
-        </BarList>
+        <BarKeys>
+          <ol
+            aria-label={`Career, ${FIRST_YEAR} to ${LAST_YEAR}, oldest role first`}
+            className={styles.bars}
+            data-bars=""
+          >
+            {careerBars.map((bar) => (
+              <li
+                key={bar.id}
+                className={styles.item}
+                data-bar={bar.id}
+                data-side={bar.start > 0.5 ? 'end' : 'start'}
+                style={{ left: percent(bar.start), width: percent(bar.width) } as CSSProperties}
+              >
+                <ViewTrigger
+                  view={CAREER_VIEW}
+                  value={bar.id}
+                  panel={`career-${bar.id}`}
+                  aria-label={bar.name}
+                  data-role={bar.id}
+                  data-label={bar.label}
+                  data-months={bar.months}
+                  data-current={bar.current ? 'true' : undefined}
+                  className={styles.bar}
+                />
+                <span aria-hidden="true" className={styles.tip}>
+                  <span className="text-muted">{bar.employer}</span>
+                  <span className="font-medium text-text">{bar.shortTitle}</span>
+                  <span className={bar.current ? 'text-accent' : 'text-muted'}>{bar.dates}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </BarKeys>
 
         <div aria-hidden="true" data-ruler="" className={styles.ruler}>
           <svg viewBox={`0 0 ${UNITS} 16`} preserveAspectRatio="none" focusable="false" className={styles.ticks}>
@@ -121,23 +128,25 @@ export function CareerTrack() {
         </div>
       </div>
 
-      <BarList aria-label="Career roles" className={styles.chips} data-chips="">
-        {careerBars.map((bar) => (
-          <li key={bar.id}>
-            <ViewTrigger
-              view={CAREER_VIEW}
-              value={bar.id}
-              panel={`career-${bar.id}`}
-              aria-label={bar.name}
-              data-role={bar.id}
-              data-current={bar.current ? 'true' : undefined}
-              className={styles.chip}
-            >
-              {bar.label}
-            </ViewTrigger>
-          </li>
-        ))}
-      </BarList>
+      <BarKeys>
+        <SnapRow as="ol" strip aria-label="Career roles" className={styles.chips} data-chips="">
+          {careerBars.map((bar) => (
+            <li key={bar.id}>
+              <ViewTrigger
+                view={CAREER_VIEW}
+                value={bar.id}
+                panel={`career-${bar.id}`}
+                aria-label={bar.name}
+                data-role={bar.id}
+                data-current={bar.current ? 'true' : undefined}
+                className={styles.chip}
+              >
+                {bar.label}
+              </ViewTrigger>
+            </li>
+          ))}
+        </SnapRow>
+      </BarKeys>
     </div>
   );
 }
