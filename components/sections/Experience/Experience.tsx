@@ -6,6 +6,7 @@ import { laneLayouts } from '@/lib/timeline-lanes';
 import { Axis } from './Axis';
 import { RoleBody } from './RoleBody';
 import { RoleLead } from './RoleLead';
+import { RoleVisual } from './RoleVisual';
 import { roleViews } from './roles';
 import { Timeline } from './Timeline';
 
@@ -30,6 +31,9 @@ const items: readonly DetailItem[] = roleViews.flatMap((view) => {
   ];
 });
 
+/** The drawn figure of each role, for the card that shows it: drawn here, on the server, so the page's script does not carry the drawings. */
+const visuals = Object.fromEntries(roleViews.map((view) => [view.id, <RoleVisual key={view.id} role={view} place="card" />]));
+
 /**
  * The career as the page's one timeline: eight roles on an axis from 2010 to now that runs from
  * edge to edge, the bars its tabs, the selected role in a card joined to its bar. The heading is
@@ -45,7 +49,7 @@ export function Experience() {
         </h2>
       </Container>
       <DetailSet label="Roles" items={items}>
-        <Timeline roles={roleViews} lanes={laneLayouts.map((layout) => layout.lanes)}>
+        <Timeline roles={roleViews} lanes={laneLayouts.map((layout) => layout.lanes)} visuals={visuals}>
           <Axis />
         </Timeline>
       </DetailSet>

@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 
 import { roles, yearsOf } from '@/content/experience';
+import { headlineFigures } from '@/content/proof';
+import { keyOf } from '@/lib/readings';
 import { careerBars, fitStep, labelWidth } from '@/lib/timeline';
 import { FIT_INSET, laneLayouts, LANE_STARTS } from '@/lib/timeline-lanes';
 
@@ -159,7 +161,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     const checks = async (id: string) => {
       await expect(page.locator(`${TAB}[data-role="${id}"]`)).toHaveAttribute('aria-selected', 'true');
       await expect(page.locator(`${TAB}[data-role="${id}"]`)).toBeFocused();
-      // The connector and the playhead glide to the new bar; the test reads them once they have arrived.
+      // The card, the connector and the playhead glide to the new bar; the test reads them once they have arrived.
       await expect(async () => {
         const place = await page.evaluate((role) => {
           const bar = document.querySelector(`#experience [data-bar="${role}"]`) as HTMLElement;
@@ -167,18 +169,22 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
             const { left, width } = element.getBoundingClientRect();
             return left + width / 2;
           };
-          const connector = document.querySelector('#experience [data-connector]') as HTMLElement;
           const card = (document.querySelector('#experience [role="tabpanel"]') as HTMLElement).getBoundingClientRect();
-          const line = connector.getBoundingClientRect();
+          const line = (document.querySelector('#experience [data-connector]') as HTMLElement).getBoundingClientRect();
+          const target = bar.getBoundingClientRect();
+          const middle = target.left + target.width / 2;
+          // The connector's lower end is the end of its box nearer the bar's middle: a bent connector is wide, and leaves the card by its side.
+          const lower = Math.abs(line.left + 0.5 - middle) < Math.abs(line.right - 0.5 - middle) ? line.left + 0.5 : line.right - 0.5;
+          const apart = (a: number, b: number, c: number, d: number) => Math.max(0, Math.max(a, c) - Math.min(b, d));
           return {
-            bar: centre(bar),
-            connector: centre(connector),
+            bar: middle,
+            lower,
             playhead: centre(document.querySelector('#experience [data-playhead]') as Element),
-            gapToCard: Math.abs(line.top - card.bottom),
-            gapToBar: Math.abs(line.bottom - bar.getBoundingClientRect().top),
+            gapToCard: Math.hypot(apart(line.left, line.right, card.left, card.right), apart(line.top, line.bottom, card.top, card.bottom)),
+            gapToBar: Math.abs(line.bottom - target.top),
           };
         }, id);
-        expect(Math.abs(place.connector - place.bar), `${id}: the connector lands on the bar's centre`).toBeLessThanOrEqual(2);
+        expect(Math.abs(place.lower - place.bar), `${id}: the connector lands on the bar's centre`).toBeLessThanOrEqual(2);
         expect(Math.abs(place.playhead - place.bar), `${id}: the playhead rests on the bar`).toBeLessThanOrEqual(2);
         expect(place.gapToCard, `${id}: the connector starts at the card`).toBeLessThanOrEqual(2.5);
         expect(place.gapToBar, `${id}: the connector ends at the bar`).toBeLessThanOrEqual(2.5);
@@ -197,11 +203,12 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     await checks('ato');
   });
 
-  test('the card shows each role as the content states it, with its figure drawn and keyed where the content has one', async ({ page }) => {
+  test('the card shows each role as the content states it, with a drawn figure, and is the same height for every role', async ({ page }) => {
     await openAt(page, '/?gl=off', 1440);
     await settled(page);
     await page.locator(`${TAB}[data-role="myob"]`).focus();
     await page.keyboard.press('Home');
+    const heights: number[] = [];
     for (const bar of careerBars) {
       const role = roles.find((entry) => entry.id === bar.id);
       await expect(page.locator(`${TAB}[data-role="${bar.id}"]`)).toHaveAttribute('aria-selected', 'true');
@@ -211,28 +218,211 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
       await expect(card).toContainText(yearsOf(role?.span ?? { start: 0, end: 0 }));
       expect(await card.innerText()).toMatch(/\b(\d+ years?|\d+ months?)\b/);
       await expect(card.getByRole('button', { name: 'Open role' })).toBeVisible();
+      await expect(card.locator('[data-figure] svg'), `${bar.id} draws a figure`).toHaveCount(1);
       if (role?.headline) {
         await expect(card).toContainText(role.headline.value);
         await expect(card).toContainText(role.headline.label);
-        await expect(card.locator('[data-figure] svg')).toHaveCount(1);
-      } else {
-        await expect(card.locator('[data-figure] svg')).toHaveCount(0);
-        await expect(card).toContainText(role?.summary ?? '');
-      }
+      } else await expect(card).toContainText(role?.outcome ?? '');
+      const lines = await card.locator('p').allInnerTexts();
+      expect(lines.some((line) => line.trim() === role?.shortTitle), `${bar.id}: no line repeats the title`).toBe(false);
+      expect((await card.innerText()).split(/\s+/).filter((word) => /[\p{L}\p{N}]/u.test(word)).length, `${bar.id}: words in the card`).toBeLessThanOrEqual(25);
+      const figure = await card.locator('[data-figure] svg').boundingBox();
+      expect(Math.min(figure?.width ?? 0, figure?.height ?? 0), `${bar.id}: the drawing is at least 96 px on its short side`).toBeGreaterThanOrEqual(96);
+      heights.push((await card.boundingBox())?.height ?? 0);
       await page.keyboard.press('ArrowRight');
     }
+    expect(Math.max(...heights) - Math.min(...heights), 'one card height for every role').toBeLessThanOrEqual(2);
   });
 
-  test('a figure is a field of 100 marks that draws what the number states', async ({ page }) => {
+  test('a figure is drawn with the hero’s own reading where there is one: its layout, its key and its marks', async ({ page }) => {
     await openAt(page, '/?gl=off', 1440);
     await settled(page);
-    const marks = async (id: string) => {
+    const drawn = async (id: string) => {
       await page.locator(`${TAB}[data-role="${id}"]`).click();
-      return page.locator(`${PANEL} [data-figure] svg path`).evaluateAll((paths) => paths.map((path) => ((path.getAttribute('d') ?? '').match(/M/g) ?? []).length));
+      await expect(page.locator(`${TAB}[data-role="${id}"]`)).toHaveAttribute('aria-selected', 'true');
+      return page.locator(`${PANEL} [data-figure]`).evaluate((figure) => ({
+        kind: (figure as HTMLElement).dataset.figure,
+        key: figure.querySelector('p')?.textContent,
+        solid: Array.from(figure.querySelectorAll('rect[fill*="-solid"]')).length,
+        cells: Array.from(figure.querySelectorAll('pattern')).length,
+      }));
     };
-    expect(await marks('ato'), '≈92%: 92 solid marks and 8 outlined').toEqual([92, 8]);
-    expect(await marks('independent'), '−38%: 38 solid marks and 62 outlined').toEqual([38, 62]);
-    expect(await marks('anz'), '10,000+ devices at 100 to a mark: 100 solid marks').toEqual([100, 0]);
+    const evidence = await drawn('ato');
+    expect(evidence.kind).toBe('evidence');
+    expect(evidence.key, 'the hero reading’s own key').toBe(keyOf('evidence'));
+    const telemetry = await drawn('anz');
+    expect(telemetry.kind).toBe('telemetry');
+    expect(telemetry.key, 'the hero reading’s own key').toBe(keyOf('telemetry'));
+    expect(headlineFigures.map((figure) => figure.key)).toContain(evidence.key);
+    expect((await drawn('independent')).kind, '−38% is a share of a hundred cells').toBe('share');
+    for (const id of ['myob', 'infocentric', 'telstra', 'microsoft', 'nab']) expect((await drawn(id)).kind, `${id}: its months in the calendar`).toBe('months');
+  });
+
+  for (const width of [1024, 1280, 1440, 1920]) {
+    test(`from 1024 px the bars are at least 56 px tall, a bar over 220 px names its role too, and every year is numbered, at ${width} px`, async ({ page }) => {
+      await openAt(page, '/?gl=off', width, 900);
+      const seen = await page.evaluate((selector) => {
+        const bars = Array.from(document.querySelectorAll<HTMLElement>(selector)).map((bar) => {
+          const box = bar.getBoundingClientRect();
+          const sub = bar.querySelector<HTMLElement>('[class*="_sub__"]');
+          return { id: bar.dataset.bar ?? '', width: box.width, height: box.height, sub: sub && getComputedStyle(sub).display !== 'none' ? sub.textContent : null };
+        });
+        const years = Array.from(document.querySelectorAll<HTMLElement>('#experience [data-year]'))
+          .filter((year) => getComputedStyle(year).display !== 'none')
+          .map((year) => ({ text: year.textContent ?? '', ...year.getBoundingClientRect().toJSON() as { left: number; right: number } }));
+        return { bars, years };
+      }, BARS);
+      for (const bar of seen.bars) {
+        expect(bar.height, `${bar.id} height`).toBeGreaterThanOrEqual(56);
+        const role = roles.find((entry) => entry.id === bar.id);
+        const title = role?.title.split(',')[0] ?? '';
+        if (bar.width > 220) expect(bar.sub, `${bar.id} shows its title`).toBe(title.length <= 26 ? title : role?.shortTitle);
+        else expect(bar.sub, `${bar.id} is too narrow for a second line`).toBeNull();
+      }
+      expect(seen.years.map((year) => year.text)).toEqual(Array.from({ length: 17 }, (_, index) => String(2010 + index)));
+      for (const [index, year] of seen.years.entries()) {
+        const before = seen.years[index - 1];
+        if (before) expect(before.right + 4, `${before.text} and ${year.text} do not overlap`).toBeLessThanOrEqual(year.left);
+      }
+    });
+  }
+
+  for (const width of [1280, 1440]) {
+    test(`a short bar is named by a label on one baseline, centred on a leader inside its own bar, clear of the graticule, at ${width} px`, async ({ page }) => {
+      await openAt(page, '/?gl=off', width, width === 1280 ? 720 : 900);
+      const labelled = await page.evaluate((selector) => {
+        const grid = document.querySelector('#experience [data-grid]')?.getBoundingClientRect();
+        return Array.from(document.querySelectorAll<HTMLElement>(selector)).map((bar) => {
+          const box = bar.getBoundingClientRect();
+          const out = bar.querySelector<HTMLElement>('[data-out]');
+          const inside = Array.from(bar.querySelectorAll<HTMLElement>('[class*="_label__"]')).some((label) => getComputedStyle(label).display !== 'none');
+          if (!out || getComputedStyle(out).display === 'none') return { id: bar.dataset.bar ?? '', inside, leader: 0, centre: 0, top: 0, inBar: false, clear: true };
+          const text = out.querySelector<HTMLElement>('[class*="_text__"]') as HTMLElement;
+          const range = document.createRange();
+          range.selectNodeContents(text);
+          const glyphs = range.getBoundingClientRect();
+          const leader = out.getBoundingClientRect().left;
+          return {
+            id: bar.dataset.bar ?? '',
+            inside,
+            leader,
+            centre: (glyphs.left + glyphs.right) / 2,
+            top: glyphs.top,
+            inBar: leader >= box.left && leader <= box.right,
+            clear: (grid?.bottom ?? 0) <= glyphs.top,
+          };
+        });
+      }, BARS);
+      const outside = labelled.filter((bar) => !bar.inside);
+      expect(outside.map((bar) => bar.id), 'the bars that cannot hold their names').toEqual(width === 1280 ? ['telstra', 'microsoft', 'independent'] : ['microsoft', 'independent']);
+      for (const bar of outside) {
+        expect(Math.abs(bar.centre - bar.leader), `${bar.id}: the label is centred on its leader`).toBeLessThanOrEqual(3);
+        expect(bar.inBar, `${bar.id}: the leader lands inside its bar`).toBe(true);
+        expect(bar.clear, `${bar.id}: the graticule stops above the lane of names`).toBe(true);
+      }
+      expect(new Set(outside.map((bar) => Math.round(bar.top))).size, 'one baseline for every label in the lane').toBe(1);
+      expect(labelled.filter((bar) => bar.inside).length + outside.length).toBe(8);
+    });
+  }
+
+  for (const width of [1280, 1366, 1440, 1920]) {
+    test(`the playhead is never drawn through a name, at rest on any role or under the pointer, at ${width} px`, async ({ page }) => {
+      await openAt(page, '/?gl=off', width, 900);
+      await settled(page);
+      const crossings = () =>
+        page.evaluate(() => {
+          const head = (document.querySelector('#experience [data-playhead]') as HTMLElement).getBoundingClientRect();
+          const found: string[] = [];
+          for (const name of document.querySelectorAll<HTMLElement>('#experience [class*="_label__"], #experience [class*="_text__"], #experience [class*="_sub__"]')) {
+            if (getComputedStyle(name).display === 'none') continue;
+            const range = document.createRange();
+            range.selectNodeContents(name);
+            const glyphs = range.getBoundingClientRect();
+            const touches = !(head.right < glyphs.left - 4 || head.left > glyphs.right + 4 || head.bottom < glyphs.top - 4 || head.top > glyphs.bottom + 4);
+            if (touches) found.push(name.textContent ?? '');
+          }
+          return found;
+        });
+      for (const id of ORDER) {
+        await page.locator(`${TAB}[data-role="${id}"]`).click();
+        await page.mouse.move(2, 2);
+        await page.waitForTimeout(400);
+        expect(await crossings(), `${id} selected: the names the playhead touches`).toEqual([]);
+      }
+      for (const id of ORDER) {
+        const box = await page.locator(`${BARS}[data-bar="${id}"]`).boundingBox();
+        await page.mouse.move((box?.x ?? 0) + (box?.width ?? 0) / 2, (box?.y ?? 0) + (box?.height ?? 0) / 2);
+        await page.waitForTimeout(150);
+        expect(await crossings(), `${id} under the pointer: the names the playhead touches`).toEqual([]);
+      }
+    });
+  }
+
+  for (const width of [1280, 1440, 1920]) {
+    test(`the card stands inside the column of the content, at least 480 px wide, for every role, at ${width} px`, async ({ page }) => {
+      await openAt(page, '/?gl=off', width, 900);
+      await settled(page);
+      for (const id of ORDER) {
+        await page.locator(`${TAB}[data-role="${id}"]`).click();
+        await page.mouse.move(2, 2);
+        await page.waitForTimeout(450);
+        const found = await page.evaluate(() => {
+          const card = (document.querySelector('#experience [role="tabpanel"]') as HTMLElement).getBoundingClientRect();
+          const header = document.querySelector('#experience header') as HTMLElement;
+          const box = header.getBoundingClientRect();
+          const style = getComputedStyle(header);
+          return {
+            left: card.left,
+            right: card.right,
+            width: card.width,
+            column: { left: box.left + Number.parseFloat(style.paddingLeft), right: box.right - Number.parseFloat(style.paddingRight) },
+          };
+        });
+        expect(found.width, `${id}: card width`).toBeGreaterThanOrEqual(480);
+        expect(found.left, `${id}: card left edge`).toBeGreaterThanOrEqual(found.column.left - 0.5);
+        expect(found.right, `${id}: card right edge`).toBeLessThanOrEqual(found.column.right + 0.5);
+      }
+    });
+  }
+
+  test('the “now” edge is a cap as tall as the bar, from its top to the baseline, a hair in from the edge of the screen', async ({ page }) => {
+    await openAt(page, '/?gl=off', 1440);
+    const found = await page.evaluate(() => {
+      const cap = (document.querySelector('#experience [data-now]') as HTMLElement).getBoundingClientRect();
+      const bar = (document.querySelector('#experience [data-bar="ato"]') as HTMLElement).getBoundingClientRect();
+      const ruler = (document.querySelector('#experience [data-ruler]') as HTMLElement).getBoundingClientRect();
+      return { top: cap.top - bar.top, bottom: cap.bottom - ruler.top, right: document.documentElement.clientWidth - cap.right };
+    });
+    expect(Math.abs(found.top), 'the cap starts at the top of the bar').toBeLessThanOrEqual(1);
+    expect(Math.abs(found.bottom), 'the cap ends on the baseline, never under it').toBeLessThanOrEqual(1);
+    expect(found.right, 'the cap does not touch the edge of the screen').toBeGreaterThanOrEqual(2);
+  });
+
+  test('the timeline is the one scale on the page: no ticks or numerals in a panel, in the dividers or in the no-script list', async ({ browser, page }) => {
+    await openAt(page, '/?gl=off#role-anz-detail', 1440);
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('[data-ruler], [data-year], svg line')).toHaveCount(0);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#work svg line, #capabilities svg line, #about svg line, #contact svg line')).toHaveCount(0);
+    const script = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
+    const plain = await script.newPage();
+    await plain.goto('/');
+    await expect(plain.locator('[data-role-item] [data-ruler], [data-role-item] [data-year], [data-role-item] svg line')).toHaveCount(0);
+    await script.close();
+  });
+
+  test('the document’s own ground is the page’s, so a view transition held at its first frame never comes up white', async ({ page }) => {
+    await openAt(page, '/?gl=off', 1440);
+    const same = await page.evaluate(() => {
+      const probe = document.createElement('i');
+      probe.style.backgroundColor = 'var(--bg)';
+      document.body.append(probe);
+      const token = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      return getComputedStyle(document.documentElement).backgroundColor === token;
+    });
+    expect(same).toBe(true);
   });
 
   test('a mouse moves the playhead and a click selects; leaving puts the playhead back on the selected bar', async ({ page }) => {
@@ -321,15 +511,15 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     await page.waitForFunction(() => document.querySelector('[data-experience]')?.getAttribute('data-phase') === 'armed');
     const watch = page.evaluate(
       () =>
-        new Promise<{ starts: { id: string; start: number }[]; end: number; phases: string[] }>((resolve) => {
+        new Promise<{ starts: { id: string; start: number }[]; end: number; barsEnd: number; cardStart: number; phases: string[] }>((resolve) => {
           const root = document.querySelector('[data-experience]') as HTMLElement;
           const phases = [root.dataset.phase ?? ''];
-          let seen: { starts: { id: string; start: number }[]; end: number } | null = null;
+          let seen: { starts: { id: string; start: number }[]; end: number; barsEnd: number; cardStart: number } | null = null;
           const observer = new MutationObserver(() => {
             const phase = root.dataset.phase ?? '';
             if (phases.at(-1) !== phase) phases.push(phase);
             if (phase === 'play') {
-              const animations = document.getAnimations().filter((animation) => (animation.effect as KeyframeEffect).target?.closest('[data-experience]'));
+              const animations = document.getAnimations().filter((animation) => animation instanceof CSSAnimation && (animation.effect as KeyframeEffect).target?.closest('[data-experience]'));
               const starts = animations
                 .filter((animation) => (animation as CSSAnimation).animationName.includes('_grow_') && (animation.effect as KeyframeEffect).target?.className.includes('_fill__'))
                 .map((animation) => ({
@@ -337,7 +527,15 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
                   start: Number(animation.effect?.getComputedTiming().delay),
                 }));
               const end = Math.max(...animations.map((animation) => Number(animation.effect?.getComputedTiming().endTime)));
-              seen = { starts, end };
+              const barsEnd = Math.max(
+                ...animations
+                  .filter((animation) => (animation as CSSAnimation).animationName.includes('_grow_'))
+                  .map((animation) => Number(animation.effect?.getComputedTiming().endTime)),
+              );
+              const cardStart = Number(
+                animations.find((animation) => (animation.effect as KeyframeEffect).target?.className.includes('_card__'))?.effect?.getComputedTiming().delay,
+              );
+              seen = { starts, end, barsEnd, cardStart };
             }
             // The page's own timer ends the entrance; the test waits for it and does not guess how long it takes under load.
             if (phase === 'done' && seen) resolve({ ...seen, phases });
@@ -353,6 +551,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     expect(seen.end, 'the last animation ends inside 900 ms').toBeLessThanOrEqual(900);
     expect(seen.starts.map((entry) => entry.id), 'bars draw in date order').toEqual(ORDER);
     expect(seen.starts.map((entry) => entry.start)).toEqual([...seen.starts.map((entry) => entry.start)].sort((a, b) => a - b));
+    expect(seen.cardStart, 'the card arrives after the last bar is drawn').toBeGreaterThanOrEqual(seen.barsEnd);
     expect(seen.phases, 'armed, played, done: once').toEqual(['armed', 'play', 'done']);
     await expect(page.locator('[data-experience]')).toHaveAttribute('data-phase', 'done');
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
@@ -416,7 +615,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     await page.goto('/');
     await expect(page.locator(BARS)).toHaveCount(8);
     for (const role of roles) await expect(page.locator(`${BARS}[data-bar="${role.id}"]`)).toContainText(role.short);
-    await expect(page.locator(`${SECTION} [data-ruler] [data-year]`)).toHaveCount(9);
+    await expect(page.locator(`${SECTION} [data-ruler] [data-year]`)).toHaveCount(17);
     await expect(page.locator(`${SECTION} [data-role-item]`)).toHaveCount(8);
     for (const role of roles) {
       const item = page.locator(`${SECTION} [data-role-item="${role.id}"]`);

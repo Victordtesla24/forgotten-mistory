@@ -22,7 +22,7 @@ import { reducedMotion } from '@/lib/motion';
 
 import styles from './Experience.module.css';
 import { percent } from './percent';
-import { RoleFigure } from './RoleFigure';
+import { RoleOutcome } from './RoleOutcome';
 import type { RoleView } from './roles';
 
 /** The bars are the controls where there is a fine pointer and room: the same condition the stylesheet lays the tabs on the axis under. */
@@ -40,8 +40,15 @@ interface TimelineProps {
   roles: readonly RoleView[];
   /** How many lanes of names each class of width needs, narrowest class first. */
   lanes: readonly number[];
+  /** Each role's drawn figure, drawn on the server: the card shows the selected role's. */
+  visuals: Readonly<Record<string, ReactNode>>;
   /** The server-drawn axis: the bars and the ruler. */
   children: ReactNode;
+}
+
+/** The share of the longest role that a role's length is: the height its column of light rises to. */
+function shareOf(roles: readonly RoleView[], role: RoleView): number {
+  return role.months / Math.max(...roles.map((entry) => entry.months));
 }
 
 /** The role whose bar is nearest to a position on the track, 0 to 1. A bar is nearest to the months it spans. */
@@ -76,7 +83,7 @@ function laneVars(lanes: readonly number[], centre: number): CSSProperties {
  * row and the track follow each other. The stage's light reads the state from the attributes this
  * writes (`data-selected`, `data-phase` and the track's `--p`) and never from a render.
  */
-export function Timeline({ roles, lanes, children }: TimelineProps) {
+export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
   const current = roles.find((role) => role.current) ?? roles[roles.length - 1];
   const [selectedId, setSelectedId] = useState(current?.id ?? '');
   const [phase, setPhase] = useState<Phase>('idle');
@@ -90,6 +97,7 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
   const fromRow = useRef(false);
   const rowBusy = useRef(false);
   const drag = useRef<{ pointer: number; x: number; dragging: boolean } | null>(null);
+  const headId = useRef<string | null>(null);
 
   const index = Math.max(
     roles.findIndex((role) => role.id === selectedId),
@@ -112,12 +120,27 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
     poke(EXPERIENCE_VIEW);
   }, []);
 
+  /**
+   * Where the playhead's line stops above the bars: on the bar's own top edge where its name is
+   * inside it, and above the lane of names where its name stands in the lane, so the line is never
+   * drawn through a name. It starts again under the baseline.
+   */
+  const setHead = useCallback((id: string | null) => {
+    headId.current = id;
+    const track = trackRef.current;
+    if (!track) return;
+    const out = id ? track.querySelector<HTMLElement>(`[data-bar="${CSS.escape(id)}"] [data-out]`) : null;
+    const head = out && getComputedStyle(out).display !== 'none' ? 'lane' : 'bar';
+    if (track.dataset.head !== head) track.dataset.head = head;
+  }, []);
+
   const rest = useCallback(
     (id: string) => {
       const target = roles.find((entry) => entry.id === id);
       if (target) placePlayhead(target.centre, false);
+      setHead(id);
     },
-    [placePlayhead, roles],
+    [placePlayhead, roles, setHead],
   );
 
   const select = useCallback(
@@ -196,6 +219,15 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
     fromRow.current = false;
   }, [selectedId, rest, rowTo]);
 
+  // The lane of names comes and goes with the width, so the playhead's line is stopped again when the track changes size.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+    const observer = new ResizeObserver(() => setHead(headId.current ?? selectedRef.current));
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, [setHead]);
+
   // On a phone the row begins at the selected role's card, as the axis begins at the selected role.
   useLayoutEffect(() => {
     const row = rowRef.current;
@@ -225,20 +257,25 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
     if (!root || reducedMotion()) return;
     setPhase('armed');
     let timer = 0;
+    let frame = 0;
     const observer = new IntersectionObserver(
       (changes) => {
         if (!changes.some((change) => change.isIntersecting)) return;
         observer.disconnect();
-        root.setAttribute('data-entered-at', String(performance.now()));
-        setPhase('play');
-        poke(EXPERIENCE_VIEW);
-        timer = window.setTimeout(() => setPhase('done'), ENTRANCE_MS);
+        // It plays from the first frame painted after the page has hydrated, so a long task at load never eats the front of it.
+        frame = window.requestAnimationFrame(() => {
+          root.setAttribute('data-entered-at', String(performance.now()));
+          setPhase('play');
+          poke(EXPERIENCE_VIEW);
+          timer = window.setTimeout(() => setPhase('done'), ENTRANCE_MS);
+        });
       },
       { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
     );
     observer.observe(root);
     return () => {
       observer.disconnect();
+      window.cancelAnimationFrame(frame);
       window.clearTimeout(timer);
     };
   }, []);
@@ -268,7 +305,9 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
     if (event.pointerType !== 'mouse') return;
     const at = fractionAt(event.clientX);
     placePlayhead(at, true);
-    hover(nearest(roles, at)?.id ?? null);
+    const under = nearest(roles, at)?.id ?? null;
+    hover(under);
+    if (under !== headId.current) setHead(under);
   };
 
   const onStageLeave = (event: PointerEvent<HTMLDivElement>) => {
@@ -323,6 +362,7 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
       data-experience=""
       data-selected={role.id}
       data-phase={phase}
+      data-moved={moved ? '' : undefined}
       className={styles.root}
       style={laneVars(lanes, role.centre)}
     >
@@ -338,9 +378,21 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
           onPointerUp={onTrackUp}
           onPointerCancel={onTrackUp}
         >
-          <StageView view={EXPERIENCE_VIEW} className={styles.light} />
+          <StageView view={EXPERIENCE_VIEW} className={styles.light}>
+            {roles.map((entry) => (
+              <span
+                key={entry.id}
+                data-column={entry.id}
+                data-selected={entry.id === role.id ? 'true' : undefined}
+                className={styles.column}
+                style={{ left: percent(entry.start), width: percent(entry.end - entry.start), '--share': shareOf(roles, entry).toFixed(3), '--at': entry.start.toFixed(4) } as CSSProperties}
+              />
+            ))}
+          </StageView>
           <span data-connector="" aria-hidden="true" className={styles.connector} />
-          <span data-playhead="" aria-hidden="true" className={styles.playhead} />
+          <span aria-hidden="true" className={styles.sweep}>
+            <span data-playhead="" className={styles.playhead} />
+          </span>
           {children}
         </div>
 
@@ -394,19 +446,19 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
       <div role="tabpanel" id="role-panel" aria-labelledby={`role-tab-${role.id}`} data-lens="" className={styles.card}>
         <div key={role.id} className={styles.body} data-moved={moved ? '' : undefined}>
           <div className={styles.who}>
-            <p className={styles.employer}>{role.label}</p>
+            <p className={styles.meta}>
+              <span>{role.label}</span>
+              <span>{role.years}</span>
+              <span>{role.duration}</span>
+            </p>
             <h3 className={styles.title}>{role.shortTitle}</h3>
           </div>
-          <p className={styles.when}>
-            {role.years}
-            <span aria-hidden="true"> · </span>
-            {role.duration}
-          </p>
-          {role.headline ? <RoleFigure headline={role.headline} place="card" /> : <p className={styles.summary}>{role.summary}</p>}
           <button type="button" aria-haspopup="dialog" className={styles.open} onClick={(event) => open(role.panel, event.currentTarget)}>
             Open role
             <ArrowRight aria-hidden="true" className={styles.arrow} />
           </button>
+          <RoleOutcome role={role} />
+          {visuals[role.id]}
         </div>
       </div>
     </div>

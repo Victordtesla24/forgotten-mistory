@@ -1,0 +1,50 @@
+/*
+ * A role's drawn figure: the hero's reading of the figure where it is one of the three, a hundred
+ * cells where it is a share, the role's own months in the calendar of the career otherwise. The
+ * tile is the box the layout is made for; the drawing sits in it from the top left, as the
+ * reading's own tile does, and its key stands in the strip under it.
+ */
+.tile {
+  inline-size: 100%;
+}
+
+/* The drawing is as wide as it was laid out for and no wider; on a narrower screen it is scaled down, whole. */
+.drawing {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+}
+
+.outline {
+  fill: var(--line-strong);
+  fill-rule: evenodd;
+  shape-rendering: crispEdges;
+}
+
+.solid {
+  fill: var(--proof);
+  shape-rendering: crispEdges;
+}
+
+/* The months of a role are not a measured figure: the accent, not the warm colour that is kept for those. */
+.tile[data-figure='months'] .solid {
+  fill: var(--accent);
+}
+
+.key {
+  margin: 0;
+  padding-inline: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.375rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@media (forced-colors: active) {
+  .outline,
+  .solid {
+    fill: CanvasText;
+  }
+}

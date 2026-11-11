@@ -42,6 +42,8 @@ export interface ExperienceRole {
   summary: string;
   /** The single figure this role is best known for. Absent where the CV states none. */
   headline: RoleHeadline | null;
+  /** Where there is no figure: the one result the CV states for the role, in at most ten words, which the card leads with. */
+  outcome: string | null;
   /** One achievement to a line: an action, its scope and its result, in at most 35 words. */
   achievements: readonly string[];
 }
@@ -83,6 +85,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2026, 3), end: null },
     summary: 'Leads one of eight Payday Super squads; architected the program’s test automation.',
     headline: { value: '≈92%', label: 'less evidence effort across 200+ SIT scenarios' },
+    outcome: null,
     achievements: [
       'Leads the Kookaburras squad, one of eight squads on the Payday Super program: sprint cadence, PI planning (PI 47–48), capacity management and executive status reporting.',
       'Architected COBOL/mainframe test-evidence automation for 200+ SIT/E2E scenarios across all eight squads: ~3 hours to ~15 minutes per scenario, a ≈92% reduction, on a zero-new-approvals toolchain (REXX, SMF, SDSF, PCOMM, PowerShell, VBA).',
@@ -104,6 +107,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2025, 6), end: ym(2026, 2) },
     summary: 'Applied LLM engineering: evaluation tooling, delivery analytics and autonomous agents.',
     headline: { value: '−38%', label: 'error-budget breaches (in simulation)' },
+    outcome: null,
     achievements: [
       'Architected a Next.js and Supabase analytics dashboard for JIRA that exposes sprint velocity metrics and generates LLM-powered retrospective insights and sprint plans.',
       'Developed a React/TypeScript visualisation tool with D3 event arcs that showcases customer-journey interactions.',
@@ -127,6 +131,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2017, 9), end: ym(2025, 6) },
     summary: 'Delivery lead and AI/ML architect for core banking modernisation and real-time telemetry.',
     headline: { value: '10,000+', label: 'concurrent devices at P95 under 200 ms' },
+    outcome: null,
     achievements: [
       'Led the technical delivery of AI solutions from 2022 to 2025, including real-time WebSocket telemetry servers for 10,000+ concurrent devices that cut P95 latency to under 200 ms and improved user response time.',
       'Moved core banking platforms from monolith to cloud-native (.NET/Azure) between 2017 and 2022: end-to-end delivery time down by more than 30%, infrastructure cost down by more than 15%.',
@@ -146,6 +151,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2016, 11), end: ym(2017, 9) },
     summary: 'Delivery stream for a critical risk and compliance program.',
     headline: null,
+    outcome: '100% regulatory adherence across major data initiatives',
     achievements: [
       'Managed the delivery stream of a critical risk and compliance program, ensuring 100% regulatory adherence for major data initiatives.',
       'Conducted deep-dive business analysis, translating complex regulatory requirements into actionable technical specifications for development teams.',
@@ -162,6 +168,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2015, 10), end: ym(2016, 10) },
     summary: 'Azure ML telemetry gap analysis and DevOps alignment with enterprise architecture.',
     headline: null,
+    outcome: 'Raised reliability 15% and cut incident MTTR 10%',
     achievements: [
       'Executed a gap analysis for Azure ML telemetry that delivered 10 key insights, raised system reliability by 15% and cut incident MTTR by 10%.',
       'Aligned DevOps strategies with overall IT objectives, reaching 95% alignment with enterprise architecture standards.',
@@ -178,6 +185,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2014, 11), end: ym(2015, 10) },
     summary: 'Customer-journey scorecards and JIRA requirements for core delivery teams.',
     headline: null,
+    outcome: 'Delivery efficiency up 20%, operational clarity up 15%',
     achievements: [
       'Developed customer-journey scorecards and streamlined JIRA requirements for core delivery teams, improving delivery efficiency by 20% and operational clarity by 15%.',
     ],
@@ -193,6 +201,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2011, 8), end: ym(2014, 11) },
     summary: 'Analytics and business intelligence delivery with automated regulatory reporting.',
     headline: null,
+    outcome: 'Engagement up 20%; regulatory reporting automated to 100% accuracy',
     achievements: [
       'Delivered analytics and business intelligence projects that lifted client engagement by 20%, and automated regulatory reporting workflows to 100% accuracy.',
     ],
@@ -208,6 +217,7 @@ export const roles: readonly ExperienceRole[] = [
     span: { start: ym(2010, 5), end: ym(2011, 8) },
     summary: 'Developer support, software testing and data-processing optimisation.',
     headline: null,
+    outcome: 'Reporting time cut 90% on financial data sets',
     achievements: [
       'Optimised data-processing workflows through ePAL implementation, improving efficiency by 30% and cutting reporting time by 90% for financial data sets.',
     ],

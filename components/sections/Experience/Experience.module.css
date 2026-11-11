@@ -2,12 +2,12 @@
  * The Experience timeline. One block as wide as the page (never 100vw): the track runs from the
  * left edge to the right edge and every mark on it is a percentage of its width, from
  * lib/timeline.ts. Layer one, drawn by the server and complete on its own, is the ruler, the
- * eight bars and their names. Layer two is the stage's light, which sits behind the page, so the
- * bars are translucent. Layer three is the controls: a fine pointer with room puts the tabs on
- * the bars, a finger drags along the track, and a phone or tablet gets the same tabs as a row
- * of cards that snaps. The card of the selected role is the one tab panel; a connector joins it
- * to its bar. Mobile first: the first rules are the touch layout, the media query below is the
- * wide one.
+ * eight bars and their names. Layer two is the stage's light: a column over every bar, as wide as
+ * the bar, which the stylesheet draws too until the stage has. Layer three is the controls: a fine
+ * pointer with room puts the tabs on the bars, a finger drags along the track, and a phone or
+ * tablet gets the same tabs as a row of cards that snaps. The card of the selected role is the one
+ * tab panel; a connector joins it to its bar. Mobile first: the first rules are the touch layout,
+ * the media queries below are the wide one.
  */
 .root {
   --bar-h: 3rem;
@@ -19,8 +19,9 @@
   --zone: 1.5rem;
   --track-min: 7.5rem;
   --glide: 240ms;
-  --card-w: 26rem;
-  --card-edge: 0.5rem;
+  --card-w: 34rem;
+  --card-h: 15rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   inline-size: 100%;
@@ -44,6 +45,19 @@
   }
 }
 
+@media (min-width: 1280px) {
+  .root {
+    --lanes: var(--lanes-4, 1);
+  }
+}
+
+/* From 1024px the bars are tall enough for the employer and the title, and the ruler has room to number every year. */
+@media (min-width: 1024px) {
+  .root {
+    --bar-h: clamp(3.5rem, 6.5svh, 4.5rem);
+  }
+}
+
 .stage {
   position: relative;
   order: 2;
@@ -62,6 +76,16 @@
   z-index: 0;
 }
 
+/* ---- The columns of light -----------------------------------------------------------------
+ * Every bar stands under a column of light exactly as wide as itself that rises from its top edge
+ * and is gone within about 220px: the more months a role ran, the higher it reaches. This is what
+ * the stage draws; until it has, and without it, the page draws the same columns from gradients.
+ * The selected role's is the brightest and reaches its card.
+ */
+.column {
+  display: none;
+}
+
 /* ---- The bars and their names ------------------------------------------------------------- */
 
 .bars {
@@ -73,16 +97,6 @@
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-/* The bars stand on a lit plate: a wash of the accent that rises from the baseline and is gone by the lanes. */
-.bars::before {
-  content: '';
-  position: absolute;
-  inset: -2.5rem 0 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(to top, color-mix(in srgb, var(--accent) 10%, transparent), transparent);
 }
 
 /* Every bar is the container its name measures itself against. */
@@ -99,43 +113,76 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  color: color-mix(in srgb, var(--text) 55%, var(--muted));
+  transition: color var(--duration-hover) var(--ease);
+}
+
+/* The bar itself: its tint is its share of the longest span, and it grows from its left edge on the entrance. */
+.fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   border: 1px solid var(--line-strong);
   border-radius: 4px;
   background-color: color-mix(in srgb, var(--accent) calc(4% + 8% * var(--w, 0)), transparent);
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--accent) calc(10% + 22% * var(--w, 0)), transparent);
-  color: color-mix(in srgb, var(--text) 55%, var(--muted));
+  transform-origin: left center;
   transition:
     background-color var(--duration-hover) var(--ease),
-    border-color var(--duration-hover) var(--ease),
-    color var(--duration-hover) var(--ease);
+    border-color var(--duration-hover) var(--ease);
 }
 
 .bar[data-hover='true'] .fill {
+  color: var(--text);
+}
+
+.bar[data-hover='true'] .fill::before {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line-strong));
   background-color: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--text);
 }
 
 .bar[data-selected='true'] .fill {
-  border-color: var(--accent);
-  background-color: color-mix(in srgb, var(--accent) 26%, transparent);
   color: var(--text);
 }
 
-.label {
+.bar[data-selected='true'] .fill::before {
+  border-color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+.name {
+  position: relative;
+  display: grid;
+  min-inline-size: 0;
+}
+
+.label,
+.sub {
   display: none;
   padding-inline: 0.375rem;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  line-height: 1;
+  line-height: 1.3;
   white-space: nowrap;
+}
+
+.sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--muted);
+}
+
+.bar[data-selected='true'] .sub,
+.bar[data-hover='true'] .sub {
+  color: color-mix(in srgb, var(--text) 80%, var(--muted));
 }
 
 /*
  * A name is drawn inside its bar where it fits: the bar is the container, and each name asks
  * for the width its length needs (`labelWidth` and `FIT_INSET` in lib/timeline*.ts: seven and
  * eight tenths of a pixel to a character at 13px, the padding, and the bar's own edge and
- * border). A name that does not fit stands in a lane above the bars instead.
+ * border). A name that does not fit stands in a lane above the bars instead. A bar wider than
+ * 220px has room for a second line, the role's title.
  */
 @container (min-width: 41px) {
   .label[data-fit='3'] {
@@ -167,11 +214,18 @@
   }
 }
 
+@container (min-width: 220px) {
+  .sub {
+    display: block;
+  }
+}
+
 /*
  * The lanes. A name that does not fit its bar stands in a lane (0 is next to the bars) with a
  * hairline down to the bar. Each class of width has its own lane and its own alignment, set on
  * the element (`--lane-N`, `--align-N`, from lib/timeline-lanes.ts): -1 flush with the bar's left
- * edge, 0 centred on it, 1 flush with its right edge. The `cqw` units are the bar's own width.
+ * edge, 0 centred on it, 1 flush with its right edge. The `cqw` units are the bar's own width. From
+ * 1280px every such name stands in the one lane, centred on the bar it names.
  */
 .out {
   --lane: var(--lane-0, 0);
@@ -206,6 +260,13 @@
   }
 }
 
+@media (min-width: 1280px) {
+  .out {
+    --lane: var(--lane-4, 0);
+    --align: var(--align-4, 0);
+  }
+}
+
 .out::before {
   content: '';
   position: absolute;
@@ -227,10 +288,12 @@
   line-height: 1.125rem;
   white-space: nowrap;
   color: var(--muted);
-  /* A name that stands across the connector or the playhead knocks it out around the letters. */
+  /* A name stands over the field and the connector: they are knocked out round its letters. */
   text-shadow:
     0 0 2px var(--bg),
-    0 0 5px var(--bg);
+    0 0 4px var(--bg),
+    0 0 8px var(--bg),
+    0 0 12px var(--bg);
 }
 
 .bar[data-selected='true'] .text,
@@ -274,7 +337,7 @@
 
 /* ---- The ruler ----------------------------------------------------------------------------- */
 
-/* The graticule rises from the top of the bars, so no line crosses a name, and fades as it goes; a phone has no room for it. */
+/* The graticule rises from the lane of names, so no line crosses a name; a phone has no room for it. */
 .grid {
   display: none;
 }
@@ -283,7 +346,6 @@
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  z-index: 1;
   block-size: var(--ruler-h);
 }
 
@@ -312,6 +374,11 @@
   stroke: var(--muted);
 }
 
+/* The wide tier's January ticks are as tall as the rest once their numerals are on. */
+.extension {
+  display: none;
+}
+
 .numeral {
   position: absolute;
   top: 1.25rem;
@@ -323,21 +390,38 @@
   color: var(--muted);
 }
 
-/* A track narrower than 640px keeps every fourth numeral. */
-@media (max-width: 639px) {
-  .numeral:not([data-narrow]) {
-    display: none;
+/* A track narrower than 640px keeps every fourth numeral, one from 640px every second, and one from 1024px every year. */
+.numeral[data-tier='mid'],
+.numeral[data-tier='wide'] {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .numeral[data-tier='mid'] {
+    display: block;
   }
 }
 
-/* The current month: the right edge of the track, lit from the top of the bars to the end of the ticks. */
+@media (min-width: 1024px) {
+  .numeral[data-tier='wide'] {
+    display: block;
+  }
+
+  .extension {
+    display: block;
+  }
+}
+
+/* The current month: the right edge of the track, closed by a cap exactly as tall as the bar, from its top to the baseline, a hair in from the edge. */
 .now {
   position: absolute;
   top: calc(-1 * var(--bar-h));
-  right: 0;
+  right: 2px;
+  z-index: 5;
   inline-size: 2px;
-  block-size: calc(var(--bar-h) + 1rem);
+  block-size: var(--bar-h);
   background-color: var(--accent);
+  pointer-events: none;
 }
 
 /* ---- The connector and the playhead -------------------------------------------------------- */
@@ -351,29 +435,55 @@
   inline-size: 1px;
   margin-inline-start: -0.5px;
   background-color: var(--accent);
-  transition: left var(--glide) var(--ease);
 }
 
-.playhead {
+/* The sweep carries the playhead across the track on the entrance. It is the width of the track, so a share of it is a share of the track. */
+.sweep {
   position: absolute;
-  bottom: calc(var(--ruler-h) - 1.0625rem);
-  left: calc(var(--p) * 100%);
+  inset: 0;
   z-index: 3;
-  inline-size: 1px;
-  block-size: calc(var(--bar-h) + 1.4rem);
-  margin-inline-start: -0.5px;
-  background-color: var(--text);
   pointer-events: none;
 }
 
+/*
+ * The playhead is a hairline over the bars, and a foot under the baseline; it is never drawn
+ * through the bars, so it never crosses a name. Its top part stops on the bar's own top edge, or
+ * above the lane of names where the bar's name stands in the lane (`data-head`).
+ */
+.playhead {
+  --gap: 0rem;
+  position: absolute;
+  bottom: calc(var(--ruler-h) + var(--bar-h) + var(--gap));
+  left: calc(var(--p) * 100%);
+  inline-size: 1px;
+  block-size: 2.25rem;
+  margin-inline-start: -0.5px;
+  background-color: var(--text);
+}
+
+.track[data-head='lane'] .playhead {
+  --gap: calc(var(--lanes-h) + 0.375rem);
+}
+
+/* The foot: from the bar's baseline to just under the ticks, ending in the accent's point. */
 .playhead::after {
   content: '';
   position: absolute;
-  bottom: -3px;
+  top: calc(100% + var(--gap) + var(--bar-h));
+  left: 0;
+  inline-size: 1px;
+  block-size: 0.875rem;
+  background-color: var(--text);
+}
+
+.playhead::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + var(--gap) + var(--bar-h) + 0.875rem);
   left: 50%;
   inline-size: 7px;
   block-size: 7px;
-  translate: -50% 0;
+  translate: -50% -50%;
   rotate: 45deg;
   background-color: var(--accent);
 }
@@ -493,24 +603,51 @@
   background-color: var(--surface);
 }
 
+/* The card's rows: who, with the way in to the role; the one line the role is best known for; and its drawn figure. */
 .body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
-  gap: 0.625rem 1rem;
+  gap: 0.5rem 1rem;
 }
 
 .who {
+  grid-area: 1 / 1;
   display: grid;
   gap: 0.25rem;
   min-inline-size: 0;
 }
 
-.employer {
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.5rem;
   margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.35;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
   color: var(--muted);
+}
+
+.meta > span:first-child {
+  color: var(--text);
+}
+
+.meta > span + span::before {
+  content: '·';
+  margin-inline-end: 0.5rem;
+}
+
+/* On a narrow card the line may break between its parts; no part then starts a line with a stray dot. */
+@media (max-width: 639px) {
+  .meta {
+    column-gap: 0.875rem;
+  }
+
+  .meta > span + span::before {
+    content: none;
+  }
 }
 
 .title {
@@ -521,33 +658,12 @@
   letter-spacing: -0.02em;
 }
 
-.when {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  font-variant-numeric: tabular-nums;
-  color: var(--muted);
-}
-
-.who {
-  grid-area: 1 / 1;
-}
-
-.when {
+.body > :nth-child(3) {
   grid-area: 2 / 1 / 3 / -1;
 }
 
-/* The figure, or the one line a role without a figure has, runs the width of the card. */
-.body > :nth-child(3) {
+.body > :nth-child(4) {
   grid-area: 3 / 1 / 4 / -1;
-}
-
-.summary {
-  margin: 0;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--text);
 }
 
 .open {
@@ -603,9 +719,9 @@
     left: 0;
     z-index: 1;
     inline-size: 100%;
-    block-size: calc(100% - var(--ruler-h) - var(--bar-h));
+    block-size: calc(100% - var(--ruler-h) - var(--bar-h) - var(--lanes-h));
     pointer-events: none;
-    mask-image: linear-gradient(to top, #000 10%, transparent 92%);
+    mask-image: linear-gradient(to top, transparent, #000 28%, transparent 96%);
   }
 
   .gridYear,
@@ -613,7 +729,6 @@
     fill: none;
     stroke-width: 1;
     vector-effect: non-scaling-stroke;
-    shape-rendering: crispEdges;
   }
 
   .gridYear {
@@ -625,31 +740,84 @@
   }
 }
 
+/*
+ * The card is placed from one number, the selected bar's middle (`--cx`, 0 to 1), which is a
+ * registered property so that a new selection carries the card and the connector across together.
+ * Every length is in the root's own width (`cqw`), so it means the same in `left`, `top` and a
+ * background position alike.
+ * The card stands over the bar, and the column of the content is its edge: where the bar is
+ * nearer an edge than the card can stand, the card stays inside the column and the connector bends
+ * (`--d` is the distance from the bar's middle to the nearest point of the card), leaving the card
+ * by its side and landing on the middle of the bar.
+ */
 @media (min-width: 640px) and (pointer: fine) and (hover: hover) {
   .root {
-    /* The bars grow with the screen's height, and the room above them gives back what they take, so the track stays 12.5rem. */
     --bar-h: clamp(3rem, 6.5svh, 4rem);
-    --zone: calc(6.5rem - var(--bar-h));
-    --track-min: 12.5rem;
+    --zone: 3.5rem;
+    container-type: inline-size;
+    --col-l: max(var(--gutter), calc((100cqw - var(--container-content, 72rem)) / 2 + var(--gutter)));
+    --cw: min(var(--card-w), calc(100cqw - 2 * var(--col-l)));
+    --card-l: clamp(var(--col-l), calc(var(--cx) * 100cqw - var(--cw) / 2), calc(100cqw - var(--col-l) - var(--cw)));
+    --anchor: clamp(var(--card-l), calc(var(--cx) * 100cqw), calc(var(--card-l) + var(--cw)));
+    --d: calc(var(--cx) * 100cqw - var(--anchor));
+  }
+
+  @media (min-width: 1024px) {
+    .root {
+      --bar-h: clamp(3.5rem, 6.5svh, 4.5rem);
+    }
+  }
+
+  /* Once a role has been chosen the card and the connector glide to the next; at load they are where they stand. */
+  .root[data-moved] {
+    transition: --cx var(--glide) var(--ease);
+  }
+
+  .track {
+    block-size: calc(var(--card-h) + var(--zone) + var(--lanes-h) + var(--bar-h) + var(--ruler-h));
+  }
+
+  .column {
+    display: block;
+    position: absolute;
+    bottom: calc(var(--ruler-h) + var(--bar-h));
+    block-size: calc(3.75rem + 10rem * var(--share));
+    background: linear-gradient(to top, color-mix(in srgb, var(--accent) 8%, transparent), transparent);
+  }
+
+  .column[data-selected='true'] {
+    block-size: max(calc(3.75rem + 10rem * var(--share)), calc(var(--zone) + var(--lanes-h) + 1.5rem));
+    background: linear-gradient(to top, color-mix(in srgb, var(--accent) 20%, transparent), transparent);
   }
 
   .card {
-    inline-size: min(var(--card-w), calc(100% - 2 * var(--card-edge)));
-    min-block-size: 10.5rem;
-    margin-inline-start: clamp(
-      var(--card-edge),
-      calc(var(--cx) * 100% - var(--card-w) / 2),
-      calc(100% - var(--card-w) - var(--card-edge))
-    );
+    position: absolute;
+    top: 0;
+    left: var(--card-l);
+    z-index: 6;
+    box-sizing: border-box;
+    inline-size: var(--cw);
+    block-size: var(--card-h);
+    min-block-size: 0;
     padding: 1rem 1.25rem;
     border: 1px solid var(--line-strong);
     border-radius: var(--radius-sm);
     box-shadow: var(--elevation-float);
-    transition: margin-inline-start var(--glide) var(--ease);
   }
 
-  .fill {
+  .fill::before {
     border-radius: 6px;
+  }
+
+  .connector {
+    top: calc(var(--card-h) - abs(sign(var(--d))) * 1.25rem);
+    left: calc(min(var(--anchor), var(--cx) * 100cqw) - 0.5px);
+    inline-size: calc(abs(var(--d)) + 1px);
+    margin-inline-start: 0;
+    background:
+      linear-gradient(var(--accent), var(--accent)) top / 100% 1px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) calc((sign(var(--d)) + 1) * 50%) 0 / 1px 100% no-repeat;
+    background-color: transparent;
   }
 
   .tabs {
@@ -717,22 +885,28 @@
 }
 
 /* ---- The entrance --------------------------------------------------------------------------
- * Once, when the section comes into view: the ruler is wiped in, each bar grows from its own left
- * edge in date order (each starts where it stands on the axis, across the first 320ms), the
- * playhead travels with the front and settles on the current role at 520ms, and the connector and
- * card arrive as it lands and are done at 840ms. Every name is drawing before the first half
- * second is over, so nothing the page says waits for the end. Reduced motion and Motion off never
- * arm it, so the end state is the page's own. `lib/gl/views/experience-timeline.ts` keeps the same times.
+ * Once, when the section comes into view, in this order, all of it on the compositor (opacity and
+ * transform only), so a long task on the main thread slows the page but never reorders it: the
+ * ruler and the columns of light fade in over 200ms; each bar grows from its own left edge in date
+ * order (each starts where it stands on the axis, across the first 200ms, and takes 320ms), its name
+ * arriving as it is half drawn; the playhead travels with the front and settles on the current role
+ * at 520ms; the connector and the card arrive last, from 560ms, and are done at 880ms. Every name
+ * is drawing before the first 400ms are over, so nothing the page says waits for the end. Reduced
+ * motion and Motion off never arm it, so the end state is the page's own.
+ * `lib/gl/views/experience-timeline.ts` keeps the same times.
  */
-.root[data-phase='armed'] .ruler,
-.root[data-phase='armed'] .grid,
-.root[data-phase='armed'] .fill,
-.root[data-phase='armed'] .text {
-  clip-path: inset(0 100% 0 0);
+.root[data-phase='armed'] .fill::before {
+  transform: scaleX(0);
 }
 
+.root[data-phase='armed'] .ruler,
+.root[data-phase='armed'] .grid,
+.root[data-phase='armed'] .column,
+.root[data-phase='armed'] .label,
+.root[data-phase='armed'] .sub,
+.root[data-phase='armed'] .text,
 .root[data-phase='armed'] .out::before,
-.root[data-phase='armed'] .playhead,
+.root[data-phase='armed'] .sweep,
 .root[data-phase='armed'] .connector,
 .root[data-phase='armed'] .card {
   opacity: 0;
@@ -740,44 +914,40 @@
 
 .root[data-phase='play'] .ruler,
 .root[data-phase='play'] .grid {
-  animation: wipe var(--duration-state) linear both;
+  animation: appear 200ms linear both;
 }
 
-.root[data-phase='play'] .fill,
-.root[data-phase='play'] .text {
-  animation: grow var(--duration-state) var(--ease) calc(var(--at) * var(--duration-state)) both;
+.root[data-phase='play'] .column {
+  animation: appear 320ms var(--ease) calc(var(--at) * 200ms) both;
 }
 
+.root[data-phase='play'] .fill::before {
+  animation: grow var(--duration-state) var(--ease) calc(var(--at) * 200ms) both;
+}
+
+.root[data-phase='play'] .label,
+.root[data-phase='play'] .sub,
+.root[data-phase='play'] .text,
 .root[data-phase='play'] .out::before {
-  animation: appear var(--duration-state) var(--ease) calc(var(--at) * var(--duration-state)) both;
+  animation: appear 200ms var(--ease) calc(var(--at) * 200ms + 160ms) both;
 }
 
-.root[data-phase='play'] .playhead {
+.root[data-phase='play'] .sweep {
   animation: sweep var(--duration-panel) var(--ease-in-out) both;
 }
 
 .root[data-phase='play'] .connector,
 .root[data-phase='play'] .card {
-  animation: appear var(--duration-state) var(--ease) var(--duration-panel) both;
-}
-
-@keyframes wipe {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
-
-  to {
-    clip-path: inset(0);
-  }
+  animation: appear var(--duration-state) var(--ease) 560ms both;
 }
 
 @keyframes grow {
   from {
-    clip-path: inset(0 100% 0 0);
+    transform: scaleX(0);
   }
 
   to {
-    clip-path: inset(0);
+    transform: none;
   }
 }
 
@@ -791,9 +961,15 @@
   }
 }
 
+/* The sweep starts with the playhead at the left edge and ends with it where it rests: a share of the track's own width. */
 @keyframes sweep {
   from {
-    left: 0%;
+    translate: calc(var(--p) * -100%) 0;
+    opacity: 1;
+  }
+
+  to {
+    translate: 0 0;
     opacity: 1;
   }
 }
@@ -819,20 +995,24 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fill,
+  .fill::before,
   .connector,
   .card,
   .tab,
   .open,
+  .root[data-moved],
   .track[data-following='false'] .playhead {
     transition: none;
   }
 }
 
 :global(:root[data-motion='off']) .fill,
+:global(:root[data-motion='off']) .fill::before,
 :global(:root[data-motion='off']) .connector,
 :global(:root[data-motion='off']) .card,
 :global(:root[data-motion='off']) .tab,
 :global(:root[data-motion='off']) .open,
+:global(:root[data-motion='off']) .root[data-moved],
 :global(:root[data-motion='off']) .track[data-following='false'] .playhead {
   transition: none;
 }
@@ -846,16 +1026,21 @@
   .tabs,
   .card,
   .connector,
-  .playhead {
+  .sweep {
     display: none;
   }
 }
 
 @media (forced-colors: active) {
-  .fill,
+  .fill::before,
   .tab,
   .open {
     border-color: CanvasText;
+  }
+
+  .now {
+    forced-color-adjust: none;
+    background-color: Highlight;
   }
 
   .tab:focus-visible,

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { Container } from '@/components/ui/Container';
-import { Ruler } from '@/components/ui/Ruler';
+import { Hairline } from '@/components/ui/Hairline';
 import type { Inline, LegalDocument } from '@/content/legal';
 
 const linkClass =
@@ -54,7 +54,7 @@ export function LegalPage({ legal }: { legal: LegalDocument }) {
         ← Back to the portfolio
       </Link>
 
-      <Ruler min={0} max={60} step={1} className="mt-6 mb-10" />
+      <Hairline className="mt-6 mb-10" />
 
       <header className="grid gap-4">
         <p className="type-eyebrow text-muted">Legal</p>

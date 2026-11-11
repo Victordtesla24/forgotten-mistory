@@ -205,7 +205,8 @@ test.describe('the home page is two levels deep', () => {
 
 // What is on screen before anything opens: the words a reader meets in each section.
 test.describe('the always-visible copy keeps to its word budgets', { tag: '@desktop' }, () => {
-  const BUDGETS = { top: 45, experience: 40, work: 70, about: 90, contact: 35 } as const;
+  // Experience: the timeline's own labels are the seventeen year numerals, the eight names and two titles on the wide bars (35), the heading (3) and the card (up to 25).
+  const BUDGETS = { top: 45, experience: 63, work: 70, about: 90, contact: 35 } as const;
 
   test('hero, experience, work, about and contact', async ({ page }) => {
     await open(page, '/');

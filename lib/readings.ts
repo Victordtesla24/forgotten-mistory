@@ -133,7 +133,7 @@ interface Frame {
 export type ReadingPlace = 'card' | 'panel';
 
 /** The room a card's tile keeps free at its sides and top, in CSS pixels, so no mark meets the card's rounded corners. */
-const CARD_PAD = { x: 10, y: 6 };
+export const CARD_PAD = { x: 10, y: 6 };
 
 /**
  * The line of key under every drawing, in CSS pixels: the 13 px text of a key has 6 clear above

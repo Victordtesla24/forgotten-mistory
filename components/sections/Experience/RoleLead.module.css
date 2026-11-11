@@ -1,95 +1,18 @@
 /*
- * The lead of a role's panel: the career on a small axis with this role's bar lit, and the
- * role's headline figure. The axis is the Experience timeline's, from the same module, at
- * panel width; the span is a filled bar, so which role it is reads at a glance.
+ * The lead of a role's panel: how long the role ran, the line it is best known for and its drawn
+ * figure at the panel's width. The span is stated in words; the one axis of the page is the
+ * timeline above.
  */
 .lead {
   display: grid;
-  gap: 1.25rem;
+  gap: 0.625rem;
 }
 
-.axis {
-  padding-bottom: 1.5rem;
-}
-
-.track {
-  position: relative;
-  height: 2.5rem;
-}
-
-.span {
-  position: absolute;
-  inset-block: 0 1rem;
-  min-width: 3px;
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  background-color: color-mix(in srgb, var(--accent) 28%, var(--surface));
-}
-
-.ticks {
-  position: absolute;
-  inset: auto 0 0.5rem 0;
-  display: block;
-  width: 100%;
-  height: 1rem;
-  overflow: visible;
-}
-
-.baseline,
-.quarter,
-.year {
-  fill: none;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  shape-rendering: crispEdges;
-}
-
-.baseline,
-.quarter {
-  stroke: var(--line-strong);
-}
-
-.year {
-  stroke: var(--muted);
-}
-
-.numeral {
-  position: absolute;
-  bottom: -1.25rem;
-  translate: -50% 0;
+.duration {
+  margin: 0;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  line-height: 1.2;
+  line-height: 1.4;
   font-variant-numeric: tabular-nums;
   color: var(--muted);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .span {
-    transform-origin: left center;
-    animation: span-in var(--duration-panel) var(--ease) 80ms both;
-  }
-
-}
-
-@keyframes span-in {
-  from {
-    transform: scaleX(0);
-  }
-
-  to {
-    transform: none;
-  }
-}
-
-@media (max-width: 639px) {
-  .numeral:not([data-narrow]) {
-    display: none;
-  }
-}
-
-@media (forced-colors: active) {
-  .span {
-    forced-color-adjust: none;
-  }
 }

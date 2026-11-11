@@ -431,6 +431,29 @@
   scroll-behavior: auto !important;
 }
 
+/*
+ * The page's own ground is the document's, so a view transition's root snapshot, which is taken
+ * from it, can never come up white while a transition is held at its first frame.
+ */
+html {
+  background-color: var(--bg);
+}
+
+::view-transition {
+  background-color: var(--bg);
+}
+
+/*
+ * The middle of the selected role's bar on the Experience timeline, 0 to 1 of the track. It is
+ * registered so that a new selection carries everything placed from it, the card and the
+ * connector, across together.
+ */
+@property --cx {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0.5;
+}
+
 /* Theme changes cross-fade through the View Transitions API where available. */
 ::view-transition-old(root),
 ::view-transition-new(root) {

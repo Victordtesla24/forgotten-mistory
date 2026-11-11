@@ -11,8 +11,12 @@
 
 import { careerBars, labelWidth, LABEL_GAP, LABEL_PADDING, LEADER_CLEARANCE } from './timeline';
 
-/** The viewport width, in px, at which each class of layout begins. The last is the first width with a fine pointer and room for the bars to be the controls. */
-export const LANE_STARTS = [320, 360, 390, 640] as const;
+/**
+ * The viewport width, in px, at which each class of layout begins. 640 is the first width with a
+ * fine pointer and room for the bars to be the controls; from 1280 the names of the short bars
+ * stand on one baseline, each centred on the middle of its own bar.
+ */
+export const LANE_STARTS = [320, 360, 390, 640, 1280] as const;
 
 /** Where the text stands against its bar: -1 flush with the bar's left edge, 0 centred, 1 flush with its right edge. */
 type Align = -1 | 0 | 1;

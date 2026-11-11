@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 
+import { roles } from '@/content/experience';
 import { careerBars, fitStep } from '@/lib/timeline';
 import { laneLayouts } from '@/lib/timeline-lanes';
 
@@ -19,6 +20,16 @@ function laneStyle(id: string): CSSProperties {
   });
   return vars as CSSProperties;
 }
+
+/** The longest title, in characters, a bar of 220 px (the width from which a bar has a second line) holds at 13px. */
+const TITLE_FITS = 26;
+
+/** What a wide bar says under the employer: the CV's own title, up to its first comma, or the title in four words where that is longer than the bar holds. */
+const titleOf = (id: string): string => {
+  const role = roles.find((entry) => entry.id === id);
+  const title = role?.title.split(',')[0] ?? '';
+  return title.length <= TITLE_FITS ? title : (role?.shortTitle ?? title);
+};
 
 /**
  * The axis as the server draws it: the eight bars to scale, each named, and the ruler under
@@ -44,12 +55,15 @@ export function Axis() {
             style={{ left: percent(bar.start), width: percent(bar.width), '--at': bar.start.toFixed(4), '--w': (bar.months / longest).toFixed(3) } as CSSProperties}
           >
             <span className={styles.fill}>
-              <span className={styles.label} data-fit={fitStep(bar.label)}>
-                {bar.label}
+              <span className={styles.name}>
+                <span className={styles.label} data-fit={fitStep(bar.label)}>
+                  {bar.label}
+                </span>
+                <span className={styles.sub}>{titleOf(bar.id)}</span>
               </span>
             </span>
             {outside.has(bar.id) ? (
-              <span className={styles.out} data-fit={fitStep(bar.label)} style={laneStyle(bar.id)}>
+              <span className={styles.out} data-out="" data-fit={fitStep(bar.label)} style={laneStyle(bar.id)}>
                 <span className={styles.text}>{bar.label}</span>
               </span>
             ) : null}
@@ -68,13 +82,14 @@ export function Axis() {
           <path d={tickPaths.quarter} className={styles.quarter} />
           <path d={tickPaths.year} className={styles.year} />
           <path d={tickPaths.numeral} className={styles.year} />
+          <path d={tickPaths.extension} className={`${styles.year} ${styles.extension}`} />
         </svg>
         {numerals.map((tick) => (
           <span
             key={tick.year}
             className={styles.numeral}
             data-year={tick.year}
-            data-narrow={tick.narrow ? '' : undefined}
+            data-tier={tick.tier}
             style={{ left: `clamp(1rem, ${percent(tick.at)}, calc(100% - 1rem))` }}
           >
             {tick.year}

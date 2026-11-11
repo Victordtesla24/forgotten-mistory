@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { navItems } from '@/components/site/nav';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
-import { Ruler } from '@/components/ui/Ruler';
+import { Hairline } from '@/components/ui/Hairline';
 import { site } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <Container className="pt-[clamp(2rem,6vw,5rem)]">
-      <Ruler min={0} max={60} step={1} className="mb-10" />
+      <Hairline className="mb-10" />
       <p className="type-eyebrow text-muted">Error 404</p>
       <h1 className="mt-4 max-w-[18ch]">
         Page <em className="type-serif-em">not found</em>

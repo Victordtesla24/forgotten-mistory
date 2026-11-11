@@ -47,9 +47,9 @@ data and built to the standard of the best studio sites of 2026.
 
 Dark-first with a first-class light theme. Neutral surfaces, one cool accent, one warm
 colour reserved for measured figures, hairline borders, generous space. The one motif is
-the **ruler**: fine tick marks with mono numerals. It is the hero field, the career
-scale, the experience timeline, the section dividers and the closing scene. Do not add a
-second motif.
+the **ruler**: fine tick marks with mono numerals. It is the hero field, the experience
+timeline (the one career scale on the page) and the closing scene; section dividers are
+plain hairlines with no ticks or numerals. Do not add a second motif.
 
 ### Tokens (defined once in `app/globals.css`, exposed through Tailwind 4 `@theme inline`)
 
