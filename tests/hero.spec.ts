@@ -7,7 +7,7 @@ import { headlineFigures } from '@/content/proof';
 import { ENTRANCE_END } from '@/lib/entrance';
 import { careerBars, LABEL_CONFLICTS, timeline } from '@/lib/timeline';
 
-import { entranceDone, hydrated, hydratedAt, open, visibleWordCounts, watchConsole } from './support';
+import { entranceDone, hydrated, open, visibleWordCounts, watchConsole } from './support';
 
 /** The hero is the first child of the page's main element. */
 const HERO = 'main > div:first-child';
@@ -183,7 +183,6 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
       const caption = await page.locator(`${SCALE} p`).first().innerText();
       expect(caption, 'the current role, in words').toContain(careerBars.at(-1)?.label ?? '');
       expect(caption).toContain('March 2026');
-      await hydratedAt(page, `${CHIPS}[data-role="microsoft"]`);
       await page.locator(`${CHIPS}[data-role="microsoft"]`).click();
       await expect(page.getByRole('dialog', { name: roles.find((role) => role.id === 'microsoft')?.title ?? '' })).toBeVisible();
       await page.keyboard.press('Escape');

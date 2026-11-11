@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { roles } from '@/content/experience';
 import { careerBars } from '@/lib/timeline';
 
-import { entranceDone, hydrated, hydratedAt, open } from './support';
+import { entranceDone, hydrated, open } from './support';
 
 const LAUNCHER = '#assistant-launcher';
 const HEADER_BUTTON = '#assistant-header-button';
@@ -93,7 +93,6 @@ test.describe('Ask Mini Vic is never out of reach', () => {
 
     test('the button opens the panel, and Escape returns focus to it', async ({ page }) => {
       await openAs(page, 390, 844);
-      await hydratedAt(page, LAUNCHER);
       await page.locator(LAUNCHER).click();
       const panel = page.getByRole('dialog', { name: 'Ask Mini Vic' });
       await expect(panel).toBeVisible();
@@ -193,7 +192,6 @@ test.describe('on a touch screen the chips are the controls, and the bars are on
 
       const role = roles.find((entry) => entry.id === 'anz');
       const chip = `${SCALE} [data-chips] a[data-role="anz"]`;
-      await hydratedAt(page, chip);
       await page.locator(chip).scrollIntoViewIfNeeded();
       await page.locator(chip).tap();
       await expect(page.getByRole('dialog', { name: role?.title ?? '' })).toBeVisible();

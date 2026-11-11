@@ -102,24 +102,17 @@ export async function enforceProductionCsp(page: Page): Promise<void> {
   });
 }
 
-/** Waits until React has attached to the header, so clicks are never lost to a page that is not interactive yet. */
+/**
+ * Waits until React has taken over the header and every control that opens a panel, so clicks,
+ * taps and keys are never lost to a page that is not interactive yet. The header hydrates first;
+ * the controls of the sections can follow later on a busy machine, and until then a tap on one
+ * is a plain link.
+ */
 export async function hydrated(page: Page): Promise<void> {
   await page.waitForFunction(() => {
-    const button = document.querySelector('header button');
-    return button !== null && Object.keys(button).some((key) => key.startsWith('__reactProps$'));
+    const taken = (element: Element | null) => element !== null && Object.keys(element).some((key) => key.startsWith('__reactProps$'));
+    return taken(document.querySelector('header button')) && Array.from(document.querySelectorAll('[data-detail-trigger]')).every(taken);
   });
-}
-
-/**
- * Waits until React has taken over one element: its handlers are attached, so a tap on it does
- * what a reader's tap does. The header hydrates first; the hero's controls can follow later on a
- * busy machine, and a tap in between is a plain link.
- */
-export async function hydratedAt(page: Page, selector: string): Promise<void> {
-  await page.waitForFunction((target) => {
-    const element = document.querySelector(target);
-    return element !== null && Object.keys(element).some((key) => key.startsWith('__reactProps$'));
-  }, selector);
 }
 
 /** Opens a path and waits for the page to become interactive. */
