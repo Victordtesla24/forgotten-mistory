@@ -16,11 +16,13 @@ import './globals.css';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
 
+// The first screen is set in all three faces (the eyebrow and the figures in the mono, the
+// emphasised phrase of the headline in the serif), so all three are preloaded: a face that
+// arrives after the first layout swaps in with slightly different metrics and moves the type.
 const geistMono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-geist-mono',
   display: 'swap',
-  preload: false,
 });
 
 const instrumentSerif = Instrument_Serif({
@@ -29,7 +31,6 @@ const instrumentSerif = Instrument_Serif({
   style: ['normal', 'italic'],
   variable: '--font-instrument-serif',
   display: 'swap',
-  preload: false,
 });
 
 const { seo } = site;
