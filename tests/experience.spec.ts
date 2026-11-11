@@ -665,10 +665,13 @@ test.describe('the Experience timeline on a phone', { tag: '@mobile' }, () => {
     await page.touchscreen.tap(bar.x, bar.y);
     expect(await selectedRole(page)).toBe('anz');
     await expect(lens).toContainText('Senior Delivery Lead');
-    await expect.poll(() => row.evaluate((list) => {
-      const card = list.querySelector<HTMLElement>('[data-role="anz"]') as HTMLElement;
-      return Math.abs(card.getBoundingClientRect().left - (list.getBoundingClientRect().left + Number.parseFloat(getComputedStyle(list).paddingLeft)));
-    })).toBeLessThanOrEqual(2);
+    // How far a card stands from the row's first position: nil once the row has come to rest on it.
+    const offFirst = (id: string) =>
+      row.evaluate((list, role) => {
+        const card = list.querySelector<HTMLElement>(`[data-role="${role}"]`) as HTMLElement;
+        return Math.abs(card.getBoundingClientRect().left - (list.getBoundingClientRect().left + Number.parseFloat(getComputedStyle(list).paddingLeft)));
+      }, id);
+    await expect.poll(() => offFirst('anz')).toBeLessThanOrEqual(2);
 
     // Moving the row to a card moves the lens to its role.
     await row.evaluate((list) => {
@@ -678,7 +681,8 @@ test.describe('the Experience timeline on a phone', { tag: '@mobile' }, () => {
     await expect.poll(() => selectedRole(page)).toBe('telstra');
     await expect(lens).toContainText('Telstra');
 
-    // A tap on a card selects it.
+    // A tap on a card selects it, once the row has come to rest on the one before.
+    await expect.poll(() => offFirst('telstra')).toBeLessThanOrEqual(2);
     await page.locator(`${TAB}[data-role="nab"]`).tap();
     expect(await selectedRole(page)).toBe('nab');
   });
