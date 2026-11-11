@@ -55,10 +55,12 @@ function properties(layout: ReadingLayout): Record<string, string | number> {
 /** Lays the drawing in `tile` out now and whenever the tile or the screen changes. Returns what stops it. */
 export function placeReading(tile: HTMLElement, id: ReadingId, place: ReadingPlace): () => void {
   const apply = (): void => {
-    // The drawing is placed from the tile's padding box, which is also what the stage's view covers.
+    // The drawing is placed from the tile's padding box, which is also what the stage's view covers. The borders are taken from the
+    // style, not from the integers `offsetWidth` and `clientWidth` round to, so the size does not depend on where the tile falls on a pixel.
     const box = tile.getBoundingClientRect();
-    const width = box.width - (tile.offsetWidth - tile.clientWidth);
-    const height = box.height - (tile.offsetHeight - tile.clientHeight);
+    const style = getComputedStyle(tile);
+    const width = box.width - Number.parseFloat(style.borderLeftWidth) - Number.parseFloat(style.borderRightWidth);
+    const height = box.height - Number.parseFloat(style.borderTopWidth) - Number.parseFloat(style.borderBottomWidth);
     if (width < 1 || height < 1) return;
     const layout = readingLayout(id, { width, height, ratio: window.devicePixelRatio }, place);
     for (const [name, value] of Object.entries(properties(layout))) tile.style.setProperty(name, String(value));

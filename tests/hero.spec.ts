@@ -309,7 +309,9 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     const tile = page.locator('[data-reading="telemetry"][data-place="card"]');
     const layout = await tile.evaluate((element: HTMLElement) => {
       const box = element.getBoundingClientRect();
-      return { width: box.width - (element.offsetWidth - element.clientWidth), height: box.height - (element.offsetHeight - element.clientHeight), mode: element.dataset.mode };
+      const style = getComputedStyle(element);
+      const border = (side: string): number => Number.parseFloat(style.getPropertyValue(`border-${side}-width`));
+      return { width: box.width - border('left') - border('right'), height: box.height - border('top') - border('bottom'), mode: element.dataset.mode };
     });
     const expected = readingLayout('telemetry', { width: layout.width, height: layout.height, ratio: 1 });
     expect(layout.mode, 'the tile says what it draws').toBe(expected.mode);

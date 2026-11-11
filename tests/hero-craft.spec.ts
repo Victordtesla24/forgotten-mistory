@@ -119,11 +119,13 @@ async function layoutStill(page: Page): Promise<void> {
 function tileOf(page: Page, id: ReadingId, place: 'card' | 'panel' = 'card'): Promise<Tile> {
   return page.locator(`[data-reading="${id}"][data-place="${place}"]`).first().evaluate((element: HTMLElement) => {
     const box = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+    const border = (side: 'Top' | 'Right' | 'Bottom' | 'Left'): number => Number.parseFloat(style.getPropertyValue(`border-${side.toLowerCase()}-width`));
     return {
-      width: box.width - (element.offsetWidth - element.clientWidth),
-      height: box.height - (element.offsetHeight - element.clientHeight),
-      left: box.left + element.clientLeft,
-      top: box.top + element.clientTop,
+      width: box.width - border('Left') - border('Right'),
+      height: box.height - border('Top') - border('Bottom'),
+      left: box.left + border('Left'),
+      top: box.top + border('Top'),
     };
   });
 }
@@ -160,89 +162,93 @@ test.describe('every reading keeps its marks countable, at every size and on bot
         const { context, page } = await openView(browser, view, ratio, '/?gl=off');
         try {
           await entranceDone(page);
-          await layoutStill(page);
+          // The tiles are laid by script, on resize observation: under load a measurement can land before a tile has been laid for its final size.
+          // Each attempt waits for the layout to stand still, then measures and compares; it passes as soon as the DOM agrees with the layout, and
+          // fails with the last disagreement if it never does. No tolerance is looser for it.
+          await expect(async () => {
+            await layoutStill(page);
+            // Telemetry: a card draws 100 distinct blocks of 100 devices, 25 across and 4 down, as wide as the tile allows.
+            const telemetryTile = await tileOf(page, 'telemetry');
+            const telemetry = readingLayout('telemetry', { width: telemetryTile.width, height: telemetryTile.height, ratio });
+            expect(telemetry.mode, 'a card draws blocks').toBe('blocks');
+            expect(telemetry.drawn, 'exactly 100 blocks').toBe(100);
+            expect(telemetry.unit).toBe(100);
+            expect(telemetry.drawn * telemetry.unit, 'every device is accounted for by a block').toBe(10_000);
+            expect(telemetry.mark, 'a mark is at least one device pixel').toBeGreaterThanOrEqual(1);
+            expect(telemetry.pitch - telemetry.mark, 'and at least one device pixel from its neighbours').toBeGreaterThanOrEqual(1);
+            expect(telemetry.frame.width / (telemetryTile.width * ratio), 'the blocks span at least 55% of the tile').toBeGreaterThanOrEqual(0.55);
+            await expect(page.locator('[data-reading="telemetry"][data-place="card"]')).toHaveAttribute('data-mode', 'blocks');
+            const [lattice] = await rectsOf(page, '[data-reading="telemetry"][data-place="card"] [class*="Readings_lattice__"]');
+            expect(lattice, 'the lattice is in the DOM drawing').toBeDefined();
+            if (lattice) {
+              expect(Math.abs(lattice.left - telemetryTile.left - telemetry.frame.x / ratio), 'lattice left').toBeLessThanOrEqual(WITHIN);
+              expect(Math.abs(lattice.top - telemetryTile.top - telemetry.frame.y / ratio), 'lattice top').toBeLessThanOrEqual(WITHIN);
+              expect(Math.abs(lattice.right - lattice.left - telemetry.frame.width / ratio), 'lattice width').toBeLessThanOrEqual(WITHIN);
+              expect(Math.abs(lattice.bottom - lattice.top - telemetry.frame.height / ratio), 'lattice height').toBeLessThanOrEqual(WITHIN);
+            }
 
-          // Telemetry: a card draws 100 distinct blocks of 100 devices, 25 across and 4 down, as wide as the tile allows.
-          const telemetryTile = await tileOf(page, 'telemetry');
-          const telemetry = readingLayout('telemetry', { width: telemetryTile.width, height: telemetryTile.height, ratio });
-          expect(telemetry.mode, 'a card draws blocks').toBe('blocks');
-          expect(telemetry.drawn, 'exactly 100 blocks').toBe(100);
-          expect(telemetry.unit).toBe(100);
-          expect(telemetry.drawn * telemetry.unit, 'every device is accounted for by a block').toBe(10_000);
-          expect(telemetry.mark, 'a mark is at least one device pixel').toBeGreaterThanOrEqual(1);
-          expect(telemetry.pitch - telemetry.mark, 'and at least one device pixel from its neighbours').toBeGreaterThanOrEqual(1);
-          expect(telemetry.frame.width / (telemetryTile.width * ratio), 'the blocks span at least 55% of the tile').toBeGreaterThanOrEqual(0.55);
-          await expect(page.locator('[data-reading="telemetry"][data-place="card"]')).toHaveAttribute('data-mode', 'blocks');
-          const [lattice] = await rectsOf(page, '[data-reading="telemetry"][data-place="card"] [class*="Readings_lattice__"]');
-          expect(lattice, 'the lattice is in the DOM drawing').toBeDefined();
-          if (lattice) {
-            expect(Math.abs(lattice.left - telemetryTile.left - telemetry.frame.x / ratio), 'lattice left').toBeLessThanOrEqual(WITHIN);
-            expect(Math.abs(lattice.top - telemetryTile.top - telemetry.frame.y / ratio), 'lattice top').toBeLessThanOrEqual(WITHIN);
-            expect(Math.abs(lattice.right - lattice.left - telemetry.frame.width / ratio), 'lattice width').toBeLessThanOrEqual(WITHIN);
-            expect(Math.abs(lattice.bottom - lattice.top - telemetry.frame.height / ratio), 'lattice height').toBeLessThanOrEqual(WITHIN);
-          }
+            // Every tile ends in the same line of key: 13 px or more, the strip's height, on the tile's bottom edge, clear of the drawing.
+            for (const id of IDS) {
+              const tile = await tileOf(page, id);
+              const key = await page.locator(`[data-reading="${id}"][data-place="card"] [class*="Readings_key__"]`).evaluate((element) => {
+                const box = element.getBoundingClientRect();
+                return { text: element.textContent ?? '', size: Number.parseFloat(getComputedStyle(element).fontSize), top: box.top, bottom: box.bottom, height: box.height, clipped: element.scrollWidth > element.clientWidth };
+              });
+              const figure = headlineFigures.find((entry) => entry.id === id);
+              expect(key.text.startsWith(keyOf(id, id === 'telemetry' ? 'blocks' : undefined)), `${id}: the key says what one mark stands for (${key.text})`).toBe(true);
+              if (view.w >= 1280) expect(key.text.endsWith(figure?.bound ?? ''), `${id}: and the count the figure states beyond what is drawn`).toBe(true);
+              expect(key.size, `${id}: the key is at least 13 px`).toBeGreaterThanOrEqual(13);
+              expect(key.clipped, `${id}: the key is whole`).toBe(false);
+              expect(Math.abs(key.height - KEY_STRIP), `${id}: the key strip`).toBeLessThanOrEqual(WITHIN);
+              expect(Math.abs(key.bottom - (tile.top + tile.height)), `${id}: on the tile's bottom edge`).toBeLessThanOrEqual(WITHIN);
+              const drawn = id === 'telemetry' ? [lattice] : await rectsOf(page, `[data-reading="${id}"][data-place="card"] [class*="Readings_${id === 'evidence' ? 'cell' : 'mark'}__"]`);
+              const lowest = Math.max(...drawn.map((rect) => rect?.bottom ?? 0));
+              expect(key.top - lowest, `${id}: the drawing ends above the key strip`).toBeGreaterThanOrEqual(-WITHIN);
+            }
 
-          // Every tile ends in the same line of key: 13 px or more, the strip's height, on the tile's bottom edge, clear of the drawing.
-          for (const id of IDS) {
-            const tile = await tileOf(page, id);
-            const key = await page.locator(`[data-reading="${id}"][data-place="card"] [class*="Readings_key__"]`).evaluate((element) => {
-              const box = element.getBoundingClientRect();
-              return { text: element.textContent ?? '', size: Number.parseFloat(getComputedStyle(element).fontSize), top: box.top, bottom: box.bottom, height: box.height, clipped: element.scrollWidth > element.clientWidth };
+            // Evidence: 200 separate cells, each fill a pixel in from its cell, never under two device pixels tall.
+            const evidenceTile = await tileOf(page, 'evidence');
+            const evidence = readingLayout('evidence', { width: evidenceTile.width, height: evidenceTile.height, ratio });
+            expect(evidence.fillWidth, 'a fill is at least one device pixel wide').toBeGreaterThanOrEqual(1);
+            expect(evidence.pitchX - evidence.fillWidth, 'neighbouring fills never touch: their cells, outlines and insets are between').toBeGreaterThanOrEqual(2 * (evidence.outline + evidence.inset));
+            expect(evidence.floor, 'a fill is at least two device pixels tall').toBeGreaterThanOrEqual(2);
+            expect(evidence.room, 'and there is room for it').toBeGreaterThanOrEqual(evidence.floor);
+            const cells = await rectsOf(page, '[data-reading="evidence"][data-place="card"] [class*="Readings_cell__"]');
+            expect(cells, 'all 200 cells').toHaveLength(200);
+            const firstCell = cells[0];
+            const lastCell = cells.at(-1);
+            if (firstCell && lastCell) {
+              expect(Math.abs(firstCell.left - evidenceTile.left - evidence.frame.x / ratio), 'first cell left').toBeLessThanOrEqual(WITHIN);
+              expect(Math.abs(firstCell.top - evidenceTile.top - evidence.frame.y / ratio), 'first cell top').toBeLessThanOrEqual(WITHIN);
+              expect(Math.abs(lastCell.right - evidenceTile.left - (evidence.frame.x + evidence.frame.width) / ratio), 'last cell right').toBeLessThanOrEqual(WITHIN);
+              expect(Math.abs(lastCell.bottom - evidenceTile.top - (evidence.frame.y + evidence.frame.height) / ratio), 'last cell bottom').toBeLessThanOrEqual(WITHIN);
+            }
+            const outline = await page.locator('[data-reading="evidence"][data-place="card"] [class*="Readings_cell__"]').first().evaluate((cell) => {
+              const probe = document.createElement('i');
+              probe.style.borderTop = '1px solid var(--line-strong)';
+              document.body.append(probe);
+              const token = getComputedStyle(probe).borderTopColor;
+              probe.remove();
+              return { cell: getComputedStyle(cell).borderTopColor, token };
             });
-            const figure = headlineFigures.find((entry) => entry.id === id);
-            expect(key.text.startsWith(keyOf(id, id === 'telemetry' ? 'blocks' : undefined)), `${id}: the key says what one mark stands for (${key.text})`).toBe(true);
-            if (view.w >= 1280) expect(key.text.endsWith(figure?.bound ?? ''), `${id}: and the count the figure states beyond what is drawn`).toBe(true);
-            expect(key.size, `${id}: the key is at least 13 px`).toBeGreaterThanOrEqual(13);
-            expect(key.clipped, `${id}: the key is whole`).toBe(false);
-            expect(Math.abs(key.height - KEY_STRIP), `${id}: the key strip`).toBeLessThanOrEqual(WITHIN);
-            expect(Math.abs(key.bottom - (tile.top + tile.height)), `${id}: on the tile's bottom edge`).toBeLessThanOrEqual(WITHIN);
-            const drawn = id === 'telemetry' ? [lattice] : await rectsOf(page, `[data-reading="${id}"][data-place="card"] [class*="Readings_${id === 'evidence' ? 'cell' : 'mark'}__"]`);
-            const lowest = Math.max(...drawn.map((rect) => rect?.bottom ?? 0));
-            expect(key.top - lowest, `${id}: the drawing ends above the key strip`).toBeGreaterThanOrEqual(-WITHIN);
-          }
+            expect(outline.cell, 'the outline of a cell is --line-strong').toBe(outline.token);
 
-          // Evidence: 200 separate cells, each fill a pixel in from its cell, never under two device pixels tall.
-          const evidenceTile = await tileOf(page, 'evidence');
-          const evidence = readingLayout('evidence', { width: evidenceTile.width, height: evidenceTile.height, ratio });
-          expect(evidence.fillWidth, 'a fill is at least one device pixel wide').toBeGreaterThanOrEqual(1);
-          expect(evidence.pitchX - evidence.fillWidth, 'neighbouring fills never touch: their cells, outlines and insets are between').toBeGreaterThanOrEqual(2 * (evidence.outline + evidence.inset));
-          expect(evidence.floor, 'a fill is at least two device pixels tall').toBeGreaterThanOrEqual(2);
-          expect(evidence.room, 'and there is room for it').toBeGreaterThanOrEqual(evidence.floor);
-          const cells = await rectsOf(page, '[data-reading="evidence"][data-place="card"] [class*="Readings_cell__"]');
-          expect(cells, 'all 200 cells').toHaveLength(200);
-          const firstCell = cells[0];
-          const lastCell = cells.at(-1);
-          if (firstCell && lastCell) {
-            expect(Math.abs(firstCell.left - evidenceTile.left - evidence.frame.x / ratio), 'first cell left').toBeLessThanOrEqual(WITHIN);
-            expect(Math.abs(firstCell.top - evidenceTile.top - evidence.frame.y / ratio), 'first cell top').toBeLessThanOrEqual(WITHIN);
-            expect(Math.abs(lastCell.right - evidenceTile.left - (evidence.frame.x + evidence.frame.width) / ratio), 'last cell right').toBeLessThanOrEqual(WITHIN);
-            expect(Math.abs(lastCell.bottom - evidenceTile.top - (evidence.frame.y + evidence.frame.height) / ratio), 'last cell bottom').toBeLessThanOrEqual(WITHIN);
-          }
-          const outline = await page.locator('[data-reading="evidence"][data-place="card"] [class*="Readings_cell__"]').first().evaluate((cell) => {
-            const probe = document.createElement('i');
-            probe.style.borderTop = '1px solid var(--line-strong)';
-            document.body.append(probe);
-            const token = getComputedStyle(probe).borderTopColor;
-            probe.remove();
-            return { cell: getComputedStyle(cell).borderTopColor, token };
-          });
-          expect(outline.cell, 'the outline of a cell is --line-strong').toBe(outline.token);
-
-          // Portfolio: 40 separate marks in one run of two rows of 20, evenly spaced, with no squad drawn.
-          const portfolioTile = await tileOf(page, 'portfolio');
-          const portfolio = readingLayout('portfolio', { width: portfolioTile.width, height: portfolioTile.height, ratio });
-          expect(portfolio.mark).toBeGreaterThanOrEqual(1);
-          expect(portfolio.pitch - portfolio.mark, 'marks are a device pixel apart at the least').toBeGreaterThanOrEqual(1);
-          const marks = await rectsOf(page, '[data-reading="portfolio"][data-place="card"] [class*="Readings_mark__"]');
-          expect(marks, '40 marks').toHaveLength(40);
-          expect(Math.abs(Math.min(...marks.map((mark) => mark.left)) - portfolioTile.left - portfolio.frame.x / ratio), 'marks left').toBeLessThanOrEqual(WITHIN);
-          expect(Math.abs(Math.max(...marks.map((mark) => mark.right)) - portfolioTile.left - (portfolio.frame.x + portfolio.frame.width) / ratio), 'marks right').toBeLessThanOrEqual(WITHIN);
-          const columns = [...new Set(marks.map((mark) => Math.round(mark.left * ratio)))].sort((a, b) => a - b);
-          expect(columns, 'twenty columns').toHaveLength(cohort.across);
-          for (let column = 1; column < columns.length; column += 1) {
-            expect(Math.abs((columns[column] ?? 0) - (columns[column - 1] ?? 0) - portfolio.pitch), `column ${column} is one pitch from the one before: no squad is drawn`).toBeLessThanOrEqual(1);
-          }
-          expect(new Set(marks.map((mark) => Math.round(mark.top * ratio))).size, 'two rows').toBe(cohort.down);
+            // Portfolio: 40 separate marks in one run of two rows of 20, evenly spaced, with no squad drawn.
+            const portfolioTile = await tileOf(page, 'portfolio');
+            const portfolio = readingLayout('portfolio', { width: portfolioTile.width, height: portfolioTile.height, ratio });
+            expect(portfolio.mark).toBeGreaterThanOrEqual(1);
+            expect(portfolio.pitch - portfolio.mark, 'marks are a device pixel apart at the least').toBeGreaterThanOrEqual(1);
+            const marks = await rectsOf(page, '[data-reading="portfolio"][data-place="card"] [class*="Readings_mark__"]');
+            expect(marks, '40 marks').toHaveLength(40);
+            expect(Math.abs(Math.min(...marks.map((mark) => mark.left)) - portfolioTile.left - portfolio.frame.x / ratio), 'marks left').toBeLessThanOrEqual(WITHIN);
+            expect(Math.abs(Math.max(...marks.map((mark) => mark.right)) - portfolioTile.left - (portfolio.frame.x + portfolio.frame.width) / ratio), 'marks right').toBeLessThanOrEqual(WITHIN);
+            const columns = [...new Set(marks.map((mark) => Math.round(mark.left * ratio)))].sort((a, b) => a - b);
+            expect(columns, 'twenty columns').toHaveLength(cohort.across);
+            for (let column = 1; column < columns.length; column += 1) {
+              expect(Math.abs((columns[column] ?? 0) - (columns[column - 1] ?? 0) - portfolio.pitch), `column ${column} is one pitch from the one before: no squad is drawn`).toBeLessThanOrEqual(1);
+            }
+            expect(new Set(marks.map((mark) => Math.round(mark.top * ratio))).size, 'two rows').toBe(cohort.down);
+          }).toPass({ timeout: 5000 });
         } finally {
           await context.close();
         }
