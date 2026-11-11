@@ -60,7 +60,6 @@
 
 .stage {
   position: relative;
-  order: 2;
 }
 
 .track {
@@ -594,9 +593,8 @@
 
 /* ---- The card: the one tab panel ----------------------------------------------------------- */
 
-/* Touch: a band as wide as the screen above the axis, so the connector lands on it at any position. */
+/* Touch: a band as wide as the screen above the axis, so the connector lands on it at any position. It comes first in the markup too, so that a page still arriving never draws the axis and then pushes it down. */
 .card {
-  order: 1;
   min-block-size: 10.5rem;
   padding: 0.875rem var(--gutter);
   border-block: 1px solid var(--line);
@@ -637,17 +635,6 @@
 .meta > span + span::before {
   content: '·';
   margin-inline-end: 0.5rem;
-}
-
-/* On a narrow card the line may break between its parts; no part then starts a line with a stray dot. */
-@media (max-width: 639px) {
-  .meta {
-    column-gap: 0.875rem;
-  }
-
-  .meta > span + span::before {
-    content: none;
-  }
 }
 
 .title {
@@ -707,6 +694,50 @@
   inline-size: 1rem;
   block-size: 1rem;
   color: var(--accent);
+}
+
+/*
+ * On a narrow card the meta line has the whole width of the card, so it stays one line, and the
+ * title and the way in share the next row; the rows stand closer, so that the whole band, the
+ * axis and the tabs fit a short phone's first screen. No part of the line starts with a stray dot.
+ */
+@media (max-width: 639px) {
+  .card {
+    padding-block: 0.75rem;
+  }
+
+  .body {
+    row-gap: 0.375rem;
+  }
+
+  .who {
+    display: contents;
+  }
+
+  .meta {
+    grid-area: 1 / 1 / 2 / -1;
+    column-gap: 0.875rem;
+  }
+
+  .meta > span + span::before {
+    content: none;
+  }
+
+  .title {
+    grid-area: 2 / 1;
+  }
+
+  .open {
+    grid-area: 2 / 2;
+  }
+
+  .body > :nth-child(3) {
+    grid-area: 3 / 1 / 4 / -1;
+  }
+
+  .body > :nth-child(4) {
+    grid-area: 4 / 1 / 5 / -1;
+  }
 }
 
 /* ---- Wide: a fine pointer with room. The tabs sit on the bars and the card stands above its bar. */

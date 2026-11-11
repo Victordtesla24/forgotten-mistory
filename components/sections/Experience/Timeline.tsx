@@ -366,6 +366,25 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
       className={styles.root}
       style={laneVars(lanes, role.centre)}
     >
+      <div role="tabpanel" id="role-panel" aria-labelledby={`role-tab-${role.id}`} data-lens="" className={styles.card}>
+        <div key={role.id} className={styles.body} data-moved={moved ? '' : undefined}>
+          <div className={styles.who}>
+            <p className={styles.meta}>
+              <span>{role.label}</span>
+              <span>{role.years}</span>
+              <span>{role.duration}</span>
+            </p>
+            <h3 className={styles.title}>{role.shortTitle}</h3>
+          </div>
+          <button type="button" aria-haspopup="dialog" className={styles.open} onClick={(event) => open(role.panel, event.currentTarget)}>
+            Open role
+            <ArrowRight aria-hidden="true" className={styles.arrow} />
+          </button>
+          <RoleOutcome role={role} />
+          {visuals[role.id]}
+        </div>
+      </div>
+
       <div className={styles.stage} onPointerMove={onStageMove} onPointerLeave={onStageLeave} onClick={onStageClick}>
         <div
           ref={trackRef}
@@ -440,25 +459,6 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
               </span>
             </button>
           ))}
-        </div>
-      </div>
-
-      <div role="tabpanel" id="role-panel" aria-labelledby={`role-tab-${role.id}`} data-lens="" className={styles.card}>
-        <div key={role.id} className={styles.body} data-moved={moved ? '' : undefined}>
-          <div className={styles.who}>
-            <p className={styles.meta}>
-              <span>{role.label}</span>
-              <span>{role.years}</span>
-              <span>{role.duration}</span>
-            </p>
-            <h3 className={styles.title}>{role.shortTitle}</h3>
-          </div>
-          <button type="button" aria-haspopup="dialog" className={styles.open} onClick={(event) => open(role.panel, event.currentTarget)}>
-            Open role
-            <ArrowRight aria-hidden="true" className={styles.arrow} />
-          </button>
-          <RoleOutcome role={role} />
-          {visuals[role.id]}
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { NOW, TIMELINE_START } from '@/content/experience';
-import { CARD_PAD, cells, KEY_STRIP, readingLayout, type ReadingId, type Tile } from '@/lib/readings';
+import { CARD_PAD, KEY_STRIP, readingLayout, type ReadingId, type Tile } from '@/lib/readings';
 
 import styles from './RoleVisual.module.css';
 import type { RoleView } from './roles';
@@ -35,7 +35,7 @@ interface Lattice {
   rows: number;
   /** The width of a cell's outline: whole device pixels, in CSS px. 0 where the cells have none. */
   line: number;
-  /** What stands in a cell that is full: the whole of its box, or a fill of this height standing on its floor, a pixel in from the outline at each side. */
+  /** What stands in a cell that is full: the whole of its box, or a fill of this height standing on the floor inside the outline, the whole width of it. */
   fill: 'cell' | { height: number; inset: number };
 }
 
@@ -95,7 +95,7 @@ function reading(id: ReadingId, tile: Tile): Drawing | null {
         columns: layout.columns,
         rows: layout.rows,
         line: layout.outline,
-        fill: { height: Math.max(layout.floor, Math.round(cells.rest * layout.room)), inset: layout.outline + layout.inset },
+        fill: { height: layout.rested, inset: layout.outline },
       },
       runs: [{ from: 0, to: layout.columns, top: 0, bottom: layout.rows }],
       key: layout.key,
