@@ -75,6 +75,16 @@
   list-style: none;
 }
 
+/* The bars stand on a lit plate: a wash of the accent that rises from the baseline and is gone by the lanes. */
+.bars::before {
+  content: '';
+  position: absolute;
+  inset: -2.5rem 0 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, color-mix(in srgb, var(--accent) 10%, transparent), transparent);
+}
+
 /* Every bar is the container its name measures itself against. */
 .bar {
   position: absolute;
