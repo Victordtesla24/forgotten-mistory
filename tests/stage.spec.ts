@@ -21,9 +21,9 @@ const PRE_STAGE_INITIAL_GZIP = 237_013;
  * The stage and the hero keep to 6 kB; the Experience timeline's controls (tabs, playhead, drag,
  * the card) are interactive client code that the first render needs, and may add 4 kB more. The Work
  * cards and panels answer through a module that loads after the page (`behaviour.ts`), so only its
- * loader is in the first JavaScript, and it may add 1 kB.
+ * loader is in the first JavaScript, and it stays inside the same limit.
  */
-const INITIAL_GROWTH_LIMIT = (6 + 4 + 1) * 1000;
+const INITIAL_GROWTH_LIMIT = (6 + 4) * 1000;
 const LAZY_ENGINE_LIMIT = 170 * 1000;
 
 /** The budgets of DESIGN.md section 5, per frame for the whole page. */

@@ -548,7 +548,9 @@ test.describe('without JavaScript the hero looks finished', { tag: '@desktop' },
       expect(measured.h1, 'the headline is in the top of the first screen').toBeLessThanOrEqual(200);
       expect(measured.eyebrow, 'the eyebrow is under the header').toBeGreaterThan(56);
       expect(measured.scroll).toBeLessThanOrEqual(0);
-      expect(measured.panels).toHaveLength(headlineFigures.length + projects.length + roles.length);
+      expect(measured.panels, 'a panel for each of the figures, each of the roles and each of the projects').toHaveLength(
+        headlineFigures.length + roles.length + projects.length,
+      );
       for (const panel of measured.panels) {
         expect(panel.left, `${panel.id} starts inside the gutter`).toBeGreaterThanOrEqual(measured.gutter - 1);
         expect(panel.right, `${panel.id} ends inside the gutter`).toBeLessThanOrEqual(measured.width - measured.gutter + 1);
