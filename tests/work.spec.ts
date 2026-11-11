@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
+import sharp from 'sharp';
 
 import { projects } from '@/content/work';
 import { schematicLayout } from '@/lib/schematic';
@@ -14,6 +15,10 @@ async function openWork(page: Page, path: string): Promise<void> {
 }
 const card = (page: Page, repo: string) => page.locator(`${SECTION} article[data-project="${repo}"]`);
 const panelId = (repo: string) => `project-${repo}-detail`;
+
+/** The space an element takes in the layout, which a transform does not change. */
+const layoutSize = (owner: Locator) =>
+  owner.evaluate((element) => (element instanceof HTMLElement ? { width: element.offsetWidth, height: element.offsetHeight } : null));
 
 const [aether, , ralph, , jyotish] = projects;
 if (!aether || !ralph || !jyotish) throw new Error('content/work.ts no longer holds the six projects');
@@ -100,7 +105,8 @@ test.describe('the cards and their schematics', () => {
     await openWork(page, '/');
     const owner = card(page, aether.repo);
     const caption = owner.locator('p[aria-live]');
-    const size = async () => owner.boundingBox().then((box) => ({ width: box?.width, height: box?.height }));
+    // The space the card takes: a lean (a transform) never changes it, and nothing else may.
+    const size = () => layoutSize(owner);
     const before = await size();
     await expect(caption).toHaveText('');
     // Every change of the caption is written down with the stage lit at that moment, so the order is read
@@ -427,5 +433,242 @@ test.describe('the entrance with reduced motion', () => {
 test.describe('the entrance with Motion off', () => {
   test('there is none: the first frame is the settled state', async ({ page }) => {
     await restsAtOnce(page, '/?motion=off');
+  });
+});
+
+/**
+ * What `owner` shows of the pointer at this moment: its transform, how deep the point of the card at
+ * (`dx`, `dy`) from its centre has gone from the card's plane (negative is away from the viewer), and the
+ * light on its border with where the card says it is.
+ */
+async function respond(owner: Locator, dx = 0, dy = 0) {
+  return owner.evaluate(
+    (element, offset) => {
+      const style = getComputedStyle(element);
+      const matrix = new DOMMatrix(style.transform === 'none' ? undefined : style.transform);
+      const edge = getComputedStyle(element, '::after');
+      return {
+        transform: style.transform,
+        depth: matrix.transformPoint(new DOMPoint(offset.dx, offset.dy, 0)).z,
+        light: element.dataset.light ?? null,
+        lightX: parseFloat(element.style.getPropertyValue('--light-x')),
+        lightY: parseFloat(element.style.getPropertyValue('--light-y')),
+        edge: { content: edge.content, opacity: edge.opacity, image: edge.backgroundImage },
+      };
+    },
+    { dx, dy },
+  );
+}
+
+/** Two frames of the page: whatever a pointer move was going to start has started. */
+const afterFrames = (page: Page) => page.evaluate(() => new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done()))));
+
+/** The card scrolled into view, and where it stands once the rail has finished arriving (at rest, so this is the card as laid out). */
+async function restingBox(owner: Locator) {
+  await owner.scrollIntoViewIfNeeded();
+  await expect(owner.page().locator(SECTION)).not.toHaveAttribute('data-entrance', /^(armed|play)$/);
+  const box = await owner.boundingBox();
+  if (!box) throw new Error('the card has no box');
+  return box;
+}
+
+test.describe('the response of a card to a mouse', { tag: '@desktop' }, () => {
+  test('it leans so that the part under the pointer sinks, follows the pointer, and a light follows it round the border', async ({ page }) => {
+    await openWork(page, '/?gl=off');
+    const owner = card(page, ralph.repo);
+    const box = await restingBox(owner);
+    expect((await respond(owner)).transform).toBe('none');
+    expect((await respond(owner)).light).toBeNull();
+
+    const upperLeft = { x: box.x + box.width * 0.2, y: box.y + box.height * 0.25 };
+    await page.mouse.move(upperLeft.x, upperLeft.y, { steps: 3 });
+    const dxA = upperLeft.x - (box.x + box.width / 2);
+    const dyA = upperLeft.y - (box.y + box.height / 2);
+    await expect.poll(async () => (await respond(owner, dxA, dyA)).depth).toBeLessThan(-0.5);
+    const first = await respond(owner, dxA, dyA);
+    expect(first.transform).not.toBe('none');
+    expect(first.light).toBe('on');
+    expect(first.lightX).toBeCloseTo(upperLeft.x - box.x, 0);
+    expect(first.lightY).toBeCloseTo(upperLeft.y - box.y, 0);
+    expect(first.edge.content).toBe('""');
+    expect(first.edge.image).toContain('radial-gradient');
+    await expect.poll(async () => (await respond(owner)).edge.opacity).toBe('1');
+
+    // Across and down to the other corner: the lean turns the other way and the light has moved with the pointer.
+    const lowerRight = { x: box.x + box.width * 0.8, y: box.y + box.height * 0.75 };
+    await page.mouse.move(lowerRight.x, lowerRight.y, { steps: 6 });
+    const dxB = lowerRight.x - (box.x + box.width / 2);
+    const dyB = lowerRight.y - (box.y + box.height / 2);
+    await expect.poll(async () => (await respond(owner, dxB, dyB)).depth).toBeLessThan(-0.5);
+    const second = await respond(owner, dxB, dyB);
+    expect(second.transform).not.toBe(first.transform);
+    expect(second.lightX).toBeCloseTo(lowerRight.x - box.x, 0);
+    expect(second.lightY).toBeCloseTo(lowerRight.y - box.y, 0);
+    // What sank under the pointer a moment ago has come up.
+    expect((await respond(owner, dxA, dyA)).depth).toBeGreaterThan(0);
+
+    // It leans and nothing else of the page moves: the card takes the space it took.
+    const space = await layoutSize(owner);
+    expect(Math.abs((space?.width ?? 0) - box.width)).toBeLessThanOrEqual(1);
+    expect(Math.abs((space?.height ?? 0) - box.height)).toBeLessThanOrEqual(1);
+  });
+
+  test('on leaving, the card springs back flat and the light fades out', async ({ page }) => {
+    await openWork(page, '/?gl=off');
+    const owner = card(page, aether.repo);
+    const box = await restingBox(owner);
+    await page.mouse.move(box.x + box.width * 0.2, box.y + box.height * 0.4, { steps: 3 });
+    await expect.poll(async () => (await respond(owner)).transform).not.toBe('none');
+    // The lean is at its place once the transform has not changed for a dozen frames.
+    await page.evaluate(
+      (selector) =>
+        new Promise<void>((done) => {
+          const element = document.querySelector(selector);
+          let before = '';
+          let still = 0;
+          const look = () => {
+            const now = element ? getComputedStyle(element).transform : '';
+            still = now === before ? still + 1 : 0;
+            before = now;
+            if (still >= 12) done();
+            else requestAnimationFrame(look);
+          };
+          look();
+        }),
+      `${SECTION} article[data-project="${aether.repo}"]`,
+    );
+    // From here every frame is written down until the card is flat, so that the way back is read from what it did.
+    await owner.evaluate((element) => {
+      const record = { turn: [] as number[], flat: false };
+      Object.assign(window, { springBack: record });
+      const look = () => {
+        const transform = getComputedStyle(element).transform;
+        record.turn.push(transform === 'none' ? 0 : Math.abs(new DOMMatrix(transform).m13));
+        if (transform === 'none') record.flat = true;
+        else requestAnimationFrame(look);
+      };
+      look();
+    });
+    await page.mouse.move(2, 2);
+    await expect.poll(() => page.evaluate(() => (window as unknown as { springBack: { flat: boolean } }).springBack.flat)).toBe(true);
+    const { turn } = await page.evaluate(() => (window as unknown as { springBack: { turn: number[] } }).springBack);
+    const peak = Math.max(...turn);
+    expect(peak, 'the card was leaning when the pointer left').toBeGreaterThan(0.02);
+    // A spring and not a jump: several different angles on the way, each no larger than the one before (to a hair), ending flat.
+    expect(new Set(turn).size).toBeGreaterThanOrEqual(4);
+    turn.forEach((value, at) => expect(value).toBeLessThanOrEqual((turn[at - 1] ?? peak) + peak * 0.05));
+    expect(turn.at(-1)).toBe(0);
+    const after = await respond(owner);
+    expect(after.transform).toBe('none');
+    expect(after.light).toBeNull();
+    await expect.poll(async () => (await respond(owner)).edge.opacity).toBe('0');
+  });
+
+  test('pressing flattens the card at once, and the next movement leans it again', async ({ page }) => {
+    await openWork(page, '/?gl=off');
+    const owner = card(page, jyotish.repo);
+    const box = await restingBox(owner);
+    await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.3, { steps: 3 });
+    await expect.poll(async () => (await respond(owner)).transform).not.toBe('none');
+    await page.mouse.down();
+    await expect.poll(async () => (await respond(owner)).transform).toBe('none');
+    await page.mouse.up();
+    await page.mouse.move(box.x + box.width * 0.7, box.y + box.height * 0.35, { steps: 2 });
+    await expect.poll(async () => (await respond(owner)).transform).not.toBe('none');
+    await expect(page.locator('dialog[open]')).toHaveCount(0);
+  });
+
+  for (const [name, path, reduce] of [
+    ['reduced motion', '/?gl=off', true],
+    ['Motion off', '/?gl=off&motion=off', false],
+  ] as const) {
+    test(`with ${name} a mouse over a card changes nothing: no lean, no light`, async ({ page }) => {
+      if (reduce) await page.emulateMedia({ reducedMotion: 'reduce' });
+      await openWork(page, path);
+      const owner = card(page, aether.repo);
+      const box = await restingBox(owner);
+      await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.3, { steps: 4 });
+      await page.mouse.move(box.x + box.width * 0.7, box.y + box.height * 0.6, { steps: 4 });
+      await afterFrames(page);
+      await afterFrames(page);
+      const now = await respond(owner);
+      expect(now.transform).toBe('none');
+      expect(now.light).toBeNull();
+      expect(now.edge.content).toBe('none');
+    });
+  }
+
+  test('the lean and the light stop the moment Motion is turned off', async ({ page }) => {
+    await openWork(page, '/?gl=off');
+    const owner = card(page, ralph.repo);
+    const box = await restingBox(owner);
+    await page.mouse.move(box.x + box.width * 0.25, box.y + box.height * 0.3, { steps: 3 });
+    await expect.poll(async () => (await respond(owner)).transform).not.toBe('none');
+    await page.evaluate(() => {
+      document.documentElement.dataset.motion = 'off';
+    });
+    await expect.poll(async () => (await respond(owner)).transform).toBe('none');
+    const now = await respond(owner);
+    expect(now.light).toBeNull();
+    expect(now.edge.content).toBe('none');
+  });
+});
+
+test.describe('the response of a card on a touch screen', { tag: '@mobile' }, () => {
+  test('a tap, and even a mouse event, leave the card flat and without a light', async ({ page }) => {
+    await openWork(page, '/?gl=off');
+    const owner = card(page, jyotish.repo);
+    const box = await restingBox(owner);
+    await owner.locator('[data-schematic] button').tap();
+    await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.3, { steps: 3 });
+    await page.mouse.move(box.x + box.width * 0.6, box.y + box.height * 0.5, { steps: 3 });
+    await afterFrames(page);
+    await afterFrames(page);
+    const now = await respond(owner);
+    expect(now.transform).toBe('none');
+    expect(now.light).toBeNull();
+    expect(now.edge.content).toBe('none');
+  });
+});
+
+test.describe('focus on a card', { tag: '@desktop' }, () => {
+  test('keyboard focus shows the accent ring on all four sides of each of its controls, above the light layer', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await openWork(page, '/');
+    const owner = card(page, aether.repo);
+    await restingBox(owner);
+    const accent = await page.evaluate(() => {
+      const probe = document.createElement('i');
+      probe.style.color = 'var(--accent)';
+      document.body.append(probe);
+      const colour = getComputedStyle(probe).color;
+      probe.remove();
+      return (colour.match(/\d+/g) ?? []).slice(0, 3).map(Number);
+    });
+    // The ring is 2 px wide: `inside` is where its middle lies measured in from the control's edge, a pixel that is wholly ring.
+    for (const [control, inside] of [
+      [owner.locator('[data-schematic] button'), 2],
+      [owner.locator('[data-detail-trigger]'), 1],
+    ] as const) {
+      await page.keyboard.press('Shift');
+      await control.focus();
+      await expect(control).toBeFocused();
+      const box = await control.boundingBox();
+      if (!box) throw new Error('the control has no box');
+      const { data, info } = await sharp(await page.screenshot()).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+      const centre = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+      const sides = {
+        left: { x: box.x + inside, y: centre.y },
+        right: { x: box.x + box.width - inside, y: centre.y },
+        top: { x: centre.x, y: box.y + inside },
+        bottom: { x: centre.x, y: box.y + box.height - inside },
+      };
+      for (const [side, point] of Object.entries(sides)) {
+        const at = (Math.floor(point.y) * info.width + Math.floor(point.x)) * info.channels;
+        const pixel = [data[at], data[at + 1], data[at + 2]];
+        const off = Math.max(...pixel.map((value, channel) => Math.abs((value ?? 0) - (accent[channel] ?? 0))));
+        expect(off, `the ${side} side of the ring, ${pixel.join(',')} against the accent ${accent.join(',')}`).toBeLessThanOrEqual(24);
+      }
+    }
   });
 });

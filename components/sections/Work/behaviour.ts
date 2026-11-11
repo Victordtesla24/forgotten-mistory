@@ -12,9 +12,12 @@
  *
  * The first time the rail comes into view its cards arrive in order (`arrive`). A rail that is already in
  * view when this has loaded, and any page that asks for less motion, keeps its cards as they are.
+ * A mouse over a card leans it and runs a light along its border (`tilt.ts`).
  */
 
 import { duration, reducedMotion } from '@/lib/motion';
+
+import { attachTilt } from './tilt';
 
 /** How long a running schematic lights one stage before it goes on to the next, in milliseconds. */
 const STAGE_STEP = duration.entrance;
@@ -200,6 +203,7 @@ export function attach(section: HTMLElement): () => void {
   );
 
   arrive(section, signal);
+  attachTilt(section, signal);
   section.dataset.interactive = 'true';
   return () => {
     abort.abort();

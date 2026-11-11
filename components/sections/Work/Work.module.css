@@ -178,6 +178,37 @@
   border-bottom: 1px solid var(--line);
 }
 
+/*
+ * The border light. `tilt.ts` sets data-light on the card while a mouse is over it, and --light-x and
+ * --light-y to where the pointer is; the light is the card's own edge (the two pixels inside its hairline)
+ * painted by a gradient centred there and fading out, so it follows the pointer round the border and is
+ * never a box. It sits under every control's focus ring. A touch screen, reduced motion and Motion off
+ * never match this rule, so those cards have no light at all.
+ */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :global(:root:not([data-motion='off'])) .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 2px;
+    border-radius: calc(var(--radius-md) - 1px);
+    pointer-events: none;
+    background: radial-gradient(16rem circle at var(--light-x, 50%) var(--light-y, 50%), var(--accent), transparent 70%);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    opacity: 0;
+    transition: opacity var(--duration-state) var(--ease);
+  }
+
+  :global(:root:not([data-motion='off'])) .card[data-light='on']::after {
+    opacity: 1;
+  }
+}
+
 /* The drawing keeps a little room from the card's edge. */
 .visual .drawing {
   inset: 0.25rem;
@@ -267,6 +298,11 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+}
+
+/* The control stands a hair from the card's edge, which clips what is outside it, so its ring is drawn inside its own box: all four sides stay in view. */
+.open:focus-visible {
+  outline-offset: -2px;
 }
 
 .card:hover .open,
