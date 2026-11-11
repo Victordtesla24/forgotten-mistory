@@ -506,6 +506,45 @@
   animation-name: morph-in;
 }
 
+/*
+ * The drawing of a figure's card and of its panel (`data-carry`) is an element of its own while the shell grows:
+ * it is not part of either snapshot, so it never dims with them. It travels from the card's tile to the panel's over
+ * the whole morph; the card's copy of it, stretched with the group, stays whole for 60% of the morph and gives way to
+ * the panel's, which is live under it from the first frame, so the reading is solid from the first frame to the last.
+ */
+@keyframes reading-out {
+  from,
+  60% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-group(detail-reading) {
+  animation-duration: var(--duration-panel);
+  animation-timing-function: var(--ease);
+}
+
+::view-transition-old(detail-reading),
+::view-transition-new(detail-reading) {
+  block-size: 100%;
+  animation-duration: var(--duration-panel);
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(detail-reading) {
+  z-index: 1;
+  animation-name: reading-out;
+  animation-timing-function: linear;
+}
+
+::view-transition-new(detail-reading) {
+  animation: none;
+}
+
 /* The mobile menu sheet is a native <dialog>. */
 dialog.menu-sheet::backdrop {
   background-color: color-mix(in srgb, var(--bg) 70%, transparent);

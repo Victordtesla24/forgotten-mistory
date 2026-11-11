@@ -5,13 +5,15 @@
  * pointer leans the camera, and carries a bloom, about 200 px across, that lights the ticks it
  * passes over; both settle again when it stops. A touch on the hero answers once, in the same
  * way, and eases back to rest. The field is one plane, to the right of the headline block and
- * above the readings: its left edge is a long eased ramp that is nothing at the block's right edge
- * and full strength 224 px on, and it fades out over the 120 px above the readings, so lanes come
+ * above the readings: its left edge is a long straight ramp that is nothing at the block's right edge
+ * and full strength 280 px on, and it fades out over the 120 px above the readings, so lanes come
  * out of the dark and go back into it rather than being cut off, and no scrap of the field is
  * left in a gutter or between blocks. Where the block leaves less than 200 px beside it (a
  * phone, a tablet) there are no lanes, only the soft light, which still answers a touch. Lanes are exactly horizontal and
- * ticks exactly vertical on the screen, on whole device pixels. Everything is a function of the
- * view's clock, so a frame at any moment can be reproduced.
+ * ticks exactly vertical on the screen, on whole device pixels. On a wide screen one lit vertical line falls from
+ * the field's horizon to the bottom edge of the hero, on the x where the Experience timeline below has its "now"
+ * edge, so the field leads into the timeline.
+ * Everything is a function of the view's clock, so a frame at any moment can be reproduced.
  */
 
 import {
@@ -28,7 +30,6 @@ import {
 
 import { entrance } from '../../entrance';
 import { duration, spring, stagger, stepSpring, type SpringState } from '../../motion';
-import { hairline } from '../glsl/aa';
 import { finish } from '../glsl/finish';
 import { palette } from '../palette';
 import { createRulerGeometry, type RulerLane } from '../ruler';
@@ -57,15 +58,22 @@ const MIN_ASPECT = 1.5;
 
 /**
  * The plane the field lives in, in CSS px. Its left edge stands this far right of the headline block's
- * widest line and takes `PLANE_RAMP` to come to full strength; its lower edge stands this far above the
+ * widest line and takes `PLANE_RAMP` to come to full strength in a straight ramp; its lower edge stands this far above the
  * readings and the field fades out over `PLANE_FADE` above it. The slope never passes 6% of full
  * strength in 8 px. A plane with less than `PLANE_LEAST` of width is not drawn.
  */
 const PLANE_GAP = 24;
-const PLANE_RAMP = 224;
+const PLANE_RAMP = 280;
 const PLANE_ABOVE = 24;
 const PLANE_FADE = 120;
-const PLANE_LEAST = 200;
+const PLANE_LEAST = 140;
+
+/** The "now" line falls from the field to the hero's bottom edge on screens at least this wide, where the lanes stand beside the type. */
+const NOW_LINE_FROM = 1100;
+
+/** The "now" line starts to fall this many seconds after the first frame and takes `NOW_FALL_S` to land. */
+const NOW_AT_S = 0.3;
+const NOW_FALL_S = 0.7;
 
 /** The pointer's bloom: its spread (a standard deviation) in CSS px; the glow reaches about twice that. */
 const BLOOM_SPREAD = 95;
@@ -116,7 +124,7 @@ function createLanes(tier: LiveTier): RulerLane[] {
  */
 const planeMask = /* glsl */ `
 float planeMask(vec2 frag) {
-  float across = smoothstep(uPlane.x, uPlane.x + uPlane.y, frag.x);
+  float across = clamp((frag.x - uPlane.x) / uPlane.y, 0.0, 1.0);
   float above = smoothstep(uPlane.z, uPlane.z + uPlane.w, frag.y);
   return across * above;
 }
@@ -175,7 +183,7 @@ void main() {
 
   vec4 view = modelViewMatrix * vec4(x, 0.0, position.z, 1.0);
   vKind = aKind;
-  vVisible = grow * (0.2 + 0.8 * smoothstep(14.0, 34.0, -view.z)) * (1.0 - 0.8 * smoothstep(40.0, 105.0, -view.z));
+  vVisible = grow * (0.2 + 0.8 * smoothstep(14.0, 34.0, -view.z)) * (1.0 - 0.5 * smoothstep(40.0, 105.0, -view.z));
 }
 `;
 
@@ -215,7 +223,7 @@ void main() {
 
   vec3 tint = mix(uMuted, uAccent, 0.4 * mid + 0.75 * major);
   tint = mix(tint, mix(uLine, uMuted, 0.6), baseline);
-  float strength = 0.5 * minor + 0.62 * mid + 0.8 * major + 0.6 * baseline;
+  float strength = 0.68 * minor + 0.82 * mid + 1.0 * major + 0.8 * baseline;
   // Light ground: a hairline of muted grey needs more weight to read as much as the same line on dark.
   strength *= mix(1.7, 1.0, uDark);
 
@@ -226,7 +234,7 @@ void main() {
 
   float edge = smoothstep(0.0, 0.16, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
   edge *= smoothstep(0.0, 0.05, uv.x) * (1.0 - smoothstep(0.95, 1.0, uv.x));
-  float quiet = mix(1.0, mix(0.3, 1.0, smoothstep(0.3, 0.74, uv.x)), uQuiet);
+  float quiet = mix(1.0, mix(0.55, 1.0, smoothstep(0.3, 0.74, uv.x)), uQuiet);
   float held = planeMask(gl_FragCoord.xy - uOrigin);
 
   float alpha = strength * vVisible * edge * quiet;
@@ -253,12 +261,29 @@ uniform float uPixel;
 uniform vec4 uPlane;
 uniform vec3 uPointer;
 uniform vec2 uHorizon;
+uniform vec4 uNow;
 
-${hairline}
 ${finish}
 
 ${planeMask}
 ${bloom}
+
+// The "now" line: a column of light on the x of the Experience timeline's "now" edge, from the bottom of the view up to
+// the horizon. It falls from the horizon to the bottom as the field arrives, is brightest where it lands, and then
+// stays as it is.
+float nowLine(vec2 frag, float enter) {
+  float span = max(uHorizon.y * uSize.y - uNow.y, 1.0);
+  float t = clamp((frag.y - uNow.y) / span, 0.0, 1.0);
+  float across = frag.x - uNow.x;
+  float core = clamp(uNow.z - abs(across) + 0.5, 0.0, 1.0);
+  float halo = exp(-across * across / (2.0 * pow(5.0 * uPixel, 2.0)));
+  float drop = 1.0 - pow(1.0 - clamp((uTime - ${NOW_AT_S.toFixed(2)}) / ${NOW_FALL_S.toFixed(2)}, 0.0, 1.0), 3.0);
+  float fallen = 1.0 - smoothstep(drop, drop + 0.05, 1.0 - t);
+  float head = exp(-pow((1.0 - t - drop) / 0.04, 2.0)) * (1.0 - drop);
+  float level = mix(0.95, 0.22, pow(t, 0.8)) * (1.0 - smoothstep(0.9, 1.0, t));
+  float landing = exp(-(across * across + pow(frag.y - uNow.y, 2.0)) / (2.0 * pow(13.0 * uPixel, 2.0))) * 0.32 * drop;
+  return uNow.w * (((core + 0.28 * halo) * level * fallen + head * 0.5 * core) + landing * enter);
+}
 
 void main() {
   vec2 uv = (gl_FragCoord.xy - uOrigin) / uSize;
@@ -266,19 +291,22 @@ void main() {
 
   float band = exp(-pow((uv.y - uHorizon.y) / 0.13, 2.0)) * smoothstep(0.05, 0.95, uv.x);
   float bloom = exp(-dot((uv - uHorizon) * vec2(1.1, 2.4), (uv - uHorizon) * vec2(1.1, 2.4)) / 0.22);
+  // The ground the lanes stand on is lit from the horizon down to the nearest lanes, so the lanes and the light are one place.
+  float ground = exp(-pow((uv.y - uHorizon.y + 0.22) / 0.3, 2.0)) * smoothstep(0.34, 0.8, uv.x);
   float held = planeMask(gl_FragCoord.xy - uOrigin);
-  float line = hairline((uv.y - uHorizon.y) * uSize.y, 1.0) * smoothstep(0.2, 0.9, uv.x) * held;
 
   float edge = smoothstep(0.0, 0.16, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
   edge *= smoothstep(0.0, 0.05, uv.x) * (1.0 - smoothstep(0.95, 1.0, uv.x));
 
   // The sky's soft light and the pointer's keep part of their strength outside the plane, so a screen with no
-  // room for the lanes (a phone) still answers a touch; the horizon line does not.
-  float alpha = (mix(0.07, 0.15, uDark) * (0.55 * band + 0.7 * bloom) * mix(0.4, 1.0, held) + 0.22 * line) * enter * edge;
+  // room for the lanes (a phone) still answers a touch.
+  float alpha = mix(0.12, 0.42, uDark) * (0.5 * band + 0.7 * bloom + 1.0 * ground) * mix(0.4, 1.0, held) * enter * edge;
   alpha += mix(0.13, 0.17, uDark) * pointerBloom(gl_FragCoord.xy - uOrigin) * mix(0.35, 1.0, held);
-  alpha *= 1.0 + grain(gl_FragCoord.xy) * 0.2;
+  // The grain is a tenth of the light where the light is faint and at most 0.015 of it where it is strong, so a bright glow stays smooth.
+  alpha += grain(gl_FragCoord.xy) * min(alpha * 0.2, 0.03);
+  alpha += nowLine(gl_FragCoord.xy - uOrigin, enter);
 
-  gl_FragColor = writePixel(uAccent, max(alpha, 0.0));
+  gl_FragColor = writePixel(uAccent, clamp(alpha, 0.0, 1.0));
 }
 `;
 
@@ -348,6 +376,7 @@ export function createHeroField(context: ViewContext): View {
       ...shared,
       uAccent: palette.colors.accent,
       uHorizon: { value: [0.85, 0.7] as [number, number] },
+      uNow: { value: new Vector4(0, 0, 1, 0) },
     },
     transparent: true,
     premultipliedAlpha: true,
@@ -399,6 +428,21 @@ export function createHeroField(context: ViewContext): View {
     shared.uPlane.value.set(left * pixelRatio, PLANE_RAMP * pixelRatio, (height - (lower - client.top)) * pixelRatio, PLANE_FADE * pixelRatio);
   }
 
+  /**
+   * Tells the glow where the Experience timeline's "now" edge is: the x of its middle, in device pixels from the view's
+   * left, and the half width of the line's core. The line falls to the bottom of the view. Nowhere on a narrow screen.
+   */
+  function placeNow(client: FrameInput['client'], pixelRatio: number): void {
+    const mark = document.querySelector<HTMLElement>('#experience [data-now]');
+    const uniform = glowMaterial.uniforms.uNow.value as Vector4;
+    if (!mark || client.width < NOW_LINE_FROM) {
+      uniform.set(0, 0, 1, 0);
+      return;
+    }
+    const box = mark.getBoundingClientRect();
+    uniform.set((box.left + box.width / 2 - client.left) * pixelRatio, 0, (box.width / 2) * pixelRatio, 1);
+  }
+
   function aim(): void {
     camera.position.set(lean.x.value * LEAN_X, CAMERA_HEIGHT + lean.y.value * LEAN_Y, CAMERA_Z);
     camera.lookAt(LOOK_AT);
@@ -446,6 +490,7 @@ export function createHeroField(context: ViewContext): View {
       shared.uPixel.value = pixelRatio;
       shared.uPointer.value.set(light.x.value, light.y.value, light.strength.value);
       holdBack(client, viewport.height, pixelRatio);
+      placeNow(client, pixelRatio);
       aim();
 
       return clock < SETTLE_S || moving;

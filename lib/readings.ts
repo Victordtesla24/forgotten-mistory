@@ -50,7 +50,7 @@ export const points = {
 } as const;
 
 /** What a block stands for, where 100 blocks are drawn in place of the 10,000 points. */
-export const blockKey = `1 block = ${points.perBlock} devices`;
+const blockKey = `1 block = ${points.perBlock} devices`;
 
 /** The key under a reading's drawing: what one mark stands for. Telemetry's depends on whether blocks or points are drawn. */
 export function keyOf(id: ReadingId, mode: 'points' | 'blocks' = 'blocks'): string {
@@ -62,12 +62,25 @@ export function keyOf(id: ReadingId, mode: 'points' | 'blocks' = 'blocks'): stri
 /**
  * Evidence: one cell for each of the 200 SIT scenarios, and all 200 stay. Each cell is filled
  * to the effort one scenario took, about three hours, and the fill falls to about fifteen
- * minutes, left to right: the effort per scenario falls ≈92% while the count stays 200.
+ * minutes, left to right: the effort per scenario falls ≈92% while the count stays 200. The
+ * fill that remains is exactly that share of the cell, never rounded up to a pixel: a cell's
+ * last row of device pixels is drawn at the fraction of it that is left. The cells are drawn
+ * as separate squares: 40 across and 5 down where the tile is `wideFrom` CSS pixels wide or
+ * more, 25 across and 8 down where it is narrower, each at least `least` CSS pixels on a side
+ * with at least `gap` CSS pixels between neighbours, in a card and in a panel alike.
  */
 export const cells = {
   count: 200,
   columns: 40,
   rows: 5,
+  /** The arrangement of a tile narrower than `wideFrom`. */
+  narrow: { columns: 25, rows: 8 },
+  wideFrom: 300,
+  /** The least edge of a cell, and the space between neighbouring cells, in CSS pixels. */
+  least: 4,
+  gap: 2,
+  /** A cell is never more than this many times as tall as it is wide, so that in a tall tile it stays a cell and does not become a bar. */
+  tallest: 2.5,
   /** The share of a cell still filled after the fall: about 15 minutes of about 180. */
   rest: 15 / 180,
   /** Cells appear, full, over this long. */
@@ -174,16 +187,15 @@ interface EvidenceLayout {
   /** Device pixels from one cell's origin to the next, across and down. */
   pitchX: number;
   pitchY: number;
-  /** A cell's box, the outer edge of its outline. */
+  /** A cell's box, the outer edge of its outline, and the space between neighbouring boxes. */
   boxX: number;
   boxY: number;
-  /** The outline, the space between it and a fill's sides, and the least a fill is ever tall. */
+  gap: number;
+  /** The outline, in device pixels. */
   outline: number;
-  inset: number;
-  floor: number;
-  /** The fill's width, and the height inside the outline that a full fill stands in. */
-  fillWidth: number;
+  /** The height inside the outline, in device pixels, and how much of it the fill that remains stands in. */
   room: number;
+  rested: number;
   frame: Frame;
   height: number;
   key: string;
@@ -306,14 +318,16 @@ function telemetryLayout(tile: Tile, place: ReadingPlace): TelemetryLayout {
 function evidenceLayout(tile: Tile): EvidenceLayout {
   const ratio = ratioOf(tile);
   const area = drawingArea(tile, ratio);
-  const { columns, rows } = cells;
+  const { columns, rows } = tile.width >= cells.wideFrom ? cells : cells.narrow;
   const outline = 1;
-  const inset = 1;
-  const pitchX = Math.max(2 * (outline + inset) + 1, Math.floor(area.width / columns));
-  const pitchY = Math.max(2 * outline + 1, Math.floor(area.height / rows));
-  // Neighbouring cells touch while a cell is narrow; from eight device pixels there is a pixel between their outlines.
-  const boxX = pitchX - (pitchX >= 8 ? 1 : 0);
-  const boxY = pitchY - (pitchY >= 8 ? 1 : 0);
+  const gap = Math.round(cells.gap * ratio);
+  const least = Math.round(cells.least * ratio);
+  // The widest cell the room allows, never under the least; the gaps are between cells, so the run is one gap shorter than its pitches.
+  const pitchX = Math.max(least + gap, Math.floor((area.width + gap) / columns));
+  const boxX = pitchX - gap;
+  const pitchY = Math.max(least + gap, Math.min(Math.floor((area.height + gap) / rows), Math.round(boxX * cells.tallest) + gap));
+  const boxY = pitchY - gap;
+  const room = boxY - 2 * outline;
   return {
     id: 'evidence',
     ratio,
@@ -323,29 +337,43 @@ function evidenceLayout(tile: Tile): EvidenceLayout {
     pitchY,
     boxX,
     boxY,
+    gap,
     outline,
-    inset,
-    floor: 2,
-    fillWidth: Math.max(1, boxX - 2 * (outline + inset)),
-    room: boxY - 2 * outline,
+    room,
+    rested: room * cells.rest,
     frame: centredIn(area, { width: (columns - 1) * pitchX + boxX, height: (rows - 1) * pitchY + boxY }),
     height: tile.height,
     key: keyOf('evidence'),
   };
 }
 
-function portfolioLayout(tile: Tile): PortfolioLayout {
+/** The share of the width a panel's portfolio run takes at most, the share of the height its two rows and baseline take at most, and a mark's share of its pitch there. */
+const PORTFOLIO_PANEL = { width: 0.84, height: 0.6, mark: 0.6 } as const;
+
+function portfolioLayout(tile: Tile, place: ReadingPlace): PortfolioLayout {
   const ratio = ratioOf(tile);
-  const area = drawingArea(tile, ratio);
+  const enlarged = place === 'panel';
+  const pad = Math.round(PANEL_PAD * ratio);
+  const strip = Math.round(KEY_STRIP * ratio);
+  const area: Frame = enlarged
+    ? { x: pad, y: 0, width: Math.max(Math.floor(tile.width * ratio) - 2 * pad, 1), height: Math.max(Math.floor(tile.height * ratio) - strip, 1) }
+    : drawingArea(tile, ratio);
   const { across, down } = cohort;
-  // The widest pitch at which the run, the space under it and its baseline all fit.
+  const markShare = enlarged ? PORTFOLIO_PANEL.mark : 0.55;
+  const markFor = (pitch: number): number => Math.max(1, Math.min(pitch - 1, Math.round(pitch * markShare)));
+  // The space under the lowest mark, and the baseline under that: the group the pitch has to fit.
   const below = (pitch: number, mark: number): number => pitch - mark + Math.round(pitch * 0.3);
   const total = (pitch: number, mark: number): number => (down - 1) * pitch + mark + below(pitch, mark) + 1;
-  let pitch = Math.max(2, Math.min(Math.floor(area.width / across), Math.floor(22 * ratio)));
-  while (pitch > 2 && ((across - 1) * pitch + markOf(pitch) > area.width || total(pitch, markOf(pitch)) > area.height)) pitch -= 1;
-  const mark = markOf(pitch);
+  // A card takes the widest pitch at which the run, the space under it and its baseline fit; a panel's run
+  // is enlarged to most of its tile's width, so long as two rows and the baseline stay under most of its height.
+  const widest = enlarged ? Math.floor((area.width * PORTFOLIO_PANEL.width) / across) : Math.min(Math.floor(area.width / across), Math.floor(22 * ratio));
+  const room = enlarged ? area.height * PORTFOLIO_PANEL.height : area.height;
+  let pitch = Math.max(2, widest);
+  while (pitch > 2 && ((across - 1) * pitch + markFor(pitch) > area.width || total(pitch, markFor(pitch)) > room)) pitch -= 1;
+  const mark = markFor(pitch);
   const size = { width: (across - 1) * pitch + mark, height: (down - 1) * pitch + mark };
-  const frame = centredIn(area, { width: size.width, height: total(pitch, mark) });
+  // A panel centres the marks themselves in the room above its key; a card centres the marks with the baseline under them.
+  const frame = centredIn(area, { width: size.width, height: enlarged ? size.height : total(pitch, mark) });
   const marks: Frame = { ...frame, height: size.height };
   const overhang = Math.round(pitch * 0.2);
   return {
@@ -365,11 +393,11 @@ function portfolioLayout(tile: Tile): PortfolioLayout {
 /** What a reading draws in a tile of this CSS box at this pixel ratio. The one function both layers take their layout from. */
 export function readingLayout(id: 'telemetry', tile: Tile, place?: ReadingPlace): TelemetryLayout;
 export function readingLayout(id: 'evidence', tile: Tile): EvidenceLayout;
-export function readingLayout(id: 'portfolio', tile: Tile): PortfolioLayout;
+export function readingLayout(id: 'portfolio', tile: Tile, place?: ReadingPlace): PortfolioLayout;
 export function readingLayout(id: ReadingId, tile: Tile, place?: ReadingPlace): ReadingLayout;
 export function readingLayout(id: ReadingId, tile: Tile, place: ReadingPlace = 'card'): ReadingLayout {
   if (id === 'telemetry') return telemetryLayout(tile, place);
-  return id === 'evidence' ? evidenceLayout(tile) : portfolioLayout(tile);
+  return id === 'evidence' ? evidenceLayout(tile) : portfolioLayout(tile, place);
 }
 
 /** How long the light that answers a pointer or the keyboard takes to cross a reading. */

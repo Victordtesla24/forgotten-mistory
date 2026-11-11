@@ -1,6 +1,6 @@
 /**
- * The one time scale of the site. Every timeline, the hero's career scale today and the
- * Experience track after it, takes its positions from here, so they can never disagree: a UTC
+ * The one time scale of the site. Every timeline, the Experience track today, takes its
+ * positions from here, so they can never disagree: a UTC
  * time scale from January 2010 to the current month, mapped onto 0 to 1 of the track's width.
  * It knows nothing of pixels, React or three.js; a consumer multiplies by its own width.
  */

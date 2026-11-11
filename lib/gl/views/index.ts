@@ -1,4 +1,4 @@
-import { CAREER_VIEW, EXPERIENCE_VIEW } from '../ids';
+import { EXPERIENCE_VIEW } from '../ids';
 import type { ViewFactory } from './types';
 
 /**
@@ -6,7 +6,6 @@ import type { ViewFactory } from './types';
  * only when its placeholder is near the viewport.
  */
 export const viewLoaders: Readonly<Record<string, () => Promise<ViewFactory>>> = {
-  [CAREER_VIEW]: () => import('./career-scale').then((module) => module.createCareerScale),
   [EXPERIENCE_VIEW]: () => import('./experience-timeline').then((module) => module.createExperienceTimeline),
   'hero-field': () => import('./hero-field').then((module) => module.createHeroField),
   'reading-evidence': () => import('./reading-evidence').then((module) => module.createReadingEvidence),

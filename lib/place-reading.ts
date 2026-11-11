@@ -6,7 +6,7 @@
  * the stage's view draws, so the two coincide to the pixel.
  */
 
-import { readingLayout, type ReadingId, type ReadingLayout, type ReadingPlace } from './readings';
+import { cells, readingLayout, type ReadingId, type ReadingLayout, type ReadingPlace } from './readings';
 
 /** Device pixels as CSS pixels of this screen, so a mark stands on a device pixel. */
 const css = (device: number, ratio: number): string => `${device / ratio}px`;
@@ -33,14 +33,12 @@ function properties(layout: ReadingLayout): Record<string, string | number> {
   if (layout.id === 'evidence') {
     return {
       ...placed,
-      '--px': css(layout.pitchX, ratio),
-      '--py': css(layout.pitchY, ratio),
+      '--ec': layout.columns,
+      '--er': layout.rows,
       '--bx': css(layout.boxX, ratio),
       '--by': css(layout.boxY, ratio),
+      '--gp': css(layout.gap, ratio),
       '--ol': css(layout.outline, ratio),
-      '--in': css(layout.inset, ratio),
-      '--fl': css(layout.floor, ratio),
-      '--cm': '0px',
     };
   }
   return {
@@ -50,6 +48,22 @@ function properties(layout: ReadingLayout): Record<string, string | number> {
     '--over': css(Math.round(layout.pitch * 0.2), ratio),
     '--below': css(layout.baseline.y - layout.frame.y - layout.frame.height, ratio),
   };
+}
+
+/**
+ * What is left of every cell's fill, as the browser draws the cells: the share of the cell's inside that is left, whatever
+ * width it gives the outline, as the whole CSS pixels of a box and the part of the next pixel a row over it covers, so the
+ * fill is exactly its share of the cell and never rounded up, wherever the card falls on the pixel grid.
+ */
+function fillOf(tile: HTMLElement, boxHeight: number): void {
+  const cell = tile.querySelector('[data-carry]')?.firstElementChild;
+  if (!cell) return;
+  const inside = boxHeight - 2 * Number.parseFloat(getComputedStyle(cell).borderTopWidth);
+  const left = inside * cells.rest;
+  const whole = Math.floor(left);
+  tile.style.setProperty('--rf', `${whole}px`);
+  tile.style.setProperty('--rp', (left - whole).toFixed(4));
+  tile.style.setProperty('--dp', '1px');
 }
 
 /** Lays the drawing in `tile` out now and whenever the tile or the screen changes. Returns what stops it. */
@@ -64,6 +78,7 @@ export function placeReading(tile: HTMLElement, id: ReadingId, place: ReadingPla
     if (width < 1 || height < 1) return;
     const layout = readingLayout(id, { width, height, ratio: window.devicePixelRatio }, place);
     for (const [name, value] of Object.entries(properties(layout))) tile.style.setProperty(name, String(value));
+    if (layout.id === 'evidence') fillOf(tile, layout.boxY / layout.ratio);
     tile.dataset.laid = '';
     // A panel's tile is as tall as its points and its key need; a card's is what the hero's grid says.
     if (layout.id === 'telemetry' && place === 'panel') tile.style.setProperty('--visual', `${layout.height}px`);

@@ -23,9 +23,12 @@ export interface DetailItem {
   id: string;
   /** A short line above the title, such as the scope of a figure. */
   eyebrow?: ReactNode;
+  /** The panel's name, as text: what the dialog is called and what the count announces. */
   title: string;
   /** Data attributes the panel's section carries, for a page that must find each one. */
   attributes?: Record<`data-${string}`, string>;
+  /** The heading as shown, where it carries more than the title's text (a figure in its own colour). */
+  heading?: ReactNode;
   /** What leads the panel before its text: a figure, a schematic or a small infographic. */
   lead?: ReactNode;
   children: ReactNode;
@@ -41,10 +44,29 @@ type Transition = { ready: Promise<unknown>; finished: Promise<unknown>; updateC
 type TransitionDocument = Document & { startViewTransition?: (update: () => void) => Transition };
 
 const MORPH = 'detail-morph';
+const CARRY = 'detail-reading';
 
 /** Names an element for the morph, or takes the name away. */
 function morphName(element: HTMLElement, named: boolean): void {
   if (named) element.style.setProperty('view-transition-name', MORPH);
+  else element.style.removeProperty('view-transition-name');
+}
+
+/**
+ * The drawing a card and its panel have in common (`data-carry`): the card's own, or the open panel's. During the
+ * morph it travels as an element of its own, solid from the first frame to the last, instead of dimming with the
+ * card's snapshot while the shell grows round it.
+ */
+function carried(root: HTMLElement): HTMLElement | null {
+  const selector = root instanceof HTMLDialogElement ? '[data-detail-item][data-active="true"] [data-carry]' : '[data-carry]';
+  return root.querySelector<HTMLElement>(selector);
+}
+
+/** Names the drawing `root` carries for the morph, or takes the name away. */
+function carryName(root: HTMLElement, named: boolean): void {
+  const element = carried(root);
+  if (!element) return;
+  if (named) element.style.setProperty('view-transition-name', CARRY);
   else element.style.removeProperty('view-transition-name');
 }
 
@@ -140,13 +162,16 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
       const from = requested === null ? dialog : target;
       const to = requested === null ? target : dialog;
       morphName(from, true);
+      carryName(from, true);
       // The card shows its reading in the DOM's own drawing while it is part of the morph.
       target.dataset.morph = '';
       document.documentElement.dataset.vt = 'detail';
       const transition = start.call(document, () => {
         morphName(from, false);
+        carryName(from, false);
         morphName(to, true);
         apply();
+        carryName(to, true);
         if (wantedRef.current === null) target.focus({ preventScroll: true });
       });
       // A transition the browser skips rejects its promises; the panel is in its final state either way.
@@ -155,6 +180,7 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
       void transition.updateCallbackDone.catch(settle);
       void transition.finished.catch(settle).then(() => {
         morphName(to, false);
+        carryName(to, false);
         delete target.dataset.morph;
         delete document.documentElement.dataset.vt;
       });
@@ -296,7 +322,7 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
             >
               {item.eyebrow ? <p className="type-eyebrow text-muted">{item.eyebrow}</p> : null}
               {item.lead ? <div>{item.lead}</div> : null}
-              <h3 id={`${item.id}-title`}>{item.title}</h3>
+              <h3 id={`${item.id}-title`}>{item.heading ?? item.title}</h3>
               <div className={styles.body}>{item.children}</div>
             </section>
           ))}

@@ -1,8 +1,9 @@
 /**
- * The evidence reading: one cell for each of the 200 SIT scenarios, and all 200 stay. The
- * cells appear full, the roughly three hours of evidence effort a scenario took, then the fill
- * falls to about fifteen minutes' worth, left to right: the effort per scenario falls ≈92%
- * while the count stays 200. A hover or focus sends a band of light across them.
+ * The evidence reading: one cell for each of the 200 SIT scenarios, and all 200 stay, each a
+ * separate square. The cells appear full, the roughly three hours of evidence effort a scenario
+ * took, then the fill falls to about fifteen minutes' worth, left to right: the effort per
+ * scenario falls ≈92% while the count stays 200, and what is left is that share of the cell
+ * exactly. A hover or focus sends a band of light across them.
  */
 
 import {
@@ -22,8 +23,9 @@ import { createBackdrop, createCamera, createReadingState, easeOut, readingGlsl,
 import type { FrameInput, View, ViewContext } from './types';
 
 const vertex = /* glsl */ `
-attribute vec2 aCell;
+attribute float aIndex;
 
+uniform vec2 uGrid;
 uniform vec2 uFrame;
 uniform vec2 uPitch;
 uniform vec2 uBox;
@@ -35,11 +37,13 @@ varying vec2 vCell;
 ${readingGlsl}
 
 void main() {
+  // Cells are numbered down each column in turn; the layout says how many columns and rows there are.
+  vec2 cell = vec2(floor(aIndex / uGrid.y), mod(aIndex, uGrid.y));
   // A cell's box, in whole device pixels from the tile's top left: where the layout puts it.
   vec2 device = floor(uSize * uPixel + 0.5);
-  vec2 corner = uFrame + aCell * uPitch + position.xy * uBox;
+  vec2 corner = uFrame + cell * uPitch + position.xy * uBox;
   vLocal = position.xy;
-  vCell = aCell;
+  vCell = cell;
   vUv = vec2(corner.x, device.y - corner.y) / device;
   gl_Position = vec4(vUv * 2.0 - 1.0, 0.0, 1.0);
 }
@@ -49,8 +53,6 @@ const fragment = /* glsl */ `
 uniform vec2 uGrid;
 uniform vec2 uBox;
 uniform float uOutline;
-uniform float uInset;
-uniform float uFloor;
 uniform float uRoom;
 uniform vec3 uProof;
 uniform vec3 uAccent;
@@ -90,14 +92,15 @@ void main() {
   float fall = easeInOut((uT - (uAppear + across * uSpread)) / uFall);
   float level = 1.0 - (1.0 - uRest) * fall;
 
-  // The fill stands on the floor of the box inside the outline, a pixel in from each side so the
-  // fills of neighbouring cells never touch, and is never under two device pixels tall.
+  // The fill stands on the floor of the box inside the outline, the whole width of it, and is exactly the share of
+  // the height that is left: its top edge falls where it falls, and the device pixel it cuts is drawn at the part of
+  // it that is covered, so the fill is never rounded up to a pixel.
   float fromBottom = uBox.y - px.y;
-  float fillHeight = min(max(level * uRoom, uFloor), uRoom);
-  float fill = cover(inside.x - uOutline - uInset) * cover(fromBottom - uOutline) * cover(uOutline + fillHeight - fromBottom);
+  float fillHeight = level * uRoom;
+  float fill = cover(inside.x - uOutline) * cover(fromBottom - uOutline) * cover(uOutline + fillHeight - fromBottom);
 
   float flash = flashBand(vUv.x);
-  float lit = fill * (0.86 + 0.1 * uLift);
+  float lit = fill;
   float tint = room * 0.05;
   vec3 fillColour = mix(uProof, uAccent, 0.8 * flash);
 
@@ -118,24 +121,22 @@ export function createReadingEvidence(context: ViewContext): View {
   const { count, columns, rows, rest, appearMs, spreadMs, fallMs } = cells;
   const state = createReadingState('evidence', context);
 
+  // One quad for each cell, numbered down each column in turn; the shader finds its column and row from the layout's own.
   const corner = new Float32Array(count * 4 * 3);
-  const cell = new Float32Array(count * 4 * 2);
+  const numbered = new Float32Array(count * 4);
   const index = new Uint16Array(count * 6);
-  for (let column = 0; column < columns; column += 1) {
-    for (let row = 0; row < rows; row += 1) {
-      const quad = column * rows + row;
-      for (let vertex = 0; vertex < 4; vertex += 1) {
-        const at = quad * 4 + vertex;
-        corner.set([vertex % 2, Math.floor(vertex / 2), 0], at * 3);
-        cell.set([column, row], at * 2);
-      }
-      const first = quad * 4;
-      index.set([first, first + 1, first + 2, first + 2, first + 1, first + 3], quad * 6);
+  for (let quad = 0; quad < count; quad += 1) {
+    for (let vertex = 0; vertex < 4; vertex += 1) {
+      const at = quad * 4 + vertex;
+      corner.set([vertex % 2, Math.floor(vertex / 2), 0], at * 3);
+      numbered[at] = quad;
     }
+    const first = quad * 4;
+    index.set([first, first + 1, first + 2, first + 2, first + 1, first + 3], quad * 6);
   }
   const geometry = new BufferGeometry();
   geometry.setAttribute('position', new BufferAttribute(corner, 3));
-  geometry.setAttribute('aCell', new BufferAttribute(cell, 2));
+  geometry.setAttribute('aIndex', new BufferAttribute(numbered, 1));
   geometry.setIndex(new BufferAttribute(index, 1));
 
   const material = new ShaderMaterial({
@@ -148,8 +149,6 @@ export function createReadingEvidence(context: ViewContext): View {
       uPitch: { value: [1, 1] },
       uBox: { value: [1, 1] },
       uOutline: { value: 1 },
-      uInset: { value: 1 },
-      uFloor: { value: 2 },
       uRoom: { value: 1 },
       uCount: { value: count },
       uRest: { value: rest },
@@ -184,9 +183,8 @@ export function createReadingEvidence(context: ViewContext): View {
       uniforms.uFrame.value = [layout.frame.x, layout.frame.y];
       uniforms.uPitch.value = [layout.pitchX, layout.pitchY];
       uniforms.uBox.value = [layout.boxX, layout.boxY];
+      uniforms.uGrid.value = [layout.columns, layout.rows];
       uniforms.uOutline.value = layout.outline;
-      uniforms.uInset.value = layout.inset;
-      uniforms.uFloor.value = layout.floor;
       uniforms.uRoom.value = layout.room;
       geometry.setDrawRange(0, Math.round(count * easeOut(t / appearMs)) * 6);
       return busy;

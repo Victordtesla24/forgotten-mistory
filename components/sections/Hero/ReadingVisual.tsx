@@ -15,7 +15,7 @@ const vars = (values: Record<string, string | number>): CSSProperties => values 
 function Telemetry() {
   const { countMs, sweepMs } = points;
   return (
-    <div className={styles.points} style={vars({ '--count-ms': `${countMs}ms`, '--sweep-ms': `${sweepMs}ms` })}>
+    <div className={styles.points} data-carry="" style={vars({ '--count-ms': `${countMs}ms`, '--sweep-ms': `${sweepMs}ms` })}>
       <div className={styles.wipe}>
         <div className={styles.lattice} />
       </div>
@@ -24,17 +24,15 @@ function Telemetry() {
   );
 }
 
-/** 200 cells, all of them staying, each full at first and then falling to about 15 minutes' worth. */
+/** 200 separate cells, all of them staying, each full at first and then falling to about 15 minutes' worth. */
 function Evidence() {
-  const { count, columns, rows, rest, appearMs, spreadMs, fallMs } = cells;
+  const { count, rest, appearMs, spreadMs, fallMs } = cells;
   return (
     <div
       className={styles.cells}
+      data-carry=""
       style={vars({
-        '--columns': columns,
-        '--rows': rows,
         '--count': count,
-        '--last': columns - 1,
         '--rest': rest.toFixed(4),
         '--appear': `${appearMs}ms`,
         '--spread': `${spreadMs}ms`,
@@ -42,7 +40,7 @@ function Evidence() {
       })}
     >
       {Array.from({ length: count }, (_, index) => (
-        <span key={index} className={styles.cell} style={vars({ '--i': index, '--c': Math.floor(index / rows) })} />
+        <span key={index} className={styles.cell} style={vars({ '--i': index })} />
       ))}
     </div>
   );
@@ -52,7 +50,7 @@ function Evidence() {
 function Portfolio() {
   const { count, across, down, countMs } = cohort;
   return (
-    <div className={styles.cohort} style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--across': across, '--down': down })}>
+    <div className={styles.cohort} data-carry="" style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--across': across, '--down': down })}>
       {Array.from({ length: count }, (_, mark) => (
         <span key={mark} className={styles.mark} style={vars({ '--n': mark, '--c': Math.floor(mark / down), '--r': mark % down })} />
       ))}

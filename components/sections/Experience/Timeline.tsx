@@ -16,7 +16,6 @@ import {
 
 import { useDetailOpen } from '@/components/ui/DetailPanel';
 import { StageView } from '@/components/visuals/StageView';
-import { onRoleRequest } from '@/lib/experience-select';
 import { EXPERIENCE_VIEW } from '@/lib/gl/ids';
 import { poke } from '@/lib/gl/signal';
 import { reducedMotion } from '@/lib/motion';
@@ -218,9 +217,6 @@ export function Timeline({ roles, lanes, children }: TimelineProps) {
     observer.observe(panel, { subtree: true, attributes: true, attributeFilter: ['data-active'] });
     return () => observer.disconnect();
   }, [roles, select]);
-
-  // The hero's career scale asks for a role here.
-  useEffect(() => onRoleRequest((id) => select(id, 'other')), [select]);
 
   // The entrance: armed once script has run, played once when the section comes into view.
   useEffect(() => {

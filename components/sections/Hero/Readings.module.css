@@ -10,7 +10,7 @@
  * first screen of a tablet. The row is a scroller of its own, so the page never scrolls sideways.
  */
 .row {
-  --row-visual: var(--hero-visual, 3.5rem);
+  --row-visual: var(--hero-visual, 4.75rem);
   display: flex;
   gap: 0.75rem;
   margin: 0 calc(var(--gutter) * -1);
@@ -29,6 +29,7 @@
 
 .reading {
   --visual: var(--row-visual);
+  --figure-size: var(--figure, 1.75rem);
   flex: none;
   width: min(19rem, 78%);
   scroll-snap-align: start;
@@ -36,7 +37,7 @@
 
 @media (min-width: 640px) {
   .row {
-    --row-visual: var(--hero-visual, 4rem);
+    --row-visual: var(--hero-visual, 4.75rem);
   }
 
   .reading {
@@ -60,18 +61,13 @@
 }
 
 /*
- * On a phone the row is as tall as the hero leaves it (Hero.module.css), up to a limit: a card is
- * its text, a fixed height so that no card's number or scope moves when another is parsed, and a
- * visual that takes the rest. Where the scale does not stand on the screen (a phone under 830 px
- * tall) the row ends 4.5rem short of the right edge, so that the card is never under the round
- * Ask Mini Vic button; the first card is as wide as that leaves and the next waits beyond it.
+ * On a phone a card is its visual, which takes what `--hero-visual` says (Hero.module.css), and its text, a fixed
+ * height so that no card's number or scope moves when another is parsed. The figure and what it measures stand at
+ * the top and the scope line on the bottom, so no card has an empty band under its scope. Where the screen is
+ * shorter than 830 px the row ends 4.5rem short of the right edge, so that no card is under the round Ask Mini
+ * Vic button; the first card is as wide as that leaves, and the line under the row says how far along it is.
  */
 @media (max-width: 639px) {
-  .row {
-    flex: 1 1 auto;
-    max-block-size: calc(var(--max-visual) + 1px + var(--reading-text));
-  }
-
   .reading {
     display: flex;
   }
@@ -81,16 +77,10 @@
     min-width: 0;
   }
 
-  .row .visual {
-    height: auto;
-    flex: 1 1 var(--row-visual);
-    min-block-size: var(--row-visual);
-    max-block-size: var(--max-visual);
-  }
-
   .row .text {
     flex: none;
     block-size: var(--reading-text);
+    grid-template-rows: auto 1fr auto;
   }
 }
 
@@ -105,19 +95,71 @@
 }
 
 /*
+ * On a phone the row of readings has more than one card and says how far along it is: a line in the padding under it, as long as the
+ * share of the row that is in view, which grows as the row is moved. It follows the row's own scroll, where the browser
+ * can tie an animation to one; where it cannot there is no line, and the cards at the edge say the same.
+ */
+.progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (max-width: 639px) {
+    .group {
+      position: relative;
+      timeline-scope: --readings;
+    }
+
+    .row {
+      scroll-timeline: --readings inline;
+    }
+
+    .progress {
+      position: absolute;
+      inset: auto var(--gutter) 0;
+      display: block;
+      height: 2px;
+      border-radius: 1px;
+      background-color: var(--line-strong);
+      overflow: hidden;
+    }
+
+    .progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      background-color: var(--muted);
+      transform-origin: left;
+      animation: row-progress linear both;
+      animation-timeline: --readings;
+    }
+  }
+}
+
+@keyframes row-progress {
+  from {
+    transform: scaleX(0.34);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/*
  * From 1024px the three readings are one row of cards under the headline, in a row of the hero's
  * grid whose height is stated in CSS (Hero.module.css): the visual takes what `--hero-visual` says,
  * and the text under it is a fixed `--reading-text` tall, so a number that is still counting, or a
  * card that is still being parsed, moves nothing.
  */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) and (min-aspect-ratio: 1/1) {
   .row .text {
     block-size: var(--reading-text);
     align-content: center;
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1099px) {
+@media (min-width: 1024px) and (max-width: 1099px) and (min-aspect-ratio: 1/1) {
   .row .text {
     align-content: start;
   }
@@ -196,21 +238,23 @@ a:active > .text {
  * apart (a pitch under two device pixels: `readingLayout` in lib/readings.ts says so) each
  * mark is a block of a hundred and there are no gutters: `--side` is then larger than the
  * lattice, so the block mask covers all of it. The element is exactly the lattice's extent.
- * Before the script has run, and without it, a card draws the 100 blocks at a pitch that fills the room
- * above the key; the script then sets the very layout the stage draws, on whole device pixels.
+ * Before the script has run, and without it, a card draws the 100 blocks at a whole-pixel pitch
+ * that fits the room above the key, centred in it on whole pixels; the script then sets the very
+ * layout the stage draws, on whole device pixels.
  */
 .lattice {
-  --p: var(--pitch, min(calc((100cqw - 20px) / 24.7), calc((100cqh - 28px) / 3.75)));
-  --m: var(--mark, calc(var(--p) * 0.72));
+  --p: var(--pitch, max(2px, round(down, min(calc((100cqw - 20px) / 24.7), calc((100cqh - 34px) / 3.75)), 1px)));
+  --m: var(--mark, round(calc(var(--p) * 0.72), 1px));
   --s: var(--side, 1000);
   --sx: 24;
   --sy: 3;
+  --w: var(--fw, calc(var(--sx) * var(--p) + var(--m)));
+  --h: var(--fh, calc(var(--sy) * var(--p) + var(--m)));
   position: absolute;
-  left: var(--fx, 50%);
-  top: var(--fy, 6px);
-  translate: var(--tx, -50%) var(--ty, 0px);
-  width: var(--fw, calc(var(--sx) * var(--p) + var(--m)));
-  height: var(--fh, calc(var(--sy) * var(--p) + var(--m)));
+  left: var(--fx, round(down, calc((100cqw - var(--w)) / 2), 1px));
+  top: var(--fy, round(down, calc((100cqh - 22px - var(--h)) / 2), 1px));
+  width: var(--w);
+  height: var(--h);
   background-color: var(--proof);
   opacity: 0.86;
   mask-image:
@@ -247,31 +291,52 @@ a:active > .text {
   white-space: nowrap;
 }
 
-.bound {
+/*
+ * A card whose tile is under 18rem wide has no room for the evidence key's words: the key then
+ * draws what the fill encodes, a full cell marked with the effort of one scenario before, an
+ * arrow, and a cell with what is left marked with the effort after. The words stay for a screen reader.
+ */
+.legend {
   display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
 }
 
-@container (min-width: 14rem) {
-  [data-reading='evidence'] .bound {
-    display: inline;
+.legend > :nth-child(2) {
+  margin-inline: 0.25rem;
+}
+
+.swatch {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 1px;
+  background-color: color-mix(in srgb, var(--proof) 5%, transparent);
+}
+
+.swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--proof);
+  clip-path: inset(calc(100% - var(--share)) 0 0);
+}
+
+@container (width < 18rem) {
+  [data-reading='evidence'][data-place='card'] .legend {
+    display: inline-flex;
   }
-}
 
-@container (min-width: 18rem) {
-  [data-reading='portfolio'] .bound {
-    display: inline;
-  }
-}
-
-@container (min-width: 16rem) {
-  [data-reading='telemetry'][data-mode='blocks'] .bound {
-    display: inline;
-  }
-}
-
-@container (min-width: 15rem) {
-  [data-reading='telemetry'][data-mode='points'] .bound {
-    display: inline;
+  [data-reading='evidence'][data-place='card'] .keyText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
 }
 
@@ -324,51 +389,72 @@ a:active > .text {
 }
 
 /*
- * Evidence: 40 by 5 cells, all 200 staying; each is full at first, then its fill falls to about 15
- * minutes' worth. A cell is drawn in a 1 device pixel outline, neighbouring cells touching until
- * they are eight device pixels wide, and its fill stands a pixel in from the outline at each side,
- * so 200 separate fills read and never run together into a line. The fill is never under two device
- * pixels tall. The stage draws the same cells from the same layout (`readingLayout` in lib/readings.ts).
+ * Evidence: 200 separate cells, all of them staying, 40 across and 5 down (25 across and 8 down in a tile
+ * under 300px wide); each is full at first, then its fill falls to what is left of the effort of one scenario,
+ * about 15 minutes of about 3 hours. A cell is a square at least 4 CSS pixels on a side in a 1 device pixel
+ * outline, with at least 2 CSS pixels between neighbours, so every cell can be counted at any screen. The fill is
+ * the whole width inside the outline and exactly the share of its height that is left: where that cuts a device
+ * pixel the pixel is drawn at the part of it covered, so the fill is never rounded up. The stage draws the same
+ * cells from the same layout (`readingLayout` in lib/readings.ts); before the script has run, and without it,
+ * the cells share the room above the key.
  */
 .cells {
-  --floor: 2px;
+  --columns: var(--ec, 40);
+  --rows: var(--er, 5);
+  /* Without the layout the cells share the room above the key, no cell more than 2.5 times as tall as it is wide, centred in it. */
+  --fb: round(
+    down,
+    min(calc(100cqh - 28px), calc(var(--rows) * ((100cqw - 20px - var(--columns) * 2px) / var(--columns) * 2.5 + 2px))),
+    1px
+  );
   position: absolute;
   left: var(--fx, 10px);
-  top: var(--fy, 6px);
+  top: var(--fy, calc(6px + round(down, calc((100cqh - 28px - var(--fb)) / 2), 1px)));
   width: var(--fw, calc(100cqw - 20px));
-  height: var(--fh, calc(100cqh - 28px));
+  height: var(--fh, var(--fb));
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: repeat(var(--columns), var(--px, 1fr));
-  grid-template-rows: repeat(var(--rows), var(--py, 1fr));
+  grid-template-columns: repeat(var(--columns), var(--bx, minmax(0, 1fr)));
+  grid-template-rows: repeat(var(--rows), var(--by, minmax(0, 1fr)));
+  gap: var(--gp, 2px);
 }
 
-@media (min-resolution: 1.5dppx) {
+@container (width < 300px) {
   .cells {
-    --floor: 1px;
+    --columns: var(--ec, 25);
+    --rows: var(--er, 8);
   }
 }
 
 .cell {
-  --rested: max(calc(var(--rest) * 100%), var(--fl, var(--floor)));
   position: relative;
   box-sizing: border-box;
-  width: var(--bx, auto);
-  height: var(--by, auto);
-  margin: var(--cm, 0.5px);
   border: var(--ol, 1px) solid var(--line-strong);
   border-radius: 1px;
   background-color: color-mix(in srgb, var(--proof) 5%, transparent);
 }
 
-/* The fill is the cell's own height, clipped from the top to what is left of it, so the fall never changes a layout. */
+/*
+ * The fill stands on the floor of the cell. Its whole device pixels are a box of their own (`--rf`, from the layout), which
+ * the browser snaps to the pixel grid wherever the card falls; the device pixel the fill cuts is a row of its own over them
+ * (`--dp` tall), drawn at the part of it that is covered (`--rp`), so what is left is the exact share of the cell and
+ * never a rounded one. Before the script has run, and without it, the fill is that share of the cell's height.
+ */
 .cell::after {
   content: '';
   position: absolute;
-  inset: 0 var(--in, 1px);
+  inset: auto 0 0;
+  height: var(--rf, calc(var(--rest) * 100%));
   background-color: var(--proof);
-  clip-path: inset(calc(100% - var(--rested)) 0 0);
-  opacity: 0.86;
+}
+
+.cell::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 var(--rf, 0px);
+  height: var(--dp, 0px);
+  background-color: var(--proof);
+  opacity: var(--rp, 0);
 }
 
 @keyframes cell-in {
@@ -383,11 +469,21 @@ a:active > .text {
 
 @keyframes cell-fall {
   from {
-    clip-path: inset(0);
+    height: 100%;
   }
 
   to {
-    clip-path: inset(calc(100% - var(--rested)) 0 0);
+    height: var(--rf, calc(var(--rest) * 100%));
+  }
+}
+
+@keyframes cell-part {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: var(--rp, 0);
   }
 }
 
@@ -397,24 +493,29 @@ a:active > .text {
   }
 
   .cell::after {
-    animation: cell-fall var(--fall) var(--ease-in-out)
-      calc(var(--vs) + var(--appear) + var(--c) / var(--last) * var(--spread)) both;
+    animation: cell-fall var(--fall) var(--ease-in-out) calc(var(--vs) + var(--appear) + var(--i) / var(--count) * var(--spread)) both;
+  }
+
+  .cell::before {
+    animation: cell-part 60ms linear calc(var(--vs) + var(--appear) + var(--i) / var(--count) * var(--spread) + var(--fall)) both;
   }
 }
 
 /*
  * Portfolio: forty marks, one for each practitioner, in one run of two rows of twenty on one
- * baseline. The CV gives no squad sizes, so no squad is drawn.
+ * baseline. The CV gives no squad sizes, so no squad is drawn. Before the script has run, and without
+ * it, a card's run is centred in its tile on whole pixels; a panel's is enlarged to most of its width.
  */
 .cohort {
-  --p: var(--pitch, clamp(4px, calc((100cqw - 20px) / var(--across)), 13px));
-  --m: var(--mark, calc(var(--p) * 0.55));
+  --p: var(--pitch, round(down, clamp(4px, calc((100cqw - 20px) / var(--across)), 13px), 1px));
+  --m: var(--mark, round(calc(var(--p) * 0.55), 1px));
+  --w: var(--fw, calc((var(--across) - 1) * var(--p) + var(--m)));
+  --h: var(--fh, calc((var(--down) - 1) * var(--p) + var(--m)));
   position: absolute;
-  left: var(--fx, 50%);
+  left: var(--fx, round(down, calc((100cqw - var(--w)) / 2), 1px));
   top: var(--fy, 6px);
-  translate: var(--tx, -50%) var(--ty, 0px);
-  width: var(--fw, calc((var(--across) - 1) * var(--p) + var(--m)));
-  height: var(--fh, calc((var(--down) - 1) * var(--p) + var(--m)));
+  width: var(--w);
+  height: var(--h);
 }
 
 .cohort::after {
@@ -472,37 +573,39 @@ a:active > .text {
   background-color: var(--bg);
 }
 
-/*
- * Before the script has run, and without it, the enlarged telemetry is all 10,000 points at a
- * pitch of two or three CSS pixels, and on a narrow screen it takes the tall arrangement, ten
- * blocks across and ten down, so that it is countable at every width.
- */
-.panelTile .lattice {
-  --p: var(--pitch, 2px);
-  --m: var(--mark, 1px);
-  --s: var(--side, 10);
-  --sx: 208;
-  --sy: 53;
-  top: var(--fy, 50%);
-  translate: var(--tx, -50%) var(--ty, -50%);
-}
-
-@container (min-width: 627px) {
-  .panelTile .lattice {
-    --p: var(--pitch, 3px);
-    --m: var(--mark, 2px);
-  }
-}
-
 @media (max-width: 639px) {
   .panelTile {
     --visual: 15rem;
   }
+}
 
-  .panelTile .lattice {
-    --sx: 108;
-    --sy: 108;
-  }
+/*
+ * Before the script has run, and without it, the enlarged reading is drawn at the size its tile always has: the
+ * enlarged telemetry is all 10,000 points at a pitch of two CSS pixels in ten blocks across and ten down, so it is
+ * countable at every width and 217px square in a tile tall enough for it and the key under it; the enlarged
+ * portfolio run takes most of the tile's width at a whole-pixel pitch, its two rows and baseline under
+ * three fifths of the room above the key. Each is centred in that room on whole pixels.
+ */
+.panelTile[data-reading='telemetry'] {
+  --visual: 16rem;
+}
+
+.panelTile .lattice {
+  --p: var(--pitch, 2px);
+  --m: var(--mark, 1px);
+  --s: var(--side, 10);
+  --sx: 108;
+  --sy: 108;
+}
+
+.panelTile .cohort {
+  --p: var(--pitch, max(4px, round(down, min(calc((100cqw - 16px) * 0.84 / var(--across)), calc((100cqh - 22px) * 0.6 / 2.3)), 1px)));
+  --m: var(--mark, round(calc(var(--p) * 0.6), 1px));
+  top: var(--fy, round(down, calc((100cqh - 22px - var(--h)) / 2), 1px));
+}
+
+.panelTile .cohort::after {
+  top: calc(100% + var(--below, calc(var(--p) * 0.7)));
 }
 
 @media (forced-colors: active) {

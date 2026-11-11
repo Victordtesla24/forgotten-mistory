@@ -82,7 +82,7 @@ export function Header() {
             id="assistant-header-button"
             variant="ghost"
             onClick={openAssistant}
-            className="hidden min-[900px]:inline-flex"
+            className="js-only hidden min-[900px]:inline-flex"
           >
             Ask Mini Vic
           </Button>

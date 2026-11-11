@@ -8,30 +8,28 @@ import { StageView } from '@/components/visuals/StageView';
 import { hero } from '@/content/hero';
 import { cn } from '@/lib/cn';
 import { entranceVars } from '@/lib/entrance';
-import { LABEL_LANES } from '@/lib/timeline';
 
-import { CareerTrack } from './CareerTrack';
 import styles from './Hero.module.css';
 import { figureItems, Readings } from './Readings';
 
 const step = (index: number): CSSProperties => ({ '--i': index }) as CSSProperties;
 
-/** The hero's custom properties: the entrance table, and the number of lanes the scale reserves above its bars. */
-const rootVars = { ...entranceVars, '--lane-count': LABEL_LANES } as unknown as CSSProperties;
-
 /**
  * The front door, one screen from 1280 by 720 up: who, one line of positioning, two actions and
- * three links; under them the three headline figures as live readings; and along the bottom
- * edge the career drawn to scale, edge to edge. They arrive in a written order (`lib/entrance.ts`):
- * the field, the headline, the line, the actions, the readings, the scale. From 1024 px with a
- * mouse the hero is one grid whose rows are sized in CSS (`Hero.module.css`), so no row moves
- * when the one after it is parsed.
+ * three links; under them the three headline figures as live readings. They arrive in a written
+ * order (`lib/entrance.ts`): the field, the headline, the line, the actions, the readings. From
+ * 1024 px on a screen wider than it is tall the hero is one grid whose rows are sized in CSS
+ * (`Hero.module.css`), so no row moves when the one after it is parsed. The page's one career
+ * timeline is Experience's; the field's lit "now" line falls to the bottom of the hero on the x
+ * where that timeline has its "now" edge.
  */
 export function Hero() {
   const { headline } = hero;
   return (
-    <div style={rootVars} className={cn(styles.root, 'relative isolate flex flex-col')}>
-      <StageView view="hero-field" posterClassName={styles.poster} className="-z-10" />
+    <div style={entranceVars as CSSProperties} className={cn(styles.root, 'relative isolate flex flex-col')}>
+      <StageView view="hero-field" posterClassName={styles.poster} className="-z-10">
+        <span className={styles.now} />
+      </StageView>
       <DetailSet label="Headline figures" items={figureItems}>
         <div className={styles.first}>
           <Container className={styles.top}>
@@ -92,7 +90,6 @@ export function Hero() {
           </Container>
         </div>
       </DetailSet>
-      <CareerTrack />
     </div>
   );
 }

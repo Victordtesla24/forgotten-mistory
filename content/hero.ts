@@ -1,6 +1,6 @@
 /**
  * The front door: who, one line of positioning, two actions and three links. The
- * headline figures live in proof.ts; the career scale is drawn from experience.ts.
+ * headline figures live in proof.ts; the career is the Experience section's, drawn from experience.ts.
  */
 
 import { site } from './site';
