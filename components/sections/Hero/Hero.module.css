@@ -50,3 +50,51 @@
     animation: rise-in 480ms var(--ease) both;
   }
 }
+
+/*
+ * The hero poster: what first paint, no-WebGL browsers, reduced-motion readers and a lost GPU
+ * context see. Soft blooms of the same tokens the field's glow uses, and a few lanes of ruler
+ * ticks drawn in CSS, so the page already shows its motif before (or without) the canvas.
+ * `light-dark()` follows the colour-scheme the token block sets on the root.
+ */
+.poster {
+  background:
+    radial-gradient(
+      ellipse 52% 60% at 86% 34%,
+      light-dark(
+        color-mix(in srgb, var(--accent) 12%, var(--bg)),
+        color-mix(in srgb, var(--accent) 22%, var(--bg))
+      ),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 44% 44% at 100% 86%,
+      light-dark(
+        color-mix(in srgb, var(--proof) 12%, var(--bg)),
+        color-mix(in srgb, var(--proof) 9%, var(--bg))
+      ),
+      transparent 72%
+    ),
+    var(--bg);
+  mask-image:
+    linear-gradient(to bottom, transparent 0, black 10%, black 70%, transparent 100%),
+    linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.poster::before {
+  content: '';
+  position: absolute;
+  inset: 40% 0 0 36%;
+  background: repeating-linear-gradient(
+    to right,
+    color-mix(in srgb, var(--accent) 60%, transparent) 0 1px,
+    transparent 1px 14px
+  );
+  mask-image:
+    repeating-linear-gradient(to bottom, black 0 12px, transparent 12px 34px),
+    linear-gradient(to bottom, transparent 0, black 36%, black 70%, transparent 100%),
+    linear-gradient(to right, transparent 0, black 45%);
+  mask-composite: intersect;
+  opacity: 0.45;
+}

@@ -4,6 +4,7 @@ import { SunMoon } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
+import { reducedMotion } from '@/lib/motion';
 
 import { THEME_KEY } from './theme';
 
@@ -33,8 +34,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     }
 
     const doc = document as ViewTransitionDocument;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (doc.startViewTransition && !reduced) {
+    if (doc.startViewTransition && !reducedMotion()) {
       doc.startViewTransition(apply);
     } else {
       apply();

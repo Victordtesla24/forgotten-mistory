@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import { cn } from '@/lib/cn';
+import { reducedMotion } from '@/lib/motion';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type ButtonSize = 'md' | 'lg';
@@ -44,7 +45,7 @@ function useMagnetic(enabled: boolean | undefined) {
   const onPointerMove = (event: PointerEvent<HTMLElement>) => {
     const el = ref.current;
     if (!enabled || !el || event.pointerType !== 'mouse') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (reducedMotion()) return;
     const box = el.getBoundingClientRect();
     const dx = (event.clientX - (box.left + box.width / 2)) * PULL;
     const dy = (event.clientY - (box.top + box.height / 2)) * PULL;

@@ -306,13 +306,13 @@ test.describe('checked once, because the viewport does not matter', { tag: '@des
     expect(await effectiveOpacity(card)).toBeGreaterThanOrEqual(0.9);
   });
 
-  test('the page ships one WebGL canvas, in the hero, and the copy claims no more', async ({
+  test('the page ships one WebGL canvas, behind the content, and the copy claims no more', async ({
     page,
   }) => {
     await open(page, '/');
-    // The shader mounts once the page has loaded and gone idle.
+    // The stage mounts once the page has loaded and gone idle; every view shares its canvas.
     await expect(page.locator('canvas')).toHaveCount(1);
-    await expect(page.locator('main > div:has(#top) canvas')).toHaveCount(1);
+    await expect(page.locator('body > div[aria-hidden="true"] > canvas[data-stage]')).toHaveCount(1);
     expect((await page.locator('main').textContent()) ?? '').not.toMatch(/context per section/i);
     await expect(page.locator('#capabilities')).not.toContainText(/this site/i);
   });

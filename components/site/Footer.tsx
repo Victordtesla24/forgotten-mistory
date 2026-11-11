@@ -6,6 +6,8 @@ import { contact } from '@/content/contact';
 import { copyright } from '@/content/legal';
 import { site } from '@/content/site';
 
+import { MotionToggle } from './MotionToggle';
+
 const linkClass =
   'type-small inline-flex min-h-11 min-w-11 items-center text-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-text hover:decoration-muted';
 
@@ -40,6 +42,9 @@ export function Footer() {
               <a href={contact.support.href} className={linkClass}>
                 {contact.support.label}
               </a>
+            </li>
+            <li className="js-only">
+              <MotionToggle className={`${linkClass} cursor-pointer`} />
             </li>
           </ul>
         </nav>

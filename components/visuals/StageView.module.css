@@ -1,0 +1,42 @@
+/*
+ * A view placeholder fills its positioned parent. Its fallback layer (the poster and any
+ * semantic drawing) sits over the canvas until the stage reports the view drawn, then fades
+ * out over the entrance duration and comes back if the stage gives up.
+ */
+.view {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transition: opacity var(--duration-enter) var(--ease);
+}
+
+.view[data-ready='true'] .fallback {
+  opacity: 0;
+}
+
+.poster {
+  position: absolute;
+  inset: 0;
+}
+
+:global(:root[data-motion='off']) .fallback {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallback {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .view {
+    display: none;
+  }
+}

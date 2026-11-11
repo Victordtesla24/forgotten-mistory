@@ -9,8 +9,9 @@ text chat about his experience. It is a static export served by Firebase Hosting
 
 - Next.js 15 App Router with `output: 'export'`, React 19, TypeScript (strict)
 - Tailwind CSS 4, with every colour, size and radius defined as a token in `app/globals.css`
-- `motion` for interaction, native CSS scroll-driven animation for entrances, server-rendered
-  SVG visuals drawn with `d3-scale`
+- three.js (plain, hand-written shaders) for the visuals: one shared canvas for the page,
+  loaded lazily after first paint; `motion` for interaction, native CSS scroll-driven animation
+  for entrances, server-rendered SVG drawn with `d3-scale`
 - Playwright with `@axe-core/playwright` for the tests, including checks that the pages run
   clean under the Content-Security-Policy in `firebase.json` and that every page revalidates
   on each load
@@ -57,11 +58,13 @@ again and deploys only if the live site is not already serving that commit.
 - `content/` holds every fact on the page as typed data. Change facts there, and only to
   match the CV in `public/docs/`.
 - `app/` has the routes and `globals.css`; `components/` has the primitives, site chrome,
-  page sections, assistant and visuals; `lib/` has the assistant's transport.
+  page sections, assistant and the stage's React glue; `lib/gl/` is the three.js stage,
+  `lib/motion.ts` the motion tokens, `lib/assistant/` the assistant's transport.
 - `tests/` is the Playwright suite; `scripts/` holds the release, screenshot and brand-image
   helpers, and `scripts/ops/` the keep-warm ping for the chat backend.
-- `docs/DESIGN.md` is the design and engineering brief; `docs/COPY-STYLE.md` is the style guide
-  for every word on the page; `CLAUDE.md` is the short guide for working in the repository.
+- `docs/DESIGN.md` is the design and engineering brief (research with sources in
+  `docs/design/`); `docs/COPY-STYLE.md` is the style guide for every word on the page;
+  `CLAUDE.md` is the short guide for working in the repository.
 
 Everything from before the November 2026 rebuild is kept only in git history, under the tag
 `pre-rebuild-2026-11-10`.

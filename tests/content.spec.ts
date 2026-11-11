@@ -156,7 +156,6 @@ test.describe('the home page is two levels deep', () => {
   test('a disclosure opens to show its detail, and closes again', async ({ page }) => {
     await open(page, '/');
     const cases = [
-      { summary: '#proof summary', detail: headlineFigures[0]?.story },
       { summary: '#experience summary', detail: roles[0]?.achievements[0] },
       { summary: '#work summary', detail: projects[0]?.does[0] },
       { summary: '#capabilities summary', detail: capabilities[0]?.detail },

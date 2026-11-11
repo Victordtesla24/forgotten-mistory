@@ -7,8 +7,10 @@ import { Header } from '@/components/site/Header';
 import { DisclosureLinks } from '@/components/site/DisclosureLinks';
 import { Providers } from '@/components/site/Providers';
 import { themeInitScript } from '@/components/site/theme';
+import { StageMount } from '@/components/visuals/StageMount';
 import { about, type Credential } from '@/content/about';
 import { SITE_URL, site } from '@/content/site';
+import { motionInitScript } from '@/lib/motion';
 
 import './globals.css';
 
@@ -108,11 +110,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: motionInitScript }} />
         {structuredData.map((html) => (
           <script key={html.__html} type="application/ld+json" dangerouslySetInnerHTML={html} />
         ))}
       </head>
-      <body className="bg-bg font-sans text-text antialiased">
+      <body className="font-sans text-text antialiased">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-md focus:bg-accent focus:px-4 focus:py-3 focus:font-medium focus:text-bg"
@@ -120,6 +123,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to content
         </a>
         <Providers>
+          <StageMount />
           <Header />
           <main id="main" tabIndex={-1} className="outline-none">
             {children}

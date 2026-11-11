@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { ExternalLink } from '@/components/ui/ExternalLink';
-import { HeroBackdrop } from '@/components/visuals/HeroBackdrop';
+import { StageView } from '@/components/visuals/StageView';
 import { hero } from '@/content/hero';
 import { cn } from '@/lib/cn';
 
@@ -29,7 +29,7 @@ export function Hero() {
   const { headline } = hero;
   return (
     <div className="relative isolate pt-[clamp(1rem,2.5vw,2rem)] pb-[clamp(1.75rem,3.5vw,2.5rem)]">
-      <HeroBackdrop />
+      <StageView view="hero-field" posterClassName={styles.poster} />
       <Container className="grid grid-cols-[minmax(0,1fr)] gap-y-4 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-x-12">
         <section
           id="top"

@@ -4,6 +4,7 @@ import NumberFlow from '@number-flow/react';
 import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/cn';
+import { reducedMotion } from '@/lib/motion';
 
 import { VisuallyHidden } from './VisuallyHidden';
 
@@ -27,7 +28,7 @@ export function Figure({ value, prefix = '', suffix = '', className }: FigurePro
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof IntersectionObserver === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (reducedMotion()) return;
     // Already on screen: the final value stays put rather than flashing to zero.
     if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
 

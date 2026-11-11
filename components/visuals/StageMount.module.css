@@ -1,0 +1,17 @@
+/*
+ * The host of the page's one canvas. It covers the page behind the content and clips what the
+ * canvas, which rides the scroll position with some overscan, would otherwise add to the page.
+ */
+.host {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+}
+
+@media (forced-colors: active) {
+  .host {
+    display: none;
+  }
+}

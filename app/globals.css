@@ -24,10 +24,16 @@
   --elevation-float: 0 18px 48px -16px rgb(0 0 0 / 0.6), 0 2px 8px rgb(0 0 0 / 0.3);
   --noise-opacity: 0.035;
 
+  /* Motion tokens, mirrored in lib/motion.ts: tests/stage.spec.ts keeps the two in step. */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-hover: 160ms;
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-press: 120ms;
+  --duration-hover: 200ms;
   --duration-state: 320ms;
-  --duration-enter: 700ms;
+  --duration-panel: 520ms;
+  --duration-enter: 800ms;
+  --duration-section: 1200ms;
+  --stagger: 55ms;
 
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
   --section-gap: clamp(5rem, 10vw, 9rem);
@@ -124,7 +130,7 @@
 }
 
 @theme {
-  --default-transition-duration: 160ms;
+  --default-transition-duration: 200ms;
   --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -218,7 +224,9 @@
     }
   }
 
+  /* Positioned so the stage's canvas host can cover the page behind the content. */
   body {
+    position: relative;
     min-height: 100dvh;
     overflow-x: clip;
     font-size: 1.0625rem;
@@ -403,6 +411,24 @@
   details > summary > svg {
     display: none;
   }
+
+  /* Controls that only script can operate have no place on a page without it. */
+  .js-only {
+    display: none;
+  }
+}
+
+/*
+ * Motion off, from the footer control or ?motion=off: nothing animates, every element rests
+ * where its entrance would end. The reduced-motion preference is honoured where each effect
+ * is defined; this is the same promise for readers who ask the site directly.
+ */
+:root[data-motion='off'] *,
+:root[data-motion='off'] *::before,
+:root[data-motion='off'] *::after {
+  animation: none !important;
+  transition-duration: 0s !important;
+  scroll-behavior: auto !important;
 }
 
 /* Theme changes cross-fade through the View Transitions API where available. */
@@ -418,6 +444,19 @@
   ::view-transition-new(*) {
     animation: none;
   }
+}
+
+/* A detail panel grows out of the element that opened it; the page itself does not cross-fade. */
+:root[data-vt='detail']::view-transition-old(root),
+:root[data-vt='detail']::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-group(detail-morph) {
+  animation-duration: var(--duration-panel);
+  animation-timing-function: var(--ease);
+  border-radius: var(--radius-lg);
+  overflow: clip;
 }
 
 /* The mobile menu sheet is a native <dialog>. */

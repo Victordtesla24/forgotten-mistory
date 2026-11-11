@@ -1,0 +1,218 @@
+/*
+ * The detail panel: one native modal dialog per set. Centred and at most 880 px wide on
+ * desktop; a bottom sheet from the leading edge of the screen on phones. Every colour, radius
+ * and duration is a token. Closed, the dialog is out of sight; with scripting off it is shown
+ * in place and every panel reads one after another.
+ */
+.dialog {
+  width: min(880px, calc(100% - 2 * var(--gutter)));
+  max-width: none;
+  max-height: min(86dvh, 56rem);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface);
+  color: var(--text);
+  box-shadow: var(--elevation-float);
+  overflow: hidden;
+}
+
+.dialog::backdrop {
+  background-color: color-mix(in srgb, var(--bg) 72%, transparent);
+}
+
+.frame {
+  display: flex;
+  max-height: inherit;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  outline: none;
+}
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.25rem 0.5rem 0.25rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background-color: var(--surface);
+}
+
+.control {
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.control:hover {
+  background-color: var(--raised);
+  color: var(--text);
+}
+
+.control:active {
+  transition-duration: var(--duration-press);
+}
+
+.item {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem 1.25rem 1.75rem;
+}
+
+.item > h3 {
+  margin: 0;
+}
+
+.body {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+/* Only the active panel shows while the dialog is open. */
+.dialog[open] .item:not([data-active='true']) {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .item {
+    padding: 2rem 2.5rem 2.5rem;
+  }
+}
+
+/* Phones: a bottom sheet. */
+@media (max-width: 639px) {
+  .dialog {
+    width: 100%;
+    max-height: 88dvh;
+    margin: auto 0 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+}
+
+/* The fallback entrance, for browsers without View Transitions: a short scale and fade. */
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes item-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dialog[open][data-transition='fade'] {
+  animation: panel-in var(--duration-state) var(--ease) both;
+}
+
+.dialog[open]:not([data-transition='none'])::backdrop {
+  animation: backdrop-in var(--duration-state) var(--ease) both;
+}
+
+.dialog[open] .item[data-active='true'] {
+  animation: item-in var(--duration-state) var(--ease) both;
+}
+
+@media (max-width: 639px) {
+  .dialog[open][data-transition='fade'] {
+    animation-name: sheet-in;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open],
+  .dialog[open]::backdrop,
+  .dialog[open] .item[data-active='true'] {
+    animation: none;
+  }
+}
+
+/* Without script the panels are part of the page: every one is shown in place, in order. */
+@media (scripting: none) {
+  .dialog {
+    display: block;
+    width: auto;
+    max-height: none;
+    margin: 1.5rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .frame {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .bar {
+    display: none;
+  }
+
+  .item {
+    padding: 1.5rem 0 0;
+  }
+}
+
+@media print {
+  .dialog {
+    display: none;
+  }
+}
