@@ -63,7 +63,7 @@ export const site: Site = {
     email: 'sarkar.vikram@gmail.com',
     phone: '+61 433 224 556',
     phoneHref: 'tel:+61433224556',
-    linkedin: 'https://www.linkedin.com/in/vikramd-profile',
+    linkedin: 'https://www.linkedin.com/in/vikram-publicprofile',
     github: 'https://github.com/Victordtesla24',
     youtube: 'https://youtube.com/@vicd0ct',
   },

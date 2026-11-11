@@ -44,7 +44,7 @@ export const contact = {
   channels: [
     { kind: 'email', label: channels.email, href: `mailto:${channels.email}` },
     { kind: 'phone', label: channels.phone, href: channels.phoneHref },
-    { kind: 'linkedin', label: 'linkedin.com/in/vikramd-profile', href: channels.linkedin },
+    { kind: 'linkedin', label: 'linkedin.com/in/vikram-publicprofile', href: channels.linkedin },
     { kind: 'github', label: 'github.com/Victordtesla24', href: channels.github },
   ] satisfies ContactChannel[],
 } as const;

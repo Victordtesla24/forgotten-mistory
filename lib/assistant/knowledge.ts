@@ -627,7 +627,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'connect with you',
     ],
     answer:
-      "Here's how to reach me: email sarkar.vikram@gmail.com, phone +61 433 224 556, based in Melbourne, VIC, Australia. LinkedIn is linkedin.com/in/vikramd-profile, GitHub is github.com/Victordtesla24, and the YouTube channel is youtube.com/@vicd0ct. Email is the fastest channel for roles and project enquiries; LinkedIn is the one to use if you'd rather start with a connection request.",
+      "Here's how to reach me: email sarkar.vikram@gmail.com, phone +61 433 224 556, based in Melbourne, VIC, Australia. LinkedIn is linkedin.com/in/vikram-publicprofile, GitHub is github.com/Victordtesla24, and the YouTube channel is youtube.com/@vicd0ct. Email is the fastest channel for roles and project enquiries; LinkedIn is the one to use if you'd rather start with a connection request.",
   },
 
   // ── 22. Location & remote/hybrid ───────────────────────────────────────
@@ -1029,7 +1029,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'cv',
     ],
     answer:
-      "The full CV is on this site as a PDF — the 'Download the CV dossier (PDF)' link, served from /docs/Vik_Resume_Final.pdf. It carries exactly the facts I answer from: eight roles from MYOB (2010) through to the ATO, the Certified Scrum Master credential, both degrees, and the quantified outcomes. If you'd rather have it by email with a covering note against a specific role, ask at sarkar.vikram@gmail.com — LinkedIn at linkedin.com/in/vikramd-profile works too.",
+      "The full CV is on this site as a PDF — the 'Download the CV dossier (PDF)' link, served from /docs/Vik_Resume_Final.pdf. It carries exactly the facts I answer from: eight roles from MYOB (2010) through to the ATO, the Certified Scrum Master credential, both degrees, and the quantified outcomes. If you'd rather have it by email with a covering note against a specific role, ask at sarkar.vikram@gmail.com — LinkedIn at linkedin.com/in/vikram-publicprofile works too.",
   },
 
   // ── 38. Work rights / citizenship (honest non-answer) ────────────────────
