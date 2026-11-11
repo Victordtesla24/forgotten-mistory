@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from 'node:fs';
+
 import { expect, test, type Page } from '@playwright/test';
 
 import { about } from '@/content/about';
@@ -6,6 +8,7 @@ import { contact } from '@/content/contact';
 import { roles } from '@/content/experience';
 import { hero } from '@/content/hero';
 import { headlineFigures } from '@/content/proof';
+import { site } from '@/content/site';
 import { projects } from '@/content/work';
 
 import { open, visibleWordCounts } from './support';
@@ -31,6 +34,15 @@ test.describe('the content keeps to its contract', { tag: '@desktop' }, () => {
       'Delivery leader and AI solutions architect.',
     );
     expect(hero.headline.emphasis).toBe('AI solutions');
+  });
+
+  test('the Download CV action is the CV file that ships in public/', () => {
+    expect(hero.actions.secondary.label).toBe('Download CV');
+    expect(hero.actions.secondary.href).toBe(site.cvHref);
+    expect(site.cvHref).toMatch(/^\/docs\/[\w-]+\.pdf$/);
+    const file = `public${site.cvHref}`;
+    expect(existsSync(file), file).toBe(true);
+    expect(readFileSync(file).subarray(0, 5).toString(), file).toBe('%PDF-');
   });
 
   test('three headline figures, each with a short label, a short scope and a story', () => {

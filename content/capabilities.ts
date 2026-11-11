@@ -5,7 +5,7 @@
  * repository or credential behind it. A result obtained in simulation, and work done
  * outside production, say so inside their own sentences.
  *
- * Facts trace to public/docs/Vik_Resume_Final.pdf and to the named repositories.
+ * Facts trace to public/docs/Vikram_Deshpande_CV.pdf and to the named repositories.
  */
 
 /**

@@ -222,15 +222,20 @@ test.describe('on small screens', { tag: '@mobile' }, () => {
 
 // Nothing below depends on the viewport, so it runs once, in the desktop project.
 test.describe('checked once, because the viewport does not matter', { tag: '@desktop' }, () => {
-  test('the CV link returns a PDF', async ({ page }) => {
+  test('the Download CV action and the footer link both return the PDF', async ({ page }) => {
     await page.goto('/');
-    const cv = page.getByRole('contentinfo').getByRole('link', { name: /CV/ });
-    const href = await cv.getAttribute('href');
-    expect(href).toBeTruthy();
+    const links = [
+      page.getByRole('link', { name: 'Download CV' }),
+      page.getByRole('contentinfo').getByRole('link', { name: /CV/ }),
+    ];
+    for (const link of links) {
+      const href = await link.getAttribute('href');
+      expect(href).toBeTruthy();
 
-    const response = await page.request.get(href ?? '');
-    expect(response.status()).toBe(200);
-    expect(response.headers()['content-type']).toContain('application/pdf');
+      const response = await page.request.get(href ?? '');
+      expect(response.status(), href ?? '').toBe(200);
+      expect(response.headers()['content-type']).toContain('application/pdf');
+    }
   });
 
   test('nothing overflows horizontally at 320, 390 and 1440 px', async ({ page }) => {

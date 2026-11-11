@@ -10,6 +10,9 @@
   "hosting": {
     "public": "out",
     "cleanUrls": true,
+    "redirects": [
+      { "source": "/docs/Vik_Resume_Final.pdf", "destination": "/docs/Vikram_Deshpande_CV.pdf", "type": 301 }
+    ],
     "rewrites": [
       { "source": "/api/chat", "function": { "functionId": "minivicChat", "region": "us-central1" } }
     ],

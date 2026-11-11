@@ -1,6 +1,6 @@
 /**
  * Identity, location, the one availability line, public channels and the text search and
- * social previews show. Kept in parity with the CV (public/docs/Vik_Resume_Final.pdf).
+ * social previews show. Kept in parity with the CV (public/docs/Vikram_Deshpande_CV.pdf).
  */
 
 export const SITE_URL = 'https://forgotten-mistory.web.app';
@@ -57,7 +57,7 @@ export const site: Site = {
     'Open to Scrum Master / Project Manager roles in Melbourne and selected AI delivery engagements.',
   url: SITE_URL,
   image: `${SITE_URL}/assets/my_avatar.png`,
-  cvHref: '/docs/Vik_Resume_Final.pdf',
+  cvHref: '/docs/Vikram_Deshpande_CV.pdf',
   repositoryHref: 'https://github.com/Victordtesla24/forgotten-mistory',
   channels: {
     email: 'sarkar.vikram@gmail.com',

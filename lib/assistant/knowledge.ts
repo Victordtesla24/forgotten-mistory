@@ -1,7 +1,7 @@
 /**
  * The local knowledge base: curated, first-person answers about Vikram that the
  * assistant gives when the live chat function cannot be reached. They are kept
- * in parity with content/ and with the CV (public/docs/Vik_Resume_Final.pdf);
+ * in parity with content/ and with the CV (public/docs/Vikram_Deshpande_CV.pdf);
  * do not add a claim here that those sources do not carry.
  *
  * Matching lives in ./local.ts.
@@ -1029,7 +1029,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'cv',
     ],
     answer:
-      "The full CV is on this site as a PDF — the 'Download the CV dossier (PDF)' link, served from /docs/Vik_Resume_Final.pdf. It carries exactly the facts I answer from: eight roles from MYOB (2010) through to the ATO, the Certified Scrum Master credential, both degrees, and the quantified outcomes. If you'd rather have it by email with a covering note against a specific role, ask at sarkar.vikram@gmail.com — LinkedIn at linkedin.com/in/vikram-publicprofile works too.",
+      "The full CV is on this site as a PDF — the 'Download the CV dossier (PDF)' link, served from /docs/Vikram_Deshpande_CV.pdf. It is the full record: every role from MYOB (2010) through to the ATO, the Certified Scrum Master credential, both degrees, the quantified outcomes and the projects I have built. If you'd rather have it by email with a covering note against a specific role, ask at sarkar.vikram@gmail.com — LinkedIn at linkedin.com/in/vikram-publicprofile works too.",
   },
 
   // ── 38. Work rights / citizenship (honest non-answer) ────────────────────

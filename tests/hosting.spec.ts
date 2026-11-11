@@ -1,8 +1,10 @@
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 
 import { expect, test } from '@playwright/test';
 
-import { cacheControlFor } from './support';
+import { site } from '@/content/site';
+
+import { cacheControlFor, readHostingRedirects } from './support';
 
 const REVALIDATE = 'public, max-age=0, must-revalidate';
 
@@ -32,5 +34,17 @@ test.describe('the hosting headers', { tag: '@desktop' }, () => {
       expect.arrayContaining(['/', '/privacy', '/terms', '/404', '/index.txt', '/privacy.txt', '/terms.txt']),
     );
     for (const path of paths) expect(cacheControlFor(path), path).toBe(REVALIDATE);
+  });
+});
+
+// The CV used to be served at /docs/Vik_Resume_Final.pdf; links that were shared with that
+// name keep working by a permanent redirect to the file the site serves now.
+test.describe('the old CV address', { tag: '@desktop' }, () => {
+  test('redirects permanently to the CV the Download CV action serves', () => {
+    const rule = readHostingRedirects().find((entry) => entry.source === '/docs/Vik_Resume_Final.pdf');
+    expect(rule?.type).toBe(301);
+    expect(rule?.destination).toBe(site.cvHref);
+    expect(existsSync(`public${rule?.destination}`)).toBe(true);
+    expect(existsSync('public/docs/Vik_Resume_Final.pdf')).toBe(false);
   });
 });

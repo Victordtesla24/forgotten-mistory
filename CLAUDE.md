@@ -10,7 +10,7 @@ looks, moves and is built — read it before changing anything visible.
 
 - `content/` — every fact on the page, typed, in two levels: what is always on screen and
   what opens on demand. Change facts only here, and only to match the CV
-  (`public/docs/Vik_Resume_Final.pdf`), LinkedIn or a named repository. Write every word to
+  (`public/docs/Vikram_Deshpande_CV.pdf`), LinkedIn or a named repository. Write every word to
   `docs/COPY-STYLE.md`; `tests/hygiene.spec.ts` fails the build on a banned label or phrase.
 - `app/` — routes (`page.tsx`, `privacy`, `terms`, `not-found`, `error`), `layout.tsx`
   (fonts, metadata, JSON-LD), `globals.css` (design tokens).

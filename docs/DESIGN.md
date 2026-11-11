@@ -20,7 +20,7 @@ data and built to the standard of the best studio sites of 2026.
 ## 2. Content and writing rules (non-negotiable)
 
 1. **True.** Every fact, figure, date, employer, repository and credential is true to the
-   CV (`public/docs/Vik_Resume_Final.pdf`) and lives in `content/`. Never invent, inflate
+   CV (`public/docs/Vikram_Deshpande_CV.pdf`) and lives in `content/`. Never invent, inflate
    or round a figure; never add a claim, employer, technology, award or testimonial. A
    result obtained in simulation or outside production is named as such in a word or two
    ("in simulation"), never presented as a production result.

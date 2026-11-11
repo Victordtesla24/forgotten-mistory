@@ -33,6 +33,18 @@ export function readHostingHeaders(): HeaderRule[] {
   return config.hosting.headers;
 }
 
+interface RedirectRule {
+  source: string;
+  destination: string;
+  type: number;
+}
+
+/** The redirect rules of firebase.json: old addresses that still lead somewhere. */
+export function readHostingRedirects(): RedirectRule[] {
+  const config: { hosting: { redirects?: RedirectRule[] } } = JSON.parse(readFileSync('firebase.json', 'utf8'));
+  return config.hosting.redirects ?? [];
+}
+
 /** The Content-Security-Policy Firebase Hosting sends with every page. */
 export function readProductionCsp(): string {
   const header = readHostingHeaders()
