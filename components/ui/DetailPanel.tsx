@@ -88,19 +88,29 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
   const countRef = useRef<HTMLSpanElement>(null);
   const titleRef = useRef<HTMLSpanElement>(null);
   const openRef = useRef<string | null>(null);
+  const wantedRef = useRef<string | null>(null);
   const pushed = useRef(false);
   const ids = useMemo(() => items.map((item) => item.id), [items]);
 
-  /** Shows `id` (or closes with null) through whichever transition the browser and the reader allow. */
-  const present = useCallback((id: string | null, origin: HTMLElement | null) => {
+  /**
+   * Shows `requested` (or closes with null) through whichever transition the browser and the
+   * reader allow. What was asked for last is `wantedRef`; a transition applies it a frame later,
+   * and a request that arrives in between (the history step that closes a panel is heard as a
+   * popstate and as a hashchange, and a reader can press again before the first has landed) only
+   * changes what the pending update applies, so a late update can never undo a newer request.
+   */
+  const present = useCallback((requested: string | null, origin: HTMLElement | null) => {
     const dialog = dialogRef.current;
     const frame = frameRef.current;
     if (!dialog || !frame) return;
+    if (requested === wantedRef.current) return;
+    wantedRef.current = requested;
     const previous = openRef.current;
-    if (id === previous) return;
 
     // The DOM is updated directly, so the new state is in place the moment a transition captures it.
     const apply = () => {
+      const id = wantedRef.current;
+      if (id === openRef.current) return;
       openRef.current = id;
       const index = id === null ? -1 : ids.indexOf(id);
       for (const section of frame.querySelectorAll<HTMLElement>('[data-detail-item]')) {
@@ -116,17 +126,17 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
       if (id !== null && previous === null) frame.focus({ preventScroll: true });
     };
 
-    const target = id === null ? triggerFor(previous ?? '') : origin;
+    const target = requested === null ? triggerFor(previous ?? '') : origin;
     const start = (document as TransitionDocument).startViewTransition;
-    const switching = id !== null && previous !== null;
+    const switching = requested !== null && previous !== null;
     // A morph still running is left to finish; a second one would skip it.
     const busy = document.documentElement.dataset.vt === 'detail';
     dialog.dataset.transition = reducedMotion() || switching || busy ? 'none' : start && target ? 'morph' : 'fade';
 
     if (dialog.dataset.transition === 'morph' && start && target) {
       // The dialog itself is named, so its surface, border and shadow grow out of the card with it.
-      const from = id === null ? dialog : target;
-      const to = id === null ? target : dialog;
+      const from = requested === null ? dialog : target;
+      const to = requested === null ? target : dialog;
       morphName(from, true);
       // The card shows its reading in the DOM's own drawing while it is part of the morph.
       target.dataset.morph = '';
@@ -135,7 +145,7 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
         morphName(from, false);
         morphName(to, true);
         apply();
-        if (id === null) target.focus({ preventScroll: true });
+        if (wantedRef.current === null) target.focus({ preventScroll: true });
       });
       // A transition the browser skips rejects its promises; the panel is in its final state either way.
       const settle = () => undefined;
@@ -150,12 +160,12 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
     }
 
     apply();
-    if (id === null) triggerFor(previous ?? '')?.focus({ preventScroll: true });
+    if (wantedRef.current === null) triggerFor(previous ?? '')?.focus({ preventScroll: true });
   }, [ids, items]);
 
   const open = useCallback(
     (id: string, origin: HTMLElement | null) => {
-      if (openRef.current === null) {
+      if (wantedRef.current === null) {
         window.history.pushState(null, '', `#${encodeURIComponent(id)}`);
         pushed.current = true;
       } else {
@@ -167,7 +177,7 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
   );
 
   const close = useCallback(() => {
-    if (openRef.current === null) return;
+    if (wantedRef.current === null) return;
     if (pushed.current) {
       // The browser's own history step closes it: `sync` below hears the fragment go.
       pushed.current = false;
@@ -180,7 +190,7 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
 
   const step = useCallback(
     (direction: 1 | -1) => {
-      const index = ids.indexOf(openRef.current ?? '');
+      const index = ids.indexOf(wantedRef.current ?? '');
       if (index < 0) return;
       open(ids[(index + direction + ids.length) % ids.length] ?? '', null);
     },
