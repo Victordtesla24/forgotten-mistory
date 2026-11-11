@@ -84,7 +84,7 @@ export const roles: readonly ExperienceRole[] = [
     summary: 'Leads one of eight Payday Super squads; architected the program’s test automation.',
     headline: { value: '≈92%', label: 'less evidence effort across 200+ SIT scenarios' },
     achievements: [
-      'Leads the Agile Kookaburras, one of eight squads on the Payday Super program: sprint cadence, PI planning (PI 47–48), capacity management and executive status reporting.',
+      'Leads the Kookaburras squad, one of eight squads on the Payday Super program: sprint cadence, PI planning (PI 47–48), capacity management and executive status reporting.',
       'Architected COBOL/mainframe test-evidence automation for 200+ SIT/E2E scenarios across all eight squads: ~3 hours to ~15 minutes per scenario, a ≈92% reduction, on a zero-new-approvals toolchain (REXX, SMF, SDSF, PCOMM, PowerShell, VBA).',
       'Turned an infeasible SIT window (75+ hours of manual evidence per team against 64 available) into an achievable plan: a six-day tiered harness build, a formal go/no-go gate and a four-level contingency ladder.',
       'Authored the executive change request re-baselining Payday Super test capacity from 30 to up to 90 person-days: options analysis, costed recommendation and risk assessment.',

@@ -142,9 +142,9 @@
   font-weight: 600;
   text-wrap: balance;
 
-  /* From 1024px the career scale sits beside the headline, which keeps its three lines at this smaller cap. */
+  /* From 1024px the headline takes two lines across the page at this smaller cap, and a short screen gives it a tenth of its height at most. */
   @media (min-width: 1024px) {
-    font-size: clamp(2.75rem, 0.9rem + 4.8vw, 5.25rem);
+    font-size: clamp(2.75rem, 0.9rem + 4.8vw, min(5.25rem, 10svh));
   }
 }
 
@@ -334,16 +334,16 @@
  * view() timelines AND the reader has not asked for reduced motion; nothing is
  * ever hidden by script. The entrance is a fixed distance of scrolling, not a share
  * of the element's own height: a card a thousand pixels tall is as readable as soon
- * as it appears as a short one.
+ * as it appears as a short one. A reveal only rises; it never changes opacity, so text that
+ * rests partly in view (a section under a short first screen) is always fully opaque and
+ * always meets its contrast.
  */
 @keyframes reveal-in {
   from {
-    opacity: 0;
     transform: translateY(1.5rem);
   }
 
   to {
-    opacity: 1;
     transform: none;
   }
 }
@@ -450,8 +450,8 @@
  * A detail panel grows out of the element that opened it. The page behind it cross-fades over
  * the panel's own duration, which is also what dims it, so it never drops to black. The shell is
  * the group itself: it carries the surface and the shadow and grows from the card to the dialog.
- * The card's snapshot is gone within the first 35% of the morph and the panel's comes in after
- * 40%, so the two never overlap and no text is ever seen twice.
+ * The card's snapshot is gone within the first 35% of the morph and the panel's comes in from
+ * 35%, so the two never overlap, no text is ever seen twice and the shell is never left empty.
  */
 :root[data-vt='detail']::view-transition-old(root),
 :root[data-vt='detail']::view-transition-new(root) {
@@ -471,7 +471,7 @@
 
 @keyframes morph-in {
   from,
-  40% {
+  35% {
     opacity: 0;
   }
 

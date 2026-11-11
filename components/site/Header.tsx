@@ -78,7 +78,12 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" onClick={openAssistant} className="hidden min-[900px]:inline-flex">
+          <Button
+            id="assistant-header-button"
+            variant="ghost"
+            onClick={openAssistant}
+            className="hidden min-[900px]:inline-flex"
+          >
             Ask Mini Vic
           </Button>
           <ThemeToggle />

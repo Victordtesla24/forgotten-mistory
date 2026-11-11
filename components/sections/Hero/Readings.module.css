@@ -6,9 +6,8 @@
  */
 /*
  * Below 700px the readings are one row to move along sideways, each card a fixed width so the
- * next one shows at the edge; from 700px to 1023px the three sit side by side, so every figure
- * is on the first screen of a tablet; from 1024px they are a column beside the headline. The row
- * is a scroller of its own, so the page never scrolls sideways.
+ * next one shows at the edge; from 700px the three sit side by side, so every figure is on the
+ * first screen of a tablet. The row is a scroller of its own, so the page never scrolls sideways.
  */
 .row {
   --row-visual: 3.5rem;
@@ -61,16 +60,19 @@
 }
 
 /*
- * Beside the headline the column is three cards tall. It claims that height from its first
- * paint, so a page that is still being parsed, with one card in it, does not later push the
- * headline, which is centred against this column, up the screen. A card is its visual and a
- * 5rem row of text.
+ * From 1024px with a mouse the three readings are one row of cards under the headline, in a
+ * row of the hero's grid whose height is stated in CSS (Hero.module.css): the visual takes what
+ * `--hero-visual` says, and the text under it is a fixed `--reading-text` tall, so a number that
+ * is still counting, or a card that is still being parsed, moves nothing.
  */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (scripting: enabled) {
   .row {
-    --row-visual: 7rem;
-    grid-template-columns: minmax(0, 1fr);
-    min-block-size: calc(3 * (var(--row-visual) + 5rem) + 2 * 0.75rem);
+    --row-visual: var(--hero-visual);
+  }
+
+  .text {
+    block-size: var(--reading-text);
+    align-content: center;
   }
 }
 
@@ -90,6 +92,20 @@
   .reading {
     animation: card-in var(--e-readings-for) var(--ease) calc(var(--e-readings) + var(--i) * var(--e-step)) both;
   }
+}
+
+.text {
+  position: relative;
+  display: grid;
+  row-gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--surface);
+  transition: background-color var(--duration-hover) var(--ease);
+}
+
+a:hover > .text,
+a:active > .text {
+  background-color: var(--raised);
 }
 
 .visual {
@@ -120,18 +136,23 @@
  * 10,000 points in 100 blocks of 100: one element, masked into dots (a dot is half the pitch,
  * the pitch a whole number of CSS pixels that grows with the room) and into blocks (ten points,
  * then one pitch of gutter). The lattice is `--columns` by `--rows` pitches, centred, so nothing
- * is resampled and nothing moires.
+ * is resampled and nothing moires. The pitch is the stage's own rule (`pointPitch` in
+ * lib/readings.ts): as many whole pixels as fit the tile across (209 points a pitch each) and
+ * down (54), so the two layers draw the same lattice. A dot is half a pitch in device pixels,
+ * rounded down and never under one: at a whole screen ratio it lands on device pixels.
  */
 .lattice {
-  --pitch: 1px;
-  --dot: 1px;
+  --by-width: 1px;
+  --by-height: max(1px, round(down, calc(var(--visual) / var(--rows)), 1px));
+  --pitch: min(var(--by-width), var(--by-height));
+  --dot: max(1px, round(down, calc(var(--pitch) / 2), 1px));
   position: absolute;
   inset: 0;
   width: calc(var(--columns) * var(--pitch));
   height: calc(var(--rows) * var(--pitch));
   margin: auto;
   background-color: var(--proof);
-  opacity: 0.72;
+  opacity: 0.86;
   mask-image:
     repeating-linear-gradient(to right, #000 0 var(--dot), transparent var(--dot) var(--pitch)),
     repeating-linear-gradient(to bottom, #000 0 var(--dot), transparent var(--dot) var(--pitch)),
@@ -149,15 +170,23 @@
   -webkit-mask-composite: source-in;
 }
 
-@container (min-width: 440px) {
+/* A screen with two or more device pixels to a CSS pixel draws the dot as half a pitch exactly. */
+@media (min-resolution: 1.5dppx) {
   .lattice {
-    --pitch: 2px;
+    --dot: calc(var(--pitch) / 2);
   }
 }
 
-@container (min-width: 660px) {
+/* 209 points across at a pitch of 2 and 3 CSS pixels. */
+@container (min-width: 418px) {
   .lattice {
-    --pitch: 3px;
+    --by-width: 2px;
+  }
+}
+
+@container (min-width: 627px) {
+  .lattice {
+    --by-width: 3px;
   }
 }
 
@@ -171,15 +200,23 @@
   }
 }
 
-/* The line is the right edge of a box as wide as the visual, so it crosses by a transform and moves no layout. */
+/*
+ * The line is the right edge of a box as wide as the visual, so it crosses by a transform and moves
+ * no layout. It is bright for the first 80 ms of its 200 and fades out over the last 120, so it
+ * arrives at the edge as light and rests nowhere: a settled card shows no line on its edge.
+ */
 @keyframes cross {
   from {
     opacity: 0.95;
     transform: translateX(-100%);
   }
 
-  to {
+  40% {
     opacity: 0.95;
+  }
+
+  to {
+    opacity: 0;
     transform: none;
   }
 }
@@ -188,7 +225,7 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(to right, transparent calc(100% - 1px), var(--accent) calc(100% - 1px));
-  opacity: 0.4;
+  opacity: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -201,8 +238,15 @@
   }
 }
 
-/* Evidence: 40 by 5 cells, all 200 staying; each is full at first, then its fill falls to about 15 minutes' worth. */
+/*
+ * Evidence: 40 by 5 cells, all 200 staying; each is full at first, then its fill falls to about 15
+ * minutes' worth. A cell is a half pixel apart from its neighbours, drawn in a 1 px outline, and
+ * its fill stands a pixel in from the outline at each side, so 200 separate fills read and never
+ * run together into a line. The fill is never under two device pixels tall. The stage draws the
+ * same cells from the same numbers (`cells` in lib/readings.ts).
+ */
 .cells {
+  --floor: 2px;
   inset: 6px 10px;
   display: grid;
   grid-auto-flow: column;
@@ -210,7 +254,14 @@
   grid-template-rows: repeat(var(--rows), 1fr);
 }
 
+@media (min-resolution: 1.5dppx) {
+  .cells {
+    --floor: 1px;
+  }
+}
+
 .cell {
+  --rested: max(calc(var(--rest) * 100%), var(--floor));
   position: relative;
   margin: 0.5px;
   border: 1px solid var(--line-strong);
@@ -218,14 +269,14 @@
   background-color: color-mix(in srgb, var(--proof) 5%, transparent);
 }
 
+/* The fill is the cell's own height, clipped from the top to what is left of it, so the fall never changes a layout. */
 .cell::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 0 1px;
   background-color: var(--proof);
+  clip-path: inset(calc(100% - var(--rested)) 0 0);
   opacity: 0.86;
-  transform: scaleY(var(--rest));
-  transform-origin: bottom;
 }
 
 @keyframes cell-in {
@@ -240,11 +291,11 @@
 
 @keyframes cell-fall {
   from {
-    transform: scaleY(1);
+    clip-path: inset(0);
   }
 
   to {
-    transform: scaleY(var(--rest));
+    clip-path: inset(calc(100% - var(--rested)) 0 0);
   }
 }
 
@@ -315,8 +366,9 @@
  */
 .panelTile {
   --vs: 120ms;
+  --visual: 11rem;
   position: relative;
-  height: 11rem;
+  height: var(--visual);
   container-type: inline-size;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);

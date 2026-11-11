@@ -17,11 +17,19 @@ import { forcedTier, resolveTier, STEP_DOWN, type GpuProbe, type LiveTier } from
 import { viewLoaders } from './views';
 import type { View } from './views/types';
 
-/** The drawing buffer may hold at most this many pixels, whatever the screen. */
-const MAX_PIXELS = 2_300_000;
+/**
+ * The drawing buffer may hold at most this many pixels, whatever the screen: a 4K display at
+ * twice the ratio fits, so the canvas is as sharp as the DOM it is registered with; only a
+ * screen larger than that is drawn a little coarser.
+ */
+const MAX_PIXELS = 10_000_000;
 
-/** The pixel ratio each tier may reach. */
-const DPR_CAP: Readonly<Record<LiveTier, number>> = { high: 1.5, low: 1, still: 1.5 };
+/**
+ * The pixel ratio the canvas is drawn at, at most: the screen's own ratio up to 2, in every tier,
+ * so every mark lands on the pixels the DOM layer beneath it lands on. A tier that needs relief
+ * draws fewer marks and fewer effects; it never draws at a lower resolution.
+ */
+const MAX_RATIO = 2;
 
 /** The canvas extends this far above and below the viewport, so a late frame never shows its edge. */
 const OVERSCAN = 96;
@@ -131,6 +139,7 @@ export function createStage(options: StageOptions): Stage | null {
   let frozen = false;
   let raf = 0;
   let dpr = 1;
+  let screenRatio = 1;
   let cssWidth = 0;
   let cssHeight = 0;
   let animating = false;
@@ -180,7 +189,8 @@ export function createStage(options: StageOptions): Stage | null {
     const width = document.documentElement.clientWidth;
     const height = window.innerHeight + OVERSCAN * 2;
     const fit = Math.sqrt(MAX_PIXELS / (width * height));
-    dpr = Math.max(0.75, Math.min(window.devicePixelRatio, DPR_CAP[tier], fit));
+    screenRatio = window.devicePixelRatio;
+    dpr = Math.max(0.75, Math.min(screenRatio, MAX_RATIO, fit));
     cssWidth = width;
     cssHeight = height;
     renderer.setPixelRatio(dpr);
@@ -323,8 +333,9 @@ export function createStage(options: StageOptions): Stage | null {
   const onScroll = () => wake();
   const onResize = () => {
     // A phone's toolbar changes the height while scrolling; a canvas that is already tall enough stays.
+    // A new screen ratio (zoom, or a window moved to another display) always redraws the buffer.
     const tallEnough = window.innerHeight + OVERSCAN * 2 <= cssHeight;
-    if (document.documentElement.clientWidth !== cssWidth || !tallEnough) resize();
+    if (document.documentElement.clientWidth !== cssWidth || !tallEnough || window.devicePixelRatio !== screenRatio) resize();
     wake();
   };
   const onVisibility = () => {

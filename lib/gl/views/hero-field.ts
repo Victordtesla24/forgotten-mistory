@@ -22,7 +22,7 @@ import {
 } from 'three';
 
 import { entrance } from '../../entrance';
-import { spring, stagger, stepSpring, type SpringState } from '../../motion';
+import { duration, spring, stagger, stepSpring, type SpringState } from '../../motion';
 import { hairline } from '../glsl/aa';
 import { finish } from '../glsl/finish';
 import { palette } from '../palette';
@@ -30,17 +30,17 @@ import { createRulerGeometry, type RulerLane } from '../ruler';
 import type { LiveTier } from '../tier';
 import type { FrameInput, View, ViewContext } from './types';
 
-/** Seconds from the first frame until the drift has stopped. */
-const SETTLE_S = 3.2;
+/** Seconds from the first frame until the drift has stopped: the whole entrance is over in a section's 1,200 ms. */
+const SETTLE_S = duration.section / 1000;
 
 /** Seconds the entrance takes: lanes start a stagger step apart and each grows for `entrance`. */
 const ENTRANCE_S = entrance.field.for / 1000;
-const STAGGER_S = stagger.max / 1000;
+const STAGGER_S = stagger.min / 1000;
 const LANE_STEPS = stagger.steps - 1;
 
-/** Seconds the band of light takes to cross the field, starting just after the first lane. */
+/** Seconds the band of light takes to cross the field, starting just after the first lane, and a short rest before the ceiling. */
 const SWEEP_START_S = 0.15;
-const SWEEP_S = 1.3;
+const SWEEP_S = SETTLE_S - SWEEP_START_S - 0.1;
 
 const FOV = 30;
 const CAMERA_HEIGHT = 5.4;
@@ -229,7 +229,7 @@ ${bloom}
 
 void main() {
   vec2 uv = (gl_FragCoord.xy - uOrigin) / uSize;
-  float enter = 1.0 - pow(1.0 - clamp(uTime / 1.2, 0.0, 1.0), 3.0);
+  float enter = 1.0 - pow(1.0 - clamp(uTime / ${SETTLE_S.toFixed(3)}, 0.0, 1.0), 3.0);
 
   float band = exp(-pow((uv.y - uHorizon.y) / 0.13, 2.0)) * smoothstep(0.05, 0.95, uv.x);
   float bloom = exp(-dot((uv - uHorizon) * vec2(1.1, 2.4), (uv - uHorizon) * vec2(1.1, 2.4)) / 0.22);

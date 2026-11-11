@@ -73,13 +73,14 @@ test.describe('on every viewport', () => {
       );
     expect(cards).toHaveLength(3);
 
-    // Beside the headline all three are on the first screen; on a phone they are one row to
-    // move along, and the first is whole with the next showing at the edge.
+    // Under the headline all three are on the first screen of a wide screen; on a phone they are
+    // one row to move along, and the first is whole with the next showing at the edge.
     const onFirstScreen = (viewport?.width ?? 0) >= 1024 ? cards : cards.slice(0, 1);
     const launcher = await page.locator('#assistant-launcher').boundingBox();
-    // On a phone the launcher waits until the hero is past, so it cannot cover a reading.
-    if ((viewport?.width ?? 0) < 640) expect(launcher, 'a phone’s launcher waits for the hero to pass').toBeNull();
-    else expect(launcher).not.toBeNull();
+    // A wide screen has the header's button over the hero, so the floating one is not there yet;
+    // a narrower one has it from the first frame, a small round button in a corner the hero leaves free.
+    if ((viewport?.width ?? 0) >= 1024) expect(launcher, 'a wide screen’s launcher waits for the hero to pass').toBeNull();
+    else expect(launcher, 'a narrower screen has the launcher at once').not.toBeNull();
     for (const card of onFirstScreen) {
       expect(card.bottom, `${card.text} ends above the fold`).toBeLessThanOrEqual(fold);
       const apart =

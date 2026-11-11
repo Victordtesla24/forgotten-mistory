@@ -30,9 +30,9 @@ import type { LiveTier } from '../tier';
 import { createCamera, unit } from './reading';
 import type { FrameInput, View, ViewContext } from './types';
 
-/** The front takes three quarters of the scale's time, as the DOM's wipe does, and the light lingers this long after. */
+/** The front takes three quarters of the scale's time, as the DOM's wipe does, and the light lingers for the last quarter, so it is gone as the scale's time ends. */
 const FRONT_MS = entrance.scale.for * 0.75;
-const AFTERGLOW_MS = 240;
+const AFTERGLOW_MS = entrance.scale.for - FRONT_MS;
 
 const BAR_COUNT = careerBars.length;
 const CURRENT = Math.max(

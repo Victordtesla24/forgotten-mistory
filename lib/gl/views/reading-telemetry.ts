@@ -1,10 +1,11 @@
 /**
  * The telemetry reading: exactly 10,000 points, one for each concurrent device, in 100 blocks
  * of 100, filling the lattice from left to right, then a line that crosses it in 200 ms, the
- * P95 latency of the figure's scope. Points the line has reached stay lit. A hover or focus
- * sends the line across again. The pitch is a whole number of device pixels and every point
- * sits on a pixel, with no jitter, so the lattice is crisp at any ratio and never moires.
- * Every point is a real GL point, so the stage's own counters report them.
+ * P95 latency of the figure's scope, and fades out as it arrives. Points the line has reached
+ * stay lit. A hover or focus sends the line across again. The pitch is a whole number of CSS
+ * pixels (the rule the stylesheet states too), so at a whole screen ratio every point sits on
+ * a device pixel, with no jitter, and the lattice is crisp and never moires. Every point is a
+ * real GL point, so the stage's own counters report them.
  */
 
 import {
@@ -17,6 +18,7 @@ import {
   type WebGLRenderer,
 } from 'three';
 
+import { READING_TRAIL } from '../../entrance';
 import { points, pointPitch, pointSize } from '../../readings';
 import { finish } from '../glsl/finish';
 import type { LiveTier } from '../tier';
@@ -37,11 +39,12 @@ ${readingGlsl}
 
 void main() {
   // The lattice is centred in the tile on whole device pixels; each dot sits in the middle of
-  // its own pitch cell, so every point lands on a pixel and nothing is resampled.
+  // its own pitch cell (the pitch is in device pixels), so every point lands on a pixel and
+  // nothing is resampled.
   vec2 device = floor(uSize * uPixel + 0.5);
   vec2 origin = floor((device - uLattice * uPitch) * 0.5);
   float inset = floor((uPitch - uDot) * 0.5);
-  vec2 corner = origin + position.xy * uPitch + inset;
+  vec2 corner = origin + floor(position.xy * uPitch + 0.5) + inset;
   vec2 centre = vec2(corner.x, device.y - corner.y) + vec2(uDot * 0.5, -uDot * 0.5);
   float across = centre.x / device.x;
   float passed = uReveal - across;
@@ -94,8 +97,11 @@ void main() {
 }
 `;
 
-/** The light the line leaves behind it fades over this long once it has crossed. */
-const TRAIL_MS = 240;
+/** The line fades out over the last of its crossing, so it never rests on the card's edge. */
+const FADE_MS = 120;
+
+/** How bright the line is while it crosses. */
+const LINE_ALPHA = 0.95;
 
 /** Creates the telemetry reading. */
 export function createReadingTelemetry(context: ViewContext): View {
@@ -162,7 +168,7 @@ export function createReadingTelemetry(context: ViewContext): View {
 
     update(input: FrameInput): boolean {
       const { t, flash, busy } = state.step(input);
-      const pitch = pointPitch(Math.round(input.viewport.width * input.pixelRatio), Math.round(input.viewport.height * input.pixelRatio));
+      const pitch = pointPitch(input.viewport.width, input.viewport.height) * input.pixelRatio;
       dotMaterial.uniforms.uPitch.value = pitch;
       dotMaterial.uniforms.uDot.value = pointSize(pitch);
       dots.setDrawRange(0, Math.round(count * easeOut(t / countMs)));
@@ -170,11 +176,13 @@ export function createReadingTelemetry(context: ViewContext): View {
       const reveal = unit((t - countMs) / sweepMs);
       const crossing = flash < 1;
       dotMaterial.uniforms.uReveal.value = reveal;
-      dotMaterial.uniforms.uTrail.value = 1 - unit((t - countMs - sweepMs) / TRAIL_MS);
-      lineMaterial.uniforms.uX.value = crossing ? unit(flash) : reveal;
-      const moving = crossing || (t > countMs && reveal < 1);
-      lineMaterial.uniforms.uAlpha.value = t < countMs ? 0 : moving ? 0.95 : 0.4 + 0.3 * state.uniforms.uLift.value;
-      return busy || t < countMs + sweepMs + TRAIL_MS;
+      dotMaterial.uniforms.uTrail.value = 1 - unit((t - countMs - sweepMs) / READING_TRAIL);
+      // The line is bright while it crosses and gone once it has: at rest the card shows no line.
+      const crossed = crossing ? unit(flash) : t < countMs ? 0 : reveal;
+      lineMaterial.uniforms.uX.value = crossed;
+      const fading = 1 - unit((crossed * sweepMs - (sweepMs - FADE_MS)) / FADE_MS);
+      lineMaterial.uniforms.uAlpha.value = crossed > 0 ? LINE_ALPHA * fading : 0;
+      return busy || t < countMs + sweepMs + READING_TRAIL;
     },
 
     render(renderer: WebGLRenderer): void {

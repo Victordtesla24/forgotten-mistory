@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import { StageView } from '@/components/visuals/StageView';
 import { ViewTrigger } from '@/components/visuals/ViewTrigger';
 import { CAREER_VIEW } from '@/lib/gl/ids';
-import { careerBars, fitStep, FIRST_YEAR, LABEL_LANES, LAST_YEAR, outsideLabels } from '@/lib/timeline';
+import { careerBars, fitStep, FIRST_YEAR, LAST_YEAR, outsideLabels } from '@/lib/timeline';
 
 import { numerals, percent, tickPaths, UNITS } from './axis';
 import { BarList } from './BarList';
@@ -14,67 +14,47 @@ import styles from './CareerTrack.module.css';
  * bars whose widths are their lengths in months, the current role lit. It is a plain block,
  * never `100vw`, so it is exactly the width of the page's content box.
  *
- * Every role is named. A name that fits sits inside its bar, longer where the bar is wide
- * enough to add the title; one that does not stands in a lane above the bars with a hairline
- * to its bar (`lib/timeline.ts` lays the lanes out). Each bar is a link that opens its role in
- * the panel set around it, and Left, Right, Home and End move between them. On a phone the
- * bars are too narrow to touch, so the list of links gives way to a plain drawing of the same
- * bars and a set of 44 px chips, one for each role, which opens the same panels and lights the
- * same bars, under a caption naming the current role. Only one of the two sets is ever in the
- * page's tree. The light layer behind it is the stage's; everything here stands without it.
+ * The drawing is one layer at every width and for every kind of screen. Every role is named: a
+ * name that fits sits inside its bar, longer where the bar is wide enough to add the title; one
+ * that does not stands in a lane above the bars with a hairline to its bar (`lib/timeline.ts`
+ * lays the lanes out). The controls are a second layer that depends on the screen. Where there
+ * is a fine pointer and room (640 px and up) each bar is a link that opens its role in the
+ * panel set around it, and Left, Right, Home and End move between them. On a phone, and on a
+ * touch screen of any width, a bar is too narrow to touch, so the links give way to a row of
+ * 44 px chips, one for each role, which opens the same panels and lights the same bars, under a
+ * caption naming the role the reader is on (the current one until then). Only one of the two
+ * sets of controls is ever in the page's tree. The light layer behind it is the stage's;
+ * everything here stands without it.
  */
 export function CareerTrack() {
-  const current = careerBars.find((bar) => bar.current);
   const lanes = new Map(outsideLabels.map((label) => [label.id, label]));
   return (
-    <div data-career-scale="" className={styles.scale} style={{ '--lane-count': LABEL_LANES } as CSSProperties}>
-      {current ? (
-        <p className={styles.caption}>
-          <span className="text-text">{current.employer}</span>
-          <span> · {current.shortTitle} · </span>
-          <span className="text-accent">{current.dates}</span>
-        </p>
-      ) : null}
+    <div data-career-scale="" data-marks="" className={styles.scale}>
+      <p className={styles.caption}>
+        {careerBars.map((bar) => (
+          <span key={bar.id} data-mark={bar.id} data-current={bar.current ? 'true' : undefined}>
+            <span className="text-text">{bar.label}</span>
+            <span> · {bar.shortTitle} · </span>
+            <span className={bar.current ? 'text-accent' : undefined}>{bar.dates}</span>
+          </span>
+        ))}
+      </p>
 
       <div className={styles.track}>
         <StageView view={CAREER_VIEW} className={styles.light} />
-        <div aria-hidden="true" className={styles.drawn}>
-          {careerBars.map((bar) => (
-            <span
-              key={bar.id}
-              className={styles.sliver}
-              data-bar={bar.id}
-              data-current={bar.current ? 'true' : undefined}
-              style={{ left: percent(bar.start), width: percent(bar.width), '--at': bar.start.toFixed(4) } as CSSProperties}
-            />
-          ))}
-        </div>
-        <BarList
-          aria-label={`Career, ${FIRST_YEAR} to ${LAST_YEAR}, oldest role first`}
-          className={styles.bars}
-          data-bars=""
-        >
+        <ol aria-hidden="true" data-drawn="" className={styles.drawn}>
           {careerBars.map((bar) => {
             const outside = lanes.get(bar.id);
             return (
               <li
                 key={bar.id}
-                className={styles.item}
+                className={styles.sliver}
                 data-bar={bar.id}
-                data-side={bar.start > 0.5 ? 'end' : 'start'}
+                data-mark={bar.id}
+                data-current={bar.current ? 'true' : undefined}
                 style={{ left: percent(bar.start), width: percent(bar.width), '--at': bar.start.toFixed(4) } as CSSProperties}
               >
-                <ViewTrigger
-                  view={CAREER_VIEW}
-                  value={bar.id}
-                  panel={`career-${bar.id}`}
-                  aria-label={bar.name}
-                  data-role={bar.id}
-                  data-months={bar.months}
-                  data-current={bar.current ? 'true' : undefined}
-                  className={styles.bar}
-                />
-                <span aria-hidden="true" className={styles.fill}>
+                <span className={styles.fill}>
                   <span className={styles.label} data-fit={fitStep(bar.label)}>
                     {bar.label}
                     <span className={styles.more} data-fit={fitStep(bar.label + bar.more)}>
@@ -83,20 +63,46 @@ export function CareerTrack() {
                   </span>
                 </span>
                 {outside ? (
-                  <span aria-hidden="true" className={styles.out} data-fit={fitStep(bar.label)} data-lane={outside.lane}>
+                  <span className={styles.out} data-fit={fitStep(bar.label)} data-lane={outside.lane}>
                     <span className={styles.text} data-align={outside.align}>
                       {bar.label}
                     </span>
                   </span>
                 ) : null}
-                <span aria-hidden="true" className={styles.tip}>
-                  <span className="text-muted">{bar.employer}</span>
-                  <span className="font-medium text-text">{bar.shortTitle}</span>
-                  <span className={bar.current ? 'text-accent' : 'text-muted'}>{bar.dates}</span>
-                </span>
               </li>
             );
           })}
+        </ol>
+        <BarList
+          aria-label={`Career, ${FIRST_YEAR} to ${LAST_YEAR}, oldest role first`}
+          className={styles.bars}
+          data-bars=""
+        >
+          {careerBars.map((bar) => (
+            <li
+              key={bar.id}
+              className={styles.item}
+              data-bar={bar.id}
+              data-side={bar.start > 0.5 ? 'end' : 'start'}
+              style={{ left: percent(bar.start), width: percent(bar.width) } as CSSProperties}
+            >
+              <ViewTrigger
+                view={CAREER_VIEW}
+                value={bar.id}
+                panel={`career-${bar.id}`}
+                aria-label={bar.name}
+                data-role={bar.id}
+                data-months={bar.months}
+                data-current={bar.current ? 'true' : undefined}
+                className={styles.bar}
+              />
+              <span aria-hidden="true" className={styles.tip}>
+                <span className="text-muted">{bar.employer}</span>
+                <span className="font-medium text-text">{bar.shortTitle}</span>
+                <span className={bar.current ? 'text-accent' : 'text-muted'}>{bar.dates}</span>
+              </span>
+            </li>
+          ))}
         </BarList>
 
         <div aria-hidden="true" data-ruler="" className={styles.ruler}>

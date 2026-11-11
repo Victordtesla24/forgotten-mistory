@@ -163,11 +163,25 @@ export function watchConsole(page: Page): string[] {
 }
 
 /**
- * Opens the Ask Mini Vic panel from the floating launcher. On a phone the launcher waits until
- * the hero has scrolled past, so the page is scrolled there first.
+ * Opens the Ask Mini Vic panel from whichever control is there: the floating launcher, which a
+ * phone has at every moment and a wide screen has once the hero is past, or else the header's
+ * own button, which a wide screen has over the hero.
  */
 export async function openAssistant(page: Page): Promise<void> {
   const launcher = page.locator('#assistant-launcher');
-  if (!(await launcher.isVisible())) await page.evaluate(() => document.querySelector('#experience')?.scrollIntoView());
-  await launcher.click();
+  if (await launcher.isVisible()) await launcher.click();
+  else await page.locator('#assistant-header-button').click();
+}
+
+/**
+ * Resolves once every animation the page has started has finished, so the entrance has left each
+ * element where it rests and a measurement is of the layout, not of a transform on the way. It
+ * waits on the browser's own record of the animations that run on the clock (the ones driven by
+ * scrolling have no end), not on a time: a slow machine takes longer and a fast one does not wait
+ * for nothing.
+ */
+export async function entranceDone(page: Page): Promise<void> {
+  await page.waitForFunction(() =>
+    document.getAnimations().every((animation) => animation.timeline !== document.timeline || animation.playState === 'finished'),
+  );
 }

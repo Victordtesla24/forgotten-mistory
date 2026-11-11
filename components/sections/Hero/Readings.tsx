@@ -42,8 +42,9 @@ export const figureItems: readonly DetailItem[] = headlineFigures.map((figure) =
  * number, drawn by the stage from the figure's own counts, with the figure, its label and
  * its scope under it; opening it shows its panel. `#proof` is the anchor of the group. Their
  * panels are set up in `Hero`, around the whole first screen, so that without script every
- * story is read at the page's own width after the scale rather than inside this column. On a
- * phone the cards are a row to move along; beside the headline they are a column.
+ * story is read at the page's own width after the scale rather than inside the cards. On a
+ * phone the cards are a row to move along; from 700 px they are three side by side, and on a
+ * wide screen they are the row under the headline.
  */
 export function Readings({ className }: { className?: string }) {
   return (
@@ -72,13 +73,13 @@ export function Readings({ className }: { className?: string }) {
                 <StageView
                   view={readingView(figure.id)}
                   marks={figure.marks}
-                  posterClassName="bg-surface/70"
+                  posterClassName="bg-surface"
                   className="[--stage-fade:var(--duration-state)]"
                 >
                   <ReadingVisual id={figure.id} />
                 </StageView>
               </span>
-              <span className="relative grid gap-x-4 gap-y-1 bg-surface/70 px-4 py-3 transition-colors group-hover:bg-raised/90 group-active:bg-raised @[26rem]:grid-cols-[7.5rem_minmax(0,1fr)] @[26rem]:items-center">
+              <span className={styles.text}>
                 <Figure
                   value={figure.value}
                   prefix={figure.prefix}
@@ -87,7 +88,7 @@ export function Readings({ className }: { className?: string }) {
                   className="text-[1.75rem]! text-proof"
                 />
                 <span className="pr-7 text-[0.9375rem] leading-snug font-medium">{figure.label}</span>
-                <span className="type-meta text-muted @[26rem]:col-span-2">{figure.scope}</span>
+                <span className="type-meta text-muted">{figure.scope}</span>
                 <Plus
                   aria-hidden="true"
                   className="absolute top-3.5 right-4 size-4 text-muted transition-[color,rotate] group-hover:rotate-90 group-hover:text-accent"

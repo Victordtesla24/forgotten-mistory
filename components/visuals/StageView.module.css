@@ -25,6 +25,16 @@
   inset: 0;
 }
 
+/*
+ * A card that is morphing into a panel (or back) shows the DOM's own drawing of its reading,
+ * whatever the stage has drawn, so the marks travel with the card's snapshot from its first
+ * frame to its last: the canvas is behind the page and is not part of what a transition captures.
+ */
+:global([data-morph]) .view[data-ready='true'] .fallback {
+  opacity: 1;
+  transition: none;
+}
+
 :global(:root[data-motion='off']) .fallback {
   transition: none;
 }

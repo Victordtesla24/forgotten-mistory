@@ -63,16 +63,25 @@ ${readingGlsl}
 ${readingMask}
 ${finish}
 
+const float GAP = ${cells.gap.toFixed(2)};
+const float OUTLINE = ${cells.outline.toFixed(2)};
+const float PAD = ${cells.inset.toFixed(2)};
+const float FLOOR_PX = ${cells.floorPx.toFixed(1)};
+
+// Coverage of a shape whose edge is this many CSS pixels away (positive inside), one device pixel wide.
+float cover(float distance) {
+  return clamp(distance * uPixel + 0.5, 0.0, 1.0);
+}
+
 void main() {
   vec2 cellPx = (uSize - 2.0 * vec2(${INSET.x.toFixed(1)}, ${INSET.y.toFixed(1)})) / uGrid;
   vec2 px = vLocal * cellPx;
-  float gap = 0.9;
 
-  // Distance inside the cell's outline, in device pixels.
-  vec2 edge = min(px, cellPx - px) - gap;
-  float d = min(edge.x, edge.y) * uPixel;
-  float inside = clamp(d + 0.5, 0.0, 1.0);
-  float ring = inside * (1.0 - smoothstep(0.5, 1.5, d));
+  // The cell's box, its 1 px outline and the box inside the outline, as the DOM layer draws them.
+  vec2 inside = min(px, cellPx - px) - GAP;
+  float box = cover(min(inside.x, inside.y));
+  float room = cover(min(inside.x, inside.y) - OUTLINE);
+  float ring = box - room;
 
   float born = (vCell.x * uGrid.y + vCell.y) / uCount * uAppear;
   float shown = clamp((uT - born) / 90.0, 0.0, 1.0);
@@ -81,16 +90,27 @@ void main() {
   float fall = easeInOut((uT - (uAppear + across * uSpread)) / uFall);
   float level = 1.0 - (1.0 - uRest) * fall;
 
-  float innerHeight = cellPx.y - 2.0 * gap;
-  float fill = clamp((level * innerHeight - (px.y - gap)) * uPixel + 0.5, 0.0, 1.0);
+  // The fill stands on the floor of the box inside the outline, a pixel in from each side so the
+  // fills of neighbouring cells never touch, and is never under two device pixels tall.
+  float floorAt = GAP + OUTLINE;
+  float roomHeight = cellPx.y - 2.0 * floorAt;
+  float fillHeight = min(max(level * roomHeight, FLOOR_PX / uPixel), roomHeight);
+  float fill = cover(inside.x - OUTLINE - PAD) * cover(px.y - floorAt) * cover(floorAt + fillHeight - px.y);
 
   float flash = flashBand(vUv.x);
-  float body = inside * mix(0.05, 0.88 + 0.1 * uLift, fill);
-  vec3 tint = mix(uLineStrong, uProof, fill);
-  tint = mix(tint, uLineStrong, ring * (1.0 - fill));
-  tint = mix(tint, uAccent, 0.8 * flash * fill);
-  float alpha = max(body, ring * 0.75) + 0.2 * flash * fill * inside;
-  gl_FragColor = writePixel(tint, min(alpha * shown, 1.0) * cornerMask());
+  float lit = fill * (0.86 + 0.1 * uLift);
+  float tint = room * 0.05;
+  vec3 fillColour = mix(uProof, uAccent, 0.8 * flash);
+
+  // Tint, then the outline, then the fill, each laid over the one before (premultiplied).
+  float alpha = tint;
+  vec3 colour = uProof * tint;
+  colour = uLineStrong * ring + colour * (1.0 - ring);
+  alpha = ring + alpha * (1.0 - ring);
+  colour = fillColour * lit + colour * (1.0 - lit);
+  alpha = lit + alpha * (1.0 - lit);
+  alpha += 0.2 * flash * fill * room * (1.0 - alpha);
+  gl_FragColor = writePixel(colour / max(alpha, 0.0001), min(alpha * shown, 1.0) * cornerMask());
 }
 `;
 

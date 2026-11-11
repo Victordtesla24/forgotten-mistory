@@ -110,6 +110,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       suppressHydrationWarning
     >
       <head>
+        {/* The first paint waits until the header and the hero are parsed, so a slow device never paints them half built and moves them. */}
+        <link rel="expect" href="#top-title" blocking="render" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script dangerouslySetInnerHTML={{ __html: motionInitScript }} />
         {structuredData.map((html) => (

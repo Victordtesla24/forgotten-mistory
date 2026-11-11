@@ -83,7 +83,7 @@ export const capabilities: readonly Capability[] = [
     label: 'Agile delivery at scale',
     domain: 'delivery',
     detail:
-      'At the ATO, leads the Agile Kookaburras, one of eight Payday Super squads, and owns its PI planning (PI 47–48). Authored the change request that re-baselined test capacity from 30 to up to 90 person-days.',
+      'At the ATO, leads the Kookaburras squad, one of eight Payday Super squads, and owns its PI planning (PI 47–48). Authored the change request that re-baselined test capacity from 30 to up to 90 person-days.',
     sources: ['ato'],
   },
   {

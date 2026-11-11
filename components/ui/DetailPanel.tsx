@@ -128,6 +128,8 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
       const from = id === null ? dialog : target;
       const to = id === null ? target : dialog;
       morphName(from, true);
+      // The card shows its reading in the DOM's own drawing while it is part of the morph.
+      target.dataset.morph = '';
       document.documentElement.dataset.vt = 'detail';
       const transition = start.call(document, () => {
         morphName(from, false);
@@ -141,6 +143,7 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
       void transition.updateCallbackDone.catch(settle);
       void transition.finished.catch(settle).then(() => {
         morphName(to, false);
+        delete target.dataset.morph;
         delete document.documentElement.dataset.vt;
       });
       return;

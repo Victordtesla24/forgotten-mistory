@@ -183,17 +183,20 @@
 }
 
 /*
- * Without script the panels are part of the page: every one is shown in place, in order, in
- * the page's own measure (72rem inside the gutters, text no wider than 68ch), wherever the
- * set sits in the layout.
+ * Without script the panels are part of the page: every one is shown in place, in order, on the
+ * page's own column (the dialog is the 72rem box the container is, its inner padding the gutter,
+ * so a panel starts where the header and the headline start), in the page's own measure (text no
+ * wider than 68ch), wherever the set sits in the layout. From 1024px a panel is two columns, its
+ * visual on the left and its words on the right, so a wide screen is not left half empty.
  */
 @media (scripting: none) {
   .dialog {
     position: static;
     display: block;
-    width: min(72rem, calc(100% - 2 * var(--gutter)));
+    width: min(72rem, 100%);
     max-height: none;
     margin: 1.5rem auto 0;
+    padding-inline: var(--gutter);
     border: 0;
     border-top: 1px solid var(--line);
     border-radius: 0;
@@ -216,6 +219,28 @@
   .item {
     max-width: 68ch;
     padding: 1.5rem 0 0;
+  }
+}
+
+@media (scripting: none) and (min-width: 1024px) {
+  .item {
+    max-width: none;
+    grid-template-columns: minmax(0, 28rem) minmax(0, 1fr);
+    align-items: start;
+    column-gap: 3rem;
+  }
+
+  .item > * {
+    grid-column: 2;
+  }
+
+  .item > div:not(.body) {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+
+  .body {
+    max-width: 68ch;
   }
 }
 

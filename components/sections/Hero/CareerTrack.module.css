@@ -1,17 +1,24 @@
 /*
  * The career scale. A plain block as wide as the page, so it needs no 100vw: bars are placed
- * by percentages of it, and their widths are their lengths in months. Layer one (these bars
- * and ticks) is complete on its own; the stage's light sits behind it, so every fill is
- * translucent. Focus is drawn inside each bar, because neighbouring bars touch and the first
- * and last end at the edge of the screen.
+ * by percentages of it, and their widths are their lengths in months. Layer one (the drawn
+ * bars, their names and the ticks) is complete on its own and the same at every width and for
+ * every kind of screen; the stage's light sits behind it, so every fill is translucent. Focus
+ * is drawn inside each bar, because neighbouring bars touch and the first and last end at the
+ * edge of the screen.
  *
- * From 640px the bars are the controls (44px tall, named inside or in a lane above). Below it
- * they are only drawn, too narrow to touch, and a set of 44px chips is the control instead.
+ * The controls are layer two and depend on the screen. From 640px with a mouse the bars are
+ * the controls (44px tall, named inside or in a lane above). On a phone, and on a touch screen
+ * of any width, a bar is too narrow to touch and is only drawn: not in the tab order, not a tap
+ * target, and a row of 44px chips is the control instead, under a caption naming the role the
+ * reader is on, and a chip lights its bar. The scale's own height (lanes, bars, ruler) is also
+ * stated by the hero's grid (Hero.module.css), so a page still being parsed holds its place.
  */
 .scale {
   --ruler-height: 2.75rem;
   --bar-height: 1.75rem;
   --lanes-height: 0rem;
+  --fill-inset: 0.125rem 0;
+  --fill-radius: 4px;
 }
 
 .track {
@@ -23,6 +30,8 @@
   .scale {
     --bar-height: 2.75rem;
     --lanes-height: calc(var(--lane-count) * 1.375rem + 0.5rem);
+    --fill-inset: 0.5rem 1px;
+    --fill-radius: 6px;
   }
 }
 
@@ -42,36 +51,19 @@
   list-style: none;
 }
 
-/* The bars as links from 640px; below it a plain drawing of them, and the chips are the links. */
+/* The links are only for a mouse with room: on a touch screen of any width the chips are the controls. */
 .bars {
   display: none;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 640px) and (pointer: fine) and (hover: hover) {
   .bars {
     display: block;
   }
-
-  .drawn {
-    display: none;
-  }
 }
 
+/* Every drawn bar is the container its names measure themselves against. */
 .sliver {
-  position: absolute;
-  inset-block: 0.125rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 4px;
-  background-color: color-mix(in srgb, var(--accent) 7%, var(--surface));
-}
-
-.sliver[data-current='true'] {
-  border-color: var(--accent);
-  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
-}
-
-/* Every bar is the container its labels measure themselves against. */
-.item {
   position: absolute;
   top: 0;
   height: var(--bar-height);
@@ -79,6 +71,12 @@
 }
 
 /* The control: an empty link laid over the bar. */
+.item {
+  position: absolute;
+  top: 0;
+  height: var(--bar-height);
+}
+
 .bar {
   position: absolute;
   inset: 0;
@@ -90,12 +88,12 @@
 
 .fill {
   position: absolute;
-  inset: 0.5rem 1px;
+  inset: var(--fill-inset);
   display: flex;
   align-items: center;
   overflow: hidden;
   border: 1px solid var(--line-strong);
-  border-radius: 6px;
+  border-radius: var(--fill-radius);
   background-color: color-mix(in srgb, var(--accent) 7%, var(--surface));
   color: var(--muted);
   transition:
@@ -105,31 +103,32 @@
     scale var(--duration-press) var(--ease);
 }
 
-.bar[data-current='true'] + .fill {
+.sliver[data-current='true'] .fill {
   border-color: var(--accent);
   background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
   color: var(--text);
 }
 
-.bar:hover + .fill {
-  border-color: var(--muted);
+/*
+ * A bar answers its control wherever the control is: the link over it, or a chip below the scale.
+ * ViewTrigger marks it `data-on` while the reader is on the control, and `key` for a keyboard focus.
+ */
+.sliver[data-on] .fill {
+  border-color: var(--accent);
   background-color: color-mix(in srgb, var(--accent) 14%, var(--raised));
   color: var(--text);
 }
 
-.bar[data-current='true']:hover + .fill {
-  border-color: var(--accent);
+.sliver[data-current='true'][data-on] .fill {
   background-color: color-mix(in srgb, var(--accent) 32%, var(--surface));
 }
 
-.bar:active + .fill {
-  scale: 1 0.92;
+.sliver[data-on='key'] .fill {
+  box-shadow: inset 0 0 0 1px var(--accent);
 }
 
-.bar:focus-visible + .fill {
-  border-color: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--accent);
-  color: var(--text);
+.scale:has(.bar:active, .chip:active) .sliver[data-on] .fill {
+  scale: 1 0.92;
 }
 
 .label {
@@ -150,65 +149,68 @@
  * A name is drawn inside its bar only where it fits: the bar is the container, and each name
  * asks for the width its length needs (`fitStep` and `labelWidth` in lib/timeline.ts: seven and
  * eight tenths of a pixel to a character at 13px, plus the padding). The title that follows the
- * name needs more. A name that does not fit is drawn in a lane above the bars instead.
+ * name needs more. A name that does not fit is drawn in a lane above the bars instead. Below
+ * 640px there are no names and no lanes: the chips name every role.
  */
-@container (min-width: 2.31rem) {
-  .label[data-fit='3'] {
-    display: block;
+@media (min-width: 640px) {
+  @container (min-width: 2.31rem) {
+    .label[data-fit='3'] {
+      display: block;
+    }
   }
-}
 
-@container (min-width: 2.8rem) {
-  .label[data-fit='4'] {
-    display: block;
+  @container (min-width: 2.8rem) {
+    .label[data-fit='4'] {
+      display: block;
+    }
   }
-}
 
-@container (min-width: 4.26rem) {
-  .label[data-fit='7'] {
-    display: block;
+  @container (min-width: 4.26rem) {
+    .label[data-fit='7'] {
+      display: block;
+    }
   }
-}
 
-@container (min-width: 5.24rem) {
-  .label[data-fit='9'] {
-    display: block;
+  @container (min-width: 5.24rem) {
+    .label[data-fit='9'] {
+      display: block;
+    }
   }
-}
 
-@container (min-width: 6.21rem) {
-  .label[data-fit='11'] {
-    display: block;
+  @container (min-width: 6.21rem) {
+    .label[data-fit='11'] {
+      display: block;
+    }
   }
-}
 
-@container (min-width: 7.19rem) {
-  .more[data-fit='13'] {
-    display: inline;
+  @container (min-width: 7.19rem) {
+    .more[data-fit='13'] {
+      display: inline;
+    }
   }
-}
 
-@container (min-width: 8.65rem) {
-  .more[data-fit='16'] {
-    display: inline;
+  @container (min-width: 8.65rem) {
+    .more[data-fit='16'] {
+      display: inline;
+    }
   }
-}
 
-@container (min-width: 10.6rem) {
-  .more[data-fit='20'] {
-    display: inline;
+  @container (min-width: 10.6rem) {
+    .more[data-fit='20'] {
+      display: inline;
+    }
   }
-}
 
-@container (min-width: 12.55rem) {
-  .more[data-fit='24'] {
-    display: inline;
+  @container (min-width: 12.55rem) {
+    .more[data-fit='24'] {
+      display: inline;
+    }
   }
-}
 
-@container (min-width: 14.5rem) {
-  .more[data-fit='28'] {
-    display: inline;
+  @container (min-width: 14.5rem) {
+    .more[data-fit='28'] {
+      display: inline;
+    }
   }
 }
 
@@ -274,12 +276,8 @@
   right: -50cqw;
 }
 
-.item:has(.bar[data-current='true']) .text {
-  color: var(--text);
-}
-
-.item:has(.bar:hover) .text,
-.item:has(.bar:focus-visible) .text {
+.sliver[data-current='true'] .text,
+.sliver[data-on] .text {
   color: var(--text);
 }
 
@@ -347,16 +345,9 @@
   right: 0;
 }
 
-@media (hover: hover) and (pointer: fine) and (min-width: 640px) {
-  .item:hover .tip {
-    display: flex;
-  }
-}
-
-@media (min-width: 640px) {
-  .item:has(.bar:focus-visible) .tip {
-    display: flex;
-  }
+.item:hover .tip,
+.item:has(.bar:focus-visible) .tip {
+  display: flex;
 }
 
 .ruler {
@@ -411,36 +402,75 @@
   background-color: var(--accent);
 }
 
-/* Phones: the current role in words, above the bars. */
+/*
+ * Phones and touch screens: the role the reader is on in words, above the bars. It is the
+ * current role until a chip is focused or pressed, then that chip's role. One line is
+ * reserved from 640px, two below it, so the scale holds its height whichever role it names.
+ */
 .caption {
-  display: block;
+  display: none;
   margin: 0 0 0.5rem;
   padding-inline: var(--gutter);
+  min-block-size: 2.25rem;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  line-height: 1.4;
+  line-height: 1.125rem;
   color: var(--muted);
+  text-wrap: balance;
+}
+
+.caption > span {
+  display: none;
+}
+
+.caption > span[data-current='true'] {
+  display: inline;
+}
+
+.caption:has([data-on]) > span[data-current='true']:not([data-on]) {
+  display: none;
+}
+
+.caption > span[data-on] {
+  display: inline;
+}
+
+/* One 44px chip for each role, all in one row to move along sideways, in the axis's order. */
+.chips {
+  display: none;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0;
+  padding: 0 var(--gutter);
+  overflow: auto hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chips > li {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 639px), (pointer: coarse), (hover: none) {
+  .caption {
+    display: block;
+  }
+
+  .chips {
+    display: flex;
+  }
 }
 
 @media (min-width: 640px) {
   .caption {
-    display: none;
-  }
-}
-
-/* Phones: one 44px chip for each role, all of them on screen, opening the same panels as the bars. */
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.25rem 0 0;
-  padding: 0 var(--gutter);
-  list-style: none;
-}
-
-@media (min-width: 640px) {
-  .chips {
-    display: none;
+    min-block-size: 1.125rem;
   }
 }
 
@@ -473,9 +503,14 @@
   color: var(--text);
 }
 
-.chip:hover {
-  border-color: var(--muted);
+.chip:hover,
+.chip:focus-visible {
+  border-color: var(--accent);
   color: var(--text);
+}
+
+.chip:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--accent);
 }
 
 .chip:active {
@@ -522,8 +557,7 @@
     animation: wipe calc(var(--e-scale-for) * 0.75) linear var(--e-scale) both;
   }
 
-  .fill,
-  .sliver {
+  .fill {
     animation: grow calc(var(--e-scale-for) * 0.25) var(--ease) calc(var(--e-scale) + var(--at) * var(--e-scale-for) * 0.75) both;
   }
 
@@ -542,12 +576,11 @@
 
 @media (forced-colors: active) {
   .fill,
-  .sliver,
   .chip {
     border-color: CanvasText;
   }
 
-  .bar:focus-visible + .fill,
+  .bar:focus-visible,
   .chip:focus-visible {
     outline: 2px solid Highlight;
   }

@@ -144,8 +144,9 @@ float easeInOut(float x) {
 
 /**
  * The panel a reading is drawn on. The canvas sits behind the page, so a card's own background
- * would dim the reading; each reading paints its own, in the surface token, and it lifts to
- * the raised token with the pointer. Added to a scene first, it is drawn first.
+ * would dim the reading; each reading paints its own, in the surface token, fully opaque so
+ * nothing of the field behind shows through the card, and it lifts to the raised token with
+ * the pointer. Added to a scene first, it is drawn first.
  */
 export function createBackdrop(state: ReadingState): { mesh: Mesh; dispose(): void } {
   const geometry = new PlaneGeometry(2, 2);
@@ -161,7 +162,7 @@ ${readingMask}
 ${finish}
 
 void main() {
-  gl_FragColor = writePixel(mix(uSurface, uRaised, 0.7 * uLift), 0.72 * uEnter * cornerMask());
+  gl_FragColor = writePixel(mix(uSurface, uRaised, uLift), uEnter * cornerMask());
 }
 `,
     uniforms: { ...state.uniforms, uSurface: palette.colors.surface, uRaised: palette.colors.raised },

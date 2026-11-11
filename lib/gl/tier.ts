@@ -7,7 +7,7 @@
 import { reducedMotion } from '../motion';
 
 /**
- * `high` and `low` animate (low has fewer marks and a pixel ratio of 1); `still` draws one
+ * `high` and `low` animate (low has fewer marks and effects, at the same pixel ratio); `still` draws one
  * frame per state change; `off` draws nothing and leaves the semantic layer alone.
  */
 export type Tier = 'high' | 'low' | 'still' | 'off';

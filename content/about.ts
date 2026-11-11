@@ -40,7 +40,7 @@ export const about = {
   },
   /** Who and where; proof with scope; direction. Three sentences, at most 60 words. */
   bio: [
-    'At the ATO I lead the Agile Kookaburras, one of eight Payday Super squads.',
+    'At the ATO I lead the Kookaburras squad, one of eight Payday Super squads.',
     'At ANZ I led AI/ML delivery and core banking modernisation; on my own, I build multi-agent systems.',
     'Next: programs where AI delivery and AI assurance are the hard part.',
   ],

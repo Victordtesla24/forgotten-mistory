@@ -42,7 +42,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'about your ato',
     ],
     answer:
-      "I'm the Scrum Master / Project Manager on the ATO's Payday Super program (March 2026 – present), leading the Agile Kookaburras squad — one of eight squads delivering NTP and Distribution UI capabilities. I own sprint cadence, PI planning (PI 47–48), capacity management, and executive reporting, and I've driven Distribution UI delivery past 95% completion while unblocking stalled NTP testing. It's a high-visibility government reform program, and I'm accountable for keeping delivery on track end to end.",
+      "I'm the Scrum Master / Project Manager on the ATO's Payday Super program (March 2026 – present), leading the Kookaburras squad — one of eight squads delivering NTP and Distribution UI capabilities. I own sprint cadence, PI planning (PI 47–48), capacity management, and executive reporting, and I've driven Distribution UI delivery past 95% completion while unblocking stalled NTP testing. It's a high-visibility government reform program, and I'm accountable for keeping delivery on track end to end.",
   },
 
   // ── 2. Payday Super / NTP ──────────────────────────────────────────────
@@ -59,7 +59,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'reform program',
     ],
     answer:
-      "Payday Super is the ATO's major superannuation reform program, and I work on its NTP and Distribution UI features as Scrum Master / Project Manager. The program runs eight squads in parallel; my squad, the Agile Kookaburras, is one of them. The delivery challenge is significant — for example, system integration testing spans 200+ SIT/E2E scenarios across all eight squads — which is why I invested heavily in test-evidence automation and capacity re-baselining to keep the program feasible.",
+      "Payday Super is the ATO's major superannuation reform program, and I work on its NTP and Distribution UI features as Scrum Master / Project Manager. The program runs eight squads in parallel; I lead the Kookaburras squad, one of them. The delivery challenge is significant — for example, system integration testing spans 200+ SIT/E2E scenarios across all eight squads — which is why I invested heavily in test-evidence automation and capacity re-baselining to keep the program feasible.",
   },
 
   // ── 3. Test-automation achievement ─────────────────────────────────────

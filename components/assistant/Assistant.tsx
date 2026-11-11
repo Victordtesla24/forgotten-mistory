@@ -32,26 +32,30 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
- * On a phone the launcher would sit on the hero's own figures, so it waits until the hero's
- * career scale, the last thing in it, has scrolled out of the top of the screen. Elsewhere,
- * and on any page without a hero, it is there from the start.
+ * Whether the launcher may show on a wide screen. Over the hero the header already carries the
+ * words "Ask Mini Vic", so from 1024 px the floating button waits until the hero's career scale,
+ * the last thing in it, has scrolled out of the top of the screen. The stylesheet hides it until
+ * then (`lg:hidden`), so the first paint never shows it and nothing moves when it arrives. Below
+ * 1024 px it is a small round button in the corner at every moment, and the hero leaves that
+ * corner free. A page without a hero has the button from the start.
  */
 function usePastHero(): boolean {
   const pathname = usePathname();
-  const [past, setPast] = useState(false);
+  const onHome = pathname === '/';
+  const [scrolledPast, setScrolledPast] = useState(false);
   useEffect(() => {
     const scale = document.querySelector('[data-career-scale]');
-    if (!scale || typeof IntersectionObserver === 'undefined') {
-      setPast(true);
+    if (!onHome || !scale || typeof IntersectionObserver === 'undefined') {
+      setScrolledPast(true);
       return;
     }
     const watch = new IntersectionObserver(([entry]) => {
-      if (entry) setPast(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+      if (entry) setScrolledPast(!entry.isIntersecting && entry.boundingClientRect.top < 0);
     });
     watch.observe(scale);
     return () => watch.disconnect();
-  }, [pathname]);
-  return past;
+  }, [onHome]);
+  return !onHome || scrolledPast;
 }
 
 /**
@@ -183,12 +187,12 @@ export default function Assistant() {
         aria-controls="assistant-panel"
         onClick={show}
         className={cn(
-          'fixed right-[max(1rem,env(safe-area-inset-right))] bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 rounded-full px-5 shadow-float print:hidden',
-          !pastHero && 'max-sm:hidden',
+          'fixed right-[max(1rem,env(safe-area-inset-right))] bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 size-12 rounded-full p-0 shadow-float print:hidden lg:size-auto lg:px-5',
+          !pastHero && 'lg:hidden',
         )}
       >
         <MessageCircle aria-hidden="true" className="size-5" />
-        Ask Mini Vic
+        <span className="sr-only lg:not-sr-only">Ask Mini Vic</span>
       </Button>
 
       <dialog

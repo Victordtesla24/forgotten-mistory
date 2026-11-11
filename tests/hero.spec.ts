@@ -7,15 +7,15 @@ import { headlineFigures } from '@/content/proof';
 import { ENTRANCE_END } from '@/lib/entrance';
 import { careerBars, LABEL_CONFLICTS, timeline } from '@/lib/timeline';
 
-import { hydrated, open, visibleWordCounts, watchConsole } from './support';
+import { entranceDone, hydrated, open, visibleWordCounts, watchConsole } from './support';
 
 /** The hero is the first child of the page's main element. */
 const HERO = 'main > div:first-child';
 const SCALE = '[data-career-scale]';
 const BARS = `${SCALE} [data-bars] a[data-role]`;
 const CHIPS = `${SCALE} [data-chips] a[data-role]`;
-/** The bars as drawn at any width: the list items from 640 px, the plain drawing below it. */
-const DRAWN = `${SCALE} [data-bar]:visible`;
+/** The bars as drawn, at every width and on every kind of screen: one list of presentational items. */
+const DRAWN = `${SCALE} [data-drawn] > [data-bar]`;
 
 /** Months from the first month of the axis to the month it ends in. */
 const AXIS_MONTHS = Math.round((NOW - 2010) * 12);
@@ -114,7 +114,7 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
     const inside: number[] = [];
     for (const width of [640, 834, 1440, 1920]) {
       await openAt(page, '/?gl=off', width);
-      const state = await page.locator(`${SCALE} li[data-bar]`).evaluateAll((items) =>
+      const state = await page.locator(DRAWN).evaluateAll((items) =>
         items.map((item) => {
           const label = item.querySelector<HTMLElement>('[data-fit]');
           const out = item.querySelector<HTMLElement>('[data-lane]');
@@ -180,8 +180,8 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
         expect(box.width, `${careerBars[index]?.id} chip width at ${width}`).toBeGreaterThanOrEqual(44);
         expect(heights[index], `${careerBars[index]?.id} chip height at ${width}`).toBeGreaterThanOrEqual(44);
       }
-      const caption = await page.locator(`${SCALE} p`).first().textContent();
-      expect(caption, 'the current role, in words').toContain(roles[0]?.employer ?? '');
+      const caption = await page.locator(`${SCALE} p`).first().innerText();
+      expect(caption, 'the current role, in words').toContain(careerBars.at(-1)?.label ?? '');
       expect(caption).toContain('March 2026');
       await page.locator(`${CHIPS}[data-role="microsoft"]`).click();
       await expect(page.getByRole('dialog', { name: roles.find((role) => role.id === 'microsoft')?.title ?? '' })).toBeVisible();
@@ -296,13 +296,13 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     await expect(lattice).toHaveCount(1);
     const grid = await lattice.evaluate((element) => {
       const style = getComputedStyle(element);
-      const pitch = Number.parseFloat(style.getPropertyValue('--pitch'));
       const box = element.getBoundingClientRect();
+      const columns = Number(style.getPropertyValue('--columns'));
       return {
-        columns: Number(style.getPropertyValue('--columns')),
+        columns,
         rows: Number(style.getPropertyValue('--rows')),
         side: Number(style.getPropertyValue('--side')),
-        pitch,
+        pitch: box.width / columns,
         width: box.width,
         height: box.height,
       };
@@ -319,10 +319,13 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     await expect(cells).toHaveCount(200);
     const rest = await cells.first().evaluate((cell) => Number(getComputedStyle(cell.parentElement as Element).getPropertyValue('--rest')));
     expect(rest).toBeCloseTo(15 / 180, 3);
-    await page.waitForTimeout(2000);
-    const levels = await cells.evaluateAll((all) => all.map((cell) => new DOMMatrixReadOnly(getComputedStyle(cell, '::after').transform).d));
-    expect(levels.length, 'no cell falls away: each keeps its fill').toBe(200);
-    for (const level of levels) expect(level).toBeCloseTo(15 / 180, 2);
+    await entranceDone(page);
+    const clips = await cells.evaluateAll((all) => all.map((cell) => getComputedStyle(cell, '::after').clipPath));
+    expect(clips.length, 'no cell falls away: each keeps its fill').toBe(200);
+    for (const clip of clips) {
+      const left = /max\((\d+(?:\.\d+)?)%, \d+px\)/.exec(clip);
+      expect(Number(left?.[1]) / 100, `the fill has fallen to about 15 of 180 minutes: ${clip}`).toBeCloseTo(15 / 180, 3);
+    }
 
     // The cohort: 40 marks as one group on one baseline, with no squads drawn.
     const marks = page.locator('[data-stage-view="reading-portfolio"] > div > div > span');
@@ -378,6 +381,65 @@ test.describe('the hero is compact', () => {
     expect(words.top).toBeLessThanOrEqual(45);
   });
 
+  for (const [width, height] of [
+    [1280, 720],
+    [1366, 768],
+    [1440, 900],
+    [1920, 1080],
+  ] as const) {
+    test(`is exactly one screen under the header at ${width} by ${height}, with the scale on the bottom edge and nothing cut by the fold`, { tag: '@desktop' }, async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await openAt(page, '/?gl=off', width, height);
+      const header = await page.getByRole('banner').evaluate((element) => element.getBoundingClientRect().bottom);
+      const measured = await page.evaluate((heroSelector) => {
+        const rect = (selector: string) => {
+          const box = document.querySelector(selector)?.getBoundingClientRect();
+          return box ? { top: box.top, bottom: box.bottom } : null;
+        };
+        const cut = Array.from(document.querySelectorAll('#top *, #proof *, [data-career-scale] *'))
+          .filter((element) => getComputedStyle(element).display !== 'none')
+          .flatMap((element) => {
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const own = Array.from(element.childNodes).some((node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
+            return (own ? Array.from(range.getClientRects()) : []).map((box) => ({ top: box.top, bottom: box.bottom, text: element.textContent?.slice(0, 24) ?? '' }));
+          })
+          .filter((box) => box.top < window.innerHeight - 1 && box.bottom > window.innerHeight + 1);
+        return { hero: rect(heroSelector), top: rect('#top'), proof: rect('#proof'), scale: rect('[data-career-scale]'), cut };
+      }, HERO);
+      expect(measured.hero?.top, 'the hero starts under the header').toBeCloseTo(header, 0);
+      expect(measured.hero?.bottom, 'and ends on the bottom edge of the screen').toBeCloseTo(height, 0);
+      expect(measured.scale?.bottom, 'the scale stands on that edge').toBeCloseTo(height, 0);
+      expect(measured.top?.bottom ?? height, '#top is inside the first screen').toBeLessThanOrEqual(height);
+      expect(measured.proof?.bottom ?? height, '#proof is inside the first screen').toBeLessThanOrEqual(measured.scale?.top ?? 0);
+      expect(measured.cut, 'no text is cut by the fold').toEqual([]);
+    });
+
+    test(`holds its place while the page is still being parsed at ${width} by ${height}`, { tag: '@desktop' }, async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await openAt(page, '/?gl=off', width, height);
+      const probes = ['#top h1', '#top', '#proof'];
+      const place = () =>
+        page.evaluate((selectors) => selectors.map((selector) => {
+          const box = document.querySelector(selector)?.getBoundingClientRect();
+          return box ? [Math.round(box.left * 10) / 10, Math.round(box.top * 10) / 10] : null;
+        }), probes);
+      const settled = await place();
+      // Cut the document the way a slow parse does: after the headline, then after the readings.
+      for (const cut of ['#top h1', '#proof']) {
+        await page.evaluate((selector) => {
+          for (let node: Node | null = document.querySelector(selector); node && node !== document.body; node = node.parentNode) {
+            while (node.nextSibling) node.nextSibling.remove();
+          }
+        }, cut);
+        const after = await place();
+        after.forEach((position, index) => {
+          if (position) expect(position, `${probes[index]} after ${cut}`).toEqual(settled[index]);
+        });
+      }
+    });
+  }
+
   test('holds a single h1 and no separate proof section', { tag: '@desktop' }, async ({ page }) => {
     await open(page, '/');
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
@@ -390,7 +452,7 @@ test.describe('the hero is compact', () => {
     expect(await page.locator('main > div').count(), 'the hero is one block of the page').toBeGreaterThanOrEqual(1);
 
     await page.goto('/#proof');
-    await page.waitForTimeout(400);
+    await page.waitForFunction(() => window.location.hash === '#proof' && document.querySelector('#proof')?.getBoundingClientRect().top !== undefined);
     const anchor = await page.locator('#proof').evaluate((element) => element.getBoundingClientRect().top);
     expect(anchor, '#proof resolves to the readings').toBeLessThan(900);
   });
@@ -413,7 +475,7 @@ interface Group {
 }
 
 test.describe('the entrance', { tag: '@desktop' }, () => {
-  test('arrives in the written order and is over in under 1.6 s', async ({ page }) => {
+  test('arrives in the written order and is over within a section’s 1.2 s', async ({ page }) => {
     await open(page, '/?gl=off');
     const groups = await page.evaluate(() => {
       const found: Record<string, Group[]> = {};
@@ -447,8 +509,8 @@ test.describe('the entrance', { tag: '@desktop' }, () => {
       expect(here?.start, `${here?.key} starts after ${before?.key}`).toBeGreaterThan(before?.start ?? 0);
     }
     const end = Math.max(...order.map((entry) => entry.end));
-    expect(end, 'every animation is over').toBeLessThan(1600);
-    expect(ENTRANCE_END, 'the table agrees').toBeLessThan(1600);
+    expect(end, 'every animation is over').toBeLessThanOrEqual(1200);
+    expect(ENTRANCE_END, 'the table agrees').toBeLessThanOrEqual(1200);
     expect(end).toBeLessThanOrEqual(ENTRANCE_END);
   });
 
@@ -471,7 +533,7 @@ test.describe('the entrance', { tag: '@desktop' }, () => {
     await page.reload();
     await hydrated(page);
     await stageReady(page);
-    await page.waitForTimeout(1500);
+    await entranceDone(page);
 
     const stateAt = (selector: string, ms: number) =>
       page.evaluate(
@@ -672,7 +734,8 @@ test.describe('without JavaScript the hero looks finished', { tag: '@desktop' },
         const gutter = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gutter')) || 0;
         const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-detail-item]')).map((item) => {
           const box = item.getBoundingClientRect();
-          return { id: item.id, left: box.left, right: box.right, width: box.width };
+          const measure = Math.max(0, ...Array.from(item.querySelectorAll('p')).map((paragraph) => paragraph.getBoundingClientRect().width));
+          return { id: item.id, left: box.left, right: box.right, width: measure };
         });
         const scale = rect('[data-career-scale]');
         const firstPanel = rect('#figure-evidence');
@@ -704,6 +767,7 @@ test.describe('without JavaScript the hero looks finished', { tag: '@desktop' },
 test.describe('the pieces of the first screen keep to their places', { tag: '@desktop' }, () => {
   test('the three readings sit side by side on a tablet, all on the first screen', async ({ page }) => {
     await openAt(page, '/?gl=off', 834);
+    await entranceDone(page);
     const cards = await boxes(page, '#proof ul > li');
     expect(cards).toHaveLength(3);
     for (const card of cards) {
@@ -720,7 +784,7 @@ test.describe('the pieces of the first screen keep to their places', { tag: '@de
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openAt(page, '/?gl=off', 1440);
     await page.locator(`${BARS}[data-role="infocentric"]`).hover();
-    const tip = await page.locator(`${SCALE} [data-bar="infocentric"] > span:last-child`).evaluate((element) => {
+    const tip = await page.locator(`${SCALE} [data-bars] [data-bar="infocentric"] > span:last-child`).evaluate((element) => {
       const box = element.getBoundingClientRect();
       return { top: box.top, bottom: box.bottom, left: box.left, right: box.right, shown: getComputedStyle(element).display !== 'none' };
     });
@@ -739,16 +803,6 @@ test.describe('the pieces of the first screen keep to their places', { tag: '@de
       const apart = tip.right <= link.left || tip.left >= link.right || tip.bottom <= link.top || tip.top >= link.bottom;
       expect(apart, 'clear of the hero links').toBe(true);
     }
-  });
-
-  test('the floating Ask Mini Vic button waits until the hero has scrolled past on a phone, and is there at once elsewhere', async ({ page }) => {
-    await openAt(page, '/?gl=off', 390, 844);
-    const launcher = page.locator('#assistant-launcher');
-    await expect(launcher, 'hidden over the hero').toBeHidden();
-    await page.evaluate(() => document.querySelector('#experience')?.scrollIntoView());
-    await expect(launcher, 'shown once the hero is past').toBeVisible();
-    await openAt(page, '/?gl=off', 1440);
-    await expect(launcher, 'a desktop has it from the start').toBeVisible();
   });
 });
 
