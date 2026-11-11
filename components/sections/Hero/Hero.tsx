@@ -10,7 +10,7 @@ import { cn } from '@/lib/cn';
 import { entranceVars } from '@/lib/entrance';
 import { LABEL_LANES } from '@/lib/timeline';
 
-import { Career } from './Career';
+import { CareerTrack } from './CareerTrack';
 import styles from './Hero.module.css';
 import { figureItems, Readings } from './Readings';
 
@@ -92,7 +92,7 @@ export function Hero() {
           </Container>
         </div>
       </DetailSet>
-      <Career />
+      <CareerTrack />
     </div>
   );
 }

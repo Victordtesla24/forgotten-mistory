@@ -300,23 +300,6 @@ test.describe('checked once, because the viewport does not matter', { tag: '@des
     }
   });
 
-  test('an experience card is readable well before it reaches the middle of the screen', async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await open(page, '/');
-    const card = page.locator('#experience ol > li').first();
-    // Put the card's top edge 54% of the way down the screen, where the review found it still half faded.
-    await card.evaluate((element) => {
-      const top = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: top - window.innerHeight * 0.54, behavior: 'instant' });
-    });
-    await page.evaluate(
-      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
-    );
-    expect(await effectiveOpacity(card)).toBeGreaterThanOrEqual(0.9);
-  });
-
   test('the page ships one WebGL canvas, behind the content, and the copy claims no more', async ({
     page,
   }) => {

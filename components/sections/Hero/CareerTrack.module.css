@@ -86,35 +86,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/*
- * The link has no drawing of its own, so while it is the source of a panel's morph (`data-morph`,
- * set by the panel just before the transition) it shows its bar: the fill and its name, lit as the
- * current bar is. The snapshot the morph starts from is then the bar and never an empty box.
- */
-.bar[data-morph]::before {
-  content: '';
-  position: absolute;
-  inset: var(--fill-inset);
-  border: 1px solid var(--accent);
-  border-radius: var(--fill-radius);
-  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
-}
-
-.bar[data-morph]::after {
-  content: attr(data-label);
-  position: absolute;
-  inset: 0 0.375rem;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  padding-inline: 0.375rem;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--text);
-}
-
 .fill {
   position: absolute;
   inset: var(--fill-inset);

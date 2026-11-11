@@ -769,38 +769,6 @@ test.describe('a panel grows out of what opened it, and the source is never an e
     }
   });
 
-  test('a role bar shows its own drawing while it is the source of the morph, and a chip is its own', async ({ browser }) => {
-    const desktop = await openView(browser, DESKTOP[2] as View, 1, '/?gl=off');
-    try {
-      await entranceDone(desktop.page);
-      const bar = await desktop.page.evaluate(() => {
-        const trigger = document.querySelector<HTMLElement>('[data-career-scale] [data-bars] a[data-role="anz"]') as HTMLElement;
-        trigger.click();
-        const before = getComputedStyle(trigger, '::before');
-        const after = getComputedStyle(trigger, '::after');
-        return { morph: trigger.hasAttribute('data-morph'), fill: before.backgroundColor, content: after.content, label: trigger.dataset.label };
-      });
-      expect(bar.morph).toBe(true);
-      expect(bar.fill, 'the bar is drawn in the source').not.toBe('rgba(0, 0, 0, 0)');
-      expect(bar.content, 'with its name').toContain(bar.label ?? '?');
-    } finally {
-      await desktop.context.close();
-    }
-    const phone = await openView(browser, TOUCH[1] as View, 1, '/?gl=off');
-    try {
-      await entranceDone(phone.page);
-      const chip = await phone.page.evaluate(() => {
-        const trigger = document.querySelector<HTMLElement>('[data-career-scale] [data-chips] a[data-role="anz"]') as HTMLElement;
-        const style = getComputedStyle(trigger);
-        return { fill: style.backgroundColor, text: trigger.textContent };
-      });
-      expect(chip.fill, 'a chip is filled').not.toBe('rgba(0, 0, 0, 0)');
-      expect(chip.text, 'and named').not.toBe('');
-    } finally {
-      await phone.context.close();
-    }
-  });
-
   test('without View Transitions the panel opens with the existing fade', async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     await context.addInitScript(() => {

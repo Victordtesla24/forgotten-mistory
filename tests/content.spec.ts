@@ -139,7 +139,7 @@ test.describe('the home page is two levels deep', () => {
   test('every set has the right number of items', async ({ page }) => {
     await open(page, '/');
     await expect(page.locator('#proof ul > li')).toHaveCount(headlineFigures.length);
-    await expect(page.locator('#experience ol > li')).toHaveCount(roles.length);
+    await expect(page.locator('#experience [role="tab"]')).toHaveCount(roles.length);
     await expect(page.locator('#work > div > ul > li')).toHaveCount(projects.length);
     await expect(page.locator('#capabilities [role="group"]')).toHaveCount(domains.length);
     await expect(page.locator('#capabilities details')).toHaveCount(capabilities.length);
@@ -168,7 +168,6 @@ test.describe('the home page is two levels deep', () => {
   test('a disclosure opens to show its detail, and closes again', async ({ page }) => {
     await open(page, '/');
     const cases = [
-      { summary: '#experience summary', detail: roles[0]?.achievements[0] },
       { summary: '#work summary', detail: projects[0]?.does[0] },
       { summary: '#capabilities summary', detail: capabilities[0]?.detail },
       { summary: '#about summary', detail: about.principles[0]?.statement },
@@ -220,25 +219,17 @@ test.describe('the always-visible copy keeps to its word budgets', { tag: '@desk
 });
 
 test.describe('every detail can be linked to, and is open without script', () => {
-  test('a fragment that names a disclosure opens it, on load and on a later link', async ({ page }) => {
+  test('a fragment that names a disclosure or a role opens it, on load and on a later link', async ({ page }) => {
     await open(page, '/#role-anz-detail');
-    await expect(page.locator('#role-anz-detail')).toHaveAttribute('open', '');
-    await expect(
-      page
-        .locator('#experience')
-        .getByText(roles.find((role) => role.id === 'anz')?.achievements[0] ?? '', { exact: false }),
-    ).toBeVisible();
+    const dialog = page.getByRole('dialog', { name: roles.find((role) => role.id === 'anz')?.title ?? '' });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText(roles.find((role) => role.id === 'anz')?.achievements[0] ?? '', { exact: false })).toBeVisible();
+    await expect(page.locator('#experience [role="tab"][data-role="anz"]')).toHaveAttribute('aria-selected', 'true');
 
     await page.evaluate(() => {
       window.location.hash = '#project-aether-job-career-agent-detail';
     });
     await expect(page.locator('#project-aether-job-career-agent-detail')).toHaveAttribute('open', '');
-
-    // A fragment that names a heading inside a closed card opens that card as well.
-    await page.evaluate(() => {
-      window.location.hash = '#role-nab';
-    });
-    await expect(page.locator('#role-nab-detail')).toHaveAttribute('open', '');
   });
 
   test('with script off, every detail is on the page', async ({ browser }) => {
@@ -266,7 +257,7 @@ test.describe('sets run sideways', { tag: '@mobile' }, () => {
     page,
   }) => {
     await open(page, '/');
-    for (const selector of ['#work ul', '#experience ol', '#capabilities ul', '#about ul']) {
+    for (const selector of ['#work ul', '#experience [role="tablist"]', '#capabilities ul', '#about ul']) {
       const row = page.locator(selector).first();
       const { scrolls, snaps } = await row.evaluate((el) => ({
         scrolls: el.scrollWidth > el.clientWidth,
@@ -279,7 +270,7 @@ test.describe('sets run sideways', { tag: '@mobile' }, () => {
 });
 
 test.describe('sets are grids on a wide screen', { tag: '@desktop' }, () => {
-  test('projects sit three to a row and roles four, side by side', async ({ page }) => {
+  test('projects sit three to a row, side by side', async ({ page }) => {
     await open(page, '/');
     const tops = (selector: string) =>
       page.locator(selector).evaluateAll((items) =>
@@ -288,8 +279,5 @@ test.describe('sets are grids on a wide screen', { tag: '@desktop' }, () => {
     const work = await tops('#work > div > ul > li');
     expect(work.slice(0, 3).every((top) => top === work[0])).toBe(true);
     expect(work[3]).toBeGreaterThan(work[0] ?? 0);
-    const experience = await tops('#experience ol > li');
-    expect(experience.slice(0, 4).every((top) => top === experience[0])).toBe(true);
-    expect(experience[4]).toBeGreaterThan(experience[0] ?? 0);
   });
 });

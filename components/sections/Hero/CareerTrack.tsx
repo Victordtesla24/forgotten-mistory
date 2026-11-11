@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 
 import { StageView } from '@/components/visuals/StageView';
-import { ViewTrigger } from '@/components/visuals/ViewTrigger';
 import { cn } from '@/lib/cn';
 import { CAREER_VIEW } from '@/lib/gl/ids';
 import { careerBars, fitStep, FIRST_YEAR, LAST_YEAR, outsideLabels } from '@/lib/timeline';
@@ -10,6 +9,7 @@ import { numerals, percent, tickPaths, UNITS } from './axis';
 import { SnapRow } from '@/components/ui/SnapRow';
 
 import { BarKeys } from './BarKeys';
+import { RoleLink } from './RoleLink';
 import styles from './CareerTrack.module.css';
 
 /**
@@ -91,13 +91,10 @@ export function CareerTrack() {
                 data-side={bar.start > 0.5 ? 'end' : 'start'}
                 style={{ left: percent(bar.start), width: percent(bar.width) } as CSSProperties}
               >
-                <ViewTrigger
-                  view={CAREER_VIEW}
-                  value={bar.id}
-                  panel={`career-${bar.id}`}
+                <RoleLink
+                  role={bar.id}
                   aria-label={bar.name}
                   data-role={bar.id}
-                  data-label={bar.label}
                   data-months={bar.months}
                   data-current={bar.current ? 'true' : undefined}
                   className={styles.bar}
@@ -132,10 +129,8 @@ export function CareerTrack() {
         <SnapRow as="ol" strip aria-label="Career roles" className={styles.chips} data-chips="">
           {careerBars.map((bar) => (
             <li key={bar.id}>
-              <ViewTrigger
-                view={CAREER_VIEW}
-                value={bar.id}
-                panel={`career-${bar.id}`}
+              <RoleLink
+                role={bar.id}
                 aria-label={bar.name}
                 data-role={bar.id}
                 data-mark={bar.id}
@@ -143,7 +138,7 @@ export function CareerTrack() {
                 className={styles.chip}
               >
                 {bar.label}
-              </ViewTrigger>
+              </RoleLink>
             </li>
           ))}
         </SnapRow>

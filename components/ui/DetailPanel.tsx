@@ -24,6 +24,8 @@ export interface DetailItem {
   /** A short line above the title, such as the scope of a figure. */
   eyebrow?: ReactNode;
   title: string;
+  /** Data attributes the panel's section carries, for a page that must find each one. */
+  attributes?: Record<`data-${string}`, string>;
   /** What leads the panel before its text: a figure, a schematic or a small infographic. */
   lead?: ReactNode;
   children: ReactNode;
@@ -290,6 +292,7 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
               aria-labelledby={`${item.id}-title`}
               data-detail-item=""
               className={styles.item}
+              {...item.attributes}
             >
               {item.eyebrow ? <p className="type-eyebrow text-muted">{item.eyebrow}</p> : null}
               {item.lead ? <div>{item.lead}</div> : null}
@@ -301,6 +304,16 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
       </dialog>
     </DetailContext.Provider>
   );
+}
+
+const NO_DETAIL = () => undefined;
+
+/**
+ * Opens a panel of the nearest set from code, for a control that is not a link: a tab that opens
+ * its role on Enter, a button that says "Open". `origin` is the element the panel grows out of.
+ */
+export function useDetailOpen(): (id: string, origin: HTMLElement | null) => void {
+  return useContext(DetailContext)?.open ?? NO_DETAIL;
 }
 
 type DetailTriggerProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick'> & {

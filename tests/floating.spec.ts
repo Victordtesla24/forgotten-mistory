@@ -1,6 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import { roles } from '@/content/experience';
 import { careerBars } from '@/lib/timeline';
 
 import { entranceDone, hydrated, open } from './support';
@@ -168,7 +167,7 @@ test.describe('on a touch screen the chips are the controls, and the bars are on
     [768, 1024],
     [834, 1112],
   ] as const) {
-    test(`${width} by ${height}: bars are out of the tab order and no tap target; eight chips of 44 px, 8 px apart, open the role`, { tag: '@mobile' }, async ({ page }) => {
+    test(`${width} by ${height}: bars are out of the tab order and no tap target; eight chips of 44 px, 8 px apart, select the role in Experience`, { tag: '@mobile' }, async ({ page }) => {
       await openAs(page, width, height);
 
       const bars = page.locator(`${SCALE} [data-bars] a`);
@@ -204,11 +203,10 @@ test.describe('on a touch screen the chips are the controls, and the bars are on
         if (where) reached.add(where);
       }
 
-      const role = roles.find((entry) => entry.id === 'anz');
       const chip = `${SCALE} [data-chips] a[data-role="anz"]`;
       await page.locator(chip).scrollIntoViewIfNeeded();
       await page.locator(chip).tap();
-      await expect(page.getByRole('dialog', { name: role?.title ?? '' })).toBeVisible();
+      await expect(page.locator('#experience [role="tab"][data-role="anz"]')).toHaveAttribute('aria-selected', 'true');
     });
   }
 

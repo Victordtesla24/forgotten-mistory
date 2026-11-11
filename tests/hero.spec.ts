@@ -176,7 +176,7 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
     }
   });
 
-  test('below 640 px a chip of at least 44 px names and opens every role, and the bars are not in the way', async ({ page }) => {
+  test('below 640 px a chip of at least 44 px names and selects every role in Experience, and the bars are not in the way', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     for (const width of [320, 390]) {
       await openAt(page, '/?gl=off', width);
@@ -192,13 +192,11 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
       expect(caption, 'the current role, in words').toContain(careerBars.at(-1)?.label ?? '');
       expect(caption).toContain('March 2026');
       await page.locator(`${CHIPS}[data-role="microsoft"]`).click();
-      await expect(page.getByRole('dialog', { name: roles.find((role) => role.id === 'microsoft')?.title ?? '' })).toBeVisible();
-      await page.keyboard.press('Escape');
-      await expect(page.locator(`${CHIPS}[data-role="microsoft"]`)).toBeFocused();
+      await expect(page.locator('#experience [role="tab"][data-role="microsoft"]')).toHaveAttribute('aria-selected', 'true');
     }
   });
 
-  test('every bar is reachable by Tab and by the arrow keys, and opens its own role', async ({ page }) => {
+  test('every bar is reachable by Tab and by the arrow keys, and selects its own role', async ({ page }) => {
     await openAt(page, '/?gl=off', 1440);
     const first = page.locator(BARS).first();
 
@@ -223,30 +221,21 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
     await page.keyboard.press('Home');
     await expect(first).toBeFocused();
 
-    // Enter opens the role in the panel; Escape closes it and focus returns to the bar.
+    // Enter selects the role in Experience and takes the reader there.
     for (const bar of careerBars) {
-      const role = roles.find((entry) => entry.id === bar.id);
       const trigger = page.locator(`${BARS}[data-role="${bar.id}"]`);
       await trigger.focus();
       await page.keyboard.press('Enter');
-      const dialog = page.getByRole('dialog', { name: role?.title ?? '' });
-      await expect(dialog, bar.id).toBeVisible();
-      await expect(dialog.getByRole('heading', { level: 3, name: role?.title ?? '' })).toBeVisible();
-      await expect(dialog.getByText(role?.achievements[0] ?? '', { exact: false })).toBeVisible();
-      expect(await page.evaluate(() => window.location.hash)).toBe(`#career-${bar.id}`);
-      await page.keyboard.press('Escape');
-      await expect(dialog, bar.id).toBeHidden();
-      await expect(trigger).toBeFocused();
+      await expect(page.locator(`#experience [role="tab"][data-role="${bar.id}"]`), bar.id).toHaveAttribute('aria-selected', 'true');
+      expect(await page.evaluate(() => window.location.hash)).toBe('#experience');
     }
   });
 
-  test('a click or tap on a bar opens that role, and Next steps along the career', async ({ page }) => {
+  test('a click on a bar selects that role in Experience and scrolls to it', async ({ page }) => {
     await openAt(page, '/?gl=off', 1440);
     await page.locator(`${BARS}[data-role="anz"]`).click();
-    const dialog = page.getByRole('dialog', { name: roles.find((role) => role.id === 'anz')?.title ?? '' });
-    await expect(dialog).toBeVisible();
-    await dialog.getByRole('button', { name: 'Next' }).click();
-    await expect(page.getByRole('dialog', { name: roles.find((role) => role.id === 'independent')?.title ?? '' })).toBeVisible();
+    await expect(page.locator('#experience [role="tab"][data-role="anz"]')).toHaveAttribute('aria-selected', 'true');
+    await expect.poll(() => page.evaluate(() => Math.round(document.querySelector('#experience')?.getBoundingClientRect().top ?? -1))).toBeLessThan(120);
   });
 });
 
@@ -817,7 +806,7 @@ test.describe('the pieces of the first screen keep to their places', { tag: '@de
 });
 
 test.describe('the detail panels lead with a visual and open with focus inside', { tag: '@desktop' }, () => {
-  test('a figure panel leads with its own reading and a key, and a role panel with the career axis', async ({ page }) => {
+  test('a figure panel leads with its own reading and a key', async ({ page }) => {
     await openAt(page, '/?gl=off', 1440);
     for (const figure of headlineFigures) {
       await page.locator(`[data-detail-trigger="figure-${figure.id}"]`).click();
@@ -840,26 +829,12 @@ test.describe('the detail panels lead with a visual and open with focus inside',
       expect(order.key, 'the key under the enlarged reading starts as the card\'s does').toContain(figure.id === 'telemetry' ? '1 point = 1 device' : figure.key);
       await page.keyboard.press('Escape');
     }
-    await page.locator(`${BARS}[data-role="ato"]`).click();
-    const role = page.getByRole('dialog', { name: roles.find((entry) => entry.id === 'ato')?.title ?? '' });
-    await expect(role).toBeVisible();
-    const lead = await role.evaluate((element) => {
-      const item = element.querySelector('[data-detail-item][data-active="true"]');
-      const axis = item?.querySelector('svg');
-      const heading = item?.querySelector('h3');
-      const open = item?.querySelectorAll('li').length ?? 0;
-      return { axis: axis?.getBoundingClientRect().top ?? -1, heading: heading?.getBoundingClientRect().top ?? -1, open };
-    });
-    expect(lead.axis, 'the axis is above the title').toBeLessThan(lead.heading);
-    await expect(role.locator('[data-detail-item][data-active="true"]').getByText('More', { exact: true })).toBeVisible();
-    const ato = roles.find((entry) => entry.id === 'ato');
-    for (const line of ato?.achievements ?? []) expect(await role.textContent(), 'nothing is lost to More').toContain(line.slice(0, 30));
   });
 
   for (const width of [1440, 390]) {
     test(`a deep link to a role opens it with focus inside the dialog at ${width} px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto('/?gl=off#career-microsoft');
+      await page.goto('/?gl=off#role-microsoft-detail');
       await hydrated(page);
       await expect(page.getByRole('dialog', { name: roles.find((entry) => entry.id === 'microsoft')?.title ?? '' })).toBeVisible();
       await expect.poll(() => page.evaluate(() => document.querySelector('dialog[open]')?.contains(document.activeElement) ?? false)).toBe(true);

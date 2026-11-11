@@ -25,6 +25,13 @@ export function setActive(view: string, active: string | null): void {
   for (const listener of listeners) listener();
 }
 
+/** Wakes the stage for a view whose input changed without a new value to record: a selection made elsewhere on the page, an entrance beginning. */
+export function poke(view: string): void {
+  const current = signals.get(view) ?? IDLE;
+  signals.set(view, { active: current.active, epoch: current.epoch + 1 });
+  for (const listener of listeners) listener();
+}
+
 /** What a view's reader is on right now. */
 export function readSignal(view: string): Signal {
   return signals.get(view) ?? IDLE;

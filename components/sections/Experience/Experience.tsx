@@ -1,68 +1,54 @@
-import { Card } from '@/components/ui/Card';
-import { Disclosure } from '@/components/ui/Disclosure';
-import { Ruler } from '@/components/ui/Ruler';
-import { Section } from '@/components/ui/Section';
-import { SnapRow } from '@/components/ui/SnapRow';
-import { NOW, TIMELINE_START, roles, yearsOf, type ExperienceRole } from '@/content/experience';
+import { DetailSet, type DetailItem } from '@/components/ui/DetailPanel';
+import { Container } from '@/components/ui/Container';
+import { roles } from '@/content/experience';
+import { laneLayouts } from '@/lib/timeline-lanes';
 
+import { Axis } from './Axis';
 import { RoleBody } from './RoleBody';
+import { RoleLead } from './RoleLead';
+import { roleViews } from './roles';
+import { Timeline } from './Timeline';
 
-function RoleCard({ role }: { role: ExperienceRole }) {
-  return (
-    <Card as="article" aria-labelledby={`role-${role.id}`} className="p-0">
-      <Disclosure
-        id={`role-${role.id}-detail`}
-        summaryClassName="p-4"
-        panelClassName="grid gap-4 border-t border-line p-4"
-        summary={
-          <div className="grid gap-1">
-            <h3 id={`role-${role.id}`} className="text-[1.0625rem]">
-              {role.short}
-            </h3>
-            <p className="type-small text-muted">{role.shortTitle}</p>
-            <p className="type-meta text-muted">{yearsOf(role.span)}</p>
-          </div>
-        }
-      >
-        <div className="grid gap-1">
-          <p className="font-medium">{role.title}</p>
-          {role.additionalTitle ? (
-            <p className="type-small text-muted">{role.additionalTitle}</p>
-          ) : null}
-          <p className="type-small text-muted">
-            {role.employer} · {role.location}
-          </p>
-          <p className="type-meta text-muted">{role.dates}</p>
-        </div>
-        <RoleBody role={role} />
-      </Disclosure>
-    </Card>
-  );
-}
+/** One panel for each role, in the order of the axis, so Previous and Next walk the career. */
+const items: readonly DetailItem[] = roleViews.flatMap((view) => {
+  const role = roles.find((entry) => entry.id === view.id);
+  if (!role) return [];
+  return [
+    {
+      id: view.panel,
+      eyebrow: `${role.employer} · ${role.location} · ${role.dates}`,
+      title: role.title,
+      attributes: { 'data-role-item': role.id },
+      lead: <RoleLead role={role} />,
+      children: (
+        <>
+          {role.additionalTitle ? <p className="type-small text-muted">{role.additionalTitle}</p> : null}
+          <RoleBody role={role} />
+        </>
+      ),
+    },
+  ];
+});
 
+/**
+ * The career as the page's one timeline: eight roles on an axis from 2010 to now that runs from
+ * edge to edge, the bars its tabs, the selected role in a card joined to its bar. The heading is
+ * a single row; everything else is the instrument (`Timeline`) and the panel each role opens.
+ */
 export function Experience() {
   return (
-    <Section
-      id="experience"
-      eyebrow="Experience"
-      title="Eight roles"
-      accent="roles"
-    >
-      <Ruler
-        min={TIMELINE_START}
-        max={Math.floor(NOW)}
-        step={1}
-        labelStep={8}
-        label={`Career timeline, ${TIMELINE_START} to ${Math.floor(NOW)}`}
-        className="mb-8"
-      />
-      <SnapRow as="ol" columns={4} className="reveal">
-        {roles.map((role) => (
-          <li key={role.id}>
-            <RoleCard role={role} />
-          </li>
-        ))}
-      </SnapRow>
-    </Section>
+    <section id="experience" aria-labelledby="experience-title" className="pt-[clamp(4rem,6vw,5rem)]">
+      <Container as="header" className="mb-4 flex flex-wrap items-baseline gap-x-5 gap-y-1 md:mb-6">
+        <p className="type-eyebrow text-muted">Experience</p>
+        <h2 id="experience-title">
+          Eight <em className="type-serif-em">roles</em>
+        </h2>
+      </Container>
+      <DetailSet label="Roles" items={items}>
+        <Timeline roles={roleViews} lanes={laneLayouts.map((layout) => layout.lanes)}>
+          <Axis />
+        </Timeline>
+      </DetailSet>
+    </section>
   );
 }

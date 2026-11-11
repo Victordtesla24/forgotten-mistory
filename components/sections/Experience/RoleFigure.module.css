@@ -1,0 +1,74 @@
+/*
+ * A role's figure: a field of 100 marks beside the number and its words. It is the same drawing
+ * in the role's card and at the head of its panel; the panel sets it larger.
+ */
+.figure {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.field {
+  display: block;
+  inline-size: 4.5rem;
+  block-size: 4.5rem;
+  overflow: visible;
+}
+
+.figure[data-place='panel'] .field {
+  inline-size: 6.5rem;
+  block-size: 6.5rem;
+}
+
+.solid {
+  fill: var(--proof);
+}
+
+.rest {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: crispEdges;
+}
+
+.reading {
+  display: grid;
+  gap: 0.125rem;
+  margin: 0;
+}
+
+.value {
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: var(--proof);
+}
+
+.label {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.key {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+/* Without a drawing the number and its words are all there is. */
+.figure:not([data-figure]) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (forced-colors: active) {
+  .solid {
+    fill: CanvasText;
+  }
+
+  .rest {
+    stroke: CanvasText;
+  }
+}

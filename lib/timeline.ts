@@ -90,7 +90,7 @@ export const careerBars: readonly CareerBar[] = [...roles]
 const LANE_FROM = 640;
 
 /** The smallest width, in px, a bar needs to carry its own name: the text, its padding and a pixel of slack. */
-function labelWidth(label: string): number {
+export function labelWidth(label: string): number {
   return Math.ceil(label.length * 7.8 + 12 + 1.5);
 }
 
@@ -108,9 +108,9 @@ export function fitStep(label: string): FitStep {
 }
 
 /** Space the glyphs of two labels in one lane keep apart, the room a leader keeps from a label it passes, and a label's padding, in px. */
-const LABEL_GAP = 8;
-const LEADER_CLEARANCE = 2;
-const LABEL_PADDING = 6;
+export const LABEL_GAP = 8;
+export const LEADER_CLEARANCE = 2;
+export const LABEL_PADDING = 6;
 
 interface OutsideLabel {
   id: string;

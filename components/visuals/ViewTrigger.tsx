@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentProps, SyntheticEvent } from 'react';
+import type { ComponentProps, FocusEvent, SyntheticEvent } from 'react';
 
 import { DetailTrigger } from '@/components/ui/DetailPanel';
 import { setActive } from '@/lib/gl/signal';
@@ -36,33 +36,37 @@ function resting(control: HTMLElement): 'key' | null {
 }
 
 /**
- * A control that opens a detail panel and tells a stage view when a reader is on it, by
- * pointer, keyboard or touch, so the view's light can answer. The interaction is on the real
- * element; the view only reads the signal, and the DOM it stands for is marked as above.
+ * The handlers that tell a stage view when a reader is on a control, by pointer, keyboard or
+ * touch, so the view's light can answer, and that mark the DOM the control stands for as above.
+ * A press answers before whatever it opens, on touch as much as with a mouse.
  */
-export function ViewTrigger({ view, value, ...rest }: ViewTriggerProps) {
-  // A press answers before the panel opens, on touch as much as with a mouse.
+export function viewMarks(view: string, value: string) {
   const on = (event: SyntheticEvent<HTMLElement>) => {
     setActive(view, value);
     mark(event.currentTarget, value, 'point');
   };
-  return (
-    <DetailTrigger
-      {...rest}
-      onPointerEnter={on}
-      onPointerDown={on}
-      onPointerLeave={(event) => {
-        setActive(view, null);
-        mark(event.currentTarget, value, resting(event.currentTarget));
-      }}
-      onFocus={(event) => {
-        setActive(view, value);
-        mark(event.currentTarget, value, event.currentTarget.matches(':focus-visible') ? 'key' : 'point');
-      }}
-      onBlur={(event) => {
-        setActive(view, null);
-        mark(event.currentTarget, value, null);
-      }}
-    />
-  );
+  return {
+    onPointerEnter: on,
+    onPointerDown: on,
+    onPointerLeave: (event: SyntheticEvent<HTMLElement>) => {
+      setActive(view, null);
+      mark(event.currentTarget, value, resting(event.currentTarget));
+    },
+    onFocus: (event: FocusEvent<HTMLElement>) => {
+      setActive(view, value);
+      mark(event.currentTarget, value, event.currentTarget.matches(':focus-visible') ? 'key' : 'point');
+    },
+    onBlur: (event: FocusEvent<HTMLElement>) => {
+      setActive(view, null);
+      mark(event.currentTarget, value, null);
+    },
+  };
+}
+
+/**
+ * A control that opens a detail panel and tells a stage view when a reader is on it. The
+ * interaction is on the real element; the view only reads the signal.
+ */
+export function ViewTrigger({ view, value, ...rest }: ViewTriggerProps) {
+  return <DetailTrigger {...rest} {...viewMarks(view, value)} />;
 }

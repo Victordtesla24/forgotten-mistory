@@ -1,6 +1,6 @@
 /*
  * The lead of a role's panel: the career on a small axis with this role's bar lit, and the
- * role's headline figure. The axis is drawn like the hero's scale, from the same module, at
+ * role's headline figure. The axis is the Experience timeline's, from the same module, at
  * panel width; the span is a filled bar, so which role it is reads at a glance.
  */
 .lead {
@@ -36,7 +36,7 @@
 }
 
 .baseline,
-.month,
+.quarter,
 .year {
   fill: none;
   stroke-width: 1;
@@ -45,7 +45,7 @@
 }
 
 .baseline,
-.month {
+.quarter {
   stroke: var(--line-strong);
 }
 
@@ -64,51 +64,12 @@
   color: var(--muted);
 }
 
-.figure {
-  display: grid;
-  gap: 0.75rem;
-}
-
-/* The share a percentage names: the part that remains is solid, the part that fell away is hatched. */
-.share {
-  display: block;
-  height: 0.5rem;
-  border-radius: 999px;
-  background: repeating-linear-gradient(
-    135deg,
-    var(--line-strong) 0 2px,
-    transparent 2px 5px
-  );
-  overflow: hidden;
-}
-
-.rest {
-  display: block;
-  width: var(--rest);
-  height: 100%;
-  border-radius: 999px;
-  background-color: var(--proof);
-}
-
-@keyframes settle-share {
-  from {
-    width: 100%;
-  }
-
-  to {
-    width: var(--rest);
-  }
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .span {
     transform-origin: left center;
     animation: span-in var(--duration-panel) var(--ease) 80ms both;
   }
 
-  .rest {
-    animation: settle-share var(--duration-panel) var(--ease-in-out) 160ms both;
-  }
 }
 
 @keyframes span-in {
@@ -121,9 +82,14 @@
   }
 }
 
+@media (max-width: 639px) {
+  .numeral:not([data-narrow]) {
+    display: none;
+  }
+}
+
 @media (forced-colors: active) {
-  .span,
-  .rest {
+  .span {
     forced-color-adjust: none;
   }
 }
