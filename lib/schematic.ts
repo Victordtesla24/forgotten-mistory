@@ -80,6 +80,24 @@ const SPACES: Readonly<Record<Place, { width: number; height: number }>> = {
 /** Room kept clear around the drawing, so a line at its edge is never cut. */
 const MARGIN = 6;
 
+/** A rectangle, in CSS pixels of whatever it is measured from. */
+export interface Box {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Where a layout's drawing space lands in a box: the uniform scale and the offset that the SVG's `viewBox` fits it with
+ * (centred, the whole drawing kept), so a point `p` of the layout is at `x + p.x * scale`, `y + p.y * scale`. The light
+ * layer takes the same fit from the SVG's own box, which is what puts its plates on the drawing's.
+ */
+export function fitToBox(layout: Pick<SchematicLayout, 'width' | 'height'>, box: Box): { scale: number; x: number; y: number } {
+  const scale = Math.min(box.width / layout.width, box.height / layout.height);
+  return { scale, x: box.x + (box.width - layout.width * scale) / 2, y: box.y + (box.height - layout.height * scale) / 2 };
+}
+
 /** The id of the view that draws a project's schematic, as its placeholder carries it in `data-stage-view`. */
 export function schematicView(id: SchematicId, place: Place): string {
   return place === 'card' ? `schematic-${id}` : `schematic-${id}-panel`;
@@ -147,6 +165,9 @@ const compositions: Readonly<Record<SchematicId, Composition>> = {
     floor: 'ground',
   },
 };
+
+/** The id of every composition: the schematics a project can have. */
+export const schematicIds = Object.keys(compositions) as readonly SchematicId[];
 
 // What each kind of object measures, in cells: width along u, depth along v, height up.
 const sizes: Readonly<Record<NodeKind, readonly [w: number, d: number, h: number]>> = {

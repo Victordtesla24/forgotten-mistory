@@ -57,6 +57,7 @@
   stroke-width: 1;
   transition:
     fill var(--duration-state) var(--ease),
+    fill-opacity var(--duration-state) var(--ease),
     stroke var(--duration-state) var(--ease);
 }
 
@@ -83,6 +84,7 @@
   fill: var(--ground);
   stroke: var(--fine);
   stroke-width: 1;
+  transition: fill-opacity var(--duration-state) var(--ease);
 }
 
 .line {
@@ -170,12 +172,52 @@
   grid-template-columns: 0.75rem minmax(0, 1fr) 1.5rem 0.75rem;
   overflow: hidden;
   padding: 0;
+  /* The surface is painted by `.base`, under the words only, so the scene can be the stage's. The card is its own stacking context, so `.base` and the spotlight sit inside it. */
+  isolation: isolate;
+  background-color: transparent;
+}
+
+.base {
+  grid-column: 1 / -1;
+  grid-row: 2 / -1;
+  z-index: -2;
+  background-color: var(--surface);
 }
 
 .visual {
   grid-column: 1 / -1;
+  grid-row: 1;
   min-height: var(--visual-min, 15rem);
-  border-bottom: 1px solid var(--line);
+  /* The hairline under the scene is drawn inside its box, so the scene and the stage's view are the same size. */
+  box-shadow: inset 0 -1px 0 var(--line);
+  transition: background-color var(--duration-state) var(--ease);
+}
+
+/*
+ * The light layer. Once the stage has drawn a card's view it paints the scene itself: its backdrop, the floor
+ * and the faces of every stage, from the layout the drawing is made from (`lib/gl/views/schematic.ts`). The
+ * drawing then keeps its lines, its routes and the stage that is lit, and lets go of its fills and of the
+ * scene's own background, so the canvas behind the page shows through exactly where the faces are. If the
+ * stage never draws (no WebGL, `?gl=off`) or gives up, nothing here applies and the drawing is complete as it was.
+ * The rail that scrolls sideways below 1280 px moves its cards on the compositor, ahead of the stage; the view marks
+ * itself `data-moving` while it does, and the drawing shows in full until the cards rest.
+ */
+.visual:has([data-stage-view][data-ready='true']:not([data-moving])) {
+  background-color: transparent;
+}
+
+.visual:has([data-stage-view][data-ready='true']:not([data-moving])) :is(.top, .left, .right, .ground) {
+  fill-opacity: 0;
+}
+
+.visual:has([data-stage-view][data-ready='true']:not([data-moving])) .node[data-active='true'] :is(.top, .left, .right) {
+  fill-opacity: 1;
+}
+
+/* While a rail that scrolls sideways moves its cards, the drawing is back in full at once, and the light fades in again where the cards rest. */
+.visual:has([data-stage-view][data-moving]),
+.visual:has([data-stage-view][data-moving]) :is(.face, .ground) {
+  transition: none;
 }
 
 /*
@@ -234,6 +276,7 @@
 /* A line under the drawing that names the stage that is lit. Its space is always kept. */
 .caption {
   grid-column: 1 / -1;
+  grid-row: 2;
   min-height: 1.75rem;
   padding: 0.25rem 0.75rem 0;
   color: var(--muted);
@@ -340,7 +383,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .visual,
   .face,
+  .ground,
   .line,
   .arrow,
   .open,
@@ -349,7 +394,7 @@
   }
 }
 
-:global(:root[data-motion='off']) :is(.face, .line, .arrow, .open, .open svg) {
+:global(:root[data-motion='off']) :is(.visual, .face, .ground, .line, .arrow, .open, .open svg) {
   transition: none;
 }
 

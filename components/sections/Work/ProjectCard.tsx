@@ -16,13 +16,16 @@ import styles from './Work.module.css';
  * One project on the rail: its schematic, the line that names the stage that is lit, its name, its
  * status on a line of its own, its one line of value and the control that opens its panel. Pointing
  * at, focusing or tapping the schematic runs its stages (`behaviour.ts`; the control is off until
- * that has loaded); the plus opens the project, and so does the rest of the card.
+ * that has loaded); the plus opens the project, and so does the rest of the card. The scene is the
+ * stage's to light: the card paints only what lies under its words (`base`), so the canvas behind the
+ * page shows through the scene once the view has drawn.
  */
 export function ProjectCard({ project }: { project: Project }) {
   const { schematic } = project;
   const headingId = `project-${project.repo}`;
   return (
     <Card as="article" aria-labelledby={headingId} data-project={project.repo} className={styles.card}>
+      <span aria-hidden="true" className={styles.base} />
       <div role="group" aria-label={schematic.label} data-schematic="" className={`${styles.scene} ${styles.visual}`}>
         <StageView view={schematicView(schematic.id, 'card')} />
         <Schematic schematic={schematic} place="card" />

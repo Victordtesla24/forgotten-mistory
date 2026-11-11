@@ -8,10 +8,15 @@
  * Only a fine pointer that can hover brings any of this, and only while motion is welcome: a touch screen,
  * reduced motion and Motion off leave the card with no transform at all and no light. The events are heard
  * on the card's slot in the rail, which the lean does not move, so a pointer at the edge of a leaning card
- * cannot flicker in and out of it. Nothing runs while the card is at rest, and nothing here asks the light
- * layer to draw.
+ * cannot flicker in and out of it. Nothing runs while the card is at rest.
+ *
+ * The card's light layer follows the lean rather than hiding while it lasts: the view of a card that moves
+ * is told so (`poke`) on every step, draws one frame into the card's box as the page now lays it out, and the
+ * stage stays idle again once the card has stopped. The lean is small enough that the view's plates, which stay
+ * flat, lie within a pixel of the drawing that leans.
  */
 
+import { poke } from '@/lib/gl/signal';
 import { reducedMotion, spring, stepSpring, subscribeToMotion, type SpringState } from '@/lib/motion';
 
 /** How far a card leans with the pointer at its edge, in degrees. Small enough that its drawing stays registered with the light layer's. */
@@ -25,6 +30,8 @@ const FINE_POINTER = '(hover: hover) and (pointer: fine)';
 
 interface Lean {
   card: HTMLElement;
+  /** The id of the card's view on the stage, which draws the light the card carries. */
+  view: string;
   /** Turn about the horizontal axis (the pointer's height) and about the vertical axis (its width), each from -1 to 1. */
   pitch: SpringState;
   yaw: SpringState;
@@ -43,6 +50,7 @@ export function attachTilt(section: HTMLElement, signal: AbortSignal): void {
 
   const paint = (lean: Lean): void => {
     lean.card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${(lean.pitch.value * MAX_LEAN).toFixed(3)}deg) rotateY(${(lean.yaw.value * MAX_LEAN).toFixed(3)}deg)`;
+    poke(lean.view);
   };
 
   /** Back to no transform at all, with the light out. */
@@ -54,6 +62,7 @@ export function attachTilt(section: HTMLElement, signal: AbortSignal): void {
     lean.card.style.transform = '';
     lean.card.style.willChange = '';
     delete lean.card.dataset.light;
+    poke(lean.view);
   };
 
   const tick = (now: number): void => {
@@ -70,6 +79,7 @@ export function attachTilt(section: HTMLElement, signal: AbortSignal): void {
       if (lean.aim.pitch === 0 && lean.aim.yaw === 0) {
         lean.card.style.transform = '';
         lean.card.style.willChange = '';
+        poke(lean.view);
       } else {
         paint(lean);
       }
@@ -92,7 +102,8 @@ export function attachTilt(section: HTMLElement, signal: AbortSignal): void {
   section.querySelectorAll<HTMLElement>('article[data-project]').forEach((card) => {
     const slot = card.parentElement;
     if (!slot) return;
-    const lean: Lean = { card, pitch: { value: 0, velocity: 0 }, yaw: { value: 0, velocity: 0 }, aim: { pitch: 0, yaw: 0 } };
+    const view = card.querySelector<HTMLElement>('[data-stage-view]')?.dataset.stageView ?? '';
+    const lean: Lean = { card, view, pitch: { value: 0, velocity: 0 }, yaw: { value: 0, velocity: 0 }, aim: { pitch: 0, yaw: 0 } };
     leans.push(lean);
     let pressed = false;
 

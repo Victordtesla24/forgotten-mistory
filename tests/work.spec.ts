@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import sharp from 'sharp';
 
 import { projects } from '@/content/work';
-import { schematicLayout } from '@/lib/schematic';
+import { fitToBox, schematicLayout } from '@/lib/schematic';
 
 import { entranceDone, open, visibleWordCounts, watchConsole } from './support';
 
@@ -670,5 +670,180 @@ test.describe('focus on a card', { tag: '@desktop' }, () => {
         expect(off, `the ${side} side of the ring, ${pixel.join(',')} against the accent ${accent.join(',')}`).toBeLessThanOrEqual(24);
       }
     }
+  });
+});
+
+/** The light layer: one view on the shared stage in each card, on the geometry of the card's SVG. */
+const LIGHT_SIZES = [
+  [1440, 900, 1],
+  [1440, 900, 2],
+  [390, 844, 1],
+  [390, 844, 2],
+] as const;
+
+/** The stage has drawn every view in or near the viewport, and then stopped drawing. */
+async function lightSettled(page: Page): Promise<void> {
+  await page.waitForFunction(() => window.__stage !== undefined);
+  await page.evaluate(() => window.__stage?.ready);
+  await expect(page.locator(SECTION)).not.toHaveAttribute('data-entrance', /^(armed|play)$/);
+  await page.waitForFunction(
+    (selector) => {
+      const near = [...document.querySelectorAll<HTMLElement>(selector)].filter((element) => {
+        const box = element.getBoundingClientRect();
+        return box.width > 1 && box.height > 1 && box.right > 0 && box.left < document.documentElement.clientWidth && box.bottom > -200 && box.top < innerHeight + 200;
+      });
+      return near.length > 0 && near.every((element) => element.dataset.ready === 'true');
+    },
+    `${SECTION} [data-stage-view]`,
+  );
+  let previous = -2;
+  let quiet = 0;
+  await expect
+    .poll(async () => {
+      const now = await page.evaluate(() => window.__stage?.info().frames ?? -1);
+      quiet = now === previous ? quiet + 1 : 0;
+      previous = now;
+      await page.waitForTimeout(700);
+      return quiet;
+    }, { timeout: 40_000 })
+    .toBeGreaterThanOrEqual(2);
+}
+
+/** A pixel of a screenshot taken `device` times the size of the page, at a point in CSS pixels. */
+function pixelAt(shot: { data: Buffer; info: { width: number; channels: number } }, device: number, x: number, y: number): number[] {
+  const at = (Math.floor(y * device) * shot.info.width + Math.floor(x * device)) * shot.info.channels;
+  return [shot.data[at] ?? 0, shot.data[at + 1] ?? 0, shot.data[at + 2] ?? 0];
+}
+
+for (const [width, height, ratio] of LIGHT_SIZES) {
+  test.describe(`the light layer at ${width}x${height}, device pixel ratio ${ratio}`, { tag: '@desktop' }, () => {
+    test.use({ viewport: { width, height }, deviceScaleFactor: ratio });
+
+    test('each card has one view on the page\'s one canvas, which draws light inside its schematic and lies on its drawing', async ({ page }) => {
+      // Six cards, each measured with the canvas and the drawing shown and hidden in turn, on a screen as large as two pixels to a point.
+      test.setTimeout(180_000);
+      await openWork(page, '/?gl=high');
+      await expect(page.locator('canvas')).toHaveCount(1);
+      for (const project of projects) {
+        const owner = card(page, project.repo);
+        await owner.scrollIntoViewIfNeeded();
+        await lightSettled(page);
+        const view = owner.locator('[data-stage-view]');
+        await expect(view).toHaveAttribute('data-ready', 'true');
+
+        // The view lies on the drawing: both fit the same layout to the SVG's box, and the browser's own fit agrees with the shared function.
+        const fit = await owner.evaluate((element) => {
+          const svg = element.querySelector('svg');
+          const stage = element.querySelector('[data-stage-view]');
+          const scene = element.querySelector('[data-schematic]');
+          if (!svg || !stage || !scene) throw new Error('a card lost its drawing');
+          const box = svg.getBoundingClientRect();
+          const frame = stage.getBoundingClientRect();
+          const matrix = svg.getScreenCTM();
+          return {
+            box: { x: box.left - frame.left, y: box.top - frame.top, width: box.width, height: box.height },
+            matrix: matrix ? { scale: matrix.a, x: matrix.e - frame.left, y: matrix.f - frame.top } : null,
+            overlap: Math.max(
+              Math.abs(frame.left - scene.getBoundingClientRect().left),
+              Math.abs(frame.top - scene.getBoundingClientRect().top),
+              Math.abs(frame.width - scene.getBoundingClientRect().width),
+              Math.abs(frame.height - scene.getBoundingClientRect().height),
+            ),
+          };
+        });
+        const layout = schematicLayout(project.schematic, 'card');
+        const shared = fitToBox(layout, fit.box);
+        expect(fit.overlap, 'the view is the scene').toBeLessThanOrEqual(0.5);
+        expect(fit.matrix?.scale).toBeCloseTo(shared.scale, 3);
+        expect(fit.matrix?.x).toBeCloseTo(shared.x, 1);
+        expect(fit.matrix?.y).toBeCloseTo(shared.y, 1);
+
+        // Hiding the canvas changes the schematic's pixels; hiding the drawing leaves the light alone, and its plates' edges lie on the drawing's.
+        const scene = await owner.locator('[data-schematic]').boundingBox();
+        if (!scene) throw new Error('the schematic has no box');
+        const clip = { x: Math.floor(scene.x), y: Math.floor(scene.y), width: Math.ceil(scene.width), height: Math.ceil(scene.height) };
+        const raw = async () => sharp(await page.screenshot({ clip })).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+        const withCanvas = await raw();
+        await page.addStyleTag({ content: 'canvas[data-stage] { visibility: hidden !important; }' });
+        const withoutCanvas = await raw();
+        let changed = 0;
+        for (let at = 0; at < withCanvas.data.length; at += withCanvas.info.channels) {
+          if (Math.max(...[0, 1, 2].map((channel) => Math.abs((withCanvas.data[at + channel] ?? 0) - (withoutCanvas.data[at + channel] ?? 0)))) > 8) changed += 1;
+        }
+        const share = changed / (withCanvas.info.width * withCanvas.info.height);
+        expect(share, `${project.name}: the canvas changes ${(share * 100).toFixed(2)}% of the schematic`).toBeGreaterThan(0.001);
+        await page.evaluate(() => document.querySelectorAll('style').forEach((style) => style.textContent?.includes('canvas[data-stage]') && style.remove()));
+
+        await page.addStyleTag({ content: '[data-project] svg { visibility: hidden !important; }' });
+        await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+        const light = await sharp(await page.screenshot()).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+        // Across the back edges of the first object's top: one pixel inside the edge and one outside it differ, so the edge is where the drawing's is.
+        const svgMatrix = fit.matrix;
+        const sceneOrigin = await owner.locator('[data-stage-view]').boundingBox();
+        if (!svgMatrix || !sceneOrigin) throw new Error('the drawing has no matrix');
+        const first = layout.nodes.find((node) => node.kind !== 'gate') ?? layout.nodes[0];
+        const top = first.prisms[0]?.top;
+        if (!top) throw new Error('the first object has no top');
+        const toPage = (point: { x: number; y: number }) => ({ x: sceneOrigin.x + svgMatrix.x + point.x * svgMatrix.scale, y: sceneOrigin.y + svgMatrix.y + point.y * svgMatrix.scale });
+        const [a, b, , d] = top.map(toPage);
+        const centre = top.map(toPage).reduce((sum, point) => ({ x: sum.x + point.x / 4, y: sum.y + point.y / 4 }), { x: 0, y: 0 });
+        if (!a || !b || !d) throw new Error('a top has four corners');
+        for (const [from, to] of [[a, b], [d, a]] as const) {
+          const mid = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
+          const length = Math.hypot(to.x - from.x, to.y - from.y);
+          let normal = { x: -(to.y - from.y) / length, y: (to.x - from.x) / length };
+          if ((mid.x - centre.x) * normal.x + (mid.y - centre.y) * normal.y < 0) normal = { x: -normal.x, y: -normal.y };
+          const inside = pixelAt(light, ratio, mid.x - normal.x, mid.y - normal.y);
+          const outside = pixelAt(light, ratio, mid.x + normal.x, mid.y + normal.y);
+          const step = Math.max(...inside.map((value, channel) => Math.abs(value - (outside[channel] ?? 0))));
+          expect(step, `${project.name}: the plate's edge lies within a pixel of the drawing's (${inside.join(',')} inside, ${outside.join(',')} outside)`).toBeGreaterThanOrEqual(4);
+        }
+        await page.evaluate(() => document.querySelectorAll('style').forEach((style) => style.textContent?.includes('[data-project] svg') && style.remove()));
+      }
+    });
+
+    test('at rest the stage draws nothing, and with six views near it stays inside the page budgets', async ({ page }) => {
+      await openWork(page, '/?gl=high');
+      await card(page, projects[0]?.repo ?? '').scrollIntoViewIfNeeded();
+      await lightSettled(page);
+      const before = await page.evaluate(() => window.__stage?.info());
+      await page.waitForTimeout(2500);
+      const after = await page.evaluate(() => window.__stage?.info());
+      expect(after?.frames).toBe(before?.frames);
+      expect(after?.calls ?? 0).toBeLessThanOrEqual(40);
+      expect(after?.points ?? 0).toBeLessThanOrEqual(12_000);
+      expect(after?.lines ?? 0).toBeLessThanOrEqual(10_000);
+      expect(after?.triangles ?? 0).toBeLessThanOrEqual(60_000);
+    });
+  });
+}
+
+test.describe('the light layer beside the drawing', { tag: '@desktop' }, () => {
+  test('without the stage the cards keep their fills and no view is ready', async ({ page }) => {
+    await openWork(page, '/?gl=off');
+    await expect(page.locator(`${SECTION} [data-stage-view][data-ready="true"]`)).toHaveCount(0);
+    const owner = card(page, aether.repo);
+    const fills = await owner.evaluate((element) => {
+      const scene = element.querySelector('[data-schematic]');
+      const face = element.querySelector('svg g[data-stage] polygon:nth-child(3)');
+      if (!scene || !face) throw new Error('a card lost its drawing');
+      return { background: getComputedStyle(scene).backgroundColor, fill: getComputedStyle(face).fillOpacity };
+    });
+    expect(fills.fill).toBe('1');
+    expect(fills.background).not.toBe('rgba(0, 0, 0, 0)');
+  });
+
+  test('a card that leans draws its light into the box it now has, and the stage is idle again once it is flat', async ({ page }) => {
+    await openWork(page, '/?gl=high');
+    const owner = card(page, ralph.repo);
+    const box = await restingBox(owner);
+    await lightSettled(page);
+    const before = await page.evaluate(() => window.__stage?.info().frames ?? 0);
+    await page.mouse.move(box.x + box.width * 0.2, box.y + box.height * 0.25, { steps: 4 });
+    await expect.poll(() => page.evaluate(() => window.__stage?.info().frames ?? 0)).toBeGreaterThan(before + 3);
+    await expect(owner.locator('[data-stage-view]')).toHaveAttribute('data-ready', 'true');
+    await page.mouse.move(2, 2, { steps: 4 });
+    await expect.poll(async () => (await respond(owner)).transform, { timeout: 5000 }).toBe('none');
+    await lightSettled(page);
   });
 });
