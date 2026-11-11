@@ -286,7 +286,8 @@ export function createExperienceTimeline(context: ViewContext): View {
         const level = Math.max(index === read.selected ? 1 : 0, index === read.hovered ? HOVER_LEVEL : 0);
         const state = levels[index];
         if (!state) return;
-        if (live) busy = stepSpring(state, level, spring.snappy, seconds) || busy;
+        // While the entrance runs the current role is lit from its first frame: a spring would still be settling after the page's own entrance ended, as slow frames each step it by a capped 50 ms, and the stage would keep drawing into a page that reads as at rest.
+        if (live && !armed && !playing) busy = stepSpring(state, level, spring.snappy, seconds) || busy;
         else state.value = level;
         const start = ((box.x - 1) / read.width) * FRONT_MS;
         const grown = armed ? 0 : easeOut((elapsed - start) / BAR_MS);
