@@ -316,12 +316,13 @@
 }
 
 /*
- * What a bar says about itself, for a fine pointer and for the keyboard: in the band below the
- * numerals, so it never covers the lanes of names, the hero's links or the figures above.
+ * What a bar says about itself, for a fine pointer and for the keyboard: in the scale's own
+ * band, standing on its bar over the lanes of names. The lanes give it room, so it stays clear
+ * of the hero's links and figures above, and it is always inside the screen the scale sits on.
  */
 .tip {
   position: absolute;
-  top: calc(100% + var(--ruler-height) + 0.25rem);
+  bottom: calc(100% + 0.25rem);
   z-index: 2;
   display: none;
   width: max-content;

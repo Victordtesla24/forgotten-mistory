@@ -716,7 +716,7 @@ test.describe('the pieces of the first screen keep to their places', { tag: '@de
     expect(new Set(tops.map(Math.round)).size, 'one row').toBe(1);
   });
 
-  test('a bar’s tip stands below the numerals and never covers a link above', async ({ page }) => {
+  test('a bar’s tip stands in the scale’s own band and never covers a link or leaves the screen', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openAt(page, '/?gl=off', 1440);
     await page.locator(`${BARS}[data-role="infocentric"]`).hover();
@@ -725,8 +725,10 @@ test.describe('the pieces of the first screen keep to their places', { tag: '@de
       return { top: box.top, bottom: box.bottom, left: box.left, right: box.right, shown: getComputedStyle(element).display !== 'none' };
     });
     expect(tip.shown).toBe(true);
-    const ruler = await page.locator(`${SCALE} [data-ruler]`).evaluate((element) => element.getBoundingClientRect().bottom);
-    expect(tip.top, 'below the ruler').toBeGreaterThanOrEqual(ruler);
+    expect(tip.top, 'inside the screen, above').toBeGreaterThanOrEqual(0);
+    expect(tip.bottom, 'inside the screen, below').toBeLessThanOrEqual(900);
+    const bar = await page.locator(`${BARS}[data-role="infocentric"]`).evaluate((element) => element.getBoundingClientRect().top);
+    expect(tip.bottom, 'standing on its bar').toBeLessThanOrEqual(bar);
     const links = await page.locator('#top a').evaluateAll((all) =>
       all.map((link) => {
         const box = link.getBoundingClientRect();

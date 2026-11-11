@@ -87,10 +87,10 @@ export const careerBars: readonly CareerBar[] = [...roles]
  * wider one. Labels are set in the mono face at 13 px, 0.6 em to a character, with 6 px of
  * padding each side; below `LANE_FROM` the roles are named by chips instead.
  */
-export const LANE_FROM = 640;
+const LANE_FROM = 640;
 
 /** The smallest width, in px, a bar needs to carry its own name: the text, its padding and a pixel of slack. */
-export function labelWidth(label: string): number {
+function labelWidth(label: string): number {
   return Math.ceil(label.length * 7.8 + 12 + 1.5);
 }
 
