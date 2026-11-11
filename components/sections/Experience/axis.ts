@@ -20,6 +20,9 @@ export const numerals = ticks.flatMap((tick) => (tick.year === undefined ? [] : 
 /** The Januaries whose ticks are tall on every track: those with a numeral on a track from 640 px. */
 const tall = numerals.filter((numeral) => numeral.tier !== 'wide');
 
+/** The tall ticks the SVG draws: the first January is the track's own edge, where half of a hairline would fall outside the page, so the stylesheet draws that one whole. */
+const drawn = tall.filter((numeral) => numeral.at > 0);
+
 /** The Januaries that gain a numeral from 1024 px, and a longer tick with it. */
 const wide = numerals.filter((numeral) => numeral.tier === 'wide');
 
@@ -30,7 +33,7 @@ export const tickPaths = {
     .map((tick) => `M${x(tick.at)} 0v5`)
     .join(''),
   year: wide.map((numeral) => `M${x(numeral.at)} 0v9`).join(''),
-  numeral: tall.map((numeral) => `M${x(numeral.at)} 0v15`).join(''),
+  numeral: drawn.map((numeral) => `M${x(numeral.at)} 0v15`).join(''),
   extension: wide.map((numeral) => `M${x(numeral.at)} 9v6`).join(''),
 };
 

@@ -94,7 +94,9 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
   }
 
   for (const width of WIDTHS) {
-    test(`every bar is named, no two names meet and none is under 13 px at ${width} px`, async ({ page }) => {
+    // A phone's axis names the selected bar and the one wide enough to carry its own name; the row of cards below names every role.
+    const named = width < 640 ? ['anz', 'ato'] : ORDER;
+    test(`${width < 640 ? 'the selected bar and the wide one are named' : 'every bar is named'}, no two names meet and none is under 13 px at ${width} px`, async ({ page }) => {
       await openAt(page, '/?gl=off', width);
       const names = await page.evaluate((selector) => {
         const found: { id: string; left: number; right: number; top: number; bottom: number; size: number; text: string; outside: boolean }[] = [];
@@ -121,7 +123,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
         }
         return found;
       }, BARS);
-      expect(names.map((name) => name.id).sort(), 'one name for each bar').toEqual([...ORDER].sort());
+      expect(names.map((name) => name.id).sort(), 'the bars that are named').toEqual([...named].sort());
       for (const name of names) {
         expect(name.text).toBe(roles.find((role) => role.id === name.id)?.short);
         expect(name.size, `${name.id} text size`).toBeGreaterThanOrEqual(13);
@@ -398,6 +400,46 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     expect(found.right, 'the cap does not touch the edge of the screen').toBeGreaterThanOrEqual(2);
   });
 
+  test('the first January’s tick stands whole on the track’s edge: the ruler draws it and the drawing leaves it out', async ({ page }) => {
+    await openAt(page, '/?gl=off', 1440);
+    const found = await page.evaluate(() => {
+      const ruler = document.querySelector('#experience [data-ruler]') as HTMLElement;
+      const edge = getComputedStyle(ruler, '::before');
+      const drawn = Array.from(ruler.querySelectorAll('path'), (path) => path.getAttribute('d') ?? '').join('');
+      return { left: edge.left, width: edge.width, atEdge: /M0(\.0+)? /.test(drawn) };
+    });
+    expect(found.left, 'the tick is on the edge').toBe('0px');
+    expect(found.width, 'and a whole pixel wide').toBe('1px');
+    expect(found.atEdge, 'the SVG draws no tick whose half would fall outside the page').toBe(false);
+  });
+
+  test('with Work in view nothing of the timeline stands under the header, at three laptop sizes', async ({ page }) => {
+    for (const [width, height] of [[1280, 720], [1440, 900], [1920, 1080]] as const) {
+      await openAt(page, '/?gl=off', width, height);
+      await page.locator('header a[href="/#work"]').first().click();
+      // The jump has ended when the page has stood still between two looks.
+      let rest = -1;
+      await expect
+        .poll(async () => {
+          const now = await page.evaluate(() => window.scrollY);
+          const still = now === rest && now > 0;
+          rest = now;
+          return still;
+        })
+        .toBe(true);
+      const under = await page.evaluate(() => {
+        const header = (document.querySelector('header') as HTMLElement).getBoundingClientRect().bottom;
+        return Array.from(document.querySelectorAll('#experience *'))
+          .filter((element) => {
+            const box = element.getBoundingClientRect();
+            return box.width > 0 && box.height > 0 && box.bottom > header + 0.5 && box.top < window.innerHeight;
+          })
+          .map((element) => element.tagName.toLowerCase());
+      });
+      expect(under, `${width} x ${height}: what of the timeline shows under the header`).toEqual([]);
+    }
+  });
+
   test('the timeline is the one scale on the page: no ticks or numerals in a panel, in the dividers or in the no-script list', async ({ browser, page }) => {
     await openAt(page, '/?gl=off#role-anz-detail', 1440);
     const dialog = page.getByRole('dialog');
@@ -669,22 +711,84 @@ test.describe('the Experience timeline on a phone', { tag: '@mobile' }, () => {
     const offFirst = (id: string) =>
       row.evaluate((list, role) => {
         const card = list.querySelector<HTMLElement>(`[data-role="${role}"]`) as HTMLElement;
-        return Math.abs(card.getBoundingClientRect().left - (list.getBoundingClientRect().left + Number.parseFloat(getComputedStyle(list).paddingLeft)));
+        return Math.abs(card.getBoundingClientRect().left - (list.getBoundingClientRect().left + Number.parseFloat(getComputedStyle(list).scrollPaddingLeft)));
       }, id);
     await expect.poll(() => offFirst('anz')).toBeLessThanOrEqual(2);
 
     // Moving the row to a card moves the lens to its role.
     await row.evaluate((list) => {
       const card = list.querySelector<HTMLElement>('[data-role="telstra"]') as HTMLElement;
-      list.scrollTo({ left: card.offsetLeft - Number.parseFloat(getComputedStyle(list).paddingLeft), behavior: 'instant' });
+      list.scrollTo({ left: card.offsetLeft - Number.parseFloat(getComputedStyle(list).scrollPaddingLeft), behavior: 'instant' });
     });
     await expect.poll(() => selectedRole(page)).toBe('telstra');
     await expect(lens).toContainText('Telstra');
 
-    // A tap on a card selects it, once the row has come to rest on the one before.
+    // A tap on the part of a card that shows selects it, once the row has come to rest on the one before; the row then comes to rest on that card and the selection stays.
     await expect.poll(() => offFirst('telstra')).toBeLessThanOrEqual(2);
-    await page.locator(`${TAB}[data-role="nab"]`).tap();
+    const shown = await row.evaluate((list) => {
+      const card = list.querySelector<HTMLElement>('[data-role="nab"]') as HTMLElement;
+      const box = card.getBoundingClientRect();
+      return { x: (box.left + Math.min(box.right, list.getBoundingClientRect().right)) / 2, y: (box.top + box.bottom) / 2 };
+    });
+    await page.touchscreen.tap(shown.x, shown.y);
+    await expect.poll(() => selectedRole(page)).toBe('nab');
+    await expect.poll(() => offFirst('nab')).toBeLessThanOrEqual(2);
     expect(await selectedRole(page)).toBe('nab');
+  });
+
+  test('the lens never moves the axis, the connector crosses no name, the launcher covers no card and the row peeks nothing or a clear card', async ({ page }) => {
+    await open(page, '/?gl=off');
+    await settled(page);
+    const row = page.locator(`${SECTION} [data-row]`);
+    /** Everything that must stay put or stay clear of a name, measured in the page. */
+    const measure = () =>
+      page.evaluate(() => {
+        const rect = (element: Element) => element.getBoundingClientRect();
+        const lens = document.querySelector('#experience [data-lens]') as HTMLElement;
+        const list = document.querySelector('#experience [data-row]') as HTMLElement;
+        const connector = rect(document.querySelector('#experience [data-connector]') as HTMLElement);
+        const names = Array.from(document.querySelectorAll<HTMLElement>('#experience [data-out]'))
+          .filter((out) => getComputedStyle(out).display !== 'none')
+          .map((out) => rect(out.querySelector('span') as HTMLElement));
+        const launcher = document.querySelector('#assistant-launcher');
+        const box = launcher ? rect(launcher) : null;
+        const cards = Array.from(list.querySelectorAll<HTMLElement>('[role="tab"]')).map((tab) => ({ id: tab.dataset.role ?? '', box: rect(tab), text: rect(tab.querySelector('span') as HTMLElement) }));
+        const selected = cards.find((card) => card.id === document.querySelector('[data-experience]')?.getAttribute('data-selected'));
+        const previous = cards[cards.findIndex((card) => card.id === selected?.id) - 1];
+        return {
+          lens: rect(lens).height,
+          barsTop: rect(document.querySelector('#experience [data-bars]') as HTMLElement).top,
+          rowTop: rect(list).top,
+          next: rect(document.querySelector('#experience')?.nextElementSibling as HTMLElement).top,
+          crossed: names.filter((name) => name.left <= connector.right && name.right >= connector.left).length,
+          covered: box ? cards.filter((card) => card.text.left < box.right && card.text.right > box.left && card.text.top < box.bottom && card.text.bottom > box.top).map((card) => card.id) : [],
+          peek: previous ? Math.max(previous.box.right, 0) : 0,
+          scroll: list.scrollLeft,
+        };
+      });
+    const first = await measure();
+    for (const id of ORDER) {
+      await page.locator(`${TAB}[data-role="${id}"]`).evaluate((tab) => (tab as HTMLElement).click());
+      await expect.poll(() => selectedRole(page)).toBe(id);
+      // The row comes to rest on the card before anything about the row is measured.
+      let rest = -1;
+      await expect
+        .poll(async () => {
+          const now = await row.evaluate((list) => list.scrollLeft);
+          const still = now === rest;
+          rest = now;
+          return still;
+        })
+        .toBe(true);
+      const now = await measure();
+      expect(now.lens, `${id}: the lens is as tall as it was`).toBe(first.lens);
+      expect(now.barsTop, `${id}: the bars have not moved`).toBe(first.barsTop);
+      expect(now.rowTop, `${id}: the row has not moved`).toBe(first.rowTop);
+      expect(now.next, `${id}: the next section has not moved`).toBe(first.next);
+      expect(now.crossed, `${id}: no name stands under the connector`).toBe(0);
+      expect(now.covered, `${id}: the launcher covers no card's name`).toEqual([]);
+      expect(now.peek === 0 || now.peek >= 28, `${id}: the previous card peeks ${now.peek} px`).toBe(true);
+    }
   });
 
   test('a drag along the track moves the playhead and the selection and leaves the page where it was', async ({ page }) => {

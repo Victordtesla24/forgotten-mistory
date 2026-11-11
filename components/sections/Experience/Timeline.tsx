@@ -31,6 +31,11 @@ const WIDE = '(min-width: 640px) and (pointer: fine) and (hover: hover)';
 /** The entrance: the bars draw in date order and the playhead settles on the current role, inside 900 ms. The stylesheet's timings add up to it. */
 const ENTRANCE_MS = 900;
 
+/** Where a card of the row comes to rest from the row's left edge: its scroll padding, which is the gutter, or more where the previous card is to peek. */
+function snapPad(row: HTMLElement): number {
+  return Number.parseFloat(getComputedStyle(row).scrollPaddingLeft) || 0;
+}
+
 /** The longest a row that was moved from code is left alone, so the row's own scroll does not answer it. It is released sooner, when the scroll ends. */
 const ROW_SETTLE_MS = 700;
 
@@ -168,7 +173,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
     // A role's panel that is open names the role (the scroll the first layout set can arrive after a link opened it), and the row is behind it.
     if (!row || window.matchMedia(WIDE).matches || document.querySelector('[data-role-item][data-active]')) return;
     const tabs = Array.from(row.querySelectorAll<HTMLElement>('[role="tab"]'));
-    const pad = Number.parseFloat(getComputedStyle(row).paddingLeft);
+    const pad = snapPad(row);
     const atEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 2;
     let snapped = atEnd ? tabs.length - 1 : 0;
     if (!atEnd) {
@@ -192,7 +197,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
       if (!row || window.matchMedia(WIDE).matches || row.scrollWidth <= row.clientWidth) return;
       const tab = row.querySelector<HTMLElement>(`[data-role="${CSS.escape(id)}"]`);
       if (!tab) return;
-      const left = Math.max(Math.min(tab.offsetLeft - Number.parseFloat(getComputedStyle(row).paddingLeft), row.scrollWidth - row.clientWidth), 0);
+      const left = Math.max(Math.min(tab.offsetLeft - snapPad(row), row.scrollWidth - row.clientWidth), 0);
       if (Math.abs(row.scrollLeft - left) < 1) return;
       rowBusy.current = true;
       // When the move ends the row is let go. A row that is not where the move put it was moved by something else while it ran, and the selection follows it.
@@ -233,7 +238,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
     const row = rowRef.current;
     const tab = row?.querySelector<HTMLElement>(`[data-role="${CSS.escape(selectedRef.current)}"]`);
     if (!row || !tab || window.matchMedia(WIDE).matches) return;
-    row.scrollLeft = Math.max(tab.offsetLeft - Number.parseFloat(getComputedStyle(row).paddingLeft), 0);
+    row.scrollLeft = Math.max(tab.offsetLeft - snapPad(row), 0);
   }, []);
 
   // A role's panel that is open, reached by a link, the address bar or Previous and Next, is the selected role.
@@ -372,12 +377,12 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
             <p className={styles.meta}>
               <span>{role.label}</span>
               <span>{role.years}</span>
-              <span>{role.duration}</span>
+              <span className={styles.duration}>{role.duration}</span>
             </p>
             <h3 className={styles.title}>{role.shortTitle}</h3>
           </div>
           <button type="button" aria-haspopup="dialog" className={styles.open} onClick={(event) => open(role.panel, event.currentTarget)}>
-            Open role
+            <span className={styles.openText}>Open role</span>
             <ArrowRight aria-hidden="true" className={styles.arrow} />
           </button>
           <RoleOutcome role={role} />
@@ -447,12 +452,6 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
             >
               <span aria-hidden="true" className={styles.tabLabel}>
                 {entry.label}
-              </span>
-              <span aria-hidden="true" className={styles.mini}>
-                <span
-                  className={styles.span}
-                  style={{ left: percent(entry.start), width: percent(entry.end - entry.start) } as CSSProperties}
-                />
               </span>
               <span className={styles.said}>
                 {entry.employer}, {entry.shortTitle}, {entry.dates}

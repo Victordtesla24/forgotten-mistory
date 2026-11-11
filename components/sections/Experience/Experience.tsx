@@ -41,7 +41,7 @@ const visuals = Object.fromEntries(roleViews.map((view) => [view.id, <RoleVisual
  */
 export function Experience() {
   return (
-    <section id="experience" aria-labelledby="experience-title" className="pt-[clamp(4rem,6vw,5rem)]">
+    <section id="experience" aria-labelledby="experience-title" className="pt-[clamp(4rem,6vw,5rem)] pb-7">
       <Container as="header" className="mb-4 flex flex-wrap items-baseline gap-x-5 gap-y-1 md:mb-6">
         <p className="type-eyebrow text-muted">Experience</p>
         <h2 id="experience-title">
