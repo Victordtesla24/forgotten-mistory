@@ -13,7 +13,6 @@ const TAB = `${SECTION} [role="tab"]`;
 const PANEL = `${SECTION} [role="tabpanel"]`;
 const TRACK = `${SECTION} [data-timeline]`;
 const BARS = `${TRACK} [data-bar]`;
-const HERO_BARS = '[data-career-scale] [data-drawn] > [data-bar]';
 
 /** The widths acceptance names, and the two between them where the lanes change. */
 const WIDTHS = [320, 360, 390, 640, 834, 1440, 1920] as const;
@@ -65,7 +64,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     test(`the track is as wide as the browser and every bar is where lib/timeline puts it at ${width} px`, async ({ page }) => {
       await openAt(page, '/?gl=off', width);
       const measured = await page.evaluate(
-        ([track, bars, hero]) => {
+        ([track, bars]) => {
           const box = (document.querySelector(track as string) as HTMLElement).getBoundingClientRect();
           const rect = (element: Element) => {
             const { left, right } = element.getBoundingClientRect();
@@ -76,11 +75,9 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
             width: document.documentElement.clientWidth,
             scroll: document.documentElement.scrollWidth,
             bars: Array.from(document.querySelectorAll(bars as string)).map((bar) => ({ id: (bar as HTMLElement).dataset.bar, ...rect(bar) })),
-            hero: Array.from(document.querySelectorAll(hero as string)).map((bar) => ({ id: (bar as HTMLElement).dataset.bar, ...rect(bar) })),
-            heroTrack: rect(document.querySelector('[data-career-scale] [data-drawn]') as Element),
           };
         },
-        [TRACK, BARS, HERO_BARS],
+        [TRACK, BARS],
       );
       expect(measured.track.left).toBeCloseTo(0, 0);
       expect(measured.track.right).toBeCloseTo(measured.width, 0);
@@ -90,9 +87,6 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
         const drawn = measured.bars.find((entry) => entry.id === bar.id);
         expect(drawn?.left, `${bar.id} left`).toBeCloseTo(bar.start * measured.width, 0);
         expect(drawn?.right, `${bar.id} right`).toBeCloseTo(bar.end * measured.width, 0);
-        const hero = measured.hero.find((entry) => entry.id === bar.id);
-        expect(Math.abs((drawn?.left ?? 0) - (hero?.left ?? 99999)), `${bar.id} against the hero's scale`).toBeLessThanOrEqual(1.5);
-        expect(Math.abs((drawn?.right ?? 0) - (hero?.right ?? 99999)), `${bar.id} against the hero's scale`).toBeLessThanOrEqual(1.5);
       }
     });
   }

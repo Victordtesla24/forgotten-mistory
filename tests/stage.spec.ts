@@ -189,8 +189,7 @@ test.describe('without the stage', { tag: '@desktop' }, () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Delivery leader');
     await expect(page.getByRole('link', { name: 'View selected work' })).toBeVisible();
     await expect(page.locator('#proof li')).toHaveCount(3);
-    await expect(page.locator('[data-career-scale] [data-bars] a[data-role]')).toHaveCount(8);
-    await expect(page.locator('[data-stage-view]:not(#experience [data-stage-view])')).toHaveCount(5);
+    await expect(page.locator('[data-stage-view]:not(#experience [data-stage-view])')).toHaveCount(4);
     await expect(page.locator('[data-stage-view][data-ready="true"]')).toHaveCount(0);
   }
 

@@ -1,7 +1,6 @@
 import { expect, test, type Browser, type BrowserContext, type Page } from '@playwright/test';
 import sharp from 'sharp';
 
-import { careerBars } from '@/lib/timeline';
 import { headlineFigures } from '@/content/proof';
 import { cells, cohort, KEY_STRIP, keyOf, points, readingLayout, type ReadingId } from '@/lib/readings';
 
@@ -28,8 +27,6 @@ const DESKTOP: readonly View[] = [
 ];
 const MATRIX: readonly View[] = [...TOUCH, ...DESKTOP];
 
-const SCALE = '[data-career-scale]';
-
 test('the counts the readings draw are the figures of content/proof.ts', { tag: '@desktop' }, () => {
   const count = (id: ReadingId) => headlineFigures.find((figure) => figure.id === id)?.marks.count;
   expect(points.count).toBe(count('telemetry'));
@@ -37,6 +34,7 @@ test('the counts the readings draw are the figures of content/proof.ts', { tag: 
   expect(points.perBlock).toBe(points.side * points.side);
   expect(cells.count).toBe(count('evidence'));
   expect(cells.columns * cells.rows).toBe(cells.count);
+  expect(cells.narrow.columns * cells.narrow.rows, 'and in a narrower tile').toBe(cells.count);
   expect(cohort.count).toBe(count('portfolio'));
   expect(cohort.across * cohort.down, 'one run of marks, no squad drawn').toBe(cohort.count);
 });
@@ -194,9 +192,10 @@ test.describe('every reading keeps its marks countable, at every size and on bot
                 const box = element.getBoundingClientRect();
                 return { text: element.textContent ?? '', size: Number.parseFloat(getComputedStyle(element).fontSize), top: box.top, bottom: box.bottom, height: box.height, clipped: element.scrollWidth > element.clientWidth };
               });
-              const figure = headlineFigures.find((entry) => entry.id === id);
               expect(key.text.startsWith(keyOf(id, id === 'telemetry' ? 'blocks' : undefined)), `${id}: the key says what one mark stands for (${key.text})`).toBe(true);
-              if (view.w >= 1280) expect(key.text.endsWith(figure?.bound ?? ''), `${id}: and the count the figure states beyond what is drawn`).toBe(true);
+              // No number in a card's key is printed again in the card: the figure, its label and its scope say theirs once.
+              const printed = await page.locator(`[data-reading="${id}"][data-place="card"]`).evaluate((tile) => ((tile.parentElement as HTMLElement).innerText ?? '').replace((tile as HTMLElement).innerText ?? '', ''));
+              for (const number of key.text.match(/\d[\d,]*/g) ?? []) expect(new RegExp(`(^|[^\\d,])${number}(?![\\d,])`).test(printed), `${id}: the key's ${number} is not printed again on the card (${printed})`).toBe(false);
               expect(key.size, `${id}: the key is at least 13 px`).toBeGreaterThanOrEqual(13);
               expect(key.clipped, `${id}: the key is whole`).toBe(false);
               expect(Math.abs(key.height - KEY_STRIP), `${id}: the key strip`).toBeLessThanOrEqual(WITHIN);
@@ -206,17 +205,27 @@ test.describe('every reading keeps its marks countable, at every size and on bot
               expect(key.top - lowest, `${id}: the drawing ends above the key strip`).toBeGreaterThanOrEqual(-WITHIN);
             }
 
-            // Evidence: 200 separate cells, each fill a pixel in from its cell, never under two device pixels tall.
+            // Evidence: 200 separate squares, at least 4 CSS px on a side with at least 2 CSS px between, and what is left of the fill exactly its share of the cell.
             const evidenceTile = await tileOf(page, 'evidence');
             const evidence = readingLayout('evidence', { width: evidenceTile.width, height: evidenceTile.height, ratio });
-            expect(evidence.fillWidth, 'a fill is at least one device pixel wide').toBeGreaterThanOrEqual(1);
-            expect(evidence.pitchX - evidence.fillWidth, 'neighbouring fills never touch: their cells, outlines and insets are between').toBeGreaterThanOrEqual(2 * (evidence.outline + evidence.inset));
-            expect(evidence.floor, 'a fill is at least two device pixels tall').toBeGreaterThanOrEqual(2);
-            expect(evidence.room, 'and there is room for it').toBeGreaterThanOrEqual(evidence.floor);
-            const cells = await rectsOf(page, '[data-reading="evidence"][data-place="card"] [class*="Readings_cell__"]');
-            expect(cells, 'all 200 cells').toHaveLength(200);
-            const firstCell = cells[0];
-            const lastCell = cells.at(-1);
+            expect(evidence.columns, 'the arrangement follows the tile').toBe(evidenceTile.width >= cells.wideFrom ? cells.columns : cells.narrow.columns);
+            expect(evidence.columns * evidence.rows, 'every scenario has its cell').toBe(cells.count);
+            expect(evidence.boxX / ratio, 'a cell is at least 4 px wide').toBeGreaterThanOrEqual(cells.least);
+            expect(evidence.boxY / ratio, 'and 4 px tall').toBeGreaterThanOrEqual(cells.least);
+            expect(evidence.gap / ratio, 'with at least 2 px between neighbours').toBeGreaterThanOrEqual(cells.gap);
+            expect(evidence.rested / evidence.room, 'the fill that is left is exactly the share of the cell the CV gives, never rounded up to a pixel').toBeCloseTo(cells.rest, 9);
+            const drawnCells = await rectsOf(page, '[data-reading="evidence"][data-place="card"] [class*="Readings_cell__"]');
+            expect(drawnCells, 'all 200 cells').toHaveLength(200);
+            const firstCell = drawnCells[0];
+            const lastCell = drawnCells.at(-1);
+            const nextAcross = drawnCells[evidence.rows];
+            const nextDown = drawnCells[1];
+            if (firstCell && nextAcross && nextDown) {
+              expect(firstCell.right - firstCell.left, 'the DOM cell is a square of the layout: wide').toBeGreaterThanOrEqual(cells.least - 0.01);
+              expect(firstCell.bottom - firstCell.top, 'and tall').toBeGreaterThanOrEqual(cells.least - 0.01);
+              expect(nextAcross.left - firstCell.right, 'and the next cell across is at least 2 px away').toBeGreaterThanOrEqual(cells.gap - 0.01);
+              expect(nextDown.top - firstCell.bottom, 'and the next one down').toBeGreaterThanOrEqual(cells.gap - 0.01);
+            }
             if (firstCell && lastCell) {
               expect(Math.abs(firstCell.left - evidenceTile.left - evidence.frame.x / ratio), 'first cell left').toBeLessThanOrEqual(WITHIN);
               expect(Math.abs(firstCell.top - evidenceTile.top - evidence.frame.y / ratio), 'first cell top').toBeLessThanOrEqual(WITHIN);
@@ -335,7 +344,7 @@ test.describe('the GL layer draws the layout the DOM draws', { tag: '@desktop' }
         const fills = warmExtent(await glPixels(page, evidenceTile, ratio), evidenceTile, ratio);
         expect(fills, 'the canvas drew the evidence').not.toBeNull();
         if (fills) {
-          const inside = (evidence.outline + evidence.inset) / ratio;
+          const inside = evidence.outline / ratio;
           expect(Math.abs(fills.left - evidence.frame.x / ratio - inside), 'first fill left').toBeLessThanOrEqual(WITHIN);
           expect(Math.abs(fills.right - (evidence.frame.x + evidence.frame.width) / ratio + inside), 'last fill right').toBeLessThanOrEqual(WITHIN);
         }
@@ -506,124 +515,15 @@ test.describe('the enlarged reading in a panel draws every mark, countably, at e
               expect(lattice.right, 'nor at the right').toBeLessThanOrEqual(box.left + box.width + WITHIN);
             }
           } else if (layout.id === 'evidence') {
-            expect(layout.fillWidth).toBeGreaterThanOrEqual(1);
-            expect(layout.pitchX - layout.fillWidth).toBeGreaterThanOrEqual(2 * (layout.outline + layout.inset));
-            expect(layout.floor).toBeGreaterThanOrEqual(2);
+            expect(layout.boxX / ratio, 'a cell is at least 4 px wide').toBeGreaterThanOrEqual(cells.least);
+            expect(layout.gap / ratio, 'with at least 2 px between').toBeGreaterThanOrEqual(cells.gap);
+            expect(layout.rested / layout.room, 'and its fill exactly the share that is left').toBeCloseTo(cells.rest, 9);
           } else {
             expect(layout.pitch - layout.mark).toBeGreaterThanOrEqual(1);
           }
           await page.keyboard.press('Escape');
           await expect(tile, id).toBeHidden();
         }
-      } finally {
-        await context.close();
-      }
-    });
-  }
-});
-
-test.describe('on a phone or a touch tablet the roles are one snapping row, tied to their bars', { tag: '@desktop' }, () => {
-  for (const view of TOUCH) {
-    test(`${view.w} by ${view.h}: one row in axis order, each chip 44 px with 8 px between, and a chip lights its bar and its caption (?gl=off)`, async ({ browser }) => {
-      const { context, page } = await openView(browser, view, 1, '/?gl=off');
-      try {
-        await entranceDone(page);
-        const chips = `${SCALE} [data-chips] a[data-role]`;
-        await expect(page.locator(chips)).toHaveCount(careerBars.length);
-        const boxes = await rectsOf(page, chips);
-        const tops = new Set(boxes.map((box) => Math.round(box.top)));
-        expect(tops.size, 'one row: no wrapped line and no orphan').toBe(1);
-        boxes.forEach((box, index) => {
-          expect(box.right - box.left, `chip ${index} width`).toBeGreaterThanOrEqual(44);
-          expect(box.bottom - box.top, `chip ${index} height`).toBeGreaterThanOrEqual(44);
-          const previous = boxes[index - 1];
-          if (previous) {
-            expect(box.left, 'in the order of the axis, left to right').toBeGreaterThan(previous.left);
-            expect(box.left - previous.right, `chip ${index} gap`).toBeGreaterThanOrEqual(8);
-          }
-        });
-        expect(await page.locator(chips).evaluateAll((links) => links.map((link) => (link as HTMLElement).dataset.role))).toEqual(careerBars.map((bar) => bar.id));
-        const row = await page.locator(`${SCALE} [data-chips]`).evaluate((element) => {
-          const style = getComputedStyle(element);
-          return { snap: style.scrollSnapType, overflowX: style.overflowX, mask: style.maskImage, pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
-        });
-        expect(row.snap, 'it snaps').toContain('x');
-        expect(row.overflowX).toBe('auto');
-        expect(row.mask, 'a fade at the edges shows that the row goes on').not.toBe('none');
-        expect(row.pageOverflow, 'the row never makes the page wider').toBeLessThanOrEqual(0);
-
-        for (const bar of careerBars) {
-          const chip = page.locator(`${chips}[data-role="${bar.id}"]`);
-          await chip.scrollIntoViewIfNeeded();
-          await chip.focus();
-          await expect(page.locator(SCALE), `${bar.id}: focusing a chip sets data-active on the scale`).toHaveAttribute('data-active', bar.id);
-          await entranceDone(page);
-          const lit = await page.evaluate((id) => {
-            const fill = (selector: string) => getComputedStyle(document.querySelector(selector) as Element);
-            const caption = document.querySelector('[data-career-scale] > p') as HTMLElement;
-            const visible = Array.from(caption.children).filter((child) => getComputedStyle(child).display !== 'none') as HTMLElement[];
-            const title = visible[0]?.querySelector<HTMLElement>('[class*="role"]');
-            const line = parseFloat(getComputedStyle(caption).lineHeight);
-            return {
-              border: fill(`[data-career-scale] [data-drawn] [data-bar="${id}"] > span`).borderTopColor,
-              current: fill('[data-career-scale] [data-drawn] [data-current="true"] > span').borderTopColor,
-              background: fill(`[data-career-scale] [data-drawn] [data-bar="${id}"] > span`).backgroundColor,
-              shown: visible.map((child) => child.dataset.mark),
-              text: caption.innerText,
-              lines: Math.round(caption.getBoundingClientRect().height / line),
-              balance: getComputedStyle(caption).getPropertyValue('text-wrap'),
-              titleLines: title ? title.getClientRects().length : 0,
-            };
-          }, bar.id);
-          expect(lit.border, `${bar.id}: its bar takes the current bar's style`).toBe(lit.current);
-          expect(lit.shown, `${bar.id}: the caption names that role`).toEqual([bar.id]);
-          expect(lit.text).toContain(bar.label);
-          expect(lit.text).toContain(bar.shortTitle);
-          expect(lit.text).toContain(bar.dates);
-          expect(lit.lines, `${bar.id}: the caption is at most two lines`).toBeLessThanOrEqual(2);
-          expect(lit.balance, 'balanced').toBe('balance');
-          expect(lit.titleLines, `${bar.id}: a title is never broken`).toBe(1);
-        }
-        await page.evaluate(() => (document.activeElement as HTMLElement).blur());
-        await expect(page.locator(SCALE), 'letting go clears it').not.toHaveAttribute('data-active', /.+/);
-
-        // A press answers before the panel opens.
-        await page.locator(`${chips}[data-role="nab"]`).dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
-        await expect(page.locator(SCALE)).toHaveAttribute('data-active', 'nab');
-      } finally {
-        await context.close();
-      }
-    });
-  }
-});
-
-test.describe('a chip held by a finger is selected', { tag: '@desktop' }, () => {
-  for (const view of [TOUCH[1], TOUCH[2]]) {
-    if (!view) continue;
-    test(`${view.w} by ${view.h}: a held touch on a chip draws its border in the accent`, async ({ browser }) => {
-      const { context, page } = await openView(browser, view, 1, '/?gl=off');
-      try {
-        await entranceDone(page);
-        const chip = page.locator('[data-chips] li:nth-child(2) a');
-        const accent = await page.evaluate(() => {
-          const probe = document.createElement('i');
-          probe.style.border = '1px solid var(--accent)';
-          document.body.append(probe);
-          const colour = getComputedStyle(probe).borderTopColor;
-          probe.remove();
-          return colour;
-        });
-        const before = await chip.evaluate((element) => getComputedStyle(element).borderTopColor);
-        expect(before, 'a chip at rest is not in the accent').not.toBe(accent);
-        const box = await chip.boundingBox();
-        expect(box, 'the chip is on the screen').not.toBeNull();
-        const client = await context.newCDPSession(page);
-        const at = { x: (box?.x ?? 0) + (box?.width ?? 0) / 2, y: (box?.y ?? 0) + (box?.height ?? 0) / 2 };
-        await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [at] });
-        await expect.poll(() => chip.evaluate((element) => getComputedStyle(element).borderTopColor), { message: 'held, the chip is selected' }).toBe(accent);
-        const filled = await chip.evaluate((element) => getComputedStyle(element).backgroundColor);
-        expect(filled, 'and filled').not.toBe('rgba(0, 0, 0, 0)');
-        await client.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
       } finally {
         await context.close();
       }
@@ -663,16 +563,15 @@ test.describe('on a desktop the space round the headline block is deliberate', {
       const line = (await rectsOf(page, '#top h1 + p'))[0];
       const actions = union(await rectsOf(page, '#top a'));
       const cards = union(await rectsOf(page, '#proof ul'));
-      const scale = (await rectsOf(page, SCALE))[0];
-      expect([header, eyebrow, headline, line, scale].every(Boolean)).toBe(true);
-      if (!header || !eyebrow || !headline || !line || !scale) return;
+      expect([header, eyebrow, headline, line].every(Boolean)).toBe(true);
+      if (!header || !eyebrow || !headline || !line) return;
       const gaps: [string, number][] = [
         ['header to eyebrow', eyebrow.top - header.bottom],
         ['eyebrow to headline', headline.top - eyebrow.bottom],
         ['headline to line', line.top - headline.bottom],
         ['line to actions', actions.top - line.bottom],
         ['actions to readings', cards.top - actions.bottom],
-        ['readings to scale', scale.top - cards.bottom],
+        ['readings to the bottom of the screen', DESKTOP[0]?.h ? DESKTOP[0].h - cards.bottom : 0],
       ];
       for (const [name, gap] of gaps) expect(gap, name).toBeGreaterThanOrEqual(12);
     } finally {

@@ -1,12 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import { careerBars } from '@/lib/timeline';
-
 import { entranceDone, hydrated, open } from './support';
 
 const LAUNCHER = '#assistant-launcher';
 const HEADER_BUTTON = '#assistant-header-button';
-const SCALE = '[data-career-scale]';
 
 interface Rect {
   left: number;
@@ -24,11 +21,11 @@ async function rect(page: Page, selector: string): Promise<Rect> {
   });
 }
 
-/** Every text line and control of the hero's three roots that lies over `area` and is not clipped away by a scroller or box round it, named. */
+/** Every text line and control of the hero's two roots that lies over `area` and is not clipped away by a scroller or box round it, named. */
 async function coveredBy(page: Page, area: Rect): Promise<string[]> {
   return page.evaluate((box) => {
     const covered: string[] = [];
-    for (const root of ['#top', '#proof', '[data-career-scale]']) {
+    for (const root of ['#top', '#proof']) {
       for (const element of document.querySelectorAll(`${root}, ${root} *`)) {
         const style = getComputedStyle(element);
         if (style.display === 'none' || style.visibility === 'hidden') continue;
@@ -142,13 +139,15 @@ test.describe('Ask Mini Vic is never out of reach', () => {
       });
     }
 
-    test('the launcher is hidden by the stylesheet, so it never shows on the first paint, and without script it stays hidden', async ({ browser }) => {
-      const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
-      const page = await context.newPage();
-      await page.goto('/');
-      await expect(page.locator(LAUNCHER)).toBeHidden();
-      await expect(page.locator(HEADER_BUTTON)).toBeVisible();
-      await context.close();
+    test('the launcher is hidden by the stylesheet, so it never shows on the first paint, and without script neither control is on the page, since neither can do anything', async ({ browser }) => {
+      for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+        const context = await browser.newContext({ javaScriptEnabled: false, viewport });
+        const page = await context.newPage();
+        await page.goto('/');
+        await expect(page.locator(LAUNCHER)).toBeHidden();
+        await expect(page.locator(HEADER_BUTTON)).toBeHidden();
+        await context.close();
+      }
     });
 
     test('a page without a hero has the floating button from the start', async ({ page }) => {
@@ -157,62 +156,5 @@ test.describe('Ask Mini Vic is never out of reach', () => {
       await hydrated(page);
       await expect(page.locator(LAUNCHER)).toBeVisible();
     });
-  });
-});
-
-test.describe('on a touch screen the chips are the controls, and the bars are only drawn', () => {
-  for (const [width, height] of [
-    [320, 700],
-    [390, 844],
-    [768, 1024],
-    [834, 1112],
-  ] as const) {
-    test(`${width} by ${height}: bars are out of the tab order and no tap target; eight chips of 44 px, 8 px apart, select the role in Experience`, { tag: '@mobile' }, async ({ page }) => {
-      await openAs(page, width, height);
-
-      const bars = page.locator(`${SCALE} [data-bars] a`);
-      await expect(bars).toHaveCount(careerBars.length);
-      for (const bar of await bars.all()) await expect(bar, 'a bar is not rendered as a control').toBeHidden();
-      expect(await page.locator(`${SCALE} [data-drawn]`).getAttribute('aria-hidden'), 'the drawing is presentational').toBe('true');
-
-      const chips = page.locator(`${SCALE} [data-chips] a[data-role]`);
-      await expect(chips).toHaveCount(careerBars.length);
-      const boxes = await chips.evaluateAll((links) =>
-        links.map((link) => {
-          const { left, top, right, width: w, height: h } = link.getBoundingClientRect();
-          return { left, top, right, w, h };
-        }),
-      );
-      boxes.forEach((box, index) => {
-        expect(box.w, `chip ${index} width`).toBeGreaterThanOrEqual(44);
-        expect(box.h, `chip ${index} height`).toBeGreaterThanOrEqual(44);
-        const previous = boxes[index - 1];
-        if (previous) expect(box.left - previous.right, `chip ${index} gap`).toBeGreaterThanOrEqual(8);
-      });
-
-      // Tab reaches no bar, only chips.
-      const reached = new Set<string>();
-      await page.locator('#top a[href="#work"]').focus();
-      for (let press = 0; press < 40; press += 1) {
-        await page.keyboard.press('Tab');
-        const where = await page.evaluate(() => {
-          const active = document.activeElement as HTMLElement | null;
-          return active?.closest('[data-bars]') ? 'bar' : (active?.dataset.role ?? '');
-        });
-        expect(where, 'Tab never lands on a bar').not.toBe('bar');
-        if (where) reached.add(where);
-      }
-
-      const chip = `${SCALE} [data-chips] a[data-role="anz"]`;
-      await page.locator(chip).scrollIntoViewIfNeeded();
-      await page.locator(chip).tap();
-      await expect(page.locator('#experience [role="tab"][data-role="anz"]')).toHaveAttribute('aria-selected', 'true');
-    });
-  }
-
-  test('with a mouse and room, the bars are the controls and there are no chips', { tag: '@desktop' }, async ({ page }) => {
-    await openAs(page, 1440, 900);
-    await expect(page.locator(`${SCALE} [data-bars] a`).first()).toBeVisible();
-    await expect(page.locator(`${SCALE} [data-chips]`)).toBeHidden();
   });
 });

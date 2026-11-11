@@ -2,7 +2,7 @@ import { expect, test, type Browser, type BrowserContext, type Page } from '@pla
 
 import { entranceDone, open } from './support';
 
-/** The floor under the first screen: how tall the empty band between the header and the fold may be. */
+/** How tall the empty band between two blocks of the hero may be, and the one above the first block and under the last where the hero is the whole screen. */
 const BAND = 96;
 
 interface View {
@@ -35,17 +35,18 @@ async function openView(
 }
 
 interface Geometry {
-  /** The widest empty band between the header and the fold, from the words, controls and cards of the hero that are on the first screen. */
+  /** The widest empty band between two blocks of the hero, from the words, controls and cards of it that are on the first screen. */
   widest: number;
+  /** The band between the header and the first of them, and the one between the last and the fold. */
+  above: number;
+  below: number;
   /** What the round button's rectangle covers: the words, controls and cards that are on the first screen (not clipped away) and meet it. */
   covered: string[];
   button: boolean;
   firstCardTop: number;
   fold: number;
-  scaleBottom: number;
-  axisBottom: number;
-  numeralBottom: number;
-  barsTop: number;
+  /** The bottom of the readings. */
+  readingsBottom: number;
 }
 
 /** What the first screen holds, measured the way a reader sees it: boxes clipped by the scrollers and the screen they stand in. */
@@ -77,7 +78,7 @@ function geometry(page: Page): Promise<Geometry> {
       return right - left > 1 && bottom - top > 1 ? { top, bottom, left, right, what } : null;
     };
     const boxes: Box[] = [];
-    for (const root of [document.getElementById('top'), document.getElementById('proof'), document.querySelector('[data-career-scale]')]) {
+    for (const root of [document.getElementById('top'), document.getElementById('proof')]) {
       if (!root) continue;
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
       for (let node = walker.nextNode(); node; node = walker.nextNode()) {
@@ -85,7 +86,7 @@ function geometry(page: Page): Promise<Geometry> {
         if (!element || !node.nodeValue?.trim()) continue;
         const style = getComputedStyle(element);
         if (style.display === 'none' || style.visibility !== 'visible' || element.closest('.sr-only')) continue;
-        if (element.closest('[aria-hidden="true"]') && !element.closest('[data-ruler]')) continue;
+        if (element.closest('[aria-hidden="true"]')) continue;
         const range = document.createRange();
         range.selectNodeContents(node);
         for (const rect of range.getClientRects()) {
@@ -109,29 +110,26 @@ function geometry(page: Page): Promise<Geometry> {
     shown.sort((a, b) => a.top - b.top);
     let edge = header;
     let widest = 0;
+    let above = -1;
     for (const box of shown) {
-      widest = Math.max(widest, box.top - edge);
+      if (above < 0) above = box.top - header;
+      else widest = Math.max(widest, box.top - edge);
       edge = Math.max(edge, box.bottom);
     }
-    widest = Math.max(widest, fold - edge);
+    const below = fold - edge;
     const launcher = document.querySelector('#assistant-launcher')?.getBoundingClientRect();
     const covered = launcher
       ? shown.filter((box) => Math.min(box.right, launcher.right) - Math.max(box.left, launcher.left) > 1 && Math.min(box.bottom, launcher.bottom) - Math.max(box.top, launcher.top) > 1).map((box) => box.what)
       : [];
-    const scale = document.querySelector('[data-career-scale]')?.getBoundingClientRect();
-    const ruler = document.querySelector('[data-career-scale] [data-ruler]')?.getBoundingClientRect();
-    const numerals = Array.from(document.querySelectorAll('[data-career-scale] [data-ruler] span'), (span) => span.getBoundingClientRect().bottom);
-    const bars = document.querySelector('[data-career-scale] [data-drawn]')?.getBoundingClientRect();
     return {
       widest,
+      above,
+      below,
       covered,
       button: Boolean(launcher && getComputedStyle(document.querySelector('#assistant-launcher') as Element).display !== 'none'),
       firstCardTop: cards[0]?.top ?? Number.POSITIVE_INFINITY,
       fold,
-      scaleBottom: scale?.bottom ?? 0,
-      axisBottom: ruler?.bottom ?? 0,
-      numeralBottom: Math.max(...numerals.filter((bottom) => bottom > 0)),
-      barsTop: bars?.top ?? 0,
+      readingsBottom: Math.max(...cards.map((card) => card.bottom)),
     };
   });
 }
@@ -142,14 +140,12 @@ test.describe('a phone is composed to its fold', { tag: '@desktop' }, () => {
     [412, 915],
     [430, 932],
   ] as const) {
-    test(`${w} by ${h}: the readings and the whole axis are above the fold, no band over ${BAND} px, and the button covers nothing`, async ({ browser }) => {
+    test(`${w} by ${h}: the actions and the readings are above the fold, no band over ${BAND} px between blocks, and the button covers nothing`, async ({ browser }) => {
       const { context, page } = await openView(browser, { w, h, touch: true }, '/?gl=off');
       try {
         const found = await geometry(page);
-        expect(found.widest, 'the widest empty band between the header and the fold').toBeLessThanOrEqual(BAND);
-        expect(found.axisBottom, 'the ruler (bars and ticks) is above the fold').toBeLessThanOrEqual(found.fold);
-        expect(found.numeralBottom, 'and so are the numerals').toBeLessThanOrEqual(found.fold);
-        expect(found.scaleBottom, 'the scale ends on the screen').toBeLessThanOrEqual(found.fold);
+        expect(found.widest, 'the widest empty band between two blocks of the hero').toBeLessThanOrEqual(BAND);
+        expect(found.readingsBottom, 'the readings end above the fold').toBeLessThanOrEqual(found.fold);
         expect(found.button, 'the launcher is there').toBe(true);
         expect(found.covered, 'and covers no word, control or card').toEqual([]);
       } finally {
@@ -164,11 +160,11 @@ test.describe('a phone is composed to its fold', { tag: '@desktop' }, () => {
     [375, 667],
     [412, 719],
   ] as const) {
-    test(`${w} by ${h}: a reading card is above the fold, no band over ${BAND} px, and the corner stays free`, async ({ browser }) => {
+    test(`${w} by ${h}: a reading card is above the fold, no band over ${BAND} px between blocks, and the corner stays free`, async ({ browser }) => {
       const { context, page } = await openView(browser, { w, h, touch: true }, '/?gl=off');
       try {
         const found = await geometry(page);
-        expect(found.widest, 'the widest empty band between the header and the fold').toBeLessThanOrEqual(BAND);
+        expect(found.widest, 'the widest empty band between two blocks of the hero').toBeLessThanOrEqual(BAND);
         expect(found.firstCardTop, 'the top of the first reading card is on the screen').toBeLessThanOrEqual(found.fold - 24);
         expect(found.button, 'the launcher is there').toBe(true);
         expect(found.covered, 'and covers no word, control or card').toEqual([]);
@@ -183,18 +179,48 @@ test.describe('a screen from 1024 px is one screen, with a mouse, a finger or no
   const cases: readonly (View & { javaScript?: boolean })[] = [
     { w: 1440, h: 900, touch: false },
     { w: 1280, h: 720, touch: false },
+    { w: 1366, h: 768, touch: false },
+    { w: 1920, h: 1080, touch: false },
     { w: 1440, h: 900, touch: false, javaScript: false },
     { w: 1280, h: 720, touch: false, javaScript: false },
     { w: 1024, h: 768, touch: true },
     { w: 1180, h: 820, touch: true },
   ];
   for (const view of cases) {
-    test(`${view.w} by ${view.h}${view.touch ? ' with a finger' : ''}${view.javaScript === false ? ' without JavaScript' : ''}: the scale ends on the bottom of the screen and no band is over ${BAND} px`, async ({ browser }) => {
+    test(`${view.w} by ${view.h}${view.touch ? ' with a finger' : ''}${view.javaScript === false ? ' without JavaScript' : ''}: the hero is the whole screen and no band is over ${BAND} px, above it, between its blocks or under it`, async ({ browser }) => {
       const { context, page } = await openView(browser, view, '/?gl=off', { javaScript: view.javaScript });
       try {
         const found = await geometry(page);
-        expect(Math.abs(found.scaleBottom - found.fold), 'the bottom of the scale is the bottom of the screen').toBeLessThanOrEqual(1);
-        expect(found.widest, 'the widest empty band between the header and the fold').toBeLessThanOrEqual(BAND);
+        expect(found.above, 'the band between the header and the eyebrow').toBeLessThanOrEqual(BAND);
+        expect(found.widest, 'the widest empty band between two blocks of the hero').toBeLessThanOrEqual(BAND);
+        expect(found.below, 'the band between the readings and the fold').toBeLessThanOrEqual(BAND);
+      } finally {
+        await context.close();
+      }
+    });
+  }
+});
+
+test.describe('a tablet in portrait is a column: the readings follow the actions closely', { tag: '@desktop' }, () => {
+  for (const [w, h] of [
+    [768, 1024],
+    [834, 1112],
+    [1024, 1366],
+  ] as const) {
+    test(`${w} by ${h} with a finger: no band over ${BAND} px between blocks, and the space under the actions is at most one and a half times the space above the eyebrow`, async ({ browser }) => {
+      const { context, page } = await openView(browser, { w, h, touch: true }, '/?gl=off');
+      try {
+        const found = await geometry(page);
+        expect(found.widest, 'the widest empty band between two blocks of the hero').toBeLessThanOrEqual(BAND);
+        const gaps = await page.evaluate(() => {
+          const header = document.querySelector('header')?.getBoundingClientRect().bottom ?? 0;
+          const eyebrow = document.querySelector('#top p')?.getBoundingClientRect().top ?? 0;
+          const actions = document.querySelector('#top a[href="#work"]')?.parentElement?.getBoundingClientRect().bottom ?? 0;
+          const readings = document.querySelector('#proof li')?.getBoundingClientRect().top ?? 0;
+          return { above: eyebrow - header, between: readings - actions };
+        });
+        expect(gaps.between, `the space under the actions (${gaps.between}) against the space above the eyebrow (${gaps.above})`).toBeLessThanOrEqual(Math.max(1.5 * gaps.above, 24));
+        expect(gaps.between).toBeLessThanOrEqual(220);
       } finally {
         await context.close();
       }

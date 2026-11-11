@@ -1,8 +1,6 @@
 import { expect, test, type Browser, type BrowserContext, type Page } from '@playwright/test';
 import sharp from 'sharp';
 
-import { entrance } from '@/lib/entrance';
-
 import { entranceDone, open } from './support';
 
 interface View {
@@ -73,6 +71,8 @@ const luma = (shot: Shot, x: number, y: number): number => {
 /** How much a pixel stands out from the pixels three to its left and right (a vertical line) or above and below (a horizontal one). */
 const standsOutAcross = (shot: Shot, x: number, y: number): number => Math.abs(luma(shot, x, y) - (luma(shot, x - 3, y) + luma(shot, x + 3, y)) / 2);
 const standsOutDown = (shot: Shot, x: number, y: number): number => Math.abs(luma(shot, x, y) - (luma(shot, x, y - 3) + luma(shot, x, y + 3)) / 2);
+/** How much a pixel stands out from the pixel directly above and below it: a one-pixel horizontal line, and nothing wider. */
+const standsOutFromRowsBeside = (shot: Shot, x: number, y: number): number => Math.abs(luma(shot, x, y) - (luma(shot, x, y - 1) + luma(shot, x, y + 1)) / 2);
 
 interface Rect {
   left: number;
@@ -106,74 +106,109 @@ const headlineBlock = (page: Page): Promise<Rect> =>
     };
   });
 
-const unit = (value: number): number => Math.min(Math.max(value, 0), 1);
+test.describe('the field leads into the timeline below it', { tag: '@desktop' }, () => {
+  /** The mean luminance of the same region of the 1440 by 900 hero on the build before this one (8dc3a332): 24.14 of 255. */
+  const BEFORE = 24.14;
+  const views: readonly View[] = [
+    { w: 1280, h: 720, touch: false },
+    { w: 1440, h: 900, touch: false },
+    { w: 1920, h: 1080, touch: false },
+  ];
 
-/** The WCAG relative luminance of an sRGB colour. */
-const relative = ([r, g, b]: readonly number[]): number => {
-  const channel = (value: number): number => {
-    const v = value / 255;
-    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-  };
-  return 0.2126 * channel(r ?? 0) + 0.7152 * channel(g ?? 0) + 0.0722 * channel(b ?? 0);
-};
-
-test.describe('the career scale lights only behind its front', { tag: '@desktop' }, () => {
-  test('1440 by 900: nothing is lit ahead of the front at 150, 450, 750 and 900 ms, the 2026 numeral keeps its contrast at 1050 ms, and 1200 ms is the settled frame', async ({ browser }) => {
+  test('1440 by 900: the right third is at least twice as bright as it was, and the stage has stopped drawing', async ({ browser }) => {
     const { context, page } = await openView(browser, { w: 1440, h: 900, touch: false }, 'dark');
     try {
-      await entranceDone(page);
-      const track = await page.evaluate(() => {
-        const bars = (document.querySelector('[data-career-scale] [data-drawn]') as HTMLElement).getBoundingClientRect();
-        const ruler = (document.querySelector('[data-career-scale] [data-ruler]') as HTMLElement).getBoundingClientRect();
-        const last = Array.from(document.querySelectorAll('[data-career-scale] [data-ruler] span')).filter((span) => span.textContent === '2026')[0] as HTMLElement;
-        const box = last.getBoundingClientRect();
-        const [r = 0, g = 0, b = 0] = (getComputedStyle(last).color.match(/\d+/g) ?? []).map(Number);
-        return { top: bars.top, bottom: ruler.bottom, numeral: { left: box.left, top: box.top, right: box.right, bottom: box.bottom }, colour: [r, g, b] };
-      });
-      const frontAt = (ms: number): number => unit((ms - entrance.scale.at) / (entrance.scale.for * 0.75)) * 1440;
-      await seek(page, 0);
-      const before = await canvasOnly(page);
-      for (const ms of [150, 450, 750, 900]) {
-        await seek(page, ms);
-        const frame = await canvasOnly(page);
-        const front = frontAt(ms);
-        let worst = 0;
-        for (let y = Math.floor(track.top); y < Math.ceil(track.bottom); y += 1) {
-          for (let x = Math.ceil(front) + 8; x < 1440; x += 1) {
-            const [r, g, b] = pixel(frame, x, y);
-            const [r0, g0, b0] = pixel(before, x, y);
-            worst = Math.max(worst, Math.abs(r - r0), Math.abs(g - g0), Math.abs(b - b0));
-          }
-        }
-        expect(worst, `at ${ms} ms nothing to the right of the front (x ${Math.round(front)}) is lit`).toBeLessThanOrEqual(12);
-      }
-
-      await seek(page, 1050);
-      const flare = await canvasOnly(page);
-      let lightest = 0;
-      for (let y = Math.floor(track.numeral.top) - 2; y < Math.ceil(track.numeral.bottom) + 2; y += 1) {
-        for (let x = Math.floor(track.numeral.left) - 2; x < Math.ceil(track.numeral.right) + 2; x += 1) lightest = Math.max(lightest, relative(pixel(flare, x, y)));
-      }
-      const contrast = (relative(track.colour) + 0.05) / (lightest + 0.05);
-      expect(contrast, 'the 2026 numeral on the lightest the canvas is behind it').toBeGreaterThanOrEqual(4.5);
-
-      await seek(page, entrance.scale.at + entrance.scale.for);
-      const end = await canvasOnly(page);
       await seek(page, 10_000);
-      const settled = await canvasOnly(page);
-      let differs = 0;
-      for (let y = Math.floor(track.top); y < Math.ceil(track.bottom); y += 1) {
-        for (let x = 0; x < 1440; x += 1) {
-          const [r, g, b] = pixel(end, x, y);
-          const [r0, g0, b0] = pixel(settled, x, y);
-          differs = Math.max(differs, Math.abs(r - r0), Math.abs(g - g0), Math.abs(b - b0));
+      await entranceDone(page);
+      const shot = await sharp(await page.screenshot()).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+      let total = 0;
+      let count = 0;
+      for (let y = 100; y < 520; y += 1) {
+        for (let x = 960; x < 1440; x += 1) {
+          const at = (y * shot.info.width + x) * 3;
+          total += 0.2126 * (shot.data[at] ?? 0) + 0.7152 * (shot.data[at + 1] ?? 0) + 0.0722 * (shot.data[at + 2] ?? 0);
+          count += 1;
         }
       }
-      expect(differs, 'the frame at the end of the scale is the settled frame').toBeLessThanOrEqual(2);
+      expect(total / count, 'mean luminance of x 960 to 1440, y 100 to 520').toBeGreaterThanOrEqual(2 * BEFORE);
+      const frames = (): Promise<number> => page.evaluate(() => Number(document.querySelector('canvas')?.getAttribute('data-frames') ?? 0));
+      await page.waitForTimeout(1200);
+      const first = await frames();
+      await page.waitForTimeout(2500);
+      expect(await frames(), 'no frame is drawn once the field has settled').toBe(first);
     } finally {
       await context.close();
     }
   });
+
+  for (const view of views) {
+    test(`${view.w} by ${view.h}: one lit line falls to the bottom of the hero on the x of the Experience timeline's now edge`, async ({ browser }) => {
+      const { context, page } = await openView(browser, view, 'dark');
+      try {
+        await seek(page, 10_000);
+        await entranceDone(page);
+        const now = await page.evaluate(() => {
+          const { left, right } = (document.querySelector('#experience [data-now]') as HTMLElement).getBoundingClientRect();
+          return { left, right, middle: (left + right) / 2 };
+        });
+        const hero = await rect(page, '[data-stage-view="hero-field"]');
+        const shot = await canvasOnly(page);
+        // The brightest column of the last 80 rows above the hero's bottom edge, over the columns within 12 px of the edge.
+        const bottom = Math.min(Math.floor(hero.bottom), view.h) - 2;
+        const columns: number[] = [];
+        for (let x = view.w - 12; x < view.w; x += 1) {
+          let total = 0;
+          for (let y = bottom - 80; y < bottom; y += 1) total += luma(shot, x, y);
+          columns.push(total / 80);
+        }
+        const brightest = view.w - 12 + columns.indexOf(Math.max(...columns));
+        expect(Math.abs(brightest + 0.5 - now.middle), `the lit column is x ${brightest}; the now edge is at ${now.left} to ${now.right}`).toBeLessThanOrEqual(2);
+        const beside = luma(shot, view.w - 10, bottom - 40);
+        expect(luma(shot, brightest, bottom - 40) - beside, 'the line stands out from the dark beside it').toBeGreaterThanOrEqual(20);
+        // It is one line from the field to the edge: lit on most rows of the 300 above the bottom, and in no other column.
+        let lit = 0;
+        for (let y = bottom - 300; y < bottom; y += 1) if (luma(shot, brightest, y) - luma(shot, view.w - 10, y) > 8) lit += 1;
+        expect(lit / 300, 'the share of the rows above the edge on which the line is lit').toBeGreaterThanOrEqual(0.8);
+      } finally {
+        await context.close();
+      }
+    });
+  }
+});
+
+test.describe('the lanes stand beside the headline block from 1024 px, never under its words', { tag: '@desktop' }, () => {
+  for (const view of [
+    { w: 1024, h: 768, touch: false },
+    { w: 1100, h: 800, touch: false },
+  ] as const) {
+    test(`${view.w} by ${view.h}: lanes are drawn right of the block and none stands in it`, async ({ browser }) => {
+      const { context, page } = await openView(browser, view, 'dark');
+      try {
+        await seek(page, 10_000);
+        await entranceDone(page);
+        const block = await headlineBlock(page);
+        const cards = await rect(page, '#proof li');
+        const header = await rect(page, 'header');
+        const shot = await canvasOnly(page);
+        let rows = 0;
+        for (let y = Math.ceil(header.bottom) + 6; y < Math.floor(cards.top) - 24; y += 1) {
+          let total = 0;
+          for (let x = view.w - 100; x < view.w - 12; x += 1) total += standsOutDown(shot, x, y);
+          if (total / 88 > 8) rows += 1;
+        }
+        expect(rows, 'lane rows right of the block').toBeGreaterThanOrEqual(3);
+        let inside = 0;
+        for (let y = Math.floor(block.top); y < Math.ceil(block.bottom); y += 1) {
+          for (let x = Math.floor(block.left); x < Math.ceil(block.right); x += 1) {
+            if (standsOutDown(shot, x, y) > 10 || standsOutAcross(shot, x, y) > 10) inside += 1;
+          }
+        }
+        expect(inside, 'lane pixels inside the headline block').toBeLessThanOrEqual(2);
+      } finally {
+        await context.close();
+      }
+    });
+  }
 });
 
 test.describe('the field is one plane that fades in, with exact lanes and ticks and nothing left over', { tag: '@desktop' }, () => {
@@ -191,7 +226,6 @@ test.describe('the field is one plane that fades in, with exact lanes and ticks 
           await entranceDone(page);
           const block = await headlineBlock(page);
           const cards = await rect(page, '#proof li');
-          const scale = await rect(page, '[data-career-scale]');
           const header = await rect(page, 'header');
           const shot = await canvasOnly(page);
 
@@ -199,11 +233,25 @@ test.describe('the field is one plane that fades in, with exact lanes and ticks 
           const top = Math.ceil(header.bottom) + 6;
           const bottom = Math.floor(cards.top) - 24;
           const reach = { from: view.w - 160, to: view.w - 12 };
+          const from3 = new Map<number, number>();
+          const from1 = new Map<number, number>();
+          for (let y = top - 3; y < bottom + 3; y += 1) {
+            let three = 0;
+            let one = 0;
+            for (let x = reach.from; x < reach.to; x += 1) {
+              three += standsOutDown(shot, x, y);
+              one += standsOutFromRowsBeside(shot, x, y);
+            }
+            from3.set(y, three / (reach.to - reach.from));
+            from1.set(y, one / (reach.to - reach.from));
+          }
+          // A lane is one row of pixels: it stands out from the rows three above and below it, and from the rows directly beside it by nearly as much. The rows round a lane
+          // stand out only from three away, and a row between two lanes six apart stands out from both of them; neither is a lane.
           const rows: number[] = [];
           for (let y = top; y < bottom; y += 1) {
-            let total = 0;
-            for (let x = reach.from; x < reach.to; x += 1) total += standsOutDown(shot, x, y);
-            if (total / (reach.to - reach.from) > 12) rows.push(y);
+            const far = from3.get(y) ?? 0;
+            const near = from1.get(y) ?? 0;
+            if (far > 12 && near >= 0.7 * far && [-1, 1].every((step) => near >= (from1.get(y + step) ?? 0))) rows.push(y);
           }
           expect(rows.length, 'the plane has lanes').toBeGreaterThanOrEqual(5);
 
@@ -217,10 +265,13 @@ test.describe('the field is one plane that fades in, with exact lanes and ticks 
             for (let step = -4; step <= 4; step += 1) sum += envelope[Math.min(Math.max(x + step, 0), view.w - 1)] ?? 0;
             return sum / 9;
           });
+          // The film grain over the canvas is the floor under the lanes: its level in the gutter left of the block is taken off.
+          const gutter = smooth.slice(8, Math.max(Math.floor(block.left) - 8, 9)).sort((a, b) => a - b);
+          const floor = gutter[Math.floor(gutter.length / 2)] ?? 0;
           // Full strength is the plateau between the ramp and the field's own fade at the right edge of the screen.
-          const peak = Math.max(...smooth.slice(Math.floor(block.right), view.w - Math.round(view.w * 0.1)));
-          const from = smooth.findIndex((value) => value >= 0.05 * peak);
-          const to = smooth.findIndex((value) => value >= 0.95 * peak);
+          const peak = Math.max(...smooth.slice(Math.floor(block.right), view.w - Math.round(view.w * 0.1))) - floor;
+          const from = smooth.findIndex((value) => value - floor >= 0.05 * peak);
+          const to = smooth.findIndex((value) => value - floor >= 0.95 * peak);
           expect(to - from, `the lanes ramp from x ${from} to x ${to}`).toBeGreaterThanOrEqual(64);
           expect(from, 'and begin clear of the headline block').toBeGreaterThanOrEqual(Math.floor(block.right));
           let steepest = 0;
@@ -254,7 +305,19 @@ test.describe('the field is one plane that fades in, with exact lanes and ticks 
           expect(ticks, 'ticks were found').toBeGreaterThan(50);
           expect(leaning, `ticks that lean (of ${ticks} pixels)`).toBeLessThanOrEqual(2);
 
-          // 4. Nothing of the field is left in the left gutter, under the headline block, or in the strip beside the readings.
+          // 4. Above the farthest lane there is only glow: no hairline floats over the field. At nine tenths of the plane's width, averaged over 41 px,
+          // no row differs from the next by more than 4 of 255.
+          const centre = Math.round(from + 0.9 * (view.w - from));
+          const meanRow = (y: number): number => {
+            let total = 0;
+            for (let x = centre - 20; x <= centre + 20; x += 1) total += luma(shot, x, y);
+            return total / 41;
+          };
+          let step = 0;
+          for (let y = Math.ceil(header.bottom) + 6; y < (rows[0] ?? 0) - 2; y += 1) step = Math.max(step, Math.abs(meanRow(y + 1) - meanRow(y)));
+          expect(step, 'the largest step between neighbouring rows above the farthest lane').toBeLessThanOrEqual(4);
+
+          // 5. Nothing of the field is left in the left gutter, under the headline block, or in the strip beside the readings.
           const scraps = (area: { x0: number; x1: number; y0: number; y1: number }): number => {
             let found = 0;
             for (let y = Math.floor(area.y0); y < Math.ceil(area.y1); y += 1) {
@@ -264,72 +327,16 @@ test.describe('the field is one plane that fades in, with exact lanes and ticks 
             }
             return found;
           };
-          expect(scraps({ x0: 4, x1: block.left - 6, y0: header.bottom + 6, y1: scale.top - 6 }), 'lines in the left gutter').toBeLessThanOrEqual(2);
+          expect(scraps({ x0: 4, x1: block.left - 6, y0: header.bottom + 6, y1: cards.bottom }), 'lines in the left gutter').toBeLessThanOrEqual(2);
           expect(scraps({ x0: 4, x1: block.right, y0: block.bottom + 6, y1: cards.top - 6 }), 'lines between the headline block and the readings').toBeLessThanOrEqual(2);
           const row = await page.evaluate(() => Array.from(document.querySelectorAll('#proof li'), (card) => card.getBoundingClientRect().right));
-          expect(scraps({ x0: Math.max(...row) + 6, x1: view.w - 4, y0: cards.top - 10, y1: scale.top - 6 }), 'lines beside the readings').toBeLessThanOrEqual(2);
+          // The strip within 16 px of the edge is the one lit line that falls to the timeline below, and its halo.
+          expect(scraps({ x0: Math.max(...row) + 6, x1: view.w - 16, y0: cards.top - 10, y1: cards.bottom }), 'lines beside the readings').toBeLessThanOrEqual(2);
         } finally {
           await context.close();
         }
       });
     }
-  }
-});
-
-test.describe('the field and the scale keep clear of the scale’s words', { tag: '@desktop' }, () => {
-  const cases: readonly { view: View; scheme: Scheme }[] = [
-    { view: { w: 834, h: 1112, touch: true }, scheme: 'light' },
-    { view: { w: 834, h: 1112, touch: true }, scheme: 'dark' },
-    { view: { w: 768, h: 1024, touch: true }, scheme: 'dark' },
-    { view: { w: 1280, h: 720, touch: false }, scheme: 'dark' },
-    { view: { w: 1366, h: 768, touch: false }, scheme: 'light' },
-  ];
-  for (const { view, scheme } of cases) {
-    test(`${view.w} by ${view.h}, ${scheme}: no light of the canvas within 6 px of the caption or a name above the bars`, async ({ browser }) => {
-      const { context, page } = await openView(browser, view, scheme);
-      try {
-        await seek(page, 10_000);
-        await entranceDone(page);
-        const words = await page.evaluate(() => {
-          const found: { left: number; top: number; right: number; bottom: number; what: string }[] = [];
-          const roots = Array.from(document.querySelectorAll('[data-career-scale] > p, [data-career-scale] [data-fit]')).filter((element) => {
-            const style = getComputedStyle(element);
-            return style.display !== 'none' && style.visibility === 'visible';
-          });
-          for (const root of roots) {
-            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-            for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-              const element = node.parentElement;
-              if (!element || !node.nodeValue?.trim()) continue;
-              const style = getComputedStyle(element);
-              if (style.display === 'none' || element.closest('[data-bar] > span:first-child')) continue;
-              const range = document.createRange();
-              range.selectNodeContents(node);
-              for (const box of range.getClientRects()) {
-                if (box.width > 1 && box.height > 1 && box.top > 0 && box.bottom < innerHeight) found.push({ left: box.left, top: box.top, right: box.right, bottom: box.bottom, what: node.nodeValue.trim().slice(0, 24) });
-              }
-            }
-          }
-          return found;
-        });
-        const names = words.filter((word) => word.top < 4000);
-        expect(names.length, 'the scale has words above its bars').toBeGreaterThan(0);
-        const shot = await canvasOnly(page);
-        for (const word of names) {
-          const box = { x0: Math.floor(word.left) - 6, x1: Math.ceil(word.right) + 6, y0: Math.floor(word.top) - 6, y1: Math.ceil(word.bottom) + 6 };
-          const samples: [number, number, number][] = [];
-          for (let y = box.y0; y < box.y1; y += 1) for (let x = box.x0; x < box.x1; x += 1) samples.push(pixel(shot, x, y));
-          const median = [0, 1, 2].map((channel) => {
-            const sorted = samples.map((sample) => sample[channel] ?? 0).sort((a, b) => a - b);
-            return sorted[Math.floor(sorted.length / 2)] ?? 0;
-          });
-          const off = Math.max(...samples.map((sample) => Math.max(...sample.map((value, channel) => Math.abs(value - (median[channel] ?? 0))))));
-          expect(off, `the canvas round "${word.what}" is flat: its worst pixel is ${off} levels from the rest`).toBeLessThanOrEqual(6);
-        }
-      } finally {
-        await context.close();
-      }
-    });
   }
 });
 
