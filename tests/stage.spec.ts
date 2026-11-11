@@ -10,6 +10,9 @@ import { duration, ease } from '@/lib/motion';
 
 import { open, watchConsole } from './support';
 
+/** The dialog that holds the three headline figures' panels, one of the two in the hero. */
+const FIGURES_DIALOG = 'dialog[data-detail]:has(#figure-evidence)';
+
 /** Initial JavaScript of the home route before the stage, in bytes gzipped (origin/main, 2026-11-10). */
 const PRE_STAGE_INITIAL_GZIP = 237_013;
 
@@ -182,7 +185,7 @@ test.describe('without the stage', { tag: '@desktop' }, () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Delivery leader');
     await expect(page.getByRole('link', { name: 'View selected work' })).toBeVisible();
     await expect(page.locator('#proof li')).toHaveCount(3);
-    await expect(page.locator('[data-career-scale] a[data-role]')).toHaveCount(8);
+    await expect(page.locator('[data-career-scale] [data-bars] a[data-role]')).toHaveCount(8);
     await expect(page.locator('[data-stage-view]')).toHaveCount(5);
     await expect(page.locator('[data-stage-view][data-ready="true"]')).toHaveCount(0);
   }
@@ -273,7 +276,7 @@ test.describe('the detail panel', () => {
     page,
   }) => {
     await open(page, '/?gl=off');
-    const dialog = page.locator('#proof dialog[data-detail]');
+    const dialog = page.locator(FIGURES_DIALOG);
     await expect(dialog).toBeHidden();
 
     await page.locator(trigger).focus();
@@ -304,7 +307,7 @@ test.describe('the detail panel', () => {
 
   test('closes with the close button and with the browser back button', async ({ page }) => {
     await open(page, '/?gl=off');
-    const dialog = page.locator('#proof dialog[data-detail]');
+    const dialog = page.locator(FIGURES_DIALOG);
     await page.locator(trigger).click();
     await expect(dialog).toBeVisible();
     await dialog.getByRole('button', { name: 'Close' }).click();
@@ -320,7 +323,7 @@ test.describe('the detail panel', () => {
 
   test('moves to the previous and next panel without closing', async ({ page }) => {
     await open(page, '/?gl=off');
-    const dialog = page.locator('#proof dialog[data-detail]');
+    const dialog = page.locator(FIGURES_DIALOG);
     await page.locator(trigger).click();
     await expect(dialog).toBeVisible();
     await dialog.getByRole('button', { name: 'Next' }).click();
@@ -339,7 +342,7 @@ test.describe('the detail panel', () => {
 
   test('can be linked to by its fragment', async ({ page }) => {
     await page.goto('/?gl=off#figure-telemetry');
-    const dialog = page.locator('#proof dialog[data-detail]');
+    const dialog = page.locator(FIGURES_DIALOG);
     await expect(dialog).toBeVisible();
     await expect(dialog.getByRole('heading', { name: 'concurrent devices' })).toBeVisible();
     await expect(dialog.getByText('P95 latency to under 200 ms')).toBeVisible();
@@ -353,7 +356,7 @@ test.describe('the detail panel', () => {
       await expect(page.locator(`#${id}`)).toBeVisible();
     }
     await expect(page.locator('#figure-evidence')).toContainText('COBOL/mainframe test-evidence automation');
-    await expect(page.locator('#proof dialog [aria-label="Close"]')).toBeHidden();
+    await expect(page.locator(`${FIGURES_DIALOG} [aria-label="Close"]`)).toBeHidden();
     await context.close();
   });
 
@@ -361,7 +364,7 @@ test.describe('the detail panel', () => {
     const problems = watchConsole(page);
     await open(page, '/?gl=off');
     await page.locator(trigger).click();
-    const dialog = page.locator('#proof dialog[data-detail]');
+    const dialog = page.locator(FIGURES_DIALOG);
     await expect(dialog).toBeVisible();
     await expect(page.locator('html')).not.toHaveAttribute('data-vt', 'detail');
     const { violations } = await new AxeBuilder({ page }).analyze();
@@ -378,7 +381,7 @@ test.describe('the detail panel', () => {
   test('is a bottom sheet on a phone', { tag: '@mobile' }, async ({ page }) => {
     await open(page, '/?gl=off');
     await page.locator(trigger).click();
-    const dialog = page.locator('#proof dialog[data-detail]');
+    const dialog = page.locator(FIGURES_DIALOG);
     await expect(dialog).toBeVisible();
     await page.waitForTimeout(700);
     const box = await dialog.boundingBox();
@@ -393,7 +396,7 @@ test.describe('the detail panel', () => {
   test('is centred and no wider than 880 px on a desktop', { tag: '@desktop' }, async ({ page }) => {
     await open(page, '/?gl=off');
     await page.locator(trigger).click();
-    const dialog = page.locator('#proof dialog[data-detail]');
+    const dialog = page.locator(FIGURES_DIALOG);
     await expect(dialog).toBeVisible();
     await page.waitForTimeout(700);
     const box = await dialog.boundingBox();

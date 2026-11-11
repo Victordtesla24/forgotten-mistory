@@ -1,0 +1,129 @@
+/*
+ * The lead of a role's panel: the career on a small axis with this role's bar lit, and the
+ * role's headline figure. The axis is drawn like the hero's scale, from the same module, at
+ * panel width; the span is a filled bar, so which role it is reads at a glance.
+ */
+.lead {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.axis {
+  padding-bottom: 1.5rem;
+}
+
+.track {
+  position: relative;
+  height: 2.5rem;
+}
+
+.span {
+  position: absolute;
+  inset-block: 0 1rem;
+  min-width: 3px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  background-color: color-mix(in srgb, var(--accent) 28%, var(--surface));
+}
+
+.ticks {
+  position: absolute;
+  inset: auto 0 0.5rem 0;
+  display: block;
+  width: 100%;
+  height: 1rem;
+  overflow: visible;
+}
+
+.baseline,
+.month,
+.year {
+  fill: none;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: crispEdges;
+}
+
+.baseline,
+.month {
+  stroke: var(--line-strong);
+}
+
+.year {
+  stroke: var(--muted);
+}
+
+.numeral {
+  position: absolute;
+  bottom: -1.25rem;
+  translate: -50% 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.figure {
+  display: grid;
+  gap: 0.75rem;
+}
+
+/* The share a percentage names: the part that remains is solid, the part that fell away is hatched. */
+.share {
+  display: block;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--line-strong) 0 2px,
+    transparent 2px 5px
+  );
+  overflow: hidden;
+}
+
+.rest {
+  display: block;
+  width: var(--rest);
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--proof);
+}
+
+@keyframes settle-share {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: var(--rest);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .span {
+    transform-origin: left center;
+    animation: span-in var(--duration-panel) var(--ease) 80ms both;
+  }
+
+  .rest {
+    animation: settle-share var(--duration-panel) var(--ease-in-out) 160ms both;
+  }
+}
+
+@keyframes span-in {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .span,
+  .rest {
+    forced-color-adjust: none;
+  }
+}

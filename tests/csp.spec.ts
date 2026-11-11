@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { MINIVIC_CHAT_ORIGIN } from '@/lib/assistant/origin';
 
-import { enforceProductionCsp, open, readProductionCsp } from './support';
+import { enforceProductionCsp, open, openAssistant, readProductionCsp } from './support';
 
 /** Every page a reader can land on: the home page, both legal pages and the not-found page. */
 const ROUTES = ['/', '/privacy', '/terms', '/no-such-page'] as const;
@@ -87,7 +87,7 @@ test('the theme toggle, the assistant and a question stay within the policy', as
   await toggle.click();
   await expect(root).toHaveAttribute('data-theme', 'dark');
 
-  await page.getByRole('button', { name: 'Ask Mini Vic' }).first().click();
+  await openAssistant(page);
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
 

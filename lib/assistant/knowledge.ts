@@ -239,7 +239,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'websocket',
     ],
     answer:
-      "I spent nearly eight years at ANZ (Sept 2017 – Jun 2025) as Senior Delivery Lead / Technical Product Owner, and as AI/ML Strategy & Solutions Architect from 2017 to 2022. I led delivery of AI/ML solutions including real-time WebSocket telemetry that cut P95 latency to under 200 ms across 10,000+ concurrent devices for critical banking services, and guided core banking platforms onto cloud-native .NET/Azure architectures — cutting end-to-end delivery time by more than 30% and cutting infrastructure costs by over 15%. I managed a $5M+ program portfolio across 5+ squads (up to 40 onsite and offshore practitioners) with 100% compliance, and owned the technical vision and product backlog for the platform modernisations.",
+      "I spent nearly eight years at ANZ (Sept 2017 – Jun 2025) as Senior Delivery Lead / Technical Product Owner, and as AI/ML Strategy & Solutions Architect from 2017 to 2022. I led delivery of AI/ML solutions including real-time WebSocket telemetry that cut P95 latency to under 200 ms across 10,000+ concurrent devices, and guided core banking platforms onto cloud-native .NET/Azure architectures — cutting end-to-end delivery time by more than 30% and cutting infrastructure costs by over 15%. I managed a $5M+ program portfolio across 5+ squads (up to 40 onsite and offshore practitioners) with 100% compliance, and owned the technical vision and product backlog for the platform modernisations.",
   },
 
   // ── 10. Banking / financial services ───────────────────────────────────
@@ -309,7 +309,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'mlops',
     ],
     answer:
-      "I bring practical, shipped AI experience rather than slideware. I led AI/ML solution delivery at ANZ for critical banking services, then spent Jun 2025 – Feb 2026 as an independent AI consultant building production tooling: an LLM evaluation stack that cut simulated error-budget breaches by 38%, an analytics dashboard generating LLM-powered sprint retrospectives, and autonomous LLM agents for resume tailoring and inbox triage. I know how to take AI from prototype to governed, measured production — which is exactly the gap most organisations are struggling with.",
+      "I bring practical, shipped AI experience rather than slideware. I led the technical delivery of AI solutions at ANZ, then spent Jun 2025 – Feb 2026 as an independent AI consultant building production tooling: an LLM evaluation stack that cut simulated error-budget breaches by 38%, an analytics dashboard generating LLM-powered sprint retrospectives, and autonomous LLM agents for resume tailoring and inbox triage. I know how to take AI from prototype to governed, measured production — which is exactly the gap most organisations are struggling with.",
   },
 
   // ── 13. LLM evaluation / quality work ──────────────────────────────────

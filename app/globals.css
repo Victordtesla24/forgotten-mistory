@@ -446,17 +446,62 @@
   }
 }
 
-/* A detail panel grows out of the element that opened it; the page itself does not cross-fade. */
+/*
+ * A detail panel grows out of the element that opened it. The page behind it cross-fades over
+ * the panel's own duration, which is also what dims it, so it never drops to black. The shell is
+ * the group itself: it carries the surface and the shadow and grows from the card to the dialog.
+ * The card's snapshot is gone within the first 35% of the morph and the panel's comes in after
+ * 40%, so the two never overlap and no text is ever seen twice.
+ */
 :root[data-vt='detail']::view-transition-old(root),
 :root[data-vt='detail']::view-transition-new(root) {
-  animation: none;
+  animation-duration: var(--duration-panel);
+}
+
+@keyframes morph-out {
+  from {
+    opacity: 1;
+  }
+
+  35%,
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes morph-in {
+  from,
+  40% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 ::view-transition-group(detail-morph) {
   animation-duration: var(--duration-panel);
   animation-timing-function: var(--ease);
   border-radius: var(--radius-lg);
+  background-color: var(--surface);
+  box-shadow: var(--elevation-float);
   overflow: clip;
+}
+
+::view-transition-old(detail-morph),
+::view-transition-new(detail-morph) {
+  animation-duration: var(--duration-panel);
+  animation-timing-function: linear;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(detail-morph) {
+  animation-name: morph-out;
+}
+
+::view-transition-new(detail-morph) {
+  animation-name: morph-in;
 }
 
 /* The mobile menu sheet is a native <dialog>. */

@@ -2,9 +2,11 @@
  * The hero field: receding lanes of fine ruler ticks behind the type. On load the lanes
  * unfurl from the nearest to the farthest, a band of light crosses them once, and the
  * drift eases to a stop; after that the field is still and the page draws nothing. A fine
- * pointer leans the camera a little and carries a soft light along the ticks, and both
- * settle again when it stops. Everything is a function of the view's clock, so a frame at
- * any moment can be reproduced.
+ * pointer leans the camera, and carries a bloom, about 200 px across, that lights the ticks it
+ * passes over; both settle again when it stops. The field is held back behind the headline
+ * and the line under it, to 15% with a soft falloff of 48 px, so a tick never strikes through
+ * a word. Everything is a function of the view's clock, so a frame at any moment can be
+ * reproduced.
  */
 
 import {
@@ -48,9 +50,16 @@ const LOOK_AT = new Vector3(-2, -3.4, -34);
 /** The wider-than-this aspect the field is composed for; narrower views crop it from the right. */
 const MIN_ASPECT = 1.5;
 
+/** What is left of the field under the type, and how far beyond the type it takes to come back, in CSS px. */
+const TYPE_FLOOR = 0.15;
+const TYPE_FALLOFF = 48;
+
+/** The pointer's bloom: its spread (a standard deviation) in CSS px; the glow reaches about twice that. */
+const BLOOM_SPREAD = 95;
+
 /** How far the pointer leans the camera, in world units, at the edge of the view. */
-const LEAN_X = 1.1;
-const LEAN_Y = 0.45;
+const LEAN_X = 2.4;
+const LEAN_Y = 1;
 
 interface LaneSet {
   count: number;
@@ -86,6 +95,23 @@ function createLanes(tier: LiveTier): RulerLane[] {
     };
   });
 }
+
+/** GLSL both fragment shaders share: the type's mask and the pointer's bloom, in CSS pixels from the view's bottom left. */
+const typeMask = /* glsl */ `
+float typeMask(vec2 frag) {
+  vec2 centre = 0.5 * (uMask.xy + uMask.zw);
+  vec2 half_ = 0.5 * (uMask.zw - uMask.xy);
+  vec2 beyond = max(abs(frag - centre) - half_, 0.0);
+  return mix(${TYPE_FLOOR.toFixed(2)}, 1.0, smoothstep(0.0, ${TYPE_FALLOFF.toFixed(1)}, length(beyond) / uPixel));
+}
+`;
+
+const bloom = /* glsl */ `
+float pointerBloom(vec2 frag) {
+  vec2 away = (frag - uPointer.xy * uSize) / uPixel;
+  return uPointer.z * exp(-dot(away, away) / ${(2 * BLOOM_SPREAD * BLOOM_SPREAD).toFixed(1)});
+}
+`;
 
 const lineVertex = /* glsl */ `
 attribute float aLane;
@@ -129,12 +155,17 @@ uniform float uTime;
 uniform float uQuiet;
 uniform vec2 uOrigin;
 uniform vec2 uSize;
+uniform float uPixel;
+uniform vec4 uMask;
 uniform vec3 uPointer;
 
 varying float vKind;
 varying float vVisible;
 
 ${finish}
+
+${typeMask}
+${bloom}
 
 float easeInOut(float x) {
   x = clamp(x, 0.0, 1.0);
@@ -152,21 +183,22 @@ void main() {
   vec3 tint = mix(uMuted, uAccent, 0.4 * mid + 0.75 * major);
   tint = mix(tint, mix(uLine, uMuted, 0.6), baseline);
   float strength = 0.5 * minor + 0.62 * mid + 0.8 * major + 0.6 * baseline;
-  strength *= mix(0.9, 1.0, uDark);
+  // Light ground: a hairline of muted grey needs more weight to read as much as the same line on dark.
+  strength *= mix(1.7, 1.0, uDark);
 
   float sweepAt = mix(-0.25, 1.35, easeInOut((uTime - ${SWEEP_START_S.toFixed(3)}) / ${SWEEP_S.toFixed(3)}));
   float sweep = exp(-pow((uv.x - sweepAt) / 0.07, 2.0)) * (1.0 - baseline * 0.4);
 
-  vec2 toPointer = (uv - uPointer.xy) * vec2(uSize.x / uSize.y, 1.0);
-  float glow = uPointer.z * exp(-dot(toPointer, toPointer) / 0.035);
+  float glow = pointerBloom(gl_FragCoord.xy - uOrigin);
 
   float edge = smoothstep(0.0, 0.16, uv.y) * (1.0 - smoothstep(0.78, 1.0, uv.y));
   edge *= smoothstep(0.0, 0.05, uv.x) * (1.0 - smoothstep(0.95, 1.0, uv.x));
   float quiet = mix(1.0, mix(0.3, 1.0, smoothstep(0.3, 0.74, uv.x)), uQuiet);
+  float held = typeMask(gl_FragCoord.xy - uOrigin);
 
   float alpha = strength * vVisible * edge * quiet;
-  alpha = min(alpha + (0.55 * sweep + 0.5 * glow) * vVisible * edge * mix(0.5, 1.0, quiet), 1.0);
-  tint = mix(tint, uAccent, clamp(sweep + glow, 0.0, 1.0));
+  alpha = min(alpha + (0.55 * sweep + 0.9 * glow) * vVisible * edge * mix(0.5, 1.0, quiet), 1.0) * held;
+  tint = mix(tint, uAccent, clamp(sweep + 1.4 * glow, 0.0, 1.0));
 
   gl_FragColor = writePixel(tint, alpha);
 }
@@ -184,10 +216,16 @@ uniform float uDark;
 uniform float uTime;
 uniform vec2 uOrigin;
 uniform vec2 uSize;
+uniform float uPixel;
+uniform vec4 uMask;
+uniform vec3 uPointer;
 uniform vec2 uHorizon;
 
 ${hairline}
 ${finish}
+
+${typeMask}
+${bloom}
 
 void main() {
   vec2 uv = (gl_FragCoord.xy - uOrigin) / uSize;
@@ -201,6 +239,8 @@ void main() {
   edge *= smoothstep(0.0, 0.05, uv.x) * (1.0 - smoothstep(0.95, 1.0, uv.x));
 
   float alpha = (mix(0.07, 0.15, uDark) * (0.55 * band + 0.7 * bloom) + 0.22 * line) * enter * edge;
+  // The pointer's own light, soft and wide, held back behind the type like the ticks.
+  alpha += mix(0.13, 0.17, uDark) * pointerBloom(gl_FragCoord.xy - uOrigin) * typeMask(gl_FragCoord.xy - uOrigin);
   alpha *= 1.0 + grain(gl_FragCoord.xy) * 0.2;
 
   gl_FragColor = writePixel(uAccent, max(alpha, 0.0));
@@ -223,6 +263,9 @@ export function createHeroField(context: ViewContext): View {
     uTime: { value: 0 },
     uOrigin: { value: [0, 0] as [number, number] },
     uSize: { value: [1, 1] as [number, number] },
+    uPixel: { value: 1 },
+    uMask: { value: new Vector4(0, 0, 0, 0) },
+    uPointer: { value: new Vector3(0.5, 0.5, 0) },
     uDark: palette.dark,
   };
 
@@ -237,7 +280,6 @@ export function createHeroField(context: ViewContext): View {
       uDrift: { value: DRIFT_TICKS * LANES[context.tier].pitch },
       uTickHeight: { value: 0.24 },
       uQuiet: { value: 1 },
-      uPointer: { value: new Vector3(0.5, 0.5, 0) },
     },
     transparent: true,
     premultipliedAlpha: true,
@@ -287,6 +329,21 @@ export function createHeroField(context: ViewContext): View {
     lineMaterial.uniforms.uQuiet.value = width / height > 1.3 ? 1 : 0.55;
   }
 
+  /** Tells the shaders where the type is, so the field can stand back behind it. */
+  function holdBackType(client: FrameInput['client'], height: number, pixelRatio: number): void {
+    const type = document.getElementById('top')?.getBoundingClientRect();
+    if (!type) {
+      shared.uMask.value.set(0, 0, 0, 0);
+      return;
+    }
+    shared.uMask.value.set(
+      (type.left - client.left) * pixelRatio,
+      (height - (type.bottom - client.top)) * pixelRatio,
+      (type.right - client.left) * pixelRatio,
+      (height - (type.top - client.top)) * pixelRatio,
+    );
+  }
+
   function aim(): void {
     camera.position.set(lean.x.value * LEAN_X, CAMERA_HEIGHT + lean.y.value * LEAN_Y, CAMERA_Z);
     camera.lookAt(LOOK_AT);
@@ -327,7 +384,9 @@ export function createHeroField(context: ViewContext): View {
       shared.uTime.value = clock;
       shared.uOrigin.value = [viewport.x * pixelRatio, viewport.y * pixelRatio];
       shared.uSize.value = [viewport.width * pixelRatio, viewport.height * pixelRatio];
-      (lineMaterial.uniforms.uPointer.value as Vector3).set(light.x.value, light.y.value, light.strength.value);
+      shared.uPixel.value = pixelRatio;
+      shared.uPointer.value.set(light.x.value, light.y.value, light.strength.value);
+      holdBackType(client, viewport.height, pixelRatio);
       aim();
 
       return clock < SETTLE_S || moving;

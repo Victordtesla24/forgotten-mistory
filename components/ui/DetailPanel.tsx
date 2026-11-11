@@ -55,8 +55,10 @@ function currentFragment(): string {
   }
 }
 
+/** The control that opens `id`; where two stand for one panel (a bar and a chip), the one on screen. */
 function triggerFor(id: string): HTMLElement | null {
-  return document.querySelector<HTMLElement>(`[data-detail-trigger="${CSS.escape(id)}"]`);
+  const triggers = document.querySelectorAll<HTMLElement>(`[data-detail-trigger="${CSS.escape(id)}"]`);
+  return Array.from(triggers).find((trigger) => trigger.getClientRects().length > 0) ?? triggers[0] ?? null;
 }
 
 function focusable(root: HTMLElement): HTMLElement[] {
@@ -122,8 +124,9 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
     dialog.dataset.transition = reducedMotion() || switching || busy ? 'none' : start && target ? 'morph' : 'fade';
 
     if (dialog.dataset.transition === 'morph' && start && target) {
-      const from = id === null ? frame : target;
-      const to = id === null ? target : frame;
+      // The dialog itself is named, so its surface, border and shadow grow out of the card with it.
+      const from = id === null ? dialog : target;
+      const to = id === null ? target : dialog;
       morphName(from, true);
       document.documentElement.dataset.vt = 'detail';
       const transition = start.call(document, () => {
@@ -190,6 +193,17 @@ export function DetailSet({ label, items, children }: DetailSetProps) {
       // A panel reached through history can be left the same way; a deep link cannot.
       pushed.current = known && fromHistory;
       present(known ? fragment : null, null);
+      // A panel opened by a link or the history has no trigger to have put focus anywhere: it
+      // belongs inside the dialog, and is put back there after the next paint if the page's
+      // own hash handling, which also runs now, took it.
+      if (known) {
+        requestAnimationFrame(() => {
+          const dialog = dialogRef.current;
+          if (openRef.current !== null && dialog?.open && !dialog.contains(document.activeElement)) {
+            frameRef.current?.focus({ preventScroll: true });
+          }
+        });
+      }
     };
     const onHistory = () => sync(true);
     sync(false);

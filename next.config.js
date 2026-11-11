@@ -13,6 +13,11 @@ function buildCommit() {
   }
 }
 
+/** The calendar month the bytes are built in, "2026-11": the right-hand edge of the timelines. */
+function buildMonth() {
+  return new Date().toISOString().slice(0, 7);
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
@@ -22,6 +27,7 @@ const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   env: {
     NEXT_PUBLIC_BUILD_COMMIT: buildCommit(),
+    NEXT_PUBLIC_BUILD_MONTH: buildMonth(),
   },
 };
 

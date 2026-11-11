@@ -10,8 +10,8 @@ interface StageViewProps {
   /** Draws the CSS poster: what first paint, no-WebGL and lost-context readers see. */
   posterClassName?: string;
   className?: string;
-  /** For a reading: how many marks it draws and in how many groups, as the figure's content states. */
-  marks?: { count: number; groups: number };
+  /** For a reading: how many marks it draws, as the figure's content states. */
+  marks?: { count: number };
   /** The semantic fallback: a drawing or text of the same data, shown until the stage has drawn. */
   children?: ReactNode;
 }
@@ -26,7 +26,6 @@ export function StageView({ view, posterClassName, className, marks, children }:
     <div
       data-stage-view={view}
       data-marks={marks?.count}
-      data-groups={marks?.groups}
       aria-hidden="true"
       className={cn(styles.view, className)}
     >

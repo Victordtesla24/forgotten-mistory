@@ -68,13 +68,13 @@ export const site: Site = {
     youtube: 'https://youtube.com/@vicd0ct',
   },
   seo: {
-    title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
+    title: 'Vikram Deshpande — Delivery Leader and AI Solutions Architect',
     description:
-      'Delivery leader and AI solutions architect in Melbourne. Sixteen years across government, banking and telecommunications; now at the Australian Taxation Office.',
+      'Delivery leader and AI solutions architect in Melbourne. 15+ years across government, banking and telecommunications; now at the Australian Taxation Office.',
     siteDescription:
       'Delivery leadership and AI systems: selected work, career and capabilities of Vikram Deshpande.',
     personDescription:
-      'Scrum Master and Project Manager on the Australian Taxation Office’s Payday Super program, and AI solutions architect in Melbourne. Sixteen years of delivery leadership across government, banking and telecommunications.',
+      'Scrum Master and Project Manager on the Australian Taxation Office’s Payday Super program, and AI solutions architect in Melbourne. 15+ years of delivery across government, banking and telecommunications.',
     ogImage: { url: '/assets/og-image.png', width: 1200, height: 630 },
   },
 };

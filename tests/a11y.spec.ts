@@ -17,7 +17,10 @@ for (const theme of ['dark', 'light'] as const) {
     await open(page, '/');
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
 
-    const { violations } = await new AxeBuilder({ page }).analyze();
+    // WCAG 2.2 AA included: the target-size rule holds the career chips and every other control to 24 px at least.
+    const { violations } = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+      .analyze();
     const blocking = violations
       .filter((violation) => violation.impact === 'serious' || violation.impact === 'critical')
       .map(

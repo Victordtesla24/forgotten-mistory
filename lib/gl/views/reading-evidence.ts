@@ -1,8 +1,8 @@
 /**
- * The evidence reading: one cell for each of the 200 SIT scenarios. The cells appear full,
- * then the effort falls away, left to right: about 92% of the cells empty, the ≈92% of the
- * figure, and the rest, spread evenly, stay full. All 200 cells stay drawn. A hover or focus
- * sends a band of light across them.
+ * The evidence reading: one cell for each of the 200 SIT scenarios, and all 200 stay. The
+ * cells appear full, the roughly three hours of evidence effort a scenario took, then the fill
+ * falls to about fifteen minutes' worth, left to right: the effort per scenario falls ≈92%
+ * while the count stays 200. A hover or focus sends a band of light across them.
  */
 
 import {
@@ -50,7 +50,7 @@ uniform vec3 uProof;
 uniform vec3 uAccent;
 uniform vec3 uLineStrong;
 uniform float uCount;
-uniform float uKeep;
+uniform float uRest;
 uniform float uAppear;
 uniform float uSpread;
 uniform float uFall;
@@ -77,11 +77,9 @@ void main() {
   float born = (vCell.x * uGrid.y + vCell.y) / uCount * uAppear;
   float shown = clamp((uT - born) / 90.0, 0.0, 1.0);
 
-  float index = vCell.x * uGrid.y + vCell.y;
-  float keeps = floor((index + 1.0) * uKeep / uCount) - floor(index * uKeep / uCount);
   float across = vCell.x / (uGrid.x - 1.0);
   float fall = easeInOut((uT - (uAppear + across * uSpread)) / uFall);
-  float level = 1.0 - (1.0 - keeps) * fall;
+  float level = 1.0 - (1.0 - uRest) * fall;
 
   float innerHeight = cellPx.y - 2.0 * gap;
   float fill = clamp((level * innerHeight - (px.y - gap)) * uPixel + 0.5, 0.0, 1.0);
@@ -98,7 +96,7 @@ void main() {
 
 /** Creates the evidence reading. */
 export function createReadingEvidence(context: ViewContext): View {
-  const { count, columns, rows, keep, appearMs, spreadMs, fallMs } = cells;
+  const { count, columns, rows, rest, appearMs, spreadMs, fallMs } = cells;
   const state = createReadingState('evidence', context);
 
   const corner = new Float32Array(count * 4 * 3);
@@ -128,7 +126,7 @@ export function createReadingEvidence(context: ViewContext): View {
       ...state.uniforms,
       uGrid: { value: [columns, rows] },
       uCount: { value: count },
-      uKeep: { value: keep },
+      uRest: { value: rest },
       uAppear: { value: appearMs },
       uSpread: { value: spreadMs },
       uFall: { value: fallMs },

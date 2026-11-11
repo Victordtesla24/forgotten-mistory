@@ -2,17 +2,28 @@ import { existsSync } from 'node:fs';
 
 import { expect, test, type Page } from '@playwright/test';
 
-import { roles } from '@/content/experience';
+import { NOW, roles, ym } from '@/content/experience';
 import { headlineFigures } from '@/content/proof';
 import { ENTRANCE_END } from '@/lib/entrance';
-import { careerBars, timeline } from '@/lib/timeline';
+import { careerBars, LABEL_CONFLICTS, timeline } from '@/lib/timeline';
 
 import { hydrated, open, visibleWordCounts, watchConsole } from './support';
 
 /** The hero is the first child of the page's main element. */
 const HERO = 'main > div:first-child';
 const SCALE = '[data-career-scale]';
-const BARS = `${SCALE} a[data-role]`;
+const BARS = `${SCALE} [data-bars] a[data-role]`;
+const CHIPS = `${SCALE} [data-chips] a[data-role]`;
+/** The bars as drawn at any width: the list items from 640 px, the plain drawing below it. */
+const DRAWN = `${SCALE} [data-bar]:visible`;
+
+/** Months from the first month of the axis to the month it ends in. */
+const AXIS_MONTHS = Math.round((NOW - 2010) * 12);
+/** The calendar month, "2026-11", a decimal year falls in. */
+const monthOf = (decimalYear: number): string => {
+  const year = Math.floor(decimalYear + 1e-6);
+  return `${year}-${String(Math.round((decimalYear - year) * 12) + 1).padStart(2, '0')}`;
+};
 
 /** The widths acceptance names, with a height tall enough to see the first screen. */
 const WIDTHS = [320, 390, 834, 1440, 1920] as const;
@@ -45,10 +56,18 @@ async function boxes(page: Page, selector: string): Promise<Box[]> {
 }
 
 test.describe('the career scale', { tag: '@desktop' }, () => {
+  test('ends in the month the site was built, never earlier', () => {
+    const today = new Date();
+    expect(NOW, 'later than the month this was written in').toBeGreaterThanOrEqual(ym(2026, 11));
+    expect(NOW, 'no later than the current month').toBeLessThanOrEqual(ym(today.getUTCFullYear(), today.getUTCMonth() + 1));
+    const ato = careerBars.find((bar) => bar.current);
+    expect(ato?.months, 'the current role runs from March 2026 to the end of the axis').toBe(Math.round((NOW - ym(2026, 3)) * 12));
+  });
+
   test('is drawn on the one UTC time scale, January 2010 to the current month', () => {
-    expect(timeline.domain().map((date) => date.toISOString().slice(0, 7))).toEqual(['2010-01', '2026-09']);
+    expect(timeline.domain().map((date) => date.toISOString().slice(0, 7))).toEqual(['2010-01', monthOf(NOW)]);
     expect(timeline.range()).toEqual([0, 1]);
-    expect(careerBars[0]?.start, 'MYOB starts in May 2010, four months in').toBeCloseTo(4 / 200, 2);
+    expect(careerBars[0]?.start, 'MYOB starts in May 2010, four months in').toBeCloseTo(4 / AXIS_MONTHS, 2);
     expect(careerBars.at(-1)?.end, 'the current role runs to now').toBe(1);
   });
 
@@ -71,7 +90,7 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
     for (const width of [390, 1440]) {
       await openAt(page, '/?gl=off', width);
       const [track] = await boxes(page, SCALE);
-      const bars = await boxes(page, BARS);
+      const bars = await boxes(page, DRAWN);
       expect(bars).toHaveLength(8);
       expect(careerBars).toHaveLength(8);
       careerBars.forEach((bar, index) => {
@@ -86,27 +105,89 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
       // The current role is the last bar and ends at the track's right edge.
       expect(Math.abs((bars.at(-1)?.right ?? 0) - (track?.right ?? 0))).toBeLessThanOrEqual(1);
       const months = careerBars.map((bar) => bar.months);
-      expect(months).toEqual([15, 39, 11, 12, 10, 93, 8, 6]);
+      expect(months).toEqual([15, 39, 11, 12, 10, 93, 8, Math.round((NOW - ym(2026, 3)) * 12)]);
     }
   });
 
-  test('draws a label only where it fits', async ({ page }) => {
+  test('draws a name inside its bar only where it fits, and every role is named at every width', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    const shown: number[] = [];
-    for (const width of [390, 834, 1920]) {
+    const inside: number[] = [];
+    for (const width of [640, 834, 1440, 1920]) {
       await openAt(page, '/?gl=off', width);
-      const labels = await page.locator(`${SCALE} [data-fit]`).evaluateAll((elements) =>
-        elements.flatMap((label) => {
-          if (getComputedStyle(label).display === 'none') return [];
-          const bar = label.closest('a');
-          return [{ text: label.textContent, label: label.scrollWidth, space: label.parentElement?.clientWidth ?? 0, bar: bar?.clientWidth ?? 0 }];
+      const state = await page.locator(`${SCALE} li[data-bar]`).evaluateAll((items) =>
+        items.map((item) => {
+          const label = item.querySelector<HTMLElement>('[data-fit]');
+          const out = item.querySelector<HTMLElement>('[data-lane]');
+          const named = label && getComputedStyle(label).display !== 'none' ? label : null;
+          const lane = out && getComputedStyle(out).display !== 'none' ? out : null;
+          return {
+            id: (item as HTMLElement).dataset.bar ?? '',
+            inside: named ? named.scrollWidth <= (named.parentElement?.clientWidth ?? 0) : false,
+            lane: lane ? lane.dataset.lane : null,
+            both: Boolean(named && lane),
+          };
         }),
       );
-      shown.push(labels.length);
-      for (const entry of labels) expect(entry.label, `${entry.text} at ${width}`).toBeLessThanOrEqual(entry.space);
+      expect(state, `${width} px`).toHaveLength(8);
+      for (const entry of state) {
+        expect(entry.inside || entry.lane !== null, `${entry.id} is named at ${width} px`).toBe(true);
+        expect(entry.both, `${entry.id} is named once at ${width} px`).toBe(false);
+      }
+      inside.push(state.filter((entry) => entry.inside).length);
     }
-    expect(shown[0], 'a phone shows the one label that fits').toBeGreaterThanOrEqual(1);
-    expect(shown[2], 'a wide screen shows more').toBeGreaterThan(shown[0] ?? 0);
+    expect(inside[3], 'a wide screen names more inside the bars').toBeGreaterThan(inside[0] ?? 0);
+  });
+
+  test('names set in lanes never run into one another, and no leader runs through a name', async ({ page }) => {
+    expect(LABEL_CONFLICTS, 'the lane layout in lib/timeline.ts has no collision').toBe(0);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const width of [640, 834, 1440]) {
+      await openAt(page, '/?gl=off', width);
+      const names = await page.locator(`${SCALE} [data-lane]`).evaluateAll((lanes) =>
+        lanes.flatMap((lane) => {
+          if (getComputedStyle(lane).display === 'none') return [];
+          const text = lane.firstElementChild as HTMLElement;
+          const range = document.createRange();
+          range.selectNodeContents(text);
+          const glyphs = range.getBoundingClientRect();
+          const leader = lane.getBoundingClientRect().left;
+          return [{ id: lane.closest('li')?.dataset.bar ?? '', left: glyphs.left, right: glyphs.right, top: glyphs.top, bottom: glyphs.bottom, leader }];
+        }),
+      );
+      expect(names.length, `${width} px has names in lanes`).toBeGreaterThan(0);
+      for (const [index, one] of names.entries()) {
+        for (const two of names.slice(index + 1)) {
+          const apart = one.right <= two.left || two.right <= one.left || one.bottom <= two.top || two.bottom <= one.top;
+          expect(apart, `${one.id} and ${two.id} at ${width} px`).toBe(true);
+        }
+        for (const other of names) {
+          if (other === one || other.top >= one.top) continue;
+          expect(one.leader <= other.left || one.leader >= other.right, `${one.id}'s leader through ${other.id} at ${width} px`).toBe(true);
+        }
+      }
+    }
+  });
+
+  test('below 640 px a chip of at least 44 px names and opens every role, and the bars are not in the way', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const width of [320, 390]) {
+      await openAt(page, '/?gl=off', width);
+      await expect(page.locator(BARS).first()).toBeHidden();
+      await expect(page.locator(CHIPS)).toHaveCount(8);
+      const chips = await boxes(page, CHIPS);
+      const heights = await page.locator(CHIPS).evaluateAll((links) => links.map((link) => link.getBoundingClientRect().height));
+      for (const [index, box] of chips.entries()) {
+        expect(box.width, `${careerBars[index]?.id} chip width at ${width}`).toBeGreaterThanOrEqual(44);
+        expect(heights[index], `${careerBars[index]?.id} chip height at ${width}`).toBeGreaterThanOrEqual(44);
+      }
+      const caption = await page.locator(`${SCALE} p`).first().textContent();
+      expect(caption, 'the current role, in words').toContain(roles[0]?.employer ?? '');
+      expect(caption).toContain('March 2026');
+      await page.locator(`${CHIPS}[data-role="microsoft"]`).click();
+      await expect(page.getByRole('dialog', { name: roles.find((role) => role.id === 'microsoft')?.title ?? '' })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(page.locator(`${CHIPS}[data-role="microsoft"]`)).toBeFocused();
+    }
   });
 
   test('every bar is reachable by Tab and by the arrow keys, and opens its own role', async ({ page }) => {
@@ -184,7 +265,6 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
       await expect(view, figure.id).toHaveAttribute('data-drawn', String(counts[figure.id]));
       await expect(view, figure.id).toHaveAttribute('data-marks', String(figure.marks.count));
     }
-    await expect(page.locator('[data-stage-view="reading-portfolio"]')).toHaveAttribute('data-drawn-groups', '5');
     expect(problems).toEqual([]);
   });
 
@@ -211,17 +291,42 @@ test.describe('the three readings', { tag: '@desktop' }, () => {
     await page.evaluate(() => window.__stage?.ready);
     await expect(page.locator('canvas')).toHaveCount(0);
 
-    const lattice = page.locator('[data-stage-view="reading-telemetry"] svg');
-    const [columns, rows] = (await lattice.getAttribute('viewBox'))?.split(' ').slice(2).map(Number) ?? [];
-    expect((columns ?? 0) * (rows ?? 0), 'a 1 by 1 pattern tile for each of 10,000 points').toBe(10_000);
-    await expect(lattice.locator('pattern')).toHaveAttribute('width', '1');
-    await expect(lattice.locator('pattern')).toHaveAttribute('height', '1');
+    // 10,000 points in 100 blocks of 100: one lattice element, laid out in whole CSS pixels.
+    const lattice = page.locator('[data-stage-view="reading-telemetry"] [style*="--side"]');
+    await expect(lattice).toHaveCount(1);
+    const grid = await lattice.evaluate((element) => {
+      const style = getComputedStyle(element);
+      const pitch = Number.parseFloat(style.getPropertyValue('--pitch'));
+      const box = element.getBoundingClientRect();
+      return {
+        columns: Number(style.getPropertyValue('--columns')),
+        rows: Number(style.getPropertyValue('--rows')),
+        side: Number(style.getPropertyValue('--side')),
+        pitch,
+        width: box.width,
+        height: box.height,
+      };
+    });
+    const blocks = (grid.columns + 1) / (grid.side + 1);
+    const blockRows = (grid.rows + 1) / (grid.side + 1);
+    expect(blocks * blockRows * grid.side * grid.side, '100 blocks of 100 points').toBe(10_000);
+    expect(Number.isInteger(grid.pitch) && grid.pitch >= 1, 'a whole number of CSS pixels').toBe(true);
+    expect(grid.width, 'the lattice is its pitch wide').toBe(grid.columns * grid.pitch);
+    expect(grid.height).toBe(grid.rows * grid.pitch);
 
+    // Every one of the 200 cells stays, and the fill of each falls to about 15 of 180 minutes.
     const cells = page.locator('[data-stage-view="reading-evidence"] > div > div > span');
     await expect(cells).toHaveCount(200);
-    const squads = page.locator('[data-stage-view="reading-portfolio"] > div > div > span');
-    await expect(squads).toHaveCount(5);
-    for (let squad = 0; squad < 5; squad += 1) await expect(squads.nth(squad).locator('span')).toHaveCount(8);
+    const rest = await cells.first().evaluate((cell) => Number(getComputedStyle(cell.parentElement as Element).getPropertyValue('--rest')));
+    expect(rest).toBeCloseTo(15 / 180, 3);
+    await page.waitForTimeout(2000);
+    const levels = await cells.evaluateAll((all) => all.map((cell) => new DOMMatrixReadOnly(getComputedStyle(cell, '::after').transform).d));
+    expect(levels.length, 'no cell falls away: each keeps its fill').toBe(200);
+    for (const level of levels) expect(level).toBeCloseTo(15 / 180, 2);
+
+    // The cohort: 40 marks as one group on one baseline, with no squads drawn.
+    const marks = page.locator('[data-stage-view="reading-portfolio"] > div > div > span');
+    await expect(marks).toHaveCount(40);
   });
 
   for (const gl of ['high', 'off'] as const) {
@@ -323,7 +428,7 @@ test.describe('the entrance', { tag: '@desktop' }, () => {
         if (!(target instanceof Element)) continue;
         if (target.closest('[data-stage-view="hero-field"]')) add('field', animation);
         else if (target.tagName === 'H1') add('headline', animation);
-        else if (target.closest('#top') && target.tagName === 'P' && target.textContent?.startsWith('Sixteen')) add('line', animation);
+        else if (target.closest('#top') && target.tagName === 'P' && target.textContent?.startsWith('15+')) add('line', animation);
         else if (target.closest('#top') && ['A', 'UL'].includes(target.tagName)) add('actions', animation);
         else if (target.closest('#proof') && target.tagName === 'LI') add('readings', animation);
         else if (target.closest('[data-career-scale]')) add('scale', animation);
@@ -368,7 +473,7 @@ test.describe('the entrance', { tag: '@desktop' }, () => {
     await stageReady(page);
     await page.waitForTimeout(1500);
 
-    const opacityAt = (selector: string, ms: number) =>
+    const stateAt = (selector: string, ms: number) =>
       page.evaluate(
         ([target, at]) => {
           for (const animation of document.getAnimations()) {
@@ -378,18 +483,29 @@ test.describe('the entrance', { tag: '@desktop' }, () => {
           }
           window.__stage?.seek(Number(at));
           const element = document.querySelector(String(target));
-          return element ? Number(getComputedStyle(element).opacity) : -1;
+          if (!element) return { opacity: -1, lift: -1 };
+          const style = getComputedStyle(element);
+          return { opacity: Number(style.opacity), lift: style.transform === 'none' ? 0 : new DOMMatrixReadOnly(style.transform).m42 };
         },
         [selector, ms] as const,
       );
+    const opacityAt = async (selector: string, ms: number) => (await stateAt(selector, ms)).opacity;
 
+    // The headline is the largest thing on the first screen, so it is never held at opacity 0: it
+    // is painted from the first frame, 12 px low, and lifts into place. The eyebrow fades, the
+    // line rises as it fades and the actions settle, so no two arrive the same way.
     const headline = '#top h1';
     const readings = '#proof ul > li:first-child';
-    expect(await opacityAt(headline, 0), 'the headline waits for the field').toBe(0);
-    expect(await opacityAt(headline, 300)).toBeGreaterThan(0.3);
+    const first = await stateAt(headline, 0);
+    expect(first.opacity, 'the headline is painted from the first frame').toBe(1);
+    expect(first.lift, 'and sits low, ready to lift').toBeGreaterThan(8);
+    const lifting = await stateAt(headline, 300);
+    expect(lifting.lift).toBeLessThan(first.lift);
+    expect(lifting.lift).toBeGreaterThan(0);
+    expect(await opacityAt('#top p', 0), 'the eyebrow waits for the field').toBe(0);
     expect(await opacityAt(readings, 300), 'the readings are not yet there at 300 ms').toBe(0);
     expect(await opacityAt(readings, 900)).toBeGreaterThan(0.9);
-    expect(await opacityAt(headline, 1500)).toBe(1);
+    expect((await stateAt(headline, 1500)).lift).toBe(0);
     expect(await opacityAt(readings, 1500)).toBe(1);
 
     const clip = await page.locator(`${SCALE} [data-ruler]`).evaluate((ruler) => getComputedStyle(ruler).clipPath);
@@ -450,7 +566,7 @@ test.describe('interaction states', { tag: '@desktop' }, () => {
     expect(await style(card, 'border-top-color'), 'card hover').not.toBe(border);
 
     // A bar: hover and focus change its fill; a press squeezes it.
-    const fill = `${BARS}[data-role="anz"] > span`;
+    const fill = `${SCALE} [data-bar="anz"] > span:nth-of-type(1)`;
     const rest = await style(fill, 'background-color');
     await page.locator(`${BARS}[data-role="anz"]`).hover();
     await page.waitForTimeout(350);
@@ -519,4 +635,225 @@ test.describe('the hero is healthy at every width and in both themes', { tag: '@
       });
     }
   }
+});
+
+test.describe('the first screen paints its own heading first', { tag: '@desktop' }, () => {
+  for (const width of [390, 834, 1440]) {
+    test(`the largest contentful paint is the h1 at ${width} px, with the entrance running`, async ({ page }) => {
+      await page.addInitScript(() => {
+        const seen: string[] = [];
+        (window as unknown as { __lcp: string[] }).__lcp = seen;
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            const element = (entry as PerformanceEntry & { element: Element | null }).element;
+            seen.push(element ? `${element.tagName.toLowerCase()}#${element.id}` : 'none');
+          }
+        }).observe({ type: 'largest-contentful-paint', buffered: true });
+      });
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/?gl=high');
+      await page.waitForTimeout(3000);
+      const seen = await page.evaluate(() => (window as unknown as { __lcp: string[] }).__lcp);
+      expect(seen.length, 'the browser reports a largest paint').toBeGreaterThan(0);
+      expect(seen.at(-1), `every candidate in order: ${seen.join(', ')}`).toBe('h1#top-title');
+    });
+  }
+});
+
+test.describe('without JavaScript the hero looks finished', { tag: '@desktop' }, () => {
+  test.use({ javaScriptEnabled: false });
+
+  for (const width of [1440, 390]) {
+    test(`at ${width} px the type starts the first screen and every panel sits inside the gutters`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      const measured = await page.evaluate(() => {
+        const rect = (selector: string) => document.querySelector(selector)?.getBoundingClientRect();
+        const gutter = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gutter')) || 0;
+        const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-detail-item]')).map((item) => {
+          const box = item.getBoundingClientRect();
+          return { id: item.id, left: box.left, right: box.right, width: box.width };
+        });
+        const scale = rect('[data-career-scale]');
+        const firstPanel = rect('#figure-evidence');
+        return {
+          eyebrow: rect('#top p')?.top ?? -1,
+          h1: rect('#top h1')?.top ?? -1,
+          width: document.documentElement.clientWidth,
+          scroll: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          gutter,
+          panels,
+          scaleBottom: scale?.bottom ?? -1,
+          figuresTop: firstPanel?.top ?? -1,
+        };
+      });
+      expect(measured.h1, 'the headline is in the top of the first screen').toBeLessThanOrEqual(200);
+      expect(measured.eyebrow, 'the eyebrow is under the header').toBeGreaterThan(56);
+      expect(measured.scroll).toBeLessThanOrEqual(0);
+      expect(measured.panels).toHaveLength(11);
+      for (const panel of measured.panels) {
+        expect(panel.left, `${panel.id} starts inside the gutter`).toBeGreaterThanOrEqual(measured.gutter - 1);
+        expect(panel.right, `${panel.id} ends inside the gutter`).toBeLessThanOrEqual(measured.width - measured.gutter + 1);
+        expect(panel.width, `${panel.id} reads at a readable measure`).toBeLessThanOrEqual(820);
+      }
+      expect(measured.figuresTop, 'the figure stories follow the career scale').toBeGreaterThan(measured.scaleBottom);
+    });
+  }
+});
+
+test.describe('the pieces of the first screen keep to their places', { tag: '@desktop' }, () => {
+  test('the three readings sit side by side on a tablet, all on the first screen', async ({ page }) => {
+    await openAt(page, '/?gl=off', 834);
+    const cards = await boxes(page, '#proof ul > li');
+    expect(cards).toHaveLength(3);
+    for (const card of cards) {
+      expect(card.left).toBeGreaterThanOrEqual(0);
+      expect(card.right, 'inside the screen').toBeLessThanOrEqual(834);
+    }
+    expect(cards[1]?.left).toBeGreaterThan(cards[0]?.right ?? 0);
+    expect(cards[2]?.left).toBeGreaterThan(cards[1]?.right ?? 0);
+    const tops = await page.locator('#proof ul > li').evaluateAll((items) => items.map((item) => item.getBoundingClientRect().top));
+    expect(new Set(tops.map(Math.round)).size, 'one row').toBe(1);
+  });
+
+  test('a bar’s tip stands below the numerals and never covers a link above', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openAt(page, '/?gl=off', 1440);
+    await page.locator(`${BARS}[data-role="infocentric"]`).hover();
+    const tip = await page.locator(`${SCALE} [data-bar="infocentric"] > span:last-child`).evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      return { top: box.top, bottom: box.bottom, left: box.left, right: box.right, shown: getComputedStyle(element).display !== 'none' };
+    });
+    expect(tip.shown).toBe(true);
+    const ruler = await page.locator(`${SCALE} [data-ruler]`).evaluate((element) => element.getBoundingClientRect().bottom);
+    expect(tip.top, 'below the ruler').toBeGreaterThanOrEqual(ruler);
+    const links = await page.locator('#top a').evaluateAll((all) =>
+      all.map((link) => {
+        const box = link.getBoundingClientRect();
+        return { left: box.left, right: box.right, top: box.top, bottom: box.bottom };
+      }),
+    );
+    for (const link of links) {
+      const apart = tip.right <= link.left || tip.left >= link.right || tip.bottom <= link.top || tip.top >= link.bottom;
+      expect(apart, 'clear of the hero links').toBe(true);
+    }
+  });
+
+  test('the floating Ask Mini Vic button waits until the hero has scrolled past on a phone, and is there at once elsewhere', async ({ page }) => {
+    await openAt(page, '/?gl=off', 390, 844);
+    const launcher = page.locator('#assistant-launcher');
+    await expect(launcher, 'hidden over the hero').toBeHidden();
+    await page.evaluate(() => document.querySelector('#experience')?.scrollIntoView());
+    await expect(launcher, 'shown once the hero is past').toBeVisible();
+    await openAt(page, '/?gl=off', 1440);
+    await expect(launcher, 'a desktop has it from the start').toBeVisible();
+  });
+});
+
+test.describe('the detail panels lead with a visual and open with focus inside', { tag: '@desktop' }, () => {
+  test('a figure panel leads with its own reading and a key, and a role panel with the career axis', async ({ page }) => {
+    await openAt(page, '/?gl=off', 1440);
+    for (const figure of headlineFigures) {
+      await page.locator(`[data-detail-trigger="figure-${figure.id}"]`).click();
+      const dialog = page.getByRole('dialog', { name: figure.label });
+      await expect(dialog).toBeVisible();
+      const order = await dialog.evaluate((element) => {
+        const item = element.querySelector('[data-detail-item][data-active="true"]');
+        const visual = item?.querySelector('figure');
+        const heading = item?.querySelector('h3');
+        return { visual: visual?.getBoundingClientRect().top ?? -1, heading: heading?.getBoundingClientRect().top ?? -1, key: visual?.querySelector('figcaption')?.textContent ?? '' };
+      });
+      expect(order.visual, `${figure.id}: the reading is above the title`).toBeLessThan(order.heading);
+      expect(order.key).toBe(figure.key);
+      await page.keyboard.press('Escape');
+    }
+    await page.locator(`${BARS}[data-role="ato"]`).click();
+    const role = page.getByRole('dialog', { name: roles.find((entry) => entry.id === 'ato')?.title ?? '' });
+    await expect(role).toBeVisible();
+    const lead = await role.evaluate((element) => {
+      const item = element.querySelector('[data-detail-item][data-active="true"]');
+      const axis = item?.querySelector('svg');
+      const heading = item?.querySelector('h3');
+      const open = item?.querySelectorAll('li').length ?? 0;
+      return { axis: axis?.getBoundingClientRect().top ?? -1, heading: heading?.getBoundingClientRect().top ?? -1, open };
+    });
+    expect(lead.axis, 'the axis is above the title').toBeLessThan(lead.heading);
+    await expect(role.locator('[data-detail-item][data-active="true"]').getByText('More', { exact: true })).toBeVisible();
+    const ato = roles.find((entry) => entry.id === 'ato');
+    for (const line of ato?.achievements ?? []) expect(await role.textContent(), 'nothing is lost to More').toContain(line.slice(0, 30));
+  });
+
+  for (const width of [1440, 390]) {
+    test(`a deep link to a role opens it with focus inside the dialog at ${width} px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/?gl=off#career-microsoft');
+      await hydrated(page);
+      await expect(page.getByRole('dialog', { name: roles.find((entry) => entry.id === 'microsoft')?.title ?? '' })).toBeVisible();
+      await expect.poll(() => page.evaluate(() => document.querySelector('dialog[open]')?.contains(document.activeElement) ?? false)).toBe(true);
+    });
+  }
+
+  test('a panel grows out of its card: the dialog carries the morph, the card is gone before the panel comes in', async ({ page }) => {
+    await openAt(page, '/?gl=off', 1440);
+    const seen = await page.evaluate(async () => {
+      const trigger = document.querySelector<HTMLElement>('[data-detail-trigger="figure-evidence"]');
+      trigger?.click();
+      const names = new Set<string>();
+      const pseudos = new Set<string>();
+      // Frames can be slow under software rendering, so the morph is followed until it has ended.
+      const end = performance.now() + 10_000;
+      let started = false;
+      while (performance.now() < end) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        const running = document.documentElement.dataset.vt === 'detail';
+        if (running) started = true;
+        if (started && !running) break;
+        const dialog = document.querySelector('dialog[open]');
+        if (dialog) names.add(getComputedStyle(dialog).getPropertyValue('view-transition-name'));
+        for (const animation of document.getAnimations()) {
+          const effect = animation.effect as KeyframeEffect | null;
+          const name = (animation as CSSAnimation).animationName;
+          if (effect?.pseudoElement?.includes('detail-morph')) pseudos.add(`${effect.pseudoElement}:${name}`);
+        }
+      }
+      const dialog = document.querySelector('dialog[open]');
+      return { names: [...names], pseudos: [...pseudos], after: dialog ? getComputedStyle(dialog).getPropertyValue('view-transition-name') : '' };
+    });
+    expect(seen.names, 'the dialog is what is named during the morph').toContain('detail-morph');
+    expect(seen.after, 'and unnamed once it ends').toBe('none');
+    expect(seen.pseudos).toContain('::view-transition-old(detail-morph):morph-out');
+    expect(seen.pseudos).toContain('::view-transition-new(detail-morph):morph-in');
+  });
+});
+
+test.describe('nothing on the first screen shifts', { tag: '@desktop' }, () => {
+  test('layout shift while the hero loads and the page is scrolled through under CPU throttling stays under 0.05, with the node named if it does not', async ({ page }) => {
+    await page.addInitScript(() => {
+      const record = { value: 0, nodes: [] as string[] };
+      (window as unknown as { __cls: typeof record }).__cls = record;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean; sources?: { node: Node | null }[] };
+          if (shift.hadRecentInput) continue;
+          record.value += shift.value;
+          for (const source of shift.sources ?? []) {
+            const node = source.node;
+            record.nodes.push(node instanceof Element ? `${node.tagName.toLowerCase()}${node.id ? `#${node.id}` : ''}.${String(node.className).slice(0, 40)}` : 'text');
+          }
+        }
+      }).observe({ type: 'layout-shift', buffered: true });
+    });
+    const session = await page.context().newCDPSession(page);
+    await session.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    await page.emulateMedia({ colorScheme: 'light' });
+    await openAt(page, '/?gl=high', 1440);
+    const total = await page.evaluate(() => document.documentElement.scrollHeight);
+    for (let step = 0; step <= 10; step += 1) {
+      await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), Math.round(((total - 900) * step) / 10));
+      await page.waitForTimeout(250);
+    }
+    await session.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+    const cls = await page.evaluate(() => (window as unknown as { __cls: { value: number; nodes: string[] } }).__cls);
+    expect(cls.value, `shifted nodes: ${cls.nodes.join(' | ')}`).toBeLessThan(0.05);
+  });
 });

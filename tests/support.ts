@@ -161,3 +161,13 @@ export function watchConsole(page: Page): string[] {
   page.on('pageerror', (error) => problems.push(String(error)));
   return problems;
 }
+
+/**
+ * Opens the Ask Mini Vic panel from the floating launcher. On a phone the launcher waits until
+ * the hero has scrolled past, so the page is scrolled there first.
+ */
+export async function openAssistant(page: Page): Promise<void> {
+  const launcher = page.locator('#assistant-launcher');
+  if (!(await launcher.isVisible())) await page.evaluate(() => document.querySelector('#experience')?.scrollIntoView());
+  await launcher.click();
+}

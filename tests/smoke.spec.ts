@@ -1,6 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test';
 
-import { NAV_ITEMS, SECTION_IDS, enforceProductionCsp, hydrated, open } from './support';
+import { NAV_ITEMS, SECTION_IDS, enforceProductionCsp, hydrated, open, openAssistant } from './support';
 
 const sectionIds: readonly string[] = SECTION_IDS;
 
@@ -77,7 +77,9 @@ test.describe('on every viewport', () => {
     // move along, and the first is whole with the next showing at the edge.
     const onFirstScreen = (viewport?.width ?? 0) >= 1024 ? cards : cards.slice(0, 1);
     const launcher = await page.locator('#assistant-launcher').boundingBox();
-    expect(launcher).not.toBeNull();
+    // On a phone the launcher waits until the hero is past, so it cannot cover a reading.
+    if ((viewport?.width ?? 0) < 640) expect(launcher, 'a phone’s launcher waits for the hero to pass').toBeNull();
+    else expect(launcher).not.toBeNull();
     for (const card of onFirstScreen) {
       expect(card.bottom, `${card.text} ends above the fold`).toBeLessThanOrEqual(fold);
       const apart =
@@ -174,7 +176,7 @@ test.describe('on every viewport', () => {
     await open(page, '/');
 
     // The header and the floating launcher both carry the button; either opens the panel.
-    await page.getByRole('button', { name: 'Ask Mini Vic' }).first().click();
+    await openAssistant(page);
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
 

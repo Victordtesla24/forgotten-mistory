@@ -1,10 +1,10 @@
 'use client';
 
-import type { KeyboardEvent, ReactNode } from 'react';
+import type { ComponentProps, KeyboardEvent } from 'react';
 
 const KEYS = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
 
-/** Left and right arrows, Home and End move focus between the bars; Enter on a bar opens its role. */
+/** Left and right arrows, Home and End move focus between the links of the list; Enter on one opens its role. */
 function moveBetweenBars(event: KeyboardEvent<HTMLOListElement>): void {
   if (!KEYS.includes(event.key) || event.altKey || event.ctrlKey || event.metaKey) return;
   const bars = Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>('a'));
@@ -18,10 +18,10 @@ function moveBetweenBars(event: KeyboardEvent<HTMLOListElement>): void {
   next.focus();
 }
 
-/** The list the bars of the career scale sit in. It adds the arrow-key movement between them. */
-export function BarList({ label, className, children }: { label: string; className?: string; children: ReactNode }) {
+/** A list of role links, the bars of the career scale or the chips of a phone's row, with arrow-key movement between them. */
+export function BarList({ children, ...rest }: Omit<ComponentProps<'ol'>, 'onKeyDown'>) {
   return (
-    <ol aria-label={label} className={className} onKeyDown={moveBetweenBars}>
+    <ol {...rest} onKeyDown={moveBetweenBars}>
       {children}
     </ol>
   );

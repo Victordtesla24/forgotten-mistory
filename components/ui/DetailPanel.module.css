@@ -182,20 +182,26 @@
   }
 }
 
-/* Without script the panels are part of the page: every one is shown in place, in order. */
+/*
+ * Without script the panels are part of the page: every one is shown in place, in order, in
+ * the page's own measure (72rem inside the gutters, text no wider than 68ch), wherever the
+ * set sits in the layout.
+ */
 @media (scripting: none) {
   .dialog {
     position: static;
     display: block;
-    width: auto;
+    width: min(72rem, calc(100% - 2 * var(--gutter)));
     max-height: none;
-    margin: 1.5rem 0 0;
+    margin: 1.5rem auto 0;
     border: 0;
     border-top: 1px solid var(--line);
     border-radius: 0;
     background-color: transparent;
     box-shadow: none;
     overflow: visible;
+    /* In a flex column the panels follow whatever the set's triggers sit in, whichever comes first in the markup. */
+    order: 2;
   }
 
   .frame {
@@ -208,6 +214,7 @@
   }
 
   .item {
+    max-width: 68ch;
     padding: 1.5rem 0 0;
   }
 }

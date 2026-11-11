@@ -3,18 +3,75 @@
  * start and its length from the table in lib/entrance.ts, which reaches this file as custom
  * properties on the hero's root: the headline, the line, the actions, then the readings and
  * the career scale in their own modules. Every animation holds its end state (`both`), so
- * the page can be seeked to any instant of its entrance. Nothing moves layout: elements
- * only rise by a few pixels and fade.
+ * the page can be seeked to any instant of its entrance. Nothing moves layout, and each
+ * element arrives in its own way: the eyebrow fades, the headline lifts into place already
+ * painted (it is the largest thing on the first screen, so it must never wait at opacity 0),
+ * the line rises as it fades and the actions settle from a little smaller, a step apart.
  */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lift {
+  from {
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(0.75rem);
+    transform: translateY(0.5rem);
   }
 
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .eyebrow {
+    animation: fade-in var(--e-line-for) var(--ease) var(--e-headline) both;
+  }
+
+  .headline {
+    animation: lift var(--e-headline-for) var(--ease) var(--e-headline) both;
+  }
+
+  .line {
+    animation: rise var(--e-line-for) var(--ease) var(--e-line) both;
+  }
+
+  .action {
+    transform-origin: left center;
+    animation: settle var(--e-actions-for) var(--ease) calc(var(--e-actions) + var(--i) * var(--e-action-step)) both;
+  }
+
+  .poster {
+    animation: poster-in var(--e-field-for) var(--ease) both;
   }
 }
 
@@ -25,28 +82,6 @@
 
   to {
     opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .eyebrow {
-    animation: rise var(--e-line-for) var(--ease) var(--e-headline) both;
-  }
-
-  .headline {
-    animation: rise var(--e-headline-for) var(--ease) var(--e-headline) both;
-  }
-
-  .line {
-    animation: rise var(--e-line-for) var(--ease) var(--e-line) both;
-  }
-
-  .action {
-    animation: rise var(--e-actions-for) var(--ease) calc(var(--e-actions) + var(--i) * var(--e-action-step)) both;
-  }
-
-  .poster {
-    animation: poster-in var(--e-field-for) var(--ease) both;
   }
 }
 

@@ -1,39 +1,31 @@
 import type { CSSProperties } from 'react';
 
-import { cells, keepsCell, points, squads, type ReadingId } from '@/lib/readings';
+import { cells, cohort, points, type ReadingId } from '@/lib/readings';
 
 import styles from './Readings.module.css';
 
 const vars = (values: Record<string, string | number>): CSSProperties => values as CSSProperties;
 
-/** 10,000 points in a lattice, wiped in as the stage fills it, and the 200 ms line that crosses it. */
+/**
+ * 10,000 points in 100 blocks of 100, wiped in as the stage fills it, and the 200 ms line that
+ * crosses it. One element draws the lattice: a mask of dots and gutters laid on a whole number
+ * of CSS pixels, so it is crisp and never moires.
+ */
 function Telemetry() {
-  const { columns, rows, countMs, sweepMs } = points;
+  const { columns, rows, side, countMs, sweepMs } = points;
   return (
     <div className={styles.points} style={vars({ '--count-ms': `${countMs}ms`, '--sweep-ms': `${sweepMs}ms` })}>
       <div className={styles.wipe}>
-        <svg
-          viewBox={`0 0 ${columns} ${rows}`}
-          preserveAspectRatio="none"
-          focusable="false"
-          className="absolute inset-0 size-full"
-        >
-          <defs>
-            <pattern id="reading-lattice" width="1" height="1" patternUnits="userSpaceOnUse">
-              <rect x="0.1" y="0.1" width="0.62" height="0.62" shapeRendering="crispEdges" className="fill-proof" />
-            </pattern>
-          </defs>
-          <rect width={columns} height={rows} fill="url(#reading-lattice)" opacity="0.7" />
-        </svg>
+        <div className={styles.lattice} style={vars({ '--columns': columns, '--rows': rows, '--side': side })} />
       </div>
       <span className={styles.sweep} />
     </div>
   );
 }
 
-/** 200 cells, full at first, then ≈92% of them fall away and the rest stay. */
+/** 200 cells, all of them staying, each full at first and then falling to about 15 minutes' worth. */
 function Evidence() {
-  const { count, columns, rows, appearMs, spreadMs, fallMs } = cells;
+  const { count, columns, rows, rest, appearMs, spreadMs, fallMs } = cells;
   return (
     <div
       className={styles.cells}
@@ -42,34 +34,29 @@ function Evidence() {
         '--rows': rows,
         '--count': count,
         '--last': columns - 1,
+        '--rest': rest.toFixed(4),
         '--appear': `${appearMs}ms`,
         '--spread': `${spreadMs}ms`,
         '--fall': `${fallMs}ms`,
       })}
     >
       {Array.from({ length: count }, (_, index) => (
-        <span
-          key={index}
-          className={styles.cell}
-          data-keep={keepsCell(index) ? '' : undefined}
-          style={vars({ '--i': index, '--c': Math.floor(index / rows) })}
-        />
+        <span key={index} className={styles.cell} style={vars({ '--i': index, '--c': Math.floor(index / rows) })} />
       ))}
     </div>
   );
 }
 
-/** 40 marks in five squads of two by four, each on its own baseline. */
+/** 40 marks, one for each practitioner, as one cohort on one baseline. */
 function Portfolio() {
-  const { count, groups, perGroup, columns, countMs } = squads;
+  const { count, columns, rows, countMs } = cohort;
   return (
-    <div className={styles.squads} style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--columns': columns })}>
-      {Array.from({ length: groups }, (_, group) => (
-        <span key={group} className={styles.squad} style={vars({ '--g': group })}>
-          {Array.from({ length: perGroup }, (_, mark) => (
-            <span key={mark} className={styles.mark} style={vars({ '--n': group * perGroup + mark })} />
-          ))}
-        </span>
+    <div
+      className={styles.cohort}
+      style={vars({ '--count': count, '--count-ms': `${countMs}ms`, '--columns': columns, '--rows': rows })}
+    >
+      {Array.from({ length: count }, (_, mark) => (
+        <span key={mark} className={styles.mark} style={vars({ '--n': mark })} />
       ))}
     </div>
   );

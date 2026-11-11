@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 import { MINIVIC_CHAT_ORIGIN } from '@/lib/assistant/origin';
 
-import { open } from './support';
+import { open, openAssistant } from './support';
 
 test.describe('when the live assistant cannot answer', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,7 +15,7 @@ test.describe('when the live assistant cannot answer', () => {
     page,
   }) => {
     await open(page, '/');
-    await page.getByRole('button', { name: 'Ask Mini Vic' }).first().click();
+    await openAssistant(page);
     const panel = page.getByRole('dialog');
     await expect(panel).toBeVisible();
 

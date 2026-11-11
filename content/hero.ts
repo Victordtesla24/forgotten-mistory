@@ -17,7 +17,7 @@ interface HeroContent {
   };
   /** The H1 in three parts so that the middle phrase can be set in the serif italic. */
   headline: { lead: string; emphasis: string; tail: string };
-  /** Tenure, sectors and the current role in one line of at most 22 words. */
+  /** Tenure, sectors and the current employer in one short line of at most 12 words. */
   positioning: string;
   actions: { primary: HeroAction; secondary: HeroAction };
   links: readonly HeroAction[];
@@ -30,7 +30,7 @@ export const hero: HeroContent = {
   },
   headline: { lead: 'Delivery leader and ', emphasis: 'AI solutions', tail: ' architect.' },
   positioning:
-    'Sixteen years leading delivery across government, banking and telecommunications; now Scrum Master and Project Manager at the Australian Taxation Office (ATO).',
+    '15+ years delivering in banking, telecoms and government; now at the ATO.',
   actions: {
     primary: { label: 'View selected work', href: '#work' },
     secondary: { label: 'Download CV', href: site.cvHref },

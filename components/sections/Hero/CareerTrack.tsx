@@ -3,95 +3,135 @@ import type { CSSProperties } from 'react';
 import { StageView } from '@/components/visuals/StageView';
 import { ViewTrigger } from '@/components/visuals/ViewTrigger';
 import { CAREER_VIEW } from '@/lib/gl/ids';
-import { careerBars, FIRST_YEAR, LAST_YEAR, numerals, ticks } from '@/lib/timeline';
+import { careerBars, fitStep, FIRST_YEAR, LABEL_LANES, LAST_YEAR, outsideLabels } from '@/lib/timeline';
 
+import { numerals, percent, tickPaths, UNITS } from './axis';
 import { BarList } from './BarList';
 import styles from './CareerTrack.module.css';
-
-/** The SVG draws on a 1000-unit-wide box that stretches to the track, so positions stay exact at every width. */
-const UNITS = 1000;
-const x = (at: number): string => (at * UNITS).toFixed(2);
-
-/** One tick path per length: months, Januaries and the Januaries that carry a numeral. */
-const paths = {
-  month: ticks.filter((tick) => tick.year === undefined).map((tick) => `M${x(tick.at)} 0v5`).join(''),
-  year: ticks.filter((tick) => tick.year !== undefined && !tick.major).map((tick) => `M${x(tick.at)} 0v9`).join(''),
-  major: ticks.filter((tick) => tick.major).map((tick) => `M${x(tick.at)} 0v15`).join(''),
-};
-
-const percent = (at: number): string => `${(at * 100).toFixed(4)}%`;
-
-/** A label is drawn only where its bar is wide enough: the size class picks the container query that allows it. */
-function fitClass(label: string): '3' | '4' | '7' | '9' | '11' {
-  if (label.length <= 3) return '3';
-  if (label.length <= 4) return '4';
-  if (label.length <= 7) return '7';
-  return label.length <= 9 ? '9' : '11';
-}
 
 /**
  * The career, drawn to scale and edge to edge: one axis from 2010 to now, the eight roles as
  * bars whose widths are their lengths in months, the current role lit. It is a plain block,
- * never `100vw`, so it is exactly the width of the page's content box. Each bar is a link
- * that opens its role in the panel set around it, and Left, Right, Home and End move between
- * them. The light layer behind it is the stage's; everything here stands without it.
+ * never `100vw`, so it is exactly the width of the page's content box.
+ *
+ * Every role is named. A name that fits sits inside its bar, longer where the bar is wide
+ * enough to add the title; one that does not stands in a lane above the bars with a hairline
+ * to its bar (`lib/timeline.ts` lays the lanes out). Each bar is a link that opens its role in
+ * the panel set around it, and Left, Right, Home and End move between them. On a phone the
+ * bars are too narrow to touch, so the list of links gives way to a plain drawing of the same
+ * bars and a set of 44 px chips, one for each role, which opens the same panels and lights the
+ * same bars, under a caption naming the current role. Only one of the two sets is ever in the
+ * page's tree. The light layer behind it is the stage's; everything here stands without it.
  */
 export function CareerTrack() {
+  const current = careerBars.find((bar) => bar.current);
+  const lanes = new Map(outsideLabels.map((label) => [label.id, label]));
   return (
-    <div data-career-scale="" className={styles.scale}>
-      <StageView view={CAREER_VIEW} />
-      <BarList label={`Career, ${FIRST_YEAR} to ${LAST_YEAR}, oldest role first`} className={styles.bars}>
+    <div data-career-scale="" className={styles.scale} style={{ '--lane-count': LABEL_LANES } as CSSProperties}>
+      {current ? (
+        <p className={styles.caption}>
+          <span className="text-text">{current.employer}</span>
+          <span> · {current.shortTitle} · </span>
+          <span className="text-accent">{current.dates}</span>
+        </p>
+      ) : null}
+
+      <div className={styles.track}>
+        <StageView view={CAREER_VIEW} className={styles.light} />
+        <div aria-hidden="true" className={styles.drawn}>
+          {careerBars.map((bar) => (
+            <span
+              key={bar.id}
+              className={styles.sliver}
+              data-bar={bar.id}
+              data-current={bar.current ? 'true' : undefined}
+              style={{ left: percent(bar.start), width: percent(bar.width), '--at': bar.start.toFixed(4) } as CSSProperties}
+            />
+          ))}
+        </div>
+        <BarList
+          aria-label={`Career, ${FIRST_YEAR} to ${LAST_YEAR}, oldest role first`}
+          className={styles.bars}
+          data-bars=""
+        >
+          {careerBars.map((bar) => {
+            const outside = lanes.get(bar.id);
+            return (
+              <li
+                key={bar.id}
+                className={styles.item}
+                data-bar={bar.id}
+                data-side={bar.start > 0.5 ? 'end' : 'start'}
+                style={{ left: percent(bar.start), width: percent(bar.width), '--at': bar.start.toFixed(4) } as CSSProperties}
+              >
+                <ViewTrigger
+                  view={CAREER_VIEW}
+                  value={bar.id}
+                  panel={`career-${bar.id}`}
+                  aria-label={bar.name}
+                  data-role={bar.id}
+                  data-months={bar.months}
+                  data-current={bar.current ? 'true' : undefined}
+                  className={styles.bar}
+                />
+                <span aria-hidden="true" className={styles.fill}>
+                  <span className={styles.label} data-fit={fitStep(bar.label)}>
+                    {bar.label}
+                    <span className={styles.more} data-fit={fitStep(bar.label + bar.more)}>
+                      {bar.more}
+                    </span>
+                  </span>
+                </span>
+                {outside ? (
+                  <span aria-hidden="true" className={styles.out} data-fit={fitStep(bar.label)} data-lane={outside.lane}>
+                    <span className={styles.text} data-align={outside.align}>
+                      {bar.label}
+                    </span>
+                  </span>
+                ) : null}
+                <span aria-hidden="true" className={styles.tip}>
+                  <span className="text-muted">{bar.employer}</span>
+                  <span className="font-medium text-text">{bar.shortTitle}</span>
+                  <span className={bar.current ? 'text-accent' : 'text-muted'}>{bar.dates}</span>
+                </span>
+              </li>
+            );
+          })}
+        </BarList>
+
+        <div aria-hidden="true" data-ruler="" className={styles.ruler}>
+          <svg viewBox={`0 0 ${UNITS} 16`} preserveAspectRatio="none" focusable="false" className={styles.ticks}>
+            <line x1="0" x2={UNITS} y1="0.5" y2="0.5" className={styles.baseline} />
+            <path d={tickPaths.month} className={styles.month} />
+            <path d={tickPaths.year} className={styles.year} />
+            <path d={tickPaths.major} className={styles.year} />
+          </svg>
+          {numerals.map((tick) => (
+            <span key={tick.year} className={styles.numeral} style={{ left: `clamp(1rem, ${percent(tick.at)}, calc(100% - 1rem))` }}>
+              {tick.year}
+            </span>
+          ))}
+          <span className={styles.now} />
+        </div>
+      </div>
+
+      <BarList aria-label="Career roles" className={styles.chips} data-chips="">
         {careerBars.map((bar) => (
-          <li
-            key={bar.id}
-            className={styles.item}
-            data-side={bar.start > 0.5 ? 'end' : 'start'}
-            style={{ left: percent(bar.start), width: percent(bar.width), '--at': bar.start.toFixed(4) } as CSSProperties}
-          >
+          <li key={bar.id}>
             <ViewTrigger
               view={CAREER_VIEW}
               value={bar.id}
               panel={`career-${bar.id}`}
               aria-label={bar.name}
               data-role={bar.id}
-              data-months={bar.months}
               data-current={bar.current ? 'true' : undefined}
-              className={styles.bar}
+              className={styles.chip}
             >
-              <span className={styles.fill}>
-                <span className={styles.label} data-fit={fitClass(bar.label)}>
-                  {bar.label}
-                </span>
-              </span>
+              {bar.label}
             </ViewTrigger>
-            <span aria-hidden="true" className={styles.tip}>
-              <span className="text-muted">{bar.employer}</span>
-              <span className="font-medium text-text">{bar.shortTitle}</span>
-              <span className={bar.current ? 'text-accent' : 'text-muted'}>{bar.dates}</span>
-            </span>
           </li>
         ))}
       </BarList>
-
-      <div aria-hidden="true" data-ruler="" className={styles.ruler}>
-        <svg
-          viewBox={`0 0 ${UNITS} 16`}
-          preserveAspectRatio="none"
-          focusable="false"
-          className={styles.ticks}
-        >
-          <line x1="0" x2={UNITS} y1="0.5" y2="0.5" className={styles.baseline} />
-          <path d={paths.month} className={styles.month} />
-          <path d={paths.year} className={styles.year} />
-          <path d={paths.major} className={styles.year} />
-        </svg>
-        {numerals.map((tick) => (
-          <span key={tick.year} className={styles.numeral} style={{ left: `clamp(1rem, ${percent(tick.at)}, calc(100% - 1rem))` }}>
-            {tick.year}
-          </span>
-        ))}
-        <span className={styles.now} />
-      </div>
     </div>
   );
 }

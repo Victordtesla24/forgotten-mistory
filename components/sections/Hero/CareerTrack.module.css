@@ -4,34 +4,86 @@
  * and ticks) is complete on its own; the stage's light sits behind it, so every fill is
  * translucent. Focus is drawn inside each bar, because neighbouring bars touch and the first
  * and last end at the edge of the screen.
+ *
+ * From 640px the bars are the controls (44px tall, named inside or in a lane above). Below it
+ * they are only drawn, too narrow to touch, and a set of 44px chips is the control instead.
  */
 .scale {
-  position: relative;
-  height: calc(var(--bar-height) + var(--ruler-height));
-  --bar-height: 2.75rem;
   --ruler-height: 2.75rem;
+  --bar-height: 1.75rem;
+  --lanes-height: 0rem;
 }
 
-.bars {
+.track {
+  position: relative;
+  height: calc(var(--lanes-height) + var(--bar-height) + var(--ruler-height));
+}
+
+@media (min-width: 640px) {
+  .scale {
+    --bar-height: 2.75rem;
+    --lanes-height: calc(var(--lane-count) * 1.375rem + 0.5rem);
+  }
+}
+
+/* The stage's light covers the bars and the ruler, not the lanes of names above them. */
+.track .light {
+  inset: var(--lanes-height) 0 auto 0;
+  height: calc(var(--bar-height) + var(--ruler-height));
+}
+
+.bars,
+.drawn {
   position: absolute;
-  inset: 0 0 auto 0;
+  inset: var(--lanes-height) 0 auto 0;
   height: var(--bar-height);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* The bars as links from 640px; below it a plain drawing of them, and the chips are the links. */
+.bars {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .bars {
+    display: block;
+  }
+
+  .drawn {
+    display: none;
+  }
+}
+
+.sliver {
+  position: absolute;
+  inset-block: 0.125rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background-color: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+
+.sliver[data-current='true'] {
+  border-color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+
+/* Every bar is the container its labels measure themselves against. */
 .item {
   position: absolute;
   top: 0;
   height: var(--bar-height);
+  container-type: inline-size;
 }
 
+/* The control: an empty link laid over the bar. */
 .bar {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: block;
-  container-type: inline-size;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -44,7 +96,7 @@
   overflow: hidden;
   border: 1px solid var(--line-strong);
   border-radius: 6px;
-  background-color: color-mix(in srgb, var(--surface) 60%, transparent);
+  background-color: color-mix(in srgb, var(--accent) 7%, var(--surface));
   color: var(--muted);
   transition:
     background-color var(--duration-hover) var(--ease),
@@ -53,28 +105,28 @@
     scale var(--duration-press) var(--ease);
 }
 
-.bar[data-current='true'] .fill {
+.bar[data-current='true'] + .fill {
   border-color: var(--accent);
-  background-color: var(--accent-soft);
+  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
   color: var(--text);
 }
 
-.bar:hover .fill {
+.bar:hover + .fill {
   border-color: var(--muted);
-  background-color: color-mix(in srgb, var(--raised) 85%, transparent);
+  background-color: color-mix(in srgb, var(--accent) 14%, var(--raised));
   color: var(--text);
 }
 
-.bar[data-current='true']:hover .fill {
+.bar[data-current='true']:hover + .fill {
   border-color: var(--accent);
-  background-color: color-mix(in srgb, var(--accent) 22%, transparent);
+  background-color: color-mix(in srgb, var(--accent) 32%, var(--surface));
 }
 
-.bar:active .fill {
+.bar:active + .fill {
   scale: 1 0.92;
 }
 
-.bar:focus-visible .fill {
+.bar:focus-visible + .fill {
   border-color: var(--accent);
   box-shadow: inset 0 0 0 1px var(--accent);
   color: var(--text);
@@ -89,41 +141,187 @@
   white-space: nowrap;
 }
 
-/* Labels only where they fit: the bar is the container, and each label names the width it needs. */
-@container (min-width: 2.3rem) {
+.more {
+  display: none;
+  color: var(--muted);
+}
+
+/*
+ * A name is drawn inside its bar only where it fits: the bar is the container, and each name
+ * asks for the width its length needs (`fitStep` and `labelWidth` in lib/timeline.ts: seven and
+ * eight tenths of a pixel to a character at 13px, plus the padding). The title that follows the
+ * name needs more. A name that does not fit is drawn in a lane above the bars instead.
+ */
+@container (min-width: 2.31rem) {
   .label[data-fit='3'] {
     display: block;
   }
 }
 
-@container (min-width: 2.75rem) {
+@container (min-width: 2.8rem) {
   .label[data-fit='4'] {
     display: block;
   }
 }
 
-@container (min-width: 4.25rem) {
+@container (min-width: 4.26rem) {
   .label[data-fit='7'] {
     display: block;
   }
 }
 
-@container (min-width: 5.25rem) {
+@container (min-width: 5.24rem) {
   .label[data-fit='9'] {
     display: block;
   }
 }
 
-@container (min-width: 6.25rem) {
+@container (min-width: 6.21rem) {
   .label[data-fit='11'] {
     display: block;
   }
 }
 
-/* What a bar says about itself, for a fine pointer and for the keyboard: above the bar, inside the page. */
+@container (min-width: 7.19rem) {
+  .more[data-fit='13'] {
+    display: inline;
+  }
+}
+
+@container (min-width: 8.65rem) {
+  .more[data-fit='16'] {
+    display: inline;
+  }
+}
+
+@container (min-width: 10.6rem) {
+  .more[data-fit='20'] {
+    display: inline;
+  }
+}
+
+@container (min-width: 12.55rem) {
+  .more[data-fit='24'] {
+    display: inline;
+  }
+}
+
+@container (min-width: 14.5rem) {
+  .more[data-fit='28'] {
+    display: inline;
+  }
+}
+
+/*
+ * The lanes above the bars. A name that does not fit its bar stands in lane 0 (next to the
+ * bars) or a lane above it, centred on its bar or flush with an edge of the track where
+ * centring would leave it, with a hairline down to the bar. The `cqw` units are the bar's own
+ * width, so the text can be set flush with the bar's left or right edge.
+ */
+.out {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 0;
+  height: calc(0.5rem + var(--lane, 0) * 1.375rem + 1.125rem);
+  pointer-events: none;
+}
+
+.out[data-lane='0'] {
+  --lane: 0;
+}
+
+.out[data-lane='1'] {
+  --lane: 1;
+}
+
+.out[data-lane='2'] {
+  --lane: 2;
+}
+
+.out::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: calc(0.5rem + var(--lane, 0) * 1.375rem);
+  background-color: var(--line-strong);
+}
+
+.text {
+  position: absolute;
+  top: 0;
+  padding-inline: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.text[data-align='center'] {
+  left: 0;
+  translate: -50% 0;
+}
+
+.text[data-align='start'] {
+  left: -50cqw;
+}
+
+.text[data-align='end'] {
+  right: -50cqw;
+}
+
+.item:has(.bar[data-current='true']) .text {
+  color: var(--text);
+}
+
+.item:has(.bar:hover) .text,
+.item:has(.bar:focus-visible) .text {
+  color: var(--text);
+}
+
+@media (min-width: 640px) {
+  @container (width < 2.31rem) {
+    .out[data-fit='3'] {
+      display: block;
+    }
+  }
+
+  @container (width < 2.8rem) {
+    .out[data-fit='4'] {
+      display: block;
+    }
+  }
+
+  @container (width < 4.26rem) {
+    .out[data-fit='7'] {
+      display: block;
+    }
+  }
+
+  @container (width < 5.24rem) {
+    .out[data-fit='9'] {
+      display: block;
+    }
+  }
+
+  @container (width < 6.21rem) {
+    .out[data-fit='11'] {
+      display: block;
+    }
+  }
+}
+
+/*
+ * What a bar says about itself, for a fine pointer and for the keyboard: in the band below the
+ * numerals, so it never covers the lanes of names, the hero's links or the figures above.
+ */
 .tip {
   position: absolute;
-  bottom: calc(100% - 0.25rem);
+  top: calc(100% + var(--ruler-height) + 0.25rem);
   z-index: 2;
   display: none;
   width: max-content;
@@ -148,19 +346,21 @@
   right: 0;
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (hover: hover) and (pointer: fine) and (min-width: 640px) {
   .item:hover .tip {
     display: flex;
   }
 }
 
-.item:has(.bar:focus-visible) .tip {
-  display: flex;
+@media (min-width: 640px) {
+  .item:has(.bar:focus-visible) .tip {
+    display: flex;
+  }
 }
 
 .ruler {
   position: absolute;
-  inset: var(--bar-height) 0 0 0;
+  inset: calc(var(--lanes-height) + var(--bar-height)) 0 0 0;
 }
 
 .ticks {
@@ -210,6 +410,77 @@
   background-color: var(--accent);
 }
 
+/* Phones: the current role in words, above the bars. */
+.caption {
+  display: block;
+  margin: 0 0 0.5rem;
+  padding-inline: var(--gutter);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+@media (min-width: 640px) {
+  .caption {
+    display: none;
+  }
+}
+
+/* Phones: one 44px chip for each role, all of them on screen, opening the same panels as the bars. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0;
+  padding: 0 var(--gutter);
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .chips {
+    display: none;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    border-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease),
+    scale var(--duration-press) var(--ease);
+}
+
+.chip[data-current='true'] {
+  border-color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 22%, var(--surface));
+  color: var(--text);
+}
+
+.chip:hover {
+  border-color: var(--muted);
+  color: var(--text);
+}
+
+.chip:active {
+  scale: 0.96;
+}
+
 /*
  * The axis draws left to right, in time order, once: the ruler is wiped in at a steady pace
  * and each bar grows from its own left edge as the front reaches it. Bars take a quarter of
@@ -235,22 +506,48 @@
   }
 }
 
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .ruler {
     animation: wipe calc(var(--e-scale-for) * 0.75) linear var(--e-scale) both;
   }
 
-  .fill {
+  .fill,
+  .sliver {
     animation: grow calc(var(--e-scale-for) * 0.25) var(--ease) calc(var(--e-scale) + var(--at) * var(--e-scale-for) * 0.75) both;
+  }
+
+  /* A name in a lane arrives with its bar. */
+  .out {
+    animation: appear calc(var(--e-scale-for) * 0.25) var(--ease) calc(var(--e-scale) + var(--at) * var(--e-scale-for) * 0.75) both;
+  }
+}
+
+/* Without script the scale still comes straight after the first screen, before every panel that follows it. */
+@media (scripting: none) {
+  .scale {
+    order: 1;
   }
 }
 
 @media (forced-colors: active) {
-  .fill {
+  .fill,
+  .sliver,
+  .chip {
     border-color: CanvasText;
   }
 
-  .bar:focus-visible .fill {
+  .bar:focus-visible + .fill,
+  .chip:focus-visible {
     outline: 2px solid Highlight;
   }
 }

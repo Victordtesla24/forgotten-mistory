@@ -47,11 +47,21 @@ export interface ExperienceRole {
 }
 
 /**
- * The right-hand edge of every timeline. Fixed rather than read from the clock:
- * the site is a static export, so `new Date()` would freeze at build time
- * anyway. Update it when the CV is updated.
+ * The right-hand edge of every timeline: the month the site was built in, so the current
+ * role always runs to the present. The site is a static export, so the month is read once,
+ * when `next.config.js` is loaded, and inlined as `NEXT_PUBLIC_BUILD_MONTH` ("2026-11");
+ * the server render and the browser bundle then always agree. Without it (a script that
+ * imports this file directly) it is the current month.
  */
-export const NOW = ym(2026, 9); // September 2026
+function buildMonth(): number {
+  const stamp = /^(\d{4})-(\d{2})$/.exec(process.env.NEXT_PUBLIC_BUILD_MONTH ?? '');
+  const today = new Date();
+  return stamp
+    ? ym(Number(stamp[1]), Number(stamp[2]))
+    : ym(today.getUTCFullYear(), today.getUTCMonth() + 1);
+}
+
+export const NOW = buildMonth();
 
 export const TIMELINE_START = 2010;
 
@@ -118,7 +128,7 @@ export const roles: readonly ExperienceRole[] = [
     summary: 'Delivery lead and AI/ML architect for core banking modernisation and real-time telemetry.',
     headline: { value: '10,000+', label: 'concurrent devices at P95 under 200 ms' },
     achievements: [
-      'Led AI/ML delivery for critical banking services from 2022 to 2025, including WebSocket telemetry that cut P95 latency to under 200 ms across 10,000+ concurrent devices and improved user response time.',
+      'Led the technical delivery of AI solutions from 2022 to 2025, including real-time WebSocket telemetry servers for 10,000+ concurrent devices that cut P95 latency to under 200 ms and improved user response time.',
       'Moved core banking platforms from monolith to cloud-native (.NET/Azure) between 2017 and 2022: end-to-end delivery time down by more than 30%, infrastructure cost down by more than 15%.',
       'Directed a program portfolio valued at over $5M across 5+ cross-functional squads and up to 40 practitioners, onshore and offshore, to on-time, high-quality releases.',
       'Owned the technical vision and product backlog for major platform modernisations at 100% compliance with enterprise architectural standards and risk models.',

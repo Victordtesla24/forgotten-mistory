@@ -16,10 +16,12 @@ export interface HeadlineFigure {
   scope: string;
   /** Two or three sentences on what was done and where. */
   story: string;
+  /** What one mark of the reading stands for, in one sentence: the key to the drawing, shown under it in the panel. */
+  key: string;
   /** The role in `experience.ts` the figure was earned in. */
   roleId: string;
-  /** What the live reading draws: one mark for each of `count`, in `groups` groups. */
-  marks: { count: number; groups: number };
+  /** What the live reading draws: one mark for each of `count`. */
+  marks: { count: number };
 }
 
 export const headlineFigures: readonly HeadlineFigure[] = [
@@ -32,8 +34,9 @@ export const headlineFigures: readonly HeadlineFigure[] = [
     scope: 'ATO Payday Super · 200+ SIT scenarios',
     story:
       'Architected COBOL/mainframe test-evidence automation for 200+ SIT/E2E scenarios across all eight Payday Super squads: ~3 hours to ~15 minutes per scenario. The REXX, SMF, SDSF, PCOMM, PowerShell and VBA toolchain needed no new approvals. Convened a cross-discipline war room that produced a binding automation recommendation in under three hours.',
+    key: 'One cell for each of 200 scenarios. The fill is the effort for one: about 3 hours, falling to about 15 minutes.',
     roleId: 'ato',
-    marks: { count: 200, groups: 1 },
+    marks: { count: 200 },
   },
   {
     id: 'portfolio',
@@ -44,8 +47,9 @@ export const headlineFigures: readonly HeadlineFigure[] = [
     scope: 'ANZ · up to 40 practitioners',
     story:
       'Directed a program portfolio valued at over $5M at ANZ: 5+ cross-functional squads, up to 40 practitioners, onshore and offshore, delivering on-time, high-quality releases. Defined the technical vision and owned the product backlog for major platform modernisations, at 100% compliance with enterprise architectural standards and risk models.',
+    key: 'One mark for each practitioner, up to 40, across 5+ squads.',
     roleId: 'anz',
-    marks: { count: 40, groups: 5 },
+    marks: { count: 40 },
   },
   {
     id: 'telemetry',
@@ -55,8 +59,9 @@ export const headlineFigures: readonly HeadlineFigure[] = [
     label: 'concurrent devices',
     scope: 'P95 under 200 ms · ANZ',
     story:
-      'Led AI/ML delivery for critical banking services at ANZ, including real-time WebSocket telemetry servers for 10,000+ concurrent devices. The telemetry cut P95 latency to under 200 ms, improving user response time.',
+      'Led the technical delivery of AI solutions at ANZ, including real-time WebSocket telemetry servers for 10,000+ concurrent devices. The telemetry cut P95 latency to under 200 ms, improving user response time.',
+    key: 'One point for each of 10,000 concurrent devices, in blocks of 100. The line crosses them in 200 ms, the ceiling on P95 latency.',
     roleId: 'anz',
-    marks: { count: 10000, groups: 1 },
+    marks: { count: 10000 },
   },
 ];

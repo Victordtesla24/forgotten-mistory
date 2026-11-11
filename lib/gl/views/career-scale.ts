@@ -44,6 +44,7 @@ const common = /* glsl */ `
 uniform vec2 uOrigin;
 uniform vec2 uSize;
 uniform float uPixel;
+uniform float uRuler;
 uniform float uDark;
 uniform float uFront;
 uniform float uFrontAmt;
@@ -75,10 +76,10 @@ ${common}
 void main() {
   float x = position.x;
   float band = exp(-pow((x - uFront + 0.012) / 0.03, 2.0)) * uFrontAmt;
-  float lit = inside(x, spanOf(uHover)) * uHoverAmt * 0.9 + inside(x, spanOf(uCurrent)) * 0.5;
+  float lit = inside(x, spanOf(uHover)) * uHoverAmt + inside(x, spanOf(uCurrent)) * 0.7;
   vLight = max(band, lit) * step(x, uFront);
   float px = (floor(x * uSize.x * uPixel) + 0.5) / uPixel;
-  float y = uSize.y * 0.5 - position.y * aLength;
+  float y = uRuler - position.y * aLength;
   gl_Position = vec4(vec2(px, y) / uSize * 2.0 - 1.0, 0.0, 1.0);
 }
 `;
@@ -118,9 +119,9 @@ float bloom(vec2 span, vec2 uv) {
 
 void main() {
   vec2 uv = (gl_FragCoord.xy - uOrigin) / (uSize * uPixel);
-  float strength = mix(0.16, 0.26, uDark);
+  float strength = mix(0.3, 0.4, uDark);
 
-  float current = bloom(spanOf(uCurrent), uv) * 0.85;
+  float current = bloom(spanOf(uCurrent), uv);
   float hover = bloom(spanOf(uHover), uv) * uHoverAmt;
   float front = exp(-pow((uv.x - uFront + 0.01) / 0.06, 2.0)) * uFrontAmt * 0.7;
   front *= exp(-pow((uv.y - 0.6) / 0.6, 2.0));
@@ -140,6 +141,7 @@ export function createCareerScale(context: ViewContext): View {
     uOrigin: { value: [0, 0] as [number, number] },
     uSize: { value: [1, 1] as [number, number] },
     uPixel: { value: 1 },
+    uRuler: { value: 44 },
     uDark: palette.dark,
     uAccent: palette.colors.accent,
     uFront: { value: 0 },
@@ -175,6 +177,8 @@ export function createCareerScale(context: ViewContext): View {
   const scene = new Scene();
   scene.add(glow, rule);
   const camera = createCamera();
+  // The ticks hang from the ruler's baseline, which is the top of the ruler: its height up from the view's bottom edge.
+  const ruler = context.element.closest('[data-career-scale]')?.querySelector<HTMLElement>('[data-ruler]');
 
   return {
     pointer: false,
@@ -194,6 +198,7 @@ export function createCareerScale(context: ViewContext): View {
       uniforms.uOrigin.value = [viewport.x * pixelRatio, viewport.y * pixelRatio];
       uniforms.uSize.value = [viewport.width, viewport.height];
       uniforms.uPixel.value = pixelRatio;
+      uniforms.uRuler.value = ruler?.clientHeight ?? uniforms.uRuler.value;
       uniforms.uFront.value = front;
       uniforms.uFrontAmt.value = t < 0 ? 0 : 1 - unit((t - FRONT_MS) / AFTERGLOW_MS);
       uniforms.uHover.value = hovered;

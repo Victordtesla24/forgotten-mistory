@@ -5,11 +5,13 @@
  * instant and the hand-over between them is not seen. `--vs` is when a reading's visual starts.
  */
 /*
- * Below 1024px the readings are one row to move along sideways, each card a fixed width so the
- * next one shows at the edge; from 1024px they are a column beside the headline. The row is
- * a scroller of its own, so the page never scrolls sideways.
+ * Below 700px the readings are one row to move along sideways, each card a fixed width so the
+ * next one shows at the edge; from 700px to 1023px the three sit side by side, so every figure
+ * is on the first screen of a tablet; from 1024px they are a column beside the headline. The row
+ * is a scroller of its own, so the page never scrolls sideways.
  */
 .row {
+  --row-visual: 3.5rem;
   display: flex;
   gap: 0.75rem;
   margin: 0 calc(var(--gutter) * -1);
@@ -27,22 +29,26 @@
 }
 
 .reading {
-  --visual: 3.5rem;
+  --visual: var(--row-visual);
   flex: none;
   width: min(19rem, 78%);
   scroll-snap-align: start;
 }
 
 @media (min-width: 640px) {
+  .row {
+    --row-visual: 4rem;
+  }
+
   .reading {
-    --visual: 4rem;
     width: 20rem;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 700px) {
   .row {
     display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.75rem;
     margin: 0;
     padding: 0;
@@ -50,8 +56,21 @@
   }
 
   .reading {
-    --visual: 4.5rem;
     width: auto;
+  }
+}
+
+/*
+ * Beside the headline the column is three cards tall. It claims that height from its first
+ * paint, so a page that is still being parsed, with one card in it, does not later push the
+ * headline, which is centred against this column, up the screen. A card is its visual and a
+ * 5rem row of text.
+ */
+@media (min-width: 1024px) {
+  .row {
+    --row-visual: 7rem;
+    grid-template-columns: minmax(0, 1fr);
+    min-block-size: calc(3 * (var(--row-visual) + 5rem) + 2 * 0.75rem);
   }
 }
 
@@ -80,10 +99,10 @@
   container-type: inline-size;
 }
 
-/* Telemetry: the lattice is wiped in column by column, then the line crosses it. */
+/* Telemetry: the lattice is wiped in from the left, then the line crosses it. */
 .points,
 .cells,
-.squads {
+.cohort {
   position: absolute;
   inset: 0;
 }
@@ -95,6 +114,51 @@
 .wipe {
   position: absolute;
   inset: 0;
+}
+
+/*
+ * 10,000 points in 100 blocks of 100: one element, masked into dots (a dot is half the pitch,
+ * the pitch a whole number of CSS pixels that grows with the room) and into blocks (ten points,
+ * then one pitch of gutter). The lattice is `--columns` by `--rows` pitches, centred, so nothing
+ * is resampled and nothing moires.
+ */
+.lattice {
+  --pitch: 1px;
+  --dot: 1px;
+  position: absolute;
+  inset: 0;
+  width: calc(var(--columns) * var(--pitch));
+  height: calc(var(--rows) * var(--pitch));
+  margin: auto;
+  background-color: var(--proof);
+  opacity: 0.72;
+  mask-image:
+    repeating-linear-gradient(to right, #000 0 var(--dot), transparent var(--dot) var(--pitch)),
+    repeating-linear-gradient(to bottom, #000 0 var(--dot), transparent var(--dot) var(--pitch)),
+    repeating-linear-gradient(
+      to right,
+      #000 0 calc(var(--side) * var(--pitch)),
+      transparent calc(var(--side) * var(--pitch)) calc((var(--side) + 1) * var(--pitch))
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      #000 0 calc(var(--side) * var(--pitch)),
+      transparent calc(var(--side) * var(--pitch)) calc((var(--side) + 1) * var(--pitch))
+    );
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+@container (min-width: 440px) {
+  .lattice {
+    --pitch: 2px;
+  }
+}
+
+@container (min-width: 660px) {
+  .lattice {
+    --pitch: 3px;
+  }
 }
 
 @keyframes fill-in {
@@ -137,7 +201,7 @@
   }
 }
 
-/* Evidence: 40 by 5 cells; each is full, then about 92% of them empty and the evenly spread rest stay. */
+/* Evidence: 40 by 5 cells, all 200 staying; each is full at first, then its fill falls to about 15 minutes' worth. */
 .cells {
   inset: 6px 10px;
   display: grid;
@@ -160,12 +224,8 @@
   inset: 0;
   background-color: var(--proof);
   opacity: 0.86;
-  transform: scaleY(0);
+  transform: scaleY(var(--rest));
   transform-origin: bottom;
-}
-
-.cell[data-keep]::after {
-  transform: none;
 }
 
 @keyframes cell-in {
@@ -184,7 +244,7 @@
   }
 
   to {
-    transform: scaleY(0);
+    transform: scaleY(var(--rest));
   }
 }
 
@@ -193,27 +253,33 @@
     animation: cell-in 90ms var(--ease) calc(var(--vs) + var(--i) / var(--count) * var(--appear)) both;
   }
 
-  .cell:not([data-keep])::after {
+  .cell::after {
     animation: cell-fall var(--fall) var(--ease-in-out)
       calc(var(--vs) + var(--appear) + var(--c) / var(--last) * var(--spread)) both;
   }
 }
 
-/* Portfolio: five squads of eight marks, two wide and four tall, each on a baseline. */
-.squads {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  --pitch: clamp(11px, calc(100cqw / 28), 18px);
+/* Portfolio: forty marks, one for each practitioner, two rows of twenty on one baseline. No squad is drawn. */
+.cohort {
+  --pitch: clamp(9px, calc(100cqw / 24), 22px);
+  inset: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(var(--columns), var(--pitch));
+  grid-template-rows: repeat(var(--rows), var(--pitch));
+  width: calc(var(--columns) * var(--pitch));
+  height: calc(var(--rows) * var(--pitch));
+  margin: auto;
+  place-items: center;
 }
 
-.squad {
-  display: grid;
-  grid-template-columns: repeat(var(--columns), var(--pitch));
-  grid-auto-rows: var(--pitch);
-  place-items: center;
-  padding-bottom: calc(var(--pitch) * 0.45);
-  border-bottom: 1px solid var(--line-strong);
+.cohort::after {
+  content: '';
+  position: absolute;
+  inset-inline: calc(var(--pitch) * -0.2);
+  top: calc(100% + var(--pitch) * 0.45);
+  height: 1px;
+  background-color: var(--line-strong);
 }
 
 .mark {
@@ -242,9 +308,25 @@
   }
 }
 
+/*
+ * A figure's panel leads with its own reading, enlarged. The same drawing, on the same custom
+ * properties, replays when the panel opens: it is not displayed while the dialog is closed, so
+ * its animations start when it opens. The scope and the key to the encoding are its caption.
+ */
+.panelTile {
+  --vs: 120ms;
+  position: relative;
+  height: 11rem;
+  container-type: inline-size;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background-color: var(--bg);
+}
+
 @media (forced-colors: active) {
   .cell,
-  .mark {
+  .mark,
+  .lattice {
     forced-color-adjust: none;
   }
 }

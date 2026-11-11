@@ -5,7 +5,7 @@ import { expect, test } from '@playwright/test';
 
 import { MINIVIC_CHAT_ORIGIN } from '@/lib/assistant/origin';
 
-import { open } from './support';
+import { open, openAssistant } from './support';
 
 /**
  * Wording that belongs to a previous version of the site, or to a feature the page does
@@ -101,7 +101,7 @@ test.describe('checked once, because the viewport does not matter', { tag: '@des
     await open(page, '/');
     const own = new URL(page.url()).host;
 
-    await page.getByRole('button', { name: 'Ask Mini Vic' }).first().click();
+    await openAssistant(page);
     await expect(page.getByRole('dialog')).toBeVisible();
     const chatHost = new URL(MINIVIC_CHAT_ORIGIN).host;
     await expect.poll(() => hosts.has(chatHost), 'opening the panel warms the chat host').toBe(true);

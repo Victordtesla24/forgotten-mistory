@@ -2,6 +2,7 @@
 
 import { MessageCircle } from 'lucide-react';
 import { AnimatePresence, m, useReducedMotion } from 'motion/react';
+import { usePathname } from 'next/navigation';
 import {
   useCallback,
   useEffect,
@@ -15,6 +16,7 @@ import {
 
 import { ASSISTANT_OPEN_EVENT } from '@/components/site/openAssistant';
 import { Button } from '@/components/ui/Button';
+import { cn } from '@/lib/cn';
 
 import { Panel } from './Panel';
 import { useConversation } from './useConversation';
@@ -28,6 +30,29 @@ const SHEET_QUERY = '(width < 40rem)';
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * On a phone the launcher would sit on the hero's own figures, so it waits until the hero's
+ * career scale, the last thing in it, has scrolled out of the top of the screen. Elsewhere,
+ * and on any page without a hero, it is there from the start.
+ */
+function usePastHero(): boolean {
+  const pathname = usePathname();
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const scale = document.querySelector('[data-career-scale]');
+    if (!scale || typeof IntersectionObserver === 'undefined') {
+      setPast(true);
+      return;
+    }
+    const watch = new IntersectionObserver(([entry]) => {
+      if (entry) setPast(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+    });
+    watch.observe(scale);
+    return () => watch.disconnect();
+  }, [pathname]);
+  return past;
+}
 
 /**
  * While the sheet is open, follow the visual viewport so the question box stays
@@ -83,6 +108,7 @@ export default function Assistant() {
   const reduced = useReducedMotion();
   const titleId = useId();
   const noteId = useId();
+  const pastHero = usePastHero();
 
   useSheetViewport(dialogRef, open);
 
@@ -156,7 +182,10 @@ export default function Assistant() {
         aria-expanded={open}
         aria-controls="assistant-panel"
         onClick={show}
-        className="fixed right-[max(1rem,env(safe-area-inset-right))] bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 rounded-full px-5 shadow-float print:hidden"
+        className={cn(
+          'fixed right-[max(1rem,env(safe-area-inset-right))] bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 rounded-full px-5 shadow-float print:hidden',
+          !pastHero && 'max-sm:hidden',
+        )}
       >
         <MessageCircle aria-hidden="true" className="size-5" />
         Ask Mini Vic

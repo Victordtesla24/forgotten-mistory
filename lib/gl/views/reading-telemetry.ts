@@ -1,8 +1,10 @@
 /**
- * The telemetry reading: exactly 10,000 points, one for each concurrent device, filling a
- * lattice column by column, then a line that crosses it in 200 ms, the P95 latency of the
- * figure's scope. Points the line has reached stay lit. A hover or focus sends the line
- * across again. Every point is a real GL point, so the stage's own counters report them.
+ * The telemetry reading: exactly 10,000 points, one for each concurrent device, in 100 blocks
+ * of 100, filling the lattice from left to right, then a line that crosses it in 200 ms, the
+ * P95 latency of the figure's scope. Points the line has reached stay lit. A hover or focus
+ * sends the line across again. The pitch is a whole number of device pixels and every point
+ * sits on a pixel, with no jitter, so the lattice is crisp at any ratio and never moires.
+ * Every point is a real GL point, so the stage's own counters report them.
  */
 
 import {
@@ -15,14 +17,16 @@ import {
   type WebGLRenderer,
 } from 'three';
 
-import { points } from '../../readings';
+import { points, pointPitch, pointSize } from '../../readings';
 import { finish } from '../glsl/finish';
 import type { LiveTier } from '../tier';
 import { createBackdrop, createCamera, createReadingState, easeOut, readingGlsl, readingMask, unit } from './reading';
 import type { FrameInput, View, ViewContext } from './types';
 
 const pointVertex = /* glsl */ `
-uniform vec2 uGrid;
+uniform vec2 uLattice;
+uniform float uPitch;
+uniform float uDot;
 uniform float uReveal;
 uniform float uTrail;
 
@@ -31,21 +35,20 @@ varying float vGlow;
 
 ${readingGlsl}
 
-float hash(vec2 p) {
-  return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
 void main() {
-  // Each device sits inside its own cell of the lattice, a little off its centre, so the field
-  // is an even grain at any pixel ratio and never a moire of rows and columns.
-  vec2 jitter = vec2(hash(position.xy), hash(position.yx + 7.0)) - 0.5;
-  vec2 uv = (position.xy + 0.5 + 0.8 * jitter) / uGrid;
-  float passed = uReveal - uv.x;
+  // The lattice is centred in the tile on whole device pixels; each dot sits in the middle of
+  // its own pitch cell, so every point lands on a pixel and nothing is resampled.
+  vec2 device = floor(uSize * uPixel + 0.5);
+  vec2 origin = floor((device - uLattice * uPitch) * 0.5);
+  float inset = floor((uPitch - uDot) * 0.5);
+  vec2 corner = origin + position.xy * uPitch + inset;
+  vec2 centre = vec2(corner.x, device.y - corner.y) + vec2(uDot * 0.5, -uDot * 0.5);
+  float across = centre.x / device.x;
+  float passed = uReveal - across;
   vLit = step(0.0, passed);
-  vGlow = max(flashBand(uv.x), vLit * exp(-max(passed, 0.0) * 16.0) * uTrail);
-  gl_Position = vec4(uv * 2.0 - 1.0, 0.0, 1.0);
-  float pitch = uSize.x * uPixel / uGrid.x;
-  gl_PointSize = clamp(pitch * 0.8, 1.5, 3.0);
+  vGlow = max(flashBand(across), vLit * exp(-max(passed, 0.0) * 16.0) * uTrail);
+  gl_Position = vec4(centre / device * 2.0 - 1.0, 0.0, 1.0);
+  gl_PointSize = uDot;
 }
 `;
 
@@ -61,10 +64,8 @@ ${readingMask}
 ${finish}
 
 void main() {
-  float d = length(gl_PointCoord - 0.5);
-  float cover = 1.0 - smoothstep(0.15, 0.5, d);
-  float strength = mix(0.34, 0.8, vLit) + 0.16 * uLift;
-  float alpha = min(strength + 0.5 * vGlow, 1.0) * cover * cornerMask();
+  float strength = mix(0.4, 0.86, vLit) + 0.14 * uLift;
+  float alpha = min(strength + 0.5 * vGlow, 1.0) * cornerMask();
   gl_FragColor = writePixel(mix(uProof, uAccent, 0.8 * vGlow), alpha);
 }
 `;
@@ -98,15 +99,22 @@ const TRAIL_MS = 240;
 
 /** Creates the telemetry reading. */
 export function createReadingTelemetry(context: ViewContext): View {
-  const { count, columns, rows, countMs, sweepMs } = points;
+  const { count, countMs, sweepMs } = points;
   const state = createReadingState('telemetry', context);
 
+  // Left to right, so the fill wipes across like the DOM's: a point exists wherever neither its
+  // column nor its row is one of the gutters between blocks.
   const lattice = new Float32Array(count * 3);
-  for (let column = 0; column < columns; column += 1) {
-    for (let row = 0; row < rows; row += 1) {
-      const at = (column * rows + row) * 3;
+  const gutter = points.side;
+  const stride = points.side + 1;
+  let at = 0;
+  for (let column = 0; column < points.columns; column += 1) {
+    if (column % stride === gutter) continue;
+    for (let row = 0; row < points.rows; row += 1) {
+      if (row % stride === gutter) continue;
       lattice[at] = column;
       lattice[at + 1] = row;
+      at += 3;
     }
   }
   const dots = new BufferGeometry();
@@ -116,7 +124,14 @@ export function createReadingTelemetry(context: ViewContext): View {
   const dotMaterial = new ShaderMaterial({
     vertexShader: pointVertex,
     fragmentShader: pointFragment,
-    uniforms: { ...state.uniforms, uGrid: { value: [columns, rows] }, uReveal: { value: 0 }, uTrail: { value: 1 } },
+    uniforms: {
+      ...state.uniforms,
+      uLattice: { value: [points.columns, points.rows] },
+      uPitch: { value: 1 },
+      uDot: { value: 1 },
+      uReveal: { value: 0 },
+      uTrail: { value: 1 },
+    },
     ...flags,
   });
   const cloud = new Points(dots, dotMaterial);
@@ -147,6 +162,9 @@ export function createReadingTelemetry(context: ViewContext): View {
 
     update(input: FrameInput): boolean {
       const { t, flash, busy } = state.step(input);
+      const pitch = pointPitch(Math.round(input.viewport.width * input.pixelRatio), Math.round(input.viewport.height * input.pixelRatio));
+      dotMaterial.uniforms.uPitch.value = pitch;
+      dotMaterial.uniforms.uDot.value = pointSize(pitch);
       dots.setDrawRange(0, Math.round(count * easeOut(t / countMs)));
 
       const reveal = unit((t - countMs) / sweepMs);
