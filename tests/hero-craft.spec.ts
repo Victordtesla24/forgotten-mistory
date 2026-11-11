@@ -86,8 +86,13 @@ interface Tile {
   top: number;
 }
 
-/** Waits until the three tiles and their drawings have stood in the same place for ten frames running, so rectangles measured one after another are of one layout. */
+/**
+ * Waits until the three tiles have been laid by the script (`data-laid`: until then their drawings stand where the stylesheet's defaults
+ * put them, which is not the layout), and then until the tiles and their drawings have stood in the same place for ten frames running,
+ * so rectangles measured one after another are of one layout.
+ */
 async function layoutStill(page: Page): Promise<void> {
+  await page.waitForFunction(() => document.querySelectorAll('[data-reading][data-place="card"]').length === 3 && document.querySelectorAll('[data-reading][data-place="card"]:not([data-laid])').length === 0);
   await page.evaluate(
     () =>
       new Promise<void>((resolve) => {
@@ -474,6 +479,7 @@ test.describe('the enlarged reading in a panel draws every mark, countably, at e
           await page.locator(`[data-detail-trigger="figure-${id}"]`).first().click();
           const tile = page.locator(`[data-reading="${id}"][data-place="panel"]`);
           await expect(tile, id).toBeVisible();
+          await expect(tile, `${id}: laid by the script`).toHaveAttribute('data-laid', '');
           await entranceDone(page);
           const box = await tileOf(page, id, 'panel');
           const layout = readingLayout(id, { width: box.width, height: box.height, ratio }, 'panel');
