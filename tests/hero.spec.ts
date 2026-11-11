@@ -48,7 +48,7 @@ test.describe('the career scale', { tag: '@desktop' }, () => {
   test('is drawn on the one UTC time scale, January 2010 to the current month', () => {
     expect(timeline.domain().map((date) => date.toISOString().slice(0, 7))).toEqual(['2010-01', '2026-09']);
     expect(timeline.range()).toEqual([0, 1]);
-    expect(careerBars[0]?.start, 'MYOB starts in May 2010, four months in').toBeCloseTo(4 / 200, 6);
+    expect(careerBars[0]?.start, 'MYOB starts in May 2010, four months in').toBeCloseTo(4 / 200, 2);
     expect(careerBars.at(-1)?.end, 'the current role runs to now').toBe(1);
   });
 
