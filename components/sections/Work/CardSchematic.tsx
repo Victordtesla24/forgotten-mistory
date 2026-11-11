@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 import type { Schematic as SchematicData } from '@/content/work';
 import { reducedMotion } from '@/lib/motion';
@@ -26,35 +26,33 @@ interface CardSchematicProps {
 export function CardSchematic({ schematic, children }: CardSchematicProps) {
   const { stages } = schematic;
   const [stage, setStage] = useState(0);
+  const [running, setRunning] = useState(false);
   const [ready, setReady] = useState(false);
-  const timer = useRef<number | null>(null);
 
   useEffect(() => setReady(true), []);
 
-  const stop = useCallback(() => {
-    if (timer.current !== null) window.clearInterval(timer.current);
-    timer.current = null;
-  }, []);
+  // A running flow lights the next stage one step after the last one was drawn, so each stage is
+  // seen for its whole step however busy the page is, and it stops on the last.
+  useEffect(() => {
+    if (!running) return undefined;
+    if (stage >= stages.length) {
+      setRunning(false);
+      return undefined;
+    }
+    const next = window.setTimeout(() => setStage(stage + 1), STAGE_STEP);
+    return () => window.clearTimeout(next);
+  }, [running, stage, stages.length]);
 
-  useEffect(() => stop, [stop]);
-
-  /** Lights the first stage, then the others a step apart, and stops on the last. */
-  const run = useCallback(() => {
-    stop();
+  /** Lights the first stage and, where motion is allowed, goes on to light the rest in turn. */
+  const run = () => {
     setStage(1);
-    if (reducedMotion()) return;
-    let lit = 1;
-    timer.current = window.setInterval(() => {
-      lit += 1;
-      setStage(lit);
-      if (lit >= stages.length) stop();
-    }, STAGE_STEP);
-  }, [stages.length, stop]);
+    setRunning(!reducedMotion());
+  };
 
-  const clear = useCallback(() => {
-    stop();
+  const clear = () => {
+    setRunning(false);
     setStage(0);
-  }, [stop]);
+  };
 
   return (
     <>
@@ -64,7 +62,7 @@ export function CardSchematic({ schematic, children }: CardSchematicProps) {
         <button
           type="button"
           disabled={!ready}
-          aria-label={`Light the stages of ${schematic.label}`}
+          aria-label={`Show the stages of ${schematic.label}`}
           className={styles.step}
           onPointerEnter={(event) => {
             if (event.pointerType === 'mouse') run();
@@ -78,7 +76,7 @@ export function CardSchematic({ schematic, children }: CardSchematicProps) {
           onBlur={clear}
           onClick={() => {
             if (reducedMotion()) setStage((now) => (now % stages.length) + 1);
-            else if (timer.current === null) run();
+            else if (!running) run();
           }}
         />
       </div>

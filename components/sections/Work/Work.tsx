@@ -32,7 +32,7 @@ const items: readonly DetailItem[] = projects.map((project) => ({
  */
 export function Work() {
   return (
-    <section id="work" aria-labelledby="work-title" className="pt-[clamp(3rem,5vw,4rem)]">
+    <section id="work" aria-labelledby="work-title" className="pt-[clamp(4rem,5vw,4.5rem)]">
       <Container>
         <header className="mb-4 flex flex-wrap items-baseline gap-x-5 gap-y-1 md:mb-5">
           <p className="type-eyebrow text-muted">Work</p>

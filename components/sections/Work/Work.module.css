@@ -254,16 +254,19 @@
   transition-duration: var(--duration-press);
 }
 
-/* The card's size follows the rail it is in. From 1280 px six cards share the browser's width. */
-@media (min-width: 1280px) {
+/* From a tablet up the drawing has the room it needs to stay more than half of the card whatever the words under it take. */
+@media (min-width: 640px) {
   .visual {
-    --visual-min: 17rem;
+    --visual-min: 18rem;
   }
 }
 
-@media (min-width: 640px) and (max-width: 1279px) {
+/* On a phone the card is wide and its words are few: the drawing keeps the proportions it was composed in, so it is as large as the card allows. */
+@media (max-width: 639px) {
   .visual {
-    --visual-min: 17rem;
+    --visual-min: 0px;
+
+    aspect-ratio: 180 / 224;
   }
 }
 

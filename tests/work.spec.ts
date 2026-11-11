@@ -94,15 +94,33 @@ test.describe('the cards and their schematics', () => {
     await open(page, '/');
     const owner = card(page, aether.repo);
     const caption = owner.locator('p[aria-live]');
-    const size = async () => (await owner.boundingBox().then((box) => ({ width: box?.width, height: box?.height })));
+    const size = async () => owner.boundingBox().then((box) => ({ width: box?.width, height: box?.height }));
     const before = await size();
     await expect(caption).toHaveText('');
+    // Every change of the caption is written down with the stage lit at that moment, so the order is read
+    // from what the page did and not from when this test happened to look.
+    await owner.evaluate((element) => {
+      const seen: { caption: string; lit: string | null }[] = [];
+      const read = () => ({
+        caption: element.querySelector('p[aria-live]')?.textContent ?? '',
+        lit: element.querySelector('g[data-stage][data-active="true"]')?.getAttribute('data-stage') ?? null,
+      });
+      new MutationObserver(() => seen.push(read())).observe(element, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+        attributes: true,
+        attributeFilter: ['data-active'],
+      });
+      Object.assign(window, { seenFlow: seen });
+    });
     await owner.locator('[data-schematic] button').hover();
-    for (const [at, stage] of aether.schematic.stages.entries()) {
-      await expect(caption).toHaveText(`${at + 1} · ${stage.label}`);
-      await expect(owner.locator('g[data-stage][data-active="true"]')).toHaveAttribute('data-stage', stage.id);
-      expect(await size()).toEqual(before);
-    }
+    const [, , last] = aether.schematic.stages;
+    await expect(caption).toHaveText(`3 · ${last.label}`);
+    expect(await size()).toEqual(before);
+    const seen = await page.evaluate(() => (window as unknown as { seenFlow: { caption: string; lit: string | null }[] }).seenFlow);
+    const steps = seen.filter((entry, at) => entry.caption !== '' && entry.caption !== seen[at - 1]?.caption);
+    expect(steps).toEqual(aether.schematic.stages.map((stage, at) => ({ caption: `${at + 1} · ${stage.label}`, lit: stage.id })));
     await page.mouse.move(2, 2);
     await expect(caption).toHaveText('');
   });

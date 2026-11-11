@@ -63,7 +63,7 @@ export interface SchematicLayout {
   floor: readonly (readonly Point[])[];
   /** Fine lines on the floor. */
   floorLines: readonly Segment[];
-  /** The three stages in the order of the work, which is also the order to draw them in: each stands in front of the one before. */
+  /** The three stages in the order of the work. They are drawn in this order, and no composition lets a later one hide an earlier. */
   nodes: readonly [SchematicNode, SchematicNode, SchematicNode];
   routes: readonly SchematicRoute[];
 }
@@ -79,7 +79,7 @@ const SPACES: Readonly<Record<Place, { width: number; height: number }>> = {
   panel: { width: 240, height: 180 },
 };
 
-/** How long a running schematic stays on one stage before it lights the next: the stage's own length of time. */
+/** How long a running schematic lights one stage before it goes on to the next, in milliseconds. */
 export const STAGE_STEP = duration.entrance;
 
 /** Room kept clear around the drawing, so a line at its edge is never cut. */
