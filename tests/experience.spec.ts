@@ -417,15 +417,16 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     for (const [width, height] of [[1280, 720], [1440, 900], [1920, 1080]] as const) {
       await openAt(page, '/?gl=off', width, height);
       await page.locator('header a[href="/#work"]').first().click();
-      // The jump has ended when the page has stood still between two looks.
-      let rest = -1;
+      // The jump has ended when Work stands where the page's scroll padding puts the top of a target.
       await expect
-        .poll(async () => {
-          const now = await page.evaluate(() => window.scrollY);
-          const still = now === rest && now > 0;
-          rest = now;
-          return still;
-        })
+        .poll(
+          () =>
+            page.evaluate(() => {
+              const work = document.querySelector('#work')?.getBoundingClientRect().top;
+              return work !== undefined && Math.abs(work - parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)) <= 1;
+            }),
+          { timeout: 30_000 },
+        )
         .toBe(true);
       const under = await page.evaluate(() => {
         const header = (document.querySelector('header') as HTMLElement).getBoundingClientRect().bottom;
