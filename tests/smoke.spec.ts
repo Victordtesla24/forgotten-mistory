@@ -242,7 +242,7 @@ async function taken(control: Locator, page: Page): Promise<void> {
 }
 
 test.describe('the email address can be copied', () => {
-  test('the control beside the call puts the address on the clipboard, and says so', async ({
+  test('the control beside the call puts the address on the clipboard, says so, then reads as an action again', async ({
     page,
     context,
   }) => {
@@ -258,6 +258,12 @@ test.describe('the email address can be copied', () => {
     await expect(page.locator('#contact [role="status"]')).toHaveText(contact.copy.done);
     await expect(page.locator('#contact').getByRole('button', { name: contact.copy.done })).toBeVisible();
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(site.channels.email);
+
+    // It reads as the action again, and a second press is answered like the first.
+    await expect(button).toBeVisible({ timeout: 6000 });
+    await expect(page.locator('#contact [role="status"]')).toHaveText('');
+    await button.click();
+    await expect(page.locator('#contact [role="status"]')).toHaveText(contact.copy.done);
   });
 
   test('a browser that refuses the clipboard is told so, and the address stays a link beside the control', async ({ page }) => {
@@ -270,6 +276,22 @@ test.describe('the email address can be copied', () => {
     await button.click();
     await expect(page.locator('#contact [role="status"]')).toHaveText(contact.copy.failed);
     await expect(page.locator(`#contact a[href="mailto:${site.channels.email}"]`)).toBeVisible();
+  });
+});
+
+test.describe('the email address can be copied', () => {
+  test('a browser with no clipboard at all is told so, with no error', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', { value: undefined });
+    });
+    await open(page, '/');
+    const button = page.locator('#contact').getByRole('button', { name: contact.copy.label });
+    await taken(button, page);
+    await button.click();
+    await expect(page.locator('#contact [role="status"]')).toHaveText(contact.copy.failed);
+    expect(errors).toEqual([]);
   });
 });
 
