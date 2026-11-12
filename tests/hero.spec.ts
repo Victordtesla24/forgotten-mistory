@@ -531,7 +531,6 @@ test.describe('without JavaScript the hero looks finished', { tag: '@desktop' },
         const gutter = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gutter')) || 0;
         const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-detail-item]')).flatMap((item) => {
           const box = item.getBoundingClientRect();
-          // The capabilities' panels are on the page from 1024 px; below it the cards of disclosures stand for them.
           if (box.width === 0) return [];
           const measure = Math.max(0, ...Array.from(item.querySelectorAll('p')).map((paragraph) => paragraph.getBoundingClientRect().width));
           return [{ id: item.id, left: box.left, right: box.right, width: measure }];
@@ -551,8 +550,8 @@ test.describe('without JavaScript the hero looks finished', { tag: '@desktop' },
       expect(measured.h1, 'the headline is in the top of the first screen').toBeLessThanOrEqual(200);
       expect(measured.eyebrow, 'the eyebrow is under the header').toBeGreaterThan(56);
       expect(measured.scroll).toBeLessThanOrEqual(0);
-      expect(measured.panels, 'a panel for each of the figures, each of the roles and each of the projects, and from 1024 px each of the capabilities').toHaveLength(
-        headlineFigures.length + roles.length + projects.length + (width >= 1024 ? capabilities.length : 0),
+      expect(measured.panels, 'a panel for each of the figures, each of the roles and each of the projects and each of the capabilities').toHaveLength(
+        headlineFigures.length + roles.length + projects.length + capabilities.length,
       );
       for (const panel of measured.panels) {
         expect(panel.left, `${panel.id} starts inside the gutter`).toBeGreaterThanOrEqual(measured.gutter - 1);

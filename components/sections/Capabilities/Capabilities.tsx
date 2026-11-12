@@ -5,8 +5,9 @@ import { capabilities, domains } from '@/content/capabilities';
 import styles from './Capabilities.module.css';
 import { capabilityPanel, Field } from './Field';
 import { Filters } from './Filters';
-import { Interim } from './Interim';
+import { CapabilitiesBehaviour } from './CapabilitiesBehaviour';
 import { Key } from './Key';
+import { Narrow } from './Narrow';
 import { PanelBody } from './PanelBody';
 import { PanelLead } from './PanelLead';
 
@@ -24,10 +25,11 @@ const items: readonly DetailItem[] = capabilities.map((capability) => ({
 
 /**
  * What the page can do and where each thing was applied, as a map: five domains, seventeen
- * capabilities and twelve sources joined by the links the content states. From 1024 px the map
- * stands (the heading, a row of domain filters, the drawing and its key) and each capability opens
- * its panel; below that the five cards of disclosures stand in its place until the map takes the
- * phone too. Both are in the HTML and a media query chooses between them.
+ * capabilities and twelve sources joined by the links the content states, and each capability opens
+ * its panel at every width. From 1024 px the whole map stands under a row of domain filters that
+ * dims what is outside the one chosen; below it the field shows one domain at a time under a snapping
+ * row of the five (`Narrow.tsx`). Both are in the HTML and a media query chooses between them; the
+ * filters answer through `behaviour.ts`, loaded after the page is up.
  */
 export function Capabilities() {
   return (
@@ -40,16 +42,15 @@ export function Capabilities() {
           </h2>
         </header>
       </Container>
+      <CapabilitiesBehaviour />
       <DetailSet label="Capabilities" items={items}>
         <Container>
+          <Filters />
           <div data-map="">
-            <Filters />
             <Field />
-            <Key />
           </div>
-          <div data-interim="" className="lg:hidden">
-            <Interim />
-          </div>
+          <Narrow />
+          <Key />
         </Container>
       </DetailSet>
     </section>

@@ -695,7 +695,7 @@ test.describe('without JavaScript the panels stand on the page column', { tag: '
         const measured = await page.evaluate(() => {
           const h1 = (document.querySelector('#top h1') as Element).getBoundingClientRect();
           const column = (document.querySelector('#top') as Element).getBoundingClientRect();
-          // A panel that has no box is not on the page: the capabilities' are, from 1024 px (the cards of disclosures stand for them below).
+          // A panel that has no box is not on the page.
           const items = Array.from(document.querySelectorAll<HTMLElement>('[data-detail-item]')).flatMap((item) => {
             const box = item.getBoundingClientRect();
             return box.width === 0 ? [] : [{ left: box.left, width: box.width, columns: getComputedStyle(item).gridTemplateColumns.split(' ').length }];

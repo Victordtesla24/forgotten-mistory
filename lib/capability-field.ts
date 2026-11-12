@@ -223,3 +223,83 @@ export function subgraph(capability: Capability): Subgraph {
     domainPath: `M${SUBGRAPH.trunkX} ${SUBGRAPH.domainY}V${SUBGRAPH.bandY}`,
   };
 }
+
+/**
+ * One domain on a phone or a small tablet, the single group the filters bring up: its capabilities
+ * in a column on the left, the sources they name in a column on the right, the edges between. The
+ * rows are a fixed height in the drawing's pixels and the two columns share a height, so the DOM
+ * rows and the SVG edges between them agree to the pixel at any width: the edges are drawn across a
+ * gap of 100 units that the page stretches to the gap's width.
+ */
+export const PHONE = {
+  /** The height of a capability's row, and the distance between two. */
+  row: 48,
+  pitch: 52,
+  /** The closest two sources may stand: room for a name of three lines. */
+  sourceGap: 56,
+  /** The width of the gap the edges cross, in the edges' own units. */
+  gap: 100,
+} as const;
+
+export interface PhoneEdge {
+  capability: Capability['id'];
+  source: Source['id'];
+  path: string;
+}
+
+export interface PhoneGroup {
+  domain: Domain;
+  /** The height of both columns. */
+  height: number;
+  capabilities: readonly { capability: Capability; top: number; sources: readonly Source[] }[];
+  /** `y` is the centre of the source's row. */
+  sources: readonly { source: Source; y: number }[];
+  edges: readonly PhoneEdge[];
+}
+
+function computePhoneGroup(domain: Domain): PhoneGroup {
+  const inDomain = capabilities.filter((capability) => capability.domain === domain.id);
+  const placed = inDomain.map((capability, index) => ({
+    capability,
+    top: index * PHONE.pitch,
+    sources: sourcesOf(capability),
+  }));
+  const capabilityY = (capability: Capability['id']): number =>
+    (placed.find((entry) => entry.capability.id === capability)?.top ?? 0) + PHONE.row / 2;
+
+  const named = sources
+    .map((source, index) => {
+      const linked = placed.filter((entry) => entry.capability.sources.includes(source.id));
+      return { source, index, y: linked.length > 0 ? mean(linked.map((entry) => capabilityY(entry.capability.id))) : -1 };
+    })
+    .filter((entry) => entry.y >= 0)
+    .sort((a, b) => a.y - b.y || a.index - b.index);
+  const heights = named.map((entry) => Math.max(entry.y, PHONE.sourceGap / 2));
+  for (let i = 1; i < heights.length; i += 1) heights[i] = Math.max(heights[i] ?? 0, (heights[i - 1] ?? 0) + PHONE.sourceGap);
+  const placedSources = named.map((entry, index) => ({ source: entry.source, y: heights[index] ?? 0 }));
+  const sourceY = new Map<Source['id'], number>(placedSources.map((entry) => [entry.source.id, entry.y]));
+
+  const capabilitiesHeight = placed.length > 0 ? (placed[placed.length - 1]?.top ?? 0) + PHONE.row : 0;
+  const lowestSource = placedSources.length > 0 ? (placedSources[placedSources.length - 1]?.y ?? 0) + PHONE.sourceGap / 2 : 0;
+  const middle = PHONE.gap / 2;
+  return {
+    domain,
+    height: Math.max(capabilitiesHeight, lowestSource),
+    capabilities: placed,
+    sources: placedSources,
+    edges: placed.flatMap((entry) =>
+      entry.sources.map((source) => {
+        const y1 = capabilityY(entry.capability.id);
+        const y2 = sourceY.get(source.id) ?? y1;
+        return {
+          capability: entry.capability.id,
+          source: source.id,
+          path: `M0 ${round(y1)}C${middle} ${round(y1)} ${middle} ${round(y2)} ${PHONE.gap} ${round(y2)}`,
+        };
+      }),
+    ),
+  };
+}
+
+/** The five domains' groups, computed once from the content. */
+export const phoneGroups: readonly PhoneGroup[] = domains.map(computePhoneGroup);

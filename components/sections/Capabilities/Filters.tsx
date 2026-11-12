@@ -1,26 +1,35 @@
+import { SnapRow } from '@/components/ui/SnapRow';
 import { domains } from '@/content/capabilities';
 
+/** The choice before any script has run: every domain from 1024 px, the first domain below it. */
+const FIRST = domains[0]?.id;
+
 /**
- * One row of domain filters: a native radio group, so it answers from the keyboard (arrow keys),
- * keeps one pressed state and needs no script. The map dims what is not in the chosen domain
- * (`Capabilities.module.css`).
+ * The domain filters, in two forms the stylesheet chooses between. From 1024 px a row of buttons,
+ * All first, that dims what is outside the chosen domain; below it a snapping row of the five
+ * domains with no All, for the field shows one domain at a time there. Each is a set of buttons
+ * with `aria-pressed`, exactly one pressed, and `behaviour.ts` keeps both in step. Without script
+ * they have nothing to do, so the stylesheet leaves them out.
  */
 export function Filters() {
-  const choices = [{ id: 'all', name: 'All' }, ...domains];
   return (
-    <fieldset>
-      <legend className="sr-only">Domain</legend>
-      {choices.map((choice) => (
-        <label key={choice.id}>
-          <input
-            type="radio"
-            name="capability-domain"
-            value={choice.id}
-            defaultChecked={choice.id === 'all'}
-          />
-          <span>{choice.name}</span>
-        </label>
-      ))}
-    </fieldset>
+    <>
+      <div role="group" aria-label="Domain" data-filters="wide">
+        {[{ id: 'all', name: 'All' }, ...domains].map((choice) => (
+          <button key={choice.id} type="button" data-filter={choice.id} aria-pressed={choice.id === 'all'}>
+            {choice.name}
+          </button>
+        ))}
+      </div>
+      <SnapRow aria-label="Domain" data-filters="narrow" strip>
+        {domains.map((domain) => (
+          <li key={domain.id}>
+            <button type="button" data-filter={domain.id} aria-pressed={domain.id === FIRST}>
+              {domain.name}
+            </button>
+          </li>
+        ))}
+      </SnapRow>
+    </>
   );
 }

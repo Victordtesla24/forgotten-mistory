@@ -11,8 +11,9 @@
   --edge-soft: color-mix(in srgb, var(--muted) 22%, transparent);
 }
 
-/* The map stands from 1024 px; below it the interim cards do. */
-.section [data-map] {
+/* From 1024 px the whole map stands; below it the field shows one domain at a time. */
+.section [data-map],
+.section [data-filters='wide'] {
   display: none;
 }
 
@@ -20,69 +21,69 @@
   .section [data-map] {
     display: block;
   }
+
+  .section [data-filters='wide'] {
+    display: flex;
+  }
+
+  .section [data-filters='narrow'] {
+    display: none;
+  }
 }
 
-/* With scripting off the panels are on the page: below 1024 px the cards are the page's content, so the panels stay out of it. */
-@media (scripting: none) and (max-width: 1023px) {
-  .section :global([data-detail]) {
+/* Without script a filter has nothing to do, so the filters are left out and every domain stands in turn. */
+@media (scripting: none) {
+  .section [data-filters] {
     display: none;
   }
 }
 
 /* ---------------------------------------------------------------- filters */
 
-.section [data-map] fieldset {
-  display: flex;
+.section [data-filters='wide'] {
   min-width: 0;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0 0 0.5rem;
-  padding: 0;
-  border: 0;
 }
 
-.section [data-map] label {
-  position: relative;
+.section [data-filters='narrow'] {
+  margin: 0 calc(-1 * var(--gutter)) 0.75rem;
+}
+
+.section [data-filters] button {
   display: inline-flex;
-}
-
-.section [data-map] input {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.section [data-map] label > span {
-  display: inline-flex;
+  min-width: 2.75rem;
   min-height: 2.75rem;
   align-items: center;
+  justify-content: center;
   padding: 0 1rem;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
+  background-color: transparent;
   color: var(--muted);
   font-size: 0.8125rem;
   line-height: 1;
-  pointer-events: none;
+  white-space: nowrap;
+  cursor: pointer;
   transition:
     background-color var(--duration-hover) var(--ease),
     border-color var(--duration-hover) var(--ease),
     color var(--duration-hover) var(--ease);
 }
 
-.section [data-map] label:hover > span {
+.section [data-filters] button:hover {
   border-color: var(--muted);
   color: var(--text);
 }
 
-.section [data-map] input:checked + span {
+.section [data-filters] button[aria-pressed='true'] {
   border-color: var(--accent);
   background-color: var(--accent-soft);
   color: var(--text);
 }
 
-.section [data-map] input:focus-visible + span {
+.section [data-filters] button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -101,11 +102,6 @@
   fill: none;
   stroke: var(--edge);
   stroke-width: 1;
-  transition: opacity var(--duration-state) var(--ease);
-}
-
-.section [data-node] {
-  transition: opacity var(--duration-state) var(--ease);
 }
 
 .section [data-part='domain-dot'] {
@@ -183,23 +179,13 @@
   overflow: visible;
 }
 
-/* The filters dim what is not in the chosen domain; the five rules are one. */
-.section:has(input[value='delivery']:checked) [data-field] [data-domain]:not([data-domain~='delivery']),
-.section:has(input[value='ai']:checked) [data-field] [data-domain]:not([data-domain~='ai']),
-.section:has(input[value='platform']:checked) [data-field] [data-domain]:not([data-domain~='platform']),
-.section:has(input[value='product']:checked) [data-field] [data-domain]:not([data-domain~='product']),
-.section:has(input[value='qualifications']:checked) [data-field] [data-domain]:not([data-domain~='qualifications']) {
-  opacity: 0.2;
-}
-
 /* ---------------------------------------------------------------- key */
 
-.section [data-map] > ul {
-  display: flex;
-  flex-wrap: wrap;
+.section ul[aria-label='Key'] {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
   gap: 0.25rem 1.5rem;
-  /* Under the capabilities' column, where a reader's eye comes down from the map, and clear of the launcher at the corner. */
-  margin: 0.5rem 0 0 36%;
+  margin: 1rem 0 0;
   padding: 0;
   color: var(--muted);
   font-size: 0.8125rem;
@@ -207,7 +193,16 @@
   list-style: none;
 }
 
-.section [data-map] > ul li {
+@media (min-width: 1024px) {
+  .section ul[aria-label='Key'] {
+    display: flex;
+    flex-wrap: wrap;
+    /* Under the capabilities' column, where a reader's eye comes down from the map, and clear of the launcher at the corner. */
+    margin: 0.5rem 0 0 36%;
+  }
+}
+
+.section ul[aria-label='Key'] li {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -268,10 +263,156 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .section [data-map] label > span,
-  .section [data-part='edge'],
-  .section [data-node],
+  .section [data-filters] button,
   .section [data-part='band'] {
     transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------- the narrow field */
+
+@media (max-width: 1023.98px) {
+  .section [data-narrow] {
+    /* Every domain stands in the one cell, so the box is as tall as the tallest and choosing one moves nothing. */
+    display: grid;
+    max-width: 46rem;
+  }
+}
+
+/* A tablet's wider field spends its width on longer edges, so the two columns stay in step with their text. */
+@media (min-width: 640px) {
+  .section [data-group] {
+    grid-template-columns: minmax(0, 1.1fr) clamp(4rem, 14vw, 9rem) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section [data-narrow] {
+    display: none;
+  }
+}
+
+.section [data-group] {
+  position: relative;
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) clamp(1rem, 6vw, 3.5rem) minmax(0, 1fr);
+  align-content: start;
+  visibility: hidden;
+}
+
+.section [data-group][data-shown] {
+  visibility: visible;
+}
+
+.section [data-part='group-name'] {
+  display: none;
+}
+
+.section [data-group] > ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.section [data-group] > svg[data-part='edges'] {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.section [data-group] [data-part='edge'] {
+  vector-effect: non-scaling-stroke;
+}
+
+.section [data-column='capabilities'] > li {
+  position: absolute;
+  inset-inline: 0;
+}
+
+.section [data-column='capabilities'] a {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.5rem 0 0.625rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background-color: var(--surface);
+  box-shadow: inset 2px 0 0 var(--accent);
+  color: var(--text);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    border-color var(--duration-hover) var(--ease);
+}
+
+.section [data-column='capabilities'] a[data-pending] {
+  border-style: dashed;
+}
+
+/* Where the edges leave: the dot at the band's right edge, as on the wide map. */
+.section [data-column='capabilities'] a:not([data-pending])::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -0.1875rem;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  margin-top: -0.15625rem;
+  border-radius: 50%;
+  background-color: var(--muted);
+}
+
+.section [data-column='capabilities'] a:hover,
+.section [data-column='capabilities'] a:active {
+  border-color: var(--muted);
+  background-color: var(--raised);
+}
+
+.section [data-column='capabilities'] a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.section [data-column='sources'] > li {
+  position: absolute;
+  inset-inline: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--text);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  transform: translateY(-50%);
+}
+
+/* Without script every domain stands in turn, each under its name. */
+@media (scripting: none) and (max-width: 1023.98px) {
+  .section [data-narrow] {
+    display: block;
+    padding-top: 0.5rem;
+  }
+}
+
+@media (scripting: none) {
+  .section [data-group] {
+    display: grid;
+    margin-bottom: 1.5rem;
+    visibility: visible;
+  }
+
+  .section [data-part='group-name'] {
+    display: block;
+    grid-column: 1 / -1;
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
   }
 }

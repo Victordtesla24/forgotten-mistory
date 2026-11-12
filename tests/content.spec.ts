@@ -141,8 +141,8 @@ test.describe('the home page is two levels deep', () => {
     await expect(page.locator('#proof ul > li')).toHaveCount(headlineFigures.length);
     await expect(page.locator('#experience [role="tab"]')).toHaveCount(roles.length);
     await expect(page.locator('#work article[data-project]')).toHaveCount(projects.length);
-    await expect(page.locator('#capabilities [data-interim] [role="group"]')).toHaveCount(domains.length);
-    await expect(page.locator('#capabilities details')).toHaveCount(capabilities.length);
+    await expect(page.locator('#capabilities [data-narrow] [role="group"]')).toHaveCount(domains.length);
+    await expect(page.locator('#capabilities section[data-capability-item]')).toHaveCount(capabilities.length);
     await expect(page.locator('#about details')).toHaveCount(about.principles.length);
   });
 
@@ -250,11 +250,11 @@ test.describe('every detail can be linked to, and is open without script', () =>
 });
 
 test.describe('sets run sideways', { tag: '@mobile' }, () => {
-  test('on a phone, projects, roles, capabilities and principles are snapping rows', async ({
+  test('on a phone, projects, roles, the capability filters and principles are snapping rows', async ({
     page,
   }) => {
     await open(page, '/');
-    for (const selector of ['#work ul', '#experience [role="tablist"]', '#capabilities [data-interim] ul', '#about ul']) {
+    for (const selector of ['#work ul', '#experience [role="tablist"]', '#capabilities [data-filters="narrow"]', '#about ul']) {
       const row = page.locator(selector).first();
       const { scrolls, snaps } = await row.evaluate((el) => ({
         scrolls: el.scrollWidth > el.clientWidth,
