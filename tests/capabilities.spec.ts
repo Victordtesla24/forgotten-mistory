@@ -56,7 +56,7 @@ test.describe('the map', { tag: '@desktop' }, () => {
     const pending = capabilities.filter((capability) => capability.sources.length === 0);
     expect(pending.map((capability) => capability.id)).toEqual(['cloud-certification']);
     await expect(field.locator('path[data-edge="source"][data-capability="cloud-certification"]')).toHaveCount(0);
-    await expect(trigger(page, 'cloud-certification').locator('circle[class*="pending"]')).toHaveCount(1);
+    await expect(trigger(page, 'cloud-certification').locator('circle[data-part="pending"]')).toHaveCount(1);
     await expect(page.locator(`${SECTION} [data-map] ul[aria-label="Key"]`)).toContainText('In progress');
     await expect(page.locator(`${SECTION} svg line`)).toHaveCount(0);
   });
