@@ -1,77 +1,57 @@
-import { Card } from '@/components/ui/Card';
-import { Disclosure } from '@/components/ui/Disclosure';
-import { Section } from '@/components/ui/Section';
-import { SnapRow } from '@/components/ui/SnapRow';
-import { Tag } from '@/components/ui/Tag';
-import {
-  capabilities,
-  domains,
-  sources,
-  type Capability,
-  type Domain,
-  type Source,
-} from '@/content/capabilities';
+import { DetailSet, type DetailItem } from '@/components/ui/DetailPanel';
+import { Container } from '@/components/ui/Container';
+import { capabilities, domains } from '@/content/capabilities';
 
-const sourceById = new Map<Source['id'], Source>(sources.map((source) => [source.id, source]));
+import styles from './Capabilities.module.css';
+import { capabilityPanel, Field } from './Field';
+import { Filters } from './Filters';
+import { Interim } from './Interim';
+import { Key } from './Key';
+import { PanelBody } from './PanelBody';
+import { PanelLead } from './PanelLead';
 
-function CapabilityRow({ capability }: { capability: Capability }) {
-  return (
-    <Disclosure
-      id={`capability-${capability.id}`}
-      summaryClassName="type-small items-center py-2"
-      panelClassName="grid gap-2 pb-3"
-      summary={<span className="font-medium">{capability.label}</span>}
-    >
-      <p className="type-small text-muted">{capability.detail}</p>
-      {capability.sources.length > 0 ? (
-        <ul className="flex flex-wrap gap-1.5">
-          {capability.sources.map((id) => (
-            <li key={id}>
-              <Tag className="whitespace-normal [overflow-wrap:anywhere]">
-                {sourceById.get(id)?.label}
-              </Tag>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </Disclosure>
-  );
-}
+const domainName = new Map(domains.map((domain) => [domain.id, domain.name]));
 
-function DomainCard({ domain }: { domain: Domain }) {
-  return (
-    <Card as="div" role="group" aria-labelledby={`domain-${domain.id}`} className="p-4">
-      <h3 id={`domain-${domain.id}`} className="text-[1.0625rem]">
-        {domain.name}
-      </h3>
-      <ul className="mt-2 divide-y divide-line">
-        {capabilities
-          .filter((capability) => capability.domain === domain.id)
-          .map((capability) => (
-            <li key={capability.id}>
-              <CapabilityRow capability={capability} />
-            </li>
-          ))}
-      </ul>
-    </Card>
-  );
-}
+/** One panel for each capability, grouped by domain as the content is, so Previous and Next walk them in that order. */
+const items: readonly DetailItem[] = capabilities.map((capability) => ({
+  id: capabilityPanel(capability.id),
+  eyebrow: domainName.get(capability.domain),
+  title: capability.label,
+  attributes: { 'data-capability-item': capability.id },
+  lead: <PanelLead capability={capability} />,
+  children: <PanelBody capability={capability} />,
+}));
 
+/**
+ * What the page can do and where each thing was applied, as a map: five domains, seventeen
+ * capabilities and twelve sources joined by the links the content states. From 1024 px the map
+ * stands (the heading, a row of domain filters, the drawing and its key) and each capability opens
+ * its panel; below that the five cards of disclosures stand in its place until the map takes the
+ * phone too. Both are in the HTML and a media query chooses between them.
+ */
 export function Capabilities() {
   return (
-    <Section
-      id="capabilities"
-      eyebrow="Capabilities"
-      title="Five domains"
-      accent="domains"
-    >
-      <SnapRow columns={5} className="reveal">
-        {domains.map((domain) => (
-          <li key={domain.id}>
-            <DomainCard domain={domain} />
-          </li>
-        ))}
-      </SnapRow>
-    </Section>
+    <section id="capabilities" aria-labelledby="capabilities-title" className={`${styles.section} pt-[clamp(4rem,5vw,4.5rem)]`}>
+      <Container>
+        <header className="mb-3 flex flex-wrap items-baseline gap-x-5 gap-y-1">
+          <p className="type-eyebrow text-muted">Capabilities</p>
+          <h2 id="capabilities-title">
+            Skills, linked to where they were <em className="type-serif-em">applied</em>
+          </h2>
+        </header>
+      </Container>
+      <DetailSet label="Capabilities" items={items}>
+        <Container>
+          <div data-map="" className={styles.map}>
+            <Filters />
+            <Field />
+            <Key />
+          </div>
+          <div data-interim="" className="lg:hidden">
+            <Interim />
+          </div>
+        </Container>
+      </DetailSet>
+    </section>
   );
 }

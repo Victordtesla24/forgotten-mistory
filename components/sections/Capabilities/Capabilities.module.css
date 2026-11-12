@@ -1,0 +1,278 @@
+/*
+ * The Capabilities section: the map of domains, capabilities and sources, its domain filters,
+ * key and the panel's lead. Every colour comes from the tokens in globals.css.
+ */
+
+.section {
+  --edge: color-mix(in srgb, var(--muted) 52%, transparent);
+  --edge-soft: color-mix(in srgb, var(--muted) 22%, transparent);
+}
+
+/* The map stands from 1024 px; below it the interim cards do. */
+.map {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .map {
+    display: block;
+  }
+}
+
+/* With scripting off the panels are on the page: below 1024 px the cards are the page's content, so the panels stay out of it. */
+@media (scripting: none) and (max-width: 1023px) {
+  .section :global([data-detail]) {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- filters */
+
+.filters {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.choice {
+  position: relative;
+  display: inline-flex;
+}
+
+.radio {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.chip {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1;
+  pointer-events: none;
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    border-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.choice:hover .chip {
+  border-color: var(--muted);
+  color: var(--text);
+}
+
+.radio:checked + .chip {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+  color: var(--text);
+}
+
+.radio:focus-visible + .chip {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- the field */
+
+.field {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-sans);
+}
+
+.edge {
+  fill: none;
+  stroke: var(--edge);
+  stroke-width: 1;
+  transition: opacity var(--duration-state) var(--ease);
+}
+
+.domain,
+.capability,
+.source {
+  transition: opacity var(--duration-state) var(--ease);
+}
+
+.domainDot {
+  fill: var(--accent);
+}
+
+.domainLabel {
+  fill: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.capability {
+  cursor: pointer;
+  outline: none;
+}
+
+.hit {
+  fill: transparent;
+}
+
+.band {
+  fill: var(--surface);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  transition:
+    fill var(--duration-hover) var(--ease),
+    stroke var(--duration-hover) var(--ease);
+}
+
+.bandPending {
+  stroke-dasharray: 3 3;
+}
+
+.capability:hover .band {
+  fill: var(--raised);
+  stroke: var(--muted);
+}
+
+.ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.capability:focus-visible .ring {
+  opacity: 1;
+}
+
+.dot {
+  fill: var(--muted);
+}
+
+.label {
+  fill: var(--text);
+  font-size: 13px;
+}
+
+.mark {
+  fill: var(--text);
+  stroke: var(--bg);
+  stroke-width: 1.5;
+  paint-order: stroke;
+}
+
+.pending {
+  fill: var(--bg);
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+
+.icon {
+  flex: none;
+  overflow: visible;
+}
+
+/* The filters dim what is not in the chosen domain; the five rules are one. */
+.section:has(input[value='delivery']:checked) .field [data-domain]:not([data-domain~='delivery']),
+.section:has(input[value='ai']:checked) .field [data-domain]:not([data-domain~='ai']),
+.section:has(input[value='platform']:checked) .field [data-domain]:not([data-domain~='platform']),
+.section:has(input[value='product']:checked) .field [data-domain]:not([data-domain~='product']),
+.section:has(input[value='qualifications']:checked) .field [data-domain]:not([data-domain~='qualifications']) {
+  opacity: 0.2;
+}
+
+/* ---------------------------------------------------------------- key */
+
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  /* Under the capabilities' column, where a reader's eye comes down from the map, and clear of the launcher at the corner. */
+  margin: 0.5rem 0 0 36%;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  list-style: none;
+}
+
+.key li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ---------------------------------------------------------------- the panel's lead */
+
+.lead {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-sans);
+}
+
+.leadDomain {
+  fill: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.leadLabel {
+  fill: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.leadSource {
+  fill: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.block {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.sourceRow {
+  display: flex;
+  min-height: 2.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+}
+
+.sourceLink {
+  border-radius: var(--radius-sm);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color var(--duration-hover) var(--ease);
+}
+
+.sourceLink:hover {
+  text-decoration-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip,
+  .edge,
+  .domain,
+  .capability,
+  .source,
+  .band {
+    transition: none;
+  }
+}

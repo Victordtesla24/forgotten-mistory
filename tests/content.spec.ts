@@ -141,7 +141,7 @@ test.describe('the home page is two levels deep', () => {
     await expect(page.locator('#proof ul > li')).toHaveCount(headlineFigures.length);
     await expect(page.locator('#experience [role="tab"]')).toHaveCount(roles.length);
     await expect(page.locator('#work article[data-project]')).toHaveCount(projects.length);
-    await expect(page.locator('#capabilities [role="group"]')).toHaveCount(domains.length);
+    await expect(page.locator('#capabilities [data-interim] [role="group"]')).toHaveCount(domains.length);
     await expect(page.locator('#capabilities details')).toHaveCount(capabilities.length);
     await expect(page.locator('#about details')).toHaveCount(about.principles.length);
   });
@@ -167,10 +167,7 @@ test.describe('the home page is two levels deep', () => {
 
   test('a disclosure opens to show its detail, and closes again', async ({ page }) => {
     await open(page, '/');
-    const cases = [
-      { summary: '#capabilities summary', detail: capabilities[0]?.detail },
-      { summary: '#about summary', detail: about.principles[0]?.statement },
-    ];
+    const cases = [{ summary: '#about summary', detail: about.principles[0]?.statement }];
     for (const { summary, detail } of cases) {
       expect(detail, summary).toBeTruthy();
       const row = page.locator(summary).first();
@@ -185,12 +182,12 @@ test.describe('the home page is two levels deep', () => {
 
   test('a disclosure opens from the keyboard', async ({ page }) => {
     await open(page, '/');
-    const row = page.locator('#capabilities summary').first();
+    const row = page.locator('#about summary').first();
     await row.focus();
     await page.keyboard.press('Enter');
-    await expect(page.locator('#capabilities details').first()).toHaveAttribute('open', '');
+    await expect(page.locator('#about details').first()).toHaveAttribute('open', '');
     await page.keyboard.press('Space');
-    await expect(page.locator('#capabilities details').first()).not.toHaveAttribute('open', '');
+    await expect(page.locator('#about details').first()).not.toHaveAttribute('open', '');
   });
 
   test('the page stays within its height budget', async ({ page }, testInfo) => {
@@ -246,7 +243,7 @@ test.describe('every detail can be linked to, and is open without script', () =>
     ];
     for (const sample of samples) {
       expect(sample).toBeTruthy();
-      await expect(page.getByText(sample ?? '', { exact: false }).first(), sample).toBeVisible();
+      await expect(page.getByText(sample ?? '', { exact: false }).filter({ visible: true }).first(), sample).toBeVisible();
     }
     await context.close();
   });
@@ -257,7 +254,7 @@ test.describe('sets run sideways', { tag: '@mobile' }, () => {
     page,
   }) => {
     await open(page, '/');
-    for (const selector of ['#work ul', '#experience [role="tablist"]', '#capabilities ul', '#about ul']) {
+    for (const selector of ['#work ul', '#experience [role="tablist"]', '#capabilities [data-interim] ul', '#about ul']) {
       const row = page.locator(selector).first();
       const { scrolls, snaps } = await row.evaluate((el) => ({
         scrolls: el.scrollWidth > el.clientWidth,
