@@ -1,6 +1,9 @@
 /*
  * The Capabilities section: the map of domains, capabilities and sources, its domain filters,
  * key and the panel's lead. Every colour comes from the tokens in globals.css.
+ *
+ * One local class, `section`: the parts are named by attribute (`data-map`, `data-field`,
+ * `data-node`, `data-part`), so the module's class map in the page's script stays one name long.
  */
 
 .section {
@@ -9,12 +12,12 @@
 }
 
 /* The map stands from 1024 px; below it the interim cards do. */
-.map {
+.section [data-map] {
   display: none;
 }
 
 @media (min-width: 1024px) {
-  .map {
+  .section [data-map] {
     display: block;
   }
 }
@@ -28,7 +31,7 @@
 
 /* ---------------------------------------------------------------- filters */
 
-.filters {
+.section [data-map] fieldset {
   display: flex;
   min-width: 0;
   flex-wrap: wrap;
@@ -38,12 +41,12 @@
   border: 0;
 }
 
-.choice {
+.section [data-map] label {
   position: relative;
   display: inline-flex;
 }
 
-.radio {
+.section [data-map] input {
   position: absolute;
   inset: 0;
   margin: 0;
@@ -51,7 +54,7 @@
   cursor: pointer;
 }
 
-.chip {
+.section [data-map] label > span {
   display: inline-flex;
   min-height: 2.75rem;
   align-items: center;
@@ -68,25 +71,25 @@
     color var(--duration-hover) var(--ease);
 }
 
-.choice:hover .chip {
+.section [data-map] label:hover > span {
   border-color: var(--muted);
   color: var(--text);
 }
 
-.radio:checked + .chip {
+.section [data-map] input:checked + span {
   border-color: var(--accent);
   background-color: var(--accent-soft);
   color: var(--text);
 }
 
-.radio:focus-visible + .chip {
+.section [data-map] input:focus-visible + span {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
 /* ---------------------------------------------------------------- the field */
 
-.field {
+.section [data-field] {
   display: block;
   width: 100%;
   height: auto;
@@ -94,39 +97,37 @@
   font-family: var(--font-sans);
 }
 
-.edge {
+.section [data-part='edge'] {
   fill: none;
   stroke: var(--edge);
   stroke-width: 1;
   transition: opacity var(--duration-state) var(--ease);
 }
 
-.domain,
-.capability,
-.source {
+.section [data-node] {
   transition: opacity var(--duration-state) var(--ease);
 }
 
-.domainDot {
+.section [data-part='domain-dot'] {
   fill: var(--accent);
 }
 
-.domainLabel {
+.section [data-part='domain-label'] {
   fill: var(--text);
   font-size: 14px;
   font-weight: 600;
 }
 
-.capability {
+.section [data-node='capability'] {
   cursor: pointer;
   outline: none;
 }
 
-.hit {
+.section [data-part='hit'] {
   fill: transparent;
 }
 
-.band {
+.section [data-part='band'] {
   fill: var(--surface);
   stroke: var(--line-strong);
   stroke-width: 1;
@@ -135,65 +136,65 @@
     stroke var(--duration-hover) var(--ease);
 }
 
-.bandPending {
+.section [data-part='band'][data-pending] {
   stroke-dasharray: 3 3;
 }
 
-.capability:hover .band {
+.section [data-node='capability']:hover [data-part='band'] {
   fill: var(--raised);
   stroke: var(--muted);
 }
 
-.ring {
+.section [data-part='ring'] {
   fill: none;
   stroke: var(--accent);
   stroke-width: 2;
   opacity: 0;
 }
 
-.capability:focus-visible .ring {
+.section [data-node='capability']:focus-visible [data-part='ring'] {
   opacity: 1;
 }
 
-.dot {
+.section [data-part='dot'] {
   fill: var(--muted);
 }
 
-.label {
+.section [data-part='label'] {
   fill: var(--text);
   font-size: 13px;
 }
 
-.mark {
+.section [data-part='mark'] {
   fill: var(--text);
   stroke: var(--bg);
   stroke-width: 1.5;
   paint-order: stroke;
 }
 
-.pending {
+.section [data-part='pending'] {
   fill: var(--bg);
   stroke: var(--muted);
   stroke-width: 1.5;
 }
 
-.icon {
+.section [data-part='icon'] {
   flex: none;
   overflow: visible;
 }
 
 /* The filters dim what is not in the chosen domain; the five rules are one. */
-.section:has(input[value='delivery']:checked) .field [data-domain]:not([data-domain~='delivery']),
-.section:has(input[value='ai']:checked) .field [data-domain]:not([data-domain~='ai']),
-.section:has(input[value='platform']:checked) .field [data-domain]:not([data-domain~='platform']),
-.section:has(input[value='product']:checked) .field [data-domain]:not([data-domain~='product']),
-.section:has(input[value='qualifications']:checked) .field [data-domain]:not([data-domain~='qualifications']) {
+.section:has(input[value='delivery']:checked) [data-field] [data-domain]:not([data-domain~='delivery']),
+.section:has(input[value='ai']:checked) [data-field] [data-domain]:not([data-domain~='ai']),
+.section:has(input[value='platform']:checked) [data-field] [data-domain]:not([data-domain~='platform']),
+.section:has(input[value='product']:checked) [data-field] [data-domain]:not([data-domain~='product']),
+.section:has(input[value='qualifications']:checked) [data-field] [data-domain]:not([data-domain~='qualifications']) {
   opacity: 0.2;
 }
 
 /* ---------------------------------------------------------------- key */
 
-.key {
+.section [data-map] > ul {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1.5rem;
@@ -206,7 +207,7 @@
   list-style: none;
 }
 
-.key li {
+.section [data-map] > ul li {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -214,7 +215,7 @@
 
 /* ---------------------------------------------------------------- the panel's lead */
 
-.lead {
+.section [data-subgraph] {
   display: block;
   width: 100%;
   max-width: 28rem;
@@ -223,30 +224,30 @@
   font-family: var(--font-sans);
 }
 
-.leadDomain {
+.section [data-part='lead-domain'] {
   fill: var(--text);
   font-size: 14px;
   font-weight: 600;
 }
 
-.leadLabel {
+.section [data-part='lead-label'] {
   fill: var(--text);
   font-size: 15px;
   font-weight: 500;
 }
 
-.leadSource {
+.section [data-part='lead-source'] {
   fill: var(--text);
   font-family: var(--font-mono);
   font-size: 13px;
 }
 
-.block {
+.section [data-part='block'] {
   display: grid;
   gap: 0.5rem;
 }
 
-.sourceRow {
+.section [data-part='row'] {
   display: flex;
   min-height: 2.75rem;
   flex-wrap: wrap;
@@ -254,7 +255,7 @@
   gap: 0.25rem 0.75rem;
 }
 
-.sourceLink {
+.section a[data-part='row'] {
   border-radius: var(--radius-sm);
   text-decoration: underline;
   text-decoration-color: var(--line-strong);
@@ -262,17 +263,15 @@
   transition: text-decoration-color var(--duration-hover) var(--ease);
 }
 
-.sourceLink:hover {
+.section a[data-part='row']:hover {
   text-decoration-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chip,
-  .edge,
-  .domain,
-  .capability,
-  .source,
-  .band {
+  .section [data-map] label > span,
+  .section [data-part='edge'],
+  .section [data-node],
+  .section [data-part='band'] {
     transition: none;
   }
 }

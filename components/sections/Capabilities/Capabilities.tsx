@@ -42,7 +42,7 @@ export function Capabilities() {
       </Container>
       <DetailSet label="Capabilities" items={items}>
         <Container>
-          <div data-map="" className={styles.map}>
+          <div data-map="">
             <Filters />
             <Field />
             <Key />

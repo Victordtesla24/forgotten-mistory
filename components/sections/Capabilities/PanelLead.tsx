@@ -1,7 +1,6 @@
 import { SUBGRAPH, subgraph } from '@/lib/capability-field';
 import type { Capability } from '@/content/capabilities';
 
-import styles from './Capabilities.module.css';
 import { Mark, PendingMark } from './Mark';
 
 /**
@@ -20,16 +19,15 @@ export function PanelLead({ capability }: { capability: Capability }) {
       viewBox={`0 0 ${width} ${graph.height}`}
       width={width}
       height={graph.height}
-      className={styles.lead}
       data-subgraph=""
       data-sources={graph.sources.length}
     >
-      <path d={graph.domainPath} className={styles.edge} />
+      <path d={graph.domainPath} data-part="edge" />
       {graph.sources.map((source) => (
-        <path key={source.id} d={source.path} className={styles.edge} data-source={source.id} />
+        <path key={source.id} d={source.path} data-part="edge" data-source={source.id} />
       ))}
-      <circle cx={trunkX} cy={SUBGRAPH.domainY} r={4.5} className={styles.domainDot} />
-      <text x={trunkX + 14} y={SUBGRAPH.domainY} dy="0.35em" className={styles.leadDomain}>
+      <circle cx={trunkX} cy={SUBGRAPH.domainY} r={4.5} data-part="domain-dot" />
+      <text x={trunkX + 14} y={SUBGRAPH.domainY} dy="0.35em" data-part="lead-domain">
         {graph.domain.name}
       </text>
       <rect
@@ -38,16 +36,17 @@ export function PanelLead({ capability }: { capability: Capability }) {
         width={width - 8}
         height={band}
         rx={6}
-        className={pending ? `${styles.band} ${styles.bandPending}` : styles.band}
+        data-part="band"
+        data-pending={pending ? '' : undefined}
       />
-      <text x={18} y={bandY + band / 2} dy="0.35em" className={styles.leadLabel}>
+      <text x={18} y={bandY + band / 2} dy="0.35em" data-part="lead-label">
         {capability.label}
       </text>
       {pending ? <PendingMark x={width - 22} y={bandY + band / 2} /> : null}
       {graph.sources.map((source) => (
         <g key={source.id} data-source={source.id} data-kind={source.kind}>
           <Mark kind={source.kind} x={markX} y={source.y} />
-          <text x={markX + 16} y={source.y} dy="0.35em" className={styles.leadSource}>
+          <text x={markX + 16} y={source.y} dy="0.35em" data-part="lead-source">
             {source.label}
           </text>
         </g>

@@ -291,7 +291,9 @@ test.describe('checked once, because the viewport does not matter', { tag: '@des
             .sort((a, b) => a.box.left - b.box.left);
           for (let at = 1; at < numerals.length; at += 1) {
             const [before, after] = [numerals[at - 1], numerals[at]];
-            if (after.box.left - before.box.right < GAP) found.push(`${before.label} ${after.label}`);
+            // Numerals touch when they are close along the line and on the same line: the labels of a drawing stand in columns, one above another.
+            const sameLine = after.box.top < before.box.bottom + GAP && before.box.top < after.box.bottom + GAP;
+            if (sameLine && after.box.left - before.box.right < GAP) found.push(`${before.label} ${after.label}`);
           }
         }
         return found;

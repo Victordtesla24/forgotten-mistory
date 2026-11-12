@@ -1,7 +1,6 @@
 import type { Capability, Source } from '@/content/capabilities';
 import { sourcesOf } from '@/lib/capability-field';
 
-import styles from './Capabilities.module.css';
 import { KIND_NAME, MarkIcon } from './Mark';
 
 /** The fragment of the panel a source's role or project opens, in Experience or Work. */
@@ -23,7 +22,7 @@ export function PanelBody({ capability }: { capability: Capability }) {
     <>
       <p className="max-w-[62ch]">{capability.detail}</p>
       {named.length > 0 ? (
-        <div className={styles.block}>
+        <div data-part="block">
           <h4 className="type-eyebrow">Applied at</h4>
           <ul className="grid gap-1">
             {named.map((source) => {
@@ -38,11 +37,11 @@ export function PanelBody({ capability }: { capability: Capability }) {
               return (
                 <li key={source.id} data-source={source.id}>
                   {link ? (
-                    <a href={link.href} className={`${styles.sourceRow} ${styles.sourceLink}`}>
+                    <a href={link.href} data-part="row">
                       {row}
                     </a>
                   ) : (
-                    <span className={styles.sourceRow}>{row}</span>
+                    <span data-part="row">{row}</span>
                   )}
                 </li>
               );

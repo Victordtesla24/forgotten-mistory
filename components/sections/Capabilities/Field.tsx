@@ -1,7 +1,6 @@
 import { DetailTrigger } from '@/components/ui/DetailPanel';
 import { FIELD, field } from '@/lib/capability-field';
 
-import styles from './Capabilities.module.css';
 import { KIND_NAME, Mark, PendingMark } from './Mark';
 
 /** The id of the panel a capability opens: the fragment it has always had. */
@@ -24,19 +23,18 @@ export function Field() {
       viewBox={`0 0 ${field.width} ${field.height}`}
       width={field.width}
       height={field.height}
-      className={styles.field}
       data-field=""
       data-domains={field.domains.length}
       data-capabilities={field.capabilities.length}
       data-sources={field.sources.length}
       data-edges={field.edges.length}
     >
-      <g className={styles.edges}>
+      <g>
         {field.edges.map((edge) => (
           <path
             key={`${edge.capability}-${edge.source ?? 'domain'}`}
             d={edge.path}
-            className={styles.edge}
+            data-part="edge"
             data-edge={edge.kind}
             data-capability={edge.capability}
             data-source={edge.source}
@@ -46,9 +44,9 @@ export function Field() {
       </g>
 
       {field.domains.map(({ domain, x, y }) => (
-        <g key={domain.id} className={styles.domain} data-node="domain" data-domain={domain.id}>
-          <circle cx={x} cy={y} r={4.5} className={styles.domainDot} />
-          <text x={x - 14} y={y} dy="0.35em" textAnchor="end" className={styles.domainLabel}>
+        <g key={domain.id} data-node="domain" data-domain={domain.id}>
+          <circle cx={x} cy={y} r={4.5} data-part="domain-dot" />
+          <text x={x - 14} y={y} dy="0.35em" textAnchor="end" data-part="domain-label">
             {domain.name}
           </text>
         </g>
@@ -61,7 +59,6 @@ export function Field() {
           <DetailTrigger
             key={capability.id}
             panel={capabilityPanel(capability.id)}
-            className={styles.capability}
             aria-label={
               pending ? capability.label : `${capability.label}. Applied at ${sources.map((source) => source.label).join(', ')}.`
             }
@@ -75,7 +72,7 @@ export function Field() {
               y={y - FIELD.pitch / 2}
               width={FIELD.bandWidth}
               height={FIELD.pitch}
-              className={styles.hit}
+              data-part="hit"
             />
             <rect
               x={FIELD.bandX}
@@ -83,7 +80,8 @@ export function Field() {
               width={FIELD.bandWidth}
               height={FIELD.band}
               rx={4}
-              className={pending ? `${styles.band} ${styles.bandPending}` : styles.band}
+              data-part="band"
+              data-pending={pending ? '' : undefined}
             />
             <rect
               x={FIELD.bandX - 2.5}
@@ -91,11 +89,11 @@ export function Field() {
               width={FIELD.bandWidth + 5}
               height={FIELD.band + 5}
               rx={6.5}
-              className={styles.ring}
+              data-part="ring"
             />
-            <circle cx={leftDot} cy={y} r={2.5} className={styles.dot} />
-            {pending ? <PendingMark x={rightDot} y={y} /> : <circle cx={rightDot} cy={y} r={2.5} className={styles.dot} />}
-            <text x={FIELD.bandX + 12} y={y} dy="0.35em" className={styles.label}>
+            <circle cx={leftDot} cy={y} r={2.5} data-part="dot" />
+            {pending ? <PendingMark x={rightDot} y={y} /> : <circle cx={rightDot} cy={y} r={2.5} data-part="dot" />}
+            <text x={FIELD.bandX + 12} y={y} dy="0.35em" data-part="label">
               {capability.label}
             </text>
           </DetailTrigger>
@@ -105,7 +103,6 @@ export function Field() {
       {field.sources.map(({ source, x, y, domains: used }) => (
         <g
           key={source.id}
-          className={styles.source}
           role="img"
           aria-label={`${source.label}, ${KIND_NAME[source.kind].toLowerCase()}`}
           data-node="source"
@@ -114,7 +111,7 @@ export function Field() {
           data-domain={used.join(' ')}
         >
           <title>{`${source.label} (${KIND_NAME[source.kind].toLowerCase()})`}</title>
-          <circle cx={x} cy={y} r={14} className={styles.hit} />
+          <circle cx={x} cy={y} r={14} data-part="hit" />
           <Mark kind={source.kind} x={x} y={y} />
         </g>
       ))}
