@@ -157,13 +157,19 @@ void main() {
 }
 `;
 
+/** Where a line of the page's own stands once the screen has put it on its grid of device pixels: the middle of the columns the page paints it in, so the light's line covers those columns and no others. */
+function snapped(left: number, width: number): number {
+  const ratio = window.devicePixelRatio || 1;
+  return (Math.round(left * ratio) + (width * ratio) / 2) / ratio;
+}
+
 /** What the page says this frame, relative to the view's top left corner, in CSS pixels. */
 interface Measured {
   boxes: Vector4[];
   radius: number;
   /** Where the playhead is, 0 to 1 of the track, and where the page has told it to go. */
   target: number;
-  /** The playhead's middle as the page draws it this frame, which is also where the light draws it. */
+  /** The playhead's middle as the page paints it this frame, on the screen's grid of device pixels, which is also where the light draws it. */
   playX: number;
   following: boolean;
   selected: number;
@@ -250,7 +256,7 @@ export function createExperienceTimeline(context: ViewContext): View {
       boxes,
       radius,
       target: Number.isFinite(target) ? target : 0,
-      playX: head ? head.left + head.width / 2 - client.left : 0,
+      playX: head ? snapped(head.left, head.width) - client.left : 0,
       following: track.dataset.following === 'true',
       selected,
       hovered,

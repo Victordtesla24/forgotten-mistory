@@ -36,7 +36,7 @@ function snapPad(row: HTMLElement): number {
   return Number.parseFloat(getComputedStyle(row).scrollPaddingLeft) || 0;
 }
 
-/** The longest a row that was moved from code is left alone, so the row's own scroll does not answer it. It is released sooner, when the scroll ends. */
+/** The longest a row that was moved from code is left alone, so the row's own scroll does not answer it. A touch on the row ends it sooner. */
 const ROW_SETTLE_MS = 700;
 
 type Phase = 'idle' | 'armed' | 'play' | 'done';
@@ -101,6 +101,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
   const selectedRef = useRef(selectedId);
   const fromRow = useRef(false);
   const rowBusy = useRef(false);
+  const rowMoves = useRef(0);
   const drag = useRef<{ pointer: number; x: number; dragging: boolean } | null>(null);
   const headId = useRef<string | null>(null);
 
@@ -174,17 +175,21 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
     if (!row || window.matchMedia(WIDE).matches || document.querySelector('[data-role-item][data-active]')) return;
     const tabs = Array.from(row.querySelectorAll<HTMLElement>('[role="tab"]'));
     const pad = snapPad(row);
-    const atEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 2;
-    let snapped = atEnd ? tabs.length - 1 : 0;
-    if (!atEnd) {
-      let gap = Number.POSITIVE_INFINITY;
-      tabs.forEach((tab, at) => {
-        const away = Math.abs(tab.offsetLeft - pad - row.scrollLeft);
-        if (away < gap) {
-          gap = away;
-          snapped = at;
-        }
-      });
+    let snapped = 0;
+    let gap = Number.POSITIVE_INFINITY;
+    tabs.forEach((tab, at) => {
+      const away = Math.abs(tab.offsetLeft - pad - row.scrollLeft);
+      if (away < gap) {
+        gap = away;
+        snapped = at;
+      }
+    });
+    // A row at its end has not brought its last cards to the front. On a phone its last card is the role; from 640px the role stays while its card is in view, and is the card at the front once it is not.
+    if (row.scrollLeft >= row.scrollWidth - row.clientWidth - 2) {
+      const kept = tabs.findIndex((tab) => tab.dataset.role === selectedRef.current);
+      const card = tabs[kept];
+      if (!window.matchMedia('(min-width: 640px)').matches) snapped = tabs.length - 1;
+      else if (card && card.offsetLeft >= row.scrollLeft && card.offsetLeft + card.offsetWidth <= row.scrollLeft + row.clientWidth) snapped = kept;
     }
     const next = roles[snapped];
     if (next) select(next.id, 'row');
@@ -200,13 +205,13 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
       const left = Math.max(Math.min(tab.offsetLeft - snapPad(row), row.scrollWidth - row.clientWidth), 0);
       if (Math.abs(row.scrollLeft - left) < 1) return;
       rowBusy.current = true;
-      // When the move ends the row is let go. A row that is not where the move put it was moved by something else while it ran, and the selection follows it.
-      const release = () => {
+      const move = ++rowMoves.current;
+      // When the move's time is up the row is let go; the end of an earlier scroll, or an earlier move's timer, never lets go of this one. A row that is not where the move put it was moved by something else while it ran, and the selection follows it.
+      window.setTimeout(() => {
+        if (move !== rowMoves.current) return;
         rowBusy.current = false;
         if (Math.abs(row.scrollLeft - left) > 2) syncFromRow();
-      };
-      row.addEventListener('scrollend', release, { once: true });
-      window.setTimeout(release, ROW_SETTLE_MS);
+      }, ROW_SETTLE_MS);
       row.scrollTo({ left, behavior: reducedMotion() ? 'instant' : 'smooth' });
     },
     [syncFromRow],
@@ -330,6 +335,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
   const onTrackDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === 'mouse') return;
     drag.current = { pointer: event.pointerId, x: event.clientX, dragging: false };
+    hover(nearest(roles, fractionAt(event.clientX))?.id ?? null);
   };
 
   const onTrackMove = (event: PointerEvent<HTMLDivElement>) => {
@@ -343,6 +349,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
     const at = fractionAt(event.clientX);
     placePlayhead(at, true);
     const found = nearest(roles, at);
+    hover(found?.id ?? null);
     if (found) select(found.id, 'other');
   };
 
@@ -350,6 +357,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
     const held = drag.current;
     if (!held || held.pointer !== event.pointerId) return;
     drag.current = null;
+    hover(null);
     if (!held.dragging) return;
     const found = nearest(roles, fractionAt(event.clientX));
     if (found) select(found.id, 'other');
@@ -452,6 +460,12 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
             >
               <span aria-hidden="true" className={styles.tabLabel}>
                 {entry.label}
+              </span>
+              <span aria-hidden="true" className={styles.tabTitle}>
+                {entry.shortTitle}
+              </span>
+              <span aria-hidden="true" className={styles.tabYears}>
+                {entry.years}
               </span>
               <span className={styles.said}>
                 {entry.employer}, {entry.shortTitle}, {entry.dates}

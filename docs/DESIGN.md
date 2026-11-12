@@ -211,6 +211,9 @@ lanes, the "now" edge) feeds all of them, so they can never disagree.
   employer, dates, headline figure); "Open role" or Enter opens its detail panel. On
   phones the axis stays full width with a lens on the selected role above a native
   horizontally snapping row of role cards that drives the lens (and the lens drives it).
+  From 640 px on a touch screen the card stands on the axis as on a desktop (at most 26rem
+  wide, never a band), a touch on the track lights a ring of at least 44 px round the nearest
+  bar, and the row of cards under the axis shows employer, title and years on each.
 - **Semantics.** The bars are the tabs of an ARIA tab list in date order; one tab panel
   shows the selected role; the complete list of roles is in the HTML for no-JS and
   screen readers. Focus is always visible above the canvas. Targets ≥ 44 px on touch.

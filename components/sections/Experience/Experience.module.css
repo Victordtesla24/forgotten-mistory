@@ -21,6 +21,8 @@
   --glide: 240ms;
   --card-w: 34rem;
   --card-h: 15rem;
+  /* The most the card stands in from one edge of the screen: no more room than this is left empty beside it. */
+  --band: 100cqw;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -567,6 +569,12 @@
   line-height: 1.2;
 }
 
+/* A phone's card is its label alone; a touch tablet's adds the title and the years (below). */
+.tabTitle,
+.tabYears {
+  display: none;
+}
+
 @media (min-width: 640px) {
   .tab {
     flex-basis: calc((100% - 1rem) / 2.8);
@@ -852,16 +860,21 @@
  * The card stands over the bar, and the column of the content is its edge: where the bar is
  * nearer an edge than the card can stand, the card stays inside the column and the connector bends
  * (`--d` is the distance from the bar's middle to the nearest point of the card), leaving the card
- * by its side and landing on the middle of the bar.
+ * by its side and landing on the middle of the bar. This is the same from 640px for every pointer;
+ * what differs is only what the controls are (below).
  */
-@media (min-width: 640px) and (pointer: fine) and (hover: hover) {
+@media (min-width: 640px) {
   .root {
     --bar-h: clamp(3rem, 6.5svh, 4rem);
     --zone: 3.5rem;
     container-type: inline-size;
     --col-l: max(var(--gutter), calc((100cqw - var(--container-content, 72rem)) / 2 + var(--gutter)));
     --cw: min(var(--card-w), calc(100cqw - 2 * var(--col-l)));
-    --card-l: clamp(var(--col-l), calc(var(--cx) * 100cqw - var(--cw) / 2), calc(100cqw - var(--col-l) - var(--cw)));
+    --card-l: clamp(
+      max(var(--col-l), calc(100cqw - var(--cw) - var(--band))),
+      calc(var(--cx) * 100cqw - var(--cw) / 2),
+      min(calc(100cqw - var(--col-l) - var(--cw)), var(--band))
+    );
     --anchor: clamp(var(--card-l), calc(var(--cx) * 100cqw), calc(var(--card-l) + var(--cw)));
     --d: calc(var(--cx) * 100cqw - var(--anchor));
   }
@@ -923,7 +936,10 @@
       linear-gradient(var(--accent), var(--accent)) calc((sign(var(--d)) + 1) * 50%) 0 / 1px 100% no-repeat;
     background-color: transparent;
   }
+}
 
+/* A fine pointer with room: the tabs sit on the bars, and the bars are the controls. */
+@media (min-width: 640px) and (pointer: fine) and (hover: hover) {
   .tabs {
     position: absolute;
     inset-inline: 0;
@@ -984,6 +1000,94 @@
     line-height: 1;
     white-space: nowrap;
     color: var(--text);
+  }
+}
+
+/*
+ * A tablet or any touch screen from 640px: the card of the desktop stands over its bar, joined to
+ * it, and its width is the card's own (26rem under 1024px, so it is a card and never a band across
+ * the screen); it stands no further than 18.5rem in from an edge, and the connector bends to its bar. A finger cannot choose among bars as narrow as a month's work, so the controls are a
+ * row of cards under the axis, each with the employer, the title and the years, and a touch on the
+ * track picks the bar nearest to it and lights a ring of at least 44px round that bar for as long
+ * as the finger is down. The row shows three cards and a half; its two ends fade, so a card that is
+ * going past is never cut through its letters.
+ */
+@media (min-width: 640px) and ((pointer: coarse) or (hover: none)) {
+  .tabs {
+    gap: 0.5rem;
+    mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 2.5rem), transparent);
+  }
+
+  .tab {
+    flex-basis: calc((100% + var(--gutter) - 2rem) / 3.5);
+    align-content: start;
+    gap: 0.125rem;
+    padding-block: 0.5rem;
+  }
+
+  .tabTitle,
+  .tabYears {
+    display: block;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    color: var(--muted);
+  }
+
+  .tabYears {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tab[aria-selected='true'] .tabTitle,
+  .tab[aria-selected='true'] .tabYears {
+    color: color-mix(in srgb, var(--text) 80%, var(--muted));
+  }
+
+  /* The ring is the bar's own box widened to 44px where the bar is narrower, flush with the screen's edge for the last bar. */
+  .bar::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: 50%;
+    inline-size: max(100%, 2.75rem);
+    translate: -50% 0;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    background-color: var(--accent-soft);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-press) var(--ease);
+  }
+
+  .bar[data-current='true']::after {
+    left: auto;
+    right: 0.125rem;
+    translate: none;
+  }
+
+  .bar[data-hover='true']::after {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) and ((pointer: coarse) or (hover: none)) {
+  .root {
+    --card-w: 26rem;
+    --band: 18.5rem;
+  }
+
+  .duration {
+    display: none;
+  }
+
+  /* The current month's cap and the last name keep clear of the screen's edge: no bright stripe stands on it, and a name flush with a bar's end stands 8px in from it. */
+  .now {
+    right: 0.5rem;
+    inline-size: 1px;
+  }
+
+  .text {
+    translate: calc((var(--align) + 1) * -50% - var(--align) * 2px) 0;
   }
 }
 

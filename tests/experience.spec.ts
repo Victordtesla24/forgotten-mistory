@@ -826,3 +826,176 @@ test.describe('the Experience timeline on a phone', { tag: '@mobile' }, () => {
     expect(small).toEqual([]);
   });
 });
+
+test.describe('the Experience timeline on a tablet', { tag: '@mobile' }, () => {
+  const SIZES = [
+    { width: 768, height: 1024 },
+    { width: 834, height: 1112 },
+  ] as const;
+
+  for (const size of SIZES) {
+    test.describe(`at ${size.width} px`, () => {
+      test.use({ viewport: size });
+
+      test('the selected role is a card on its axis, never a band: at most 420 px, joined to its bar, with at most 300 px of room beside it, over a row of cards that say employer, title and years', async ({ page }) => {
+        await open(page, '/?gl=off');
+        await settled(page);
+        const found = await page.evaluate(() => {
+          const rect = (selector: string) => (document.querySelector(selector) as HTMLElement).getBoundingClientRect();
+          const card = rect('#experience [role="tabpanel"]');
+          const connector = rect('#experience [data-connector]');
+          const bar = rect('#experience [data-bar="ato"]');
+          const row = document.querySelector('#experience [data-row]') as HTMLElement;
+          const box = row.getBoundingClientRect();
+          const width = document.documentElement.clientWidth;
+          const tabs = Array.from(row.querySelectorAll<HTMLElement>('[role="tab"]'));
+          const cards = tabs.map((tab) => {
+            const [label, title, years] = Array.from(tab.children) as HTMLElement[];
+            return { id: tab.dataset.role ?? '', text: [label, title, years].map((part) => part?.textContent ?? ''), sizes: [label, title, years].map((part) => Number.parseFloat(getComputedStyle(part as HTMLElement).fontSize)), parts: [label, title, years].map((part) => {
+              const letters = document.createRange();
+              letters.selectNodeContents(part as HTMLElement);
+              const { left, right } = letters.getBoundingClientRect();
+              return { left, right };
+            }) };
+          });
+          const shown = tabs.reduce((sum, tab) => {
+            const { left, right } = tab.getBoundingClientRect();
+            return sum + Math.max(0, Math.min(right, box.right) - Math.max(left, box.left)) / (right - left);
+          }, 0);
+          return {
+            cardWidth: card.width,
+            cardCentre: card.left + card.width / 2,
+            connectorX: bar.left + bar.width / 2,
+            connectorReach: [connector.left, connector.right],
+            left: card.left,
+            right: width - card.right,
+            shown,
+            cards,
+            width,
+            mask: getComputedStyle(row).maskImage,
+          };
+        });
+        expect(found.cardWidth, 'the card is a card').toBeLessThanOrEqual(420);
+        expect(Math.abs(found.cardCentre - found.connectorX), 'the card stands within one card width of its bar').toBeLessThanOrEqual(found.cardWidth);
+        expect(found.connectorReach[0], 'the connector reaches the bar').toBeLessThanOrEqual(found.connectorX + 1);
+        expect(found.connectorReach[1], 'the connector reaches the bar').toBeGreaterThanOrEqual(found.connectorX - 1);
+        expect(found.left, 'no wider band is left empty to the left of the card').toBeLessThanOrEqual(300);
+        expect(found.right, 'no wider band is left empty to the right of the card').toBeLessThanOrEqual(300);
+        expect(found.shown, 'three cards and a half of the row show').toBeGreaterThanOrEqual(3.4);
+        expect(found.mask, 'the ends of the row fade').not.toBe('none');
+        for (const role of roles) {
+          const card = found.cards.find((entry) => entry.id === role.id);
+          expect(card?.text, `${role.id}: the card says employer, title and years`).toEqual([role.short, role.shortTitle, yearsOf(role.span)]);
+          expect(Math.min(...(card?.sizes ?? [0])), `${role.id}: the text is 13 px or more`).toBeGreaterThanOrEqual(13);
+          for (const part of card?.parts ?? []) {
+            const crosses = (edge: number) => part.left < edge && part.right > edge;
+            expect(crosses(0) || crosses(found.width), `${role.id}: no letter is cut by an edge of the screen`).toBe(false);
+          }
+        }
+      });
+
+      test('choosing any role leaves the axis, the section and the page where they were, and a tap at either end of a narrow bar chooses that bar even while the row is still moving', async ({ page }) => {
+        await open(page, '/?gl=off');
+        await settled(page);
+        const measure = () =>
+          page.evaluate(() => ({
+            track: (document.querySelector('#experience [data-timeline]') as HTMLElement).getBoundingClientRect().top,
+            section: (document.querySelector('#experience') as HTMLElement).getBoundingClientRect().height,
+            scroll: window.scrollY,
+          }));
+        const first = await measure();
+        let last = 0;
+        for (const id of ORDER) {
+          for (const inset of [3, -3]) {
+            const at = await page.locator(`${BARS}[data-bar="${id}"]`).evaluate((bar, edge) => {
+              const { left, right, top, height } = bar.getBoundingClientRect();
+              return { x: edge > 0 ? left + edge : right + edge, y: top + height / 2 };
+            }, inset);
+            await page.touchscreen.tap(at.x, at.y);
+            last = await page.evaluate(() => performance.now());
+            await expect.poll(() => selectedRole(page), `${id}: a tap ${inset > 0 ? 'at the left end' : 'at the right end'} of its bar`).toBe(id);
+            const now = await measure();
+            expect(now.track, `${id}: the axis stays`).toBeCloseTo(first.track, 0);
+            expect(now.section, `${id}: the section keeps its height`).toBeCloseTo(first.section, 0);
+            expect(now.scroll, `${id}: the page stays`).toBeCloseTo(first.scroll, 0);
+          }
+        }
+        // The row's own move ends long after the last tap: nothing it does then may choose another role.
+        await page.waitForFunction((from) => performance.now() > from + 1200, last);
+        expect(await selectedRole(page)).toBe('ato');
+      });
+
+      test('a finger on a bar lights a ring of at least 44 px round it at once and lets go when it lifts', async ({ page }) => {
+        await open(page, '/?gl=off');
+        await settled(page);
+        const bar = page.locator(`${BARS}[data-bar="ato"]`);
+        const at = await bar.evaluate((element) => {
+          const { left, top, width, height } = element.getBoundingClientRect();
+          return { x: left + width / 2, y: top + height / 2 };
+        });
+        const ring = () =>
+          bar.evaluate((element) => {
+            const style = getComputedStyle(element, '::after');
+            return { width: Number.parseFloat(style.width), opacity: Number.parseFloat(style.opacity), right: Number.parseFloat(style.right) };
+          });
+        const client = await page.context().newCDPSession(page);
+        await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [at] });
+        await expect.poll(async () => (await ring()).opacity).toBeGreaterThan(0.9);
+        expect((await ring()).width, 'the ring is a touch target').toBeGreaterThanOrEqual(44);
+        await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+        await expect.poll(async () => (await ring()).opacity).toBe(0);
+      });
+
+      test('no bright stripe stands on the right edge of the screen and the last bar’s name stands 8 px in from it', async ({ page }) => {
+        await open(page, '/?gl=off');
+        await settled(page);
+        const found = await page.evaluate(() => {
+          const width = document.documentElement.clientWidth;
+          const now = (document.querySelector('#experience [data-now]') as HTMLElement).getBoundingClientRect();
+          const name = document.querySelector('#experience [data-bar="ato"] [data-out] span') as HTMLElement;
+          const range = document.createRange();
+          range.selectNodeContents(name);
+          return { cap: width - now.right, capWidth: now.width, name: width - range.getBoundingClientRect().right };
+        });
+        expect(found.cap, 'the cap stands in from the edge').toBeGreaterThanOrEqual(6);
+        expect(found.capWidth, 'the cap is a hairline').toBeLessThanOrEqual(1);
+        expect(found.name, 'the name stands clear of the edge').toBeGreaterThanOrEqual(8);
+      });
+
+      test('the playhead is one line: the page’s and the stage’s light cover the same device pixels', async ({ page }) => {
+        await open(page, '/?gl=high');
+        await page.evaluate(() => window.__stage?.ready);
+        await settled(page);
+        await expect(page.locator('[data-stage-view="experience-timeline"]')).toHaveAttribute('data-ready', 'true');
+        await expect
+          .poll(async () => {
+            const frames = await page.evaluate(() => window.__stage?.info().frames);
+            await page.waitForTimeout(500);
+            return (await page.evaluate(() => window.__stage?.info().frames)) === frames;
+          }, { timeout: 15_000 })
+          .toBe(true);
+        const head = await page.locator(`${SECTION} [data-playhead]`).boundingBox();
+        expect(head).not.toBeNull();
+        if (!head) return;
+        const clip = { x: Math.floor(head.x) - 4, y: head.y + 4, width: 10, height: head.height - 8 };
+        const shot = await page.screenshot({ clip });
+        const columns = await page.evaluate(async (data) => {
+          const bitmap = await createImageBitmap(new Blob([Uint8Array.from(atob(data), (letter) => letter.charCodeAt(0))], { type: 'image/png' }));
+          const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+          const context = canvas.getContext('2d') as OffscreenCanvasRenderingContext2D;
+          context.drawImage(bitmap, 0, 0);
+          const pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+          return Array.from({ length: bitmap.width }, (_, x) => {
+            let sum = 0;
+            for (let y = 0; y < bitmap.height; y += 1) sum += pixels[(y * bitmap.width + x) * 4] ?? 0;
+            return Math.round(sum / bitmap.height);
+          });
+        }, shot.toString('base64'));
+        // On a screen of two device pixels to the pixel the line is two columns wide, bright and alone: the page's line and the light's one line.
+        const lit = columns.filter((value) => value > 80);
+        expect(lit.length, `the columns of the line (${columns.join(' ')})`).toBe(2);
+        expect(Math.min(...lit)).toBeGreaterThan(200);
+      });
+    });
+  }
+});
