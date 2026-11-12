@@ -82,7 +82,7 @@ function laneVars(lanes: readonly number[], centre: number): CSSProperties {
 /**
  * The Experience timeline: the controls, the playhead and the card around the server-drawn
  * axis. The bars are the tabs of one tab list, in date order; one tab panel is the card of the
- * selected role, joined to its bar by a connector; "Open role" and Enter open the role's panel.
+ * selected role, joined to its bar by a connector; "Role details" and Enter open the role's panel.
  * A fine pointer moves the playhead and a click selects; a finger drags along the track and
  * selects what it lands on; on a phone the same tabs are the cards of a row that snaps, and the
  * row and the track follow each other. The stage's light reads the state from the attributes this
@@ -390,7 +390,7 @@ export function Timeline({ roles, lanes, visuals, children }: TimelineProps) {
             <h3 className={styles.title}>{role.shortTitle}</h3>
           </div>
           <button type="button" aria-haspopup="dialog" className={styles.open} onClick={(event) => open(role.panel, event.currentTarget)}>
-            <span className={styles.openText}>Open role</span>
+            <span className={styles.openText}>Role details</span>
             <ArrowRight aria-hidden="true" className={styles.arrow} />
           </button>
           <RoleOutcome role={role} />

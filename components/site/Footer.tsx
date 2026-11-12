@@ -11,7 +11,7 @@ import { MotionToggle } from './MotionToggle';
 const linkClass =
   'type-small inline-flex min-h-11 min-w-11 items-center text-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-text hover:decoration-muted';
 
-/** Legal links, the CV, the repository and the build id. */
+/** Legal links, the CV, the repository, the way to report a problem with the site and the Motion control. */
 export function Footer() {
   return (
     <footer className="mt-section border-t border-line">
@@ -48,10 +48,7 @@ export function Footer() {
             </li>
           </ul>
         </nav>
-        <p className="type-meta text-muted">
-          {copyright} · build{' '}
-          <span translate="no">{process.env.NEXT_PUBLIC_BUILD_COMMIT}</span>
-        </p>
+        <p className="type-meta text-muted">{copyright}</p>
       </Container>
     </footer>
   );

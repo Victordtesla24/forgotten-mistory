@@ -36,10 +36,17 @@ export const contact = {
       ENGAGEMENT_SUBJECT,
     )}&body=${encodeURIComponent(ENGAGEMENT_AGENDA.join('\n'))}`,
   },
-  /** The footer's support link: the same inbox, with a subject that says why. */
+  /** For a reader with no mail app set up: the address itself, put on the clipboard. */
+  copy: {
+    address: channels.email,
+    label: 'Copy email address',
+    done: 'Email address copied',
+    failed: 'Copying is not available',
+  },
+  /** The footer's link for a fault on the site: the same inbox, with a subject that says why. */
   support: {
-    label: 'Contact support',
-    href: `mailto:${channels.email}?subject=${encodeURIComponent('Portfolio — support')}`,
+    label: 'Report a site problem',
+    href: `mailto:${channels.email}?subject=${encodeURIComponent('Portfolio — site problem')}`,
   },
   channels: [
     { kind: 'email', label: channels.email, href: `mailto:${channels.email}` },

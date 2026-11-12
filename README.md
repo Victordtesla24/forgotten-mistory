@@ -50,7 +50,7 @@ worktree and does these things in order, stopping at the first failure:
 9. polls the live site until its `build-commit` meta equals the commit and every page and
    payload it serves revalidates on each load, then prints `SHIPPED <sha>`
 
-Every build carries the short commit in `<meta name="build-commit">` (and in the footer).
+Every build carries the short commit in `<meta name="build-commit">` (the footer does not print it).
 The push in step 7 also starts `.github/workflows/ship.yml`, which checks, builds and tests
 again and deploys only if the live site is not already serving that commit.
 

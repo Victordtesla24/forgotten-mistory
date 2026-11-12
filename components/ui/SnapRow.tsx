@@ -30,7 +30,8 @@ type SnapRowProps = HTMLAttributes<HTMLOListElement | HTMLUListElement> & {
 /**
  * A set laid out sideways. On a phone or a tablet it is one horizontally snapping row that
  * bleeds to the screen edges, with the next card peeking; from 1280 px it is a grid, so a
- * set never becomes a long vertical stack. A `strip` is a row of small controls (the role
+ * set never becomes a long vertical stack (the five principle rows of About, closed to one line
+ * each, are the one set a phone shows as a column: `About.tsx`). A `strip` is a row of small controls (the role
  * chips): one row at every width, each item its own width, a gap of 8 px between them, and
  * a fade over the gutter at each end so a row that goes on past the edge shows that it does.
  */

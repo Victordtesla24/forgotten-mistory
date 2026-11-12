@@ -86,14 +86,17 @@ Body 1.0625rem / 1.6. Eyebrow mono 0.8125rem uppercase +0.08em. Nothing readable
 One page, in this order; each a `<section id>` with an `aria-labelledby` heading. Header:
 slim sticky bar (wordmark, anchors, theme toggle, "Ask Mini Vic", primary "Contact");
 below 900 px a menu button opens a `<dialog>` sheet. A 2 px scroll-progress line under
-the header. Footer: privacy, terms, CV, repository, a "Motion on/off" control, build id.
+the header. Footer: privacy, terms, CV, repository, a link to report a site problem, a "Motion on/off" control. The build id is in
+`<meta name="build-commit">` only.
 
 **A compact page.** Vertical scrolling is kept to the minimum: on a 1440×900 desktop each
 section fits one screen and the whole page is at most 6.5 screens; on a 390×844 phone
 each section is at most 1.6 screens and the page at most 9. Sections show visuals,
 numbers and a few words; everything else opens in a **detail panel** (below). Sets of
 things (projects, roles, capabilities, principles) are laid out horizontally and are
-never stacked as long vertical lists.
+never stacked as long vertical lists. One exception: below 640 px the five principles of
+About are a column of closed one-line rows, so a principle that is opened is read at the
+full width of the phone. Every sideways row has an accessible name.
 
 | id | section | always visible (word budget) | signature visual (three.js, from real data) | in detail panels |
 |---|---|---|---|---|
@@ -102,7 +105,7 @@ never stacked as long vertical lists.
 | `work` | Selected work | heading and six cards: name plus one line each (≤ 70 words) | **Six working schematics.** A horizontal set of six cards, each an isometric diagram of that project's stages with packets travelling its real path. Idle is calm; hover, focus or tap runs the flow and names the stage. | the project: what it does, how it works with the schematic enlarged and steppable, stack, engineering decisions, repository and live links |
 | `capabilities` | Capabilities | heading, domain names, capability names (labels only) | **Capability constellation.** Capabilities grouped by domain and linked to the programmes, repositories and credentials where they were applied, as a node-link field with depth. Hover, focus or tap lights a capability and where it was applied; domain filters re-form the field. | the capability: where it was applied and the outcome |
 | `about` | About | portrait, three sentences, principle titles, credential names (≤ 90 words) | **Portrait with depth.** The photograph leans and relights with the pointer from a baked depth map. Working principles are a horizontal strip of cards to drag or arrow through. Education and credentials are compact chips (the CV gives them no dates, so they are never drawn on an axis). | each principle in full; each credential |
-| `contact` | Contact, with the footer | one line, the primary action, four links (≤ 35 words) | **The ruler resolves.** The hero's field returns and settles into a single baseline from 2010 to now, the "now" tick lit beside the primary action. | — |
+| `contact` | Contact, with the footer | one line, the primary action, a control that copies the email address, four links (≤ 40 words) | **The ruler resolves.** The hero's field returns and settles into a single baseline from 2010 to now, the "now" tick lit beside the primary action. | — |
 
 **Detail panels.** One shared primitive (`components/ui/DetailPanel`): a native `<dialog>`
 that grows out of the element that opened it (View Transitions where available, a
@@ -208,7 +211,7 @@ lanes, the "now" edge) feeds all of them, so they can never disagree.
   axis is fitted edge to edge at every width. The playhead follows the pointer; a click,
   tap, or arrow keys / Home / End select a role; on touch the track can also be dragged.
   The selected role shows as a compact card joined to its bar by a connector (title,
-  employer, dates, headline figure); "Open role" or Enter opens its detail panel. On
+  employer, dates, headline figure); "Role details" or Enter opens its detail panel. On
   phones the axis stays full width with a lens on the selected role above a native
   horizontally snapping row of role cards that drives the lens (and the lens drives it).
   From 640 px on a touch screen the card stands on the axis as on a desktop (at most 26rem

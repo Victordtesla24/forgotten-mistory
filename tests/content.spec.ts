@@ -250,11 +250,9 @@ test.describe('every detail can be linked to, and is open without script', () =>
 });
 
 test.describe('sets run sideways', { tag: '@mobile' }, () => {
-  test('on a phone, projects, roles, the capability filters and principles are snapping rows', async ({
-    page,
-  }) => {
+  test('on a phone, projects, roles and the capability filters are snapping rows', async ({ page }) => {
     await open(page, '/');
-    for (const selector of ['#work ul', '#experience [role="tablist"]', '#capabilities [data-filters="narrow"]', '#about ul']) {
+    for (const selector of ['#work ul', '#experience [role="tablist"]', '#capabilities [data-filters="narrow"]']) {
       const row = page.locator(selector).first();
       const { scrolls, snaps } = await row.evaluate((el) => ({
         scrolls: el.scrollWidth > el.clientWidth,
@@ -263,6 +261,37 @@ test.describe('sets run sideways', { tag: '@mobile' }, () => {
       expect(scrolls, `${selector} scrolls sideways`).toBe(true);
       expect(snaps, `${selector} snaps`).toBe(true);
     }
+  });
+});
+
+test.describe('the principles on a phone', { tag: '@mobile' }, () => {
+  test('are one column of rows as wide as the text, and the page still does not scroll sideways', async ({ page }) => {
+    await open(page, '/');
+    const list = page.locator('#about ul[aria-label="Working principles"]');
+    const { scrolls, lefts, widths, inner } = await list.evaluate((el) => {
+      const boxes = Array.from(el.children, (item) => item.getBoundingClientRect());
+      return {
+        scrolls: el.scrollWidth > el.clientWidth,
+        lefts: boxes.map((box) => Math.round(box.left)),
+        widths: boxes.map((box) => Math.round(box.width)),
+        inner: el.clientWidth,
+      };
+    });
+    expect(scrolls, 'the list does not scroll sideways').toBe(false);
+    expect(lefts).toHaveLength(about.principles.length);
+    expect(new Set(lefts).size, 'one column').toBe(1);
+    for (const width of widths) expect(Math.abs(width - inner), 'a row is as wide as the list').toBeLessThanOrEqual(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+});
+
+test.describe('every sideways row has a name', { tag: '@mobile' }, () => {
+  test('the readings, the roles, the projects and the capability filters', async ({ page }) => {
+    await open(page, '/');
+    await expect(page.getByRole('list', { name: 'Headline figures' })).toBeVisible();
+    await expect(page.getByRole('list', { name: 'Projects' })).toBeVisible();
+    await expect(page.locator('#experience [role="tablist"]')).toHaveAttribute('aria-label', /.+/);
+    await expect(page.locator('#capabilities [data-filters="narrow"]')).toHaveAttribute('aria-label', /.+/);
   });
 });
 

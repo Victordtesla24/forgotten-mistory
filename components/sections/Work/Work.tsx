@@ -57,6 +57,7 @@ export function Work() {
       <DetailSet label="Selected work" items={items}>
         <SnapRow
           columns={6}
+          aria-label="Projects"
           className="mx-0 grid grid-flow-col auto-cols-[min(84%,21rem)] grid-rows-[1fr_auto_auto_auto_auto] items-stretch gap-x-3 gap-y-0 sm:auto-cols-[clamp(15rem,36%,20rem)] xl:grid-flow-row xl:auto-cols-auto xl:px-[clamp(1rem,1.5vw,1.5rem)]"
         >
           {projects.map((project, index) => (

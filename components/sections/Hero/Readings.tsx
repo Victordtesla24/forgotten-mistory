@@ -69,8 +69,9 @@ export const figureItems: readonly DetailItem[] = headlineFigures.map((figure) =
  * its scope under it; opening it shows its panel. `#proof` is the anchor of the group. Their
  * panels are set up in `Hero`, around the whole first screen, so that without script every
  * story is read at the page's own width after the readings rather than inside the cards. On a
- * phone the cards are a row to move along; from 700 px they are three side by side, and on a
- * wide screen they are the row under the headline.
+ * phone the cards are a row to move along, with a line under it for how far along it is and, where
+ * the row stops short of the screen's edge, a count of the card in view beside it; from 700 px they
+ * are three side by side, and on a wide screen they are the row under the headline.
  */
 export function Readings({ className }: { className?: string }) {
   return (
@@ -79,7 +80,7 @@ export function Readings({ className }: { className?: string }) {
         Headline figures
       </h2>
 
-      <ul className={styles.row}>
+      <ul aria-labelledby="proof-title" className={styles.row}>
         {headlineFigures.map((figure, index) => (
           <li
             key={figure.id}
@@ -134,6 +135,11 @@ export function Readings({ className }: { className?: string }) {
         ))}
       </ul>
       <span aria-hidden="true" className={styles.progress} />
+      <span
+        aria-hidden="true"
+        className={cn(styles.count, 'type-meta text-muted')}
+        style={{ '--count': headlineFigures.length } as CSSProperties}
+      />
     </section>
   );
 }

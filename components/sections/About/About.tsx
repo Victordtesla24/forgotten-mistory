@@ -20,7 +20,7 @@ function PrincipleCard({ principle }: { principle: Principle }) {
       >
         <p className="font-medium">{principle.statement}</p>
         {principle.detail ? <p className="type-small text-muted">{principle.detail}</p> : null}
-        <Tag className="self-start">{principle.scope}</Tag>
+        <Tag className="self-start max-sm:whitespace-normal">{principle.scope}</Tag>
       </Disclosure>
     </Card>
   );
@@ -62,7 +62,11 @@ export function About() {
           </p>
         </div>
 
-        <SnapRow columns={3} className="reveal">
+        <SnapRow
+          columns={3}
+          aria-label="Working principles"
+          className="reveal max-sm:mx-0 max-sm:snap-none max-sm:flex-col max-sm:items-stretch max-sm:gap-2 max-sm:overflow-visible max-sm:px-0 max-sm:pb-0 max-sm:*:min-w-0 max-sm:*:basis-auto"
+        >
           {about.principles.map((principle) => (
             <li key={principle.id}>
               <PrincipleCard principle={principle} />

@@ -1,4 +1,7 @@
-import { expect, test, type Locator } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
+
+import { contact } from '@/content/contact';
+import { site } from '@/content/site';
 
 import { NAV_ITEMS, SECTION_IDS, enforceProductionCsp, hydrated, open, openAssistant } from './support';
 
@@ -220,6 +223,53 @@ test.describe('on small screens', { tag: '@mobile' }, () => {
         .map((control) => `${control.name}: ${Math.round(control.width)}x${Math.round(control.height)}`),
     );
     expect(small).toEqual([]);
+  });
+});
+
+/**
+ * Brings the control to rest in view and waits until React has taken it: the page scrolls smoothly, so a
+ * press that starts while it is still moving can end on another element, and on a busy machine the
+ * sections' controls follow the header's.
+ */
+async function taken(control: Locator, page: Page): Promise<void> {
+  await control.scrollIntoViewIfNeeded();
+  await expect.poll(async () => {
+    const before = await page.evaluate(() => window.scrollY);
+    await page.waitForTimeout(120);
+    return (await page.evaluate(() => window.scrollY)) === before;
+  }).toBe(true);
+  await expect.poll(() => control.evaluate((element) => Object.keys(element).some((key) => key.startsWith('__reactProps$')))).toBe(true);
+}
+
+test.describe('the email address can be copied', () => {
+  test('the control beside the call puts the address on the clipboard, and says so', async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await open(page, '/');
+    const button = page.locator('#contact').getByRole('button', { name: contact.copy.label });
+    await button.scrollIntoViewIfNeeded();
+    await expect(button).toBeVisible();
+    const box = await button.boundingBox();
+    expect(box?.height ?? 0, 'a 44 px touch target').toBeGreaterThanOrEqual(44);
+    await taken(button, page);
+    await button.click();
+    await expect(page.locator('#contact [role="status"]')).toHaveText(contact.copy.done);
+    await expect(page.locator('#contact').getByRole('button', { name: contact.copy.done })).toBeVisible();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(site.channels.email);
+  });
+
+  test('a browser that refuses the clipboard is told so, and the address stays a link beside the control', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => Promise.reject(new Error('refused')) } });
+    });
+    await open(page, '/');
+    const button = page.locator('#contact').getByRole('button', { name: contact.copy.label });
+    await taken(button, page);
+    await button.click();
+    await expect(page.locator('#contact [role="status"]')).toHaveText(contact.copy.failed);
+    await expect(page.locator(`#contact a[href="mailto:${site.channels.email}"]`)).toBeVisible();
   });
 });
 

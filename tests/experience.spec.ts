@@ -219,7 +219,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
       await expect(card).toContainText(role?.short ?? '');
       await expect(card).toContainText(yearsOf(role?.span ?? { start: 0, end: 0 }));
       expect(await card.innerText()).toMatch(/\b(\d+ years?|\d+ months?)\b/);
-      await expect(card.getByRole('button', { name: 'Open role' })).toBeVisible();
+      await expect(card.getByRole('button', { name: 'Role details' })).toBeVisible();
       await expect(card.locator('[data-figure] svg'), `${bar.id} draws a figure`).toHaveCount(1);
       if (role?.headline) {
         await expect(card).toContainText(role.headline.value);
@@ -505,7 +505,7 @@ test.describe('the Experience timeline', { tag: '@desktop' }, () => {
     await expect(dialog).toBeHidden();
     await expect(page.locator(`${TAB}[data-role="anz"]`)).toBeFocused();
 
-    await page.getByRole('button', { name: 'Open role' }).click();
+    await page.getByRole('button', { name: 'Role details' }).click();
     await expect(dialog).toBeVisible();
     await dialog.getByRole('button', { name: 'Next' }).click();
     await page.keyboard.press('Escape');

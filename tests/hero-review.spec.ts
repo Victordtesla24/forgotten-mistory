@@ -452,6 +452,43 @@ test.describe('on a tall phone the extra height goes to the tile, not to the tex
       await context.close();
     }
   });
+
+  test('375 by 812: beside the first reading a count says which card of the three is in view, and follows the row', async ({ browser }) => {
+    const { context, page } = await openView(browser, { w: 375, h: 812, touch: true }, '/?gl=off');
+    try {
+      await entranceDone(page);
+      const read = () =>
+        page.locator('#proof').evaluate((group) => {
+          const count = group.querySelector('[class*="Readings_count__"]') as HTMLElement;
+          const style = getComputedStyle(count);
+          const box = count.getBoundingClientRect();
+          const card = (group.querySelector('li') as HTMLElement).getBoundingClientRect();
+          return {
+            display: style.display,
+            index: style.getPropertyValue('--reading-index').trim(),
+            of: style.getPropertyValue('--count').trim(),
+            size: parseFloat(style.fontSize),
+            width: box.width,
+            left: box.left,
+            right: box.right,
+            cardRight: card.right,
+            hidden: count.getAttribute('aria-hidden'),
+          };
+        });
+      const first = await read();
+      expect(first.display, 'the count is shown').toBe('block');
+      expect(first.hidden, 'a drawing of where the row is, not content').toBe('true');
+      expect(`${first.index}/${first.of}`).toBe(`1/${headlineFigures.length}`);
+      expect(first.size, 'nothing readable below 13 px').toBeGreaterThanOrEqual(13);
+      expect(first.width, 'the count has its numerals').toBeGreaterThan(12);
+      expect(first.left, 'clear of the first card').toBeGreaterThanOrEqual(first.cardRight);
+      expect(first.right, 'inside the screen').toBeLessThanOrEqual(375);
+      await page.locator('#proof ul').evaluate((row) => row.scrollTo({ left: row.scrollWidth, behavior: 'instant' }));
+      await expect.poll(async () => (await read()).index, 'the last card is in view').toBe(String(headlineFigures.length));
+    } finally {
+      await context.close();
+    }
+  });
 });
 
 test.describe('the page has one career timeline, and it is in Experience', { tag: '@desktop' }, () => {

@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 
 import { THEME_KEY } from '@/components/site/theme';
+import { contact } from '@/content/contact';
 import { copyright } from '@/content/legal';
 import { site } from '@/content/site';
 
@@ -109,6 +110,14 @@ test.describe('what the site says matches what it has', { tag: '@desktop' }, () 
       expect(text.split(copyright).length - 1, path).toBe(1);
       await expect(page.getByRole('contentinfo')).toContainText(copyright);
     }
+  });
+
+  test('the footer prints no build id and names its fault link for what it does; the build id stays in the head', async ({ page }) => {
+    await page.goto('/');
+    const footer = page.getByRole('contentinfo');
+    await expect(footer).not.toContainText(/\bbuild\b/i);
+    await expect(footer.getByRole('link', { name: contact.support.label })).toHaveAttribute('href', contact.support.href);
+    await expect(page.locator('meta[name="build-commit"]')).toHaveAttribute('content', /^[0-9a-f]{8}$|^dev$/);
   });
 
   test('every file in public/assets and public/docs is used by the build', () => {
